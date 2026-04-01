@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Page Not Found | Think Green Landscape</title>
+  <meta name="description" content="The page you're looking for doesn't exist. Return to Think Green's homepage or explore our landscaping services." />
+  <link rel="icon" type="image/png" href="img/favicon-32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="img/favicon-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/fonts.min.css" />
+  <link rel="stylesheet" href="/styles.min.css" />
+  <style>
+    .e404 {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      background: var(--paper);
+    }
+    .e404__leaf {
+      font-size: 4rem;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: leafDrop .8s var(--ease-out) .2s both;
+    }
+    @keyframes leafDrop {
+      from { opacity: 0; transform: translateY(-40px) rotate(-15deg); }
+      to   { opacity: 1; transform: none; }
+    }
+    .e404__code {
+      font-family: var(--font-head);
+      font-size: clamp(6rem, 18vw, 10rem);
+      font-weight: 300;
+      line-height: 1;
+      color: var(--green);
+      letter-spacing: -.04em;
+      opacity: 0;
+      animation: fadeUp .7s var(--ease-out) .4s both;
+    }
+    .e404__title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 400;
+      color: var(--ink);
+      margin-block: .5rem 1rem;
+      opacity: 0;
+      animation: fadeUp .7s var(--ease-out) .55s both;
+    }
+    .e404__sub {
+      font-size: 1rem;
+      color: var(--ink-light);
+      max-width: 420px;
+      line-height: 1.75;
+      margin-bottom: 2.25rem;
+      opacity: 0;
+      animation: fadeUp .7s var(--ease-out) .68s both;
+    }
+    .e404__actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp .7s var(--ease-out) .8s both;
+    }
+    .e404__links {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem 1.5rem;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp .7s var(--ease-out) .9s both;
+    }
+    .e404__links a {
+      font-size: .875rem;
+      color: var(--green);
+      font-weight: 500;
+      transition: opacity .2s;
+    }
+    .e404__links a:hover { opacity: .7; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .e404__leaf, .e404__code, .e404__title, .e404__sub, .e404__actions, .e404__links {
+        animation: none;
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <noscript>
+    <div style="padding:1rem;background:#fef3cd;text-align:center;font-family:sans-serif;">
+      This site works best with JavaScript enabled.
+      Call us directly at (480) 922-9497 to schedule a free consultation.
+    </div>
+  </noscript>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <nav class="nav" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="/" class="nav__logo" aria-label="Think Green — home">
+        <img src="img/logo.png" alt="Think Green" class="nav__logo-img" width="140" height="40" />
+      </a>
+      <a href="tel:+14809229497" class="btn btn--sm btn--primary nav__cta">
+        (480) 922-9497
+      </a>
+    </div>
+  </nav>
+
+  <main class="e404" id="main-content">
+    <div class="e404__leaf" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 18c7 0 10-4.5 10-10-5.5 0-10 3-10 10z"></path><path d="M7 18c-1.5-3.5-.8-7.2 2.1-10.4"></path></svg></div>
+    <p class="e404__code" aria-label="Error 404">404</p>
+    <h1 class="e404__title">Page not found</h1>
+    <p class="e404__sub">Looks like this page got lost in the desert. Let's get you back to something green.</p>
+    <div class="e404__actions">
+      <a href="/free-consultation?source=404_page&autostart=1" class="btn btn--primary">Get Free Design Consultation</a>
+      <a href="/portfolio" class="btn btn--primary">View Full Portfolio</a>
+      <a href="/services" class="btn btn--outline">Explore Services</a>
+    </div>
+    <nav class="e404__links" aria-label="Quick links">
+      <a href="/services">Our Services</a>
+      <a href="/portfolio">Portfolio</a>
+      <a href="/scottsdale-landscaping">Scottsdale</a>
+      <a href="/phoenix-landscaping">Phoenix</a>
+    </nav>
+  </main>
+
+  <script src="/site-config.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+# Client Answer Paste Template
+
+Paste this to a client after they complete the intake, or use it internally to normalize their answers into one clean block before sending it back to Codex.
+
+```text
+CLIENT WEBSITE BUILD INTAKE
+
+1. Business Identity
+- Legal business name:
+- Public brand name:
+- Owner / decision maker:
+- Public website phone:
+- Public website email:
+- Internal project contact email:
+- Internal project contact phone:
+- Address line 1:
+- Address line 2:
+- City:
+- State:
+- ZIP:
+- Business hours:
+- Years in business:
+- Ownership notes:
+
+2. Branding
+- Primary logo link:
+- Alternate logo link:
+- Icon / favicon link:
+- Brand colors:
+- Typography preferences:
+- Brand guidelines link:
+- Social links:
+- Visual styles to avoid:
+
+3. Services
+- Full services list:
+- Top 3 priority services:
+- Most profitable services:
+- Services to avoid pushing:
+- Budget ranges by service:
+- Ideal minimum project:
+- Average timeline:
+- Financing available:
+- Main competitive advantage:
+- Why customers choose them:
+
+4. Ideal Client
+- Ideal homeowner profile:
+- Preferred neighborhoods / home values:
+- Best-fit project types:
+- Common objections:
+- What usually closes the sale:
+- Bad-fit lead indicators:
+
+5. Local SEO
+- Primary service areas:
+- Secondary service areas:
+- Areas not served:
+- First city pages needed:
+- Google Business Profile URL:
+- Review platform URL:
+- Target keywords:
+- Top competitors:
+
+6. Trust And Compliance
+- License numbers:
+- License verification URL:
+- Bonding provider:
+- Bond verification URL:
+- Insurance provider:
+- Public-safe insurance summary:
+- Can exact license numbers be shown:
+- Can exact review numbers be shown:
+- Verified review rating:
+- Verified review count:
+- Review snapshot date:
+- Warranty details:
+- Awards / certifications / memberships:
+
+7. Portfolio
+- Portfolio folder link:
+- Best 12-20 image links:
+- Before / after pairs:
+- Featured project story:
+- Project locations:
+- Project scopes:
+- Budget examples safe to show:
+- Video links:
+- Media usage rights confirmed:
+
+8. Reviews
+- Can reviews be published on-site:
+- Homepage review snippets:
+- Service-specific review snippets:
+- Other review platforms:
+
+9. Lead Routing
+- Owner notification email:
+- Secondary notification email:
+- Reply-to email:
+- Sender name:
+- Preferred delivery method:
+- Google Sheet URL:
+- CRM / webhook destination:
+- Duplicate lead detection:
+- Follow-up window:
+- Routing notes:
+
+10. Tracking
+- GA4 measurement ID:
+- GTM container ID:
+- Paid traffic sources:
+- Phone tracking needs:
+- Required conversion events:
+- Other integrations:
+
+11. Content Direction
+- Tone direction:
+- Brand phrases to use:
+- Brand phrases to avoid:
+- Competitor examples liked:
+- Competitor examples disliked:
+- Required claims / differentiators:
+- Compliance wording limits:
+
+12. Launch Priorities
+- Top 5 pages to perfect first:
+- Must-keep items from current site:
+- Missing features needed:
+- Launch target date:
+- Final approver:
+```
+
+## Internal Rule
+
+Before sending this intake into Codex:
+
+1. Remove empty lines that truly do not matter.
+2. Mark any unknown fields as `UNKNOWN`.
+3. Mark any unverified trust data as `UNVERIFIED`.
+4. Do not invent review counts, awards, or compliance claims.

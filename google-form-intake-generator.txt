@@ -1,0 +1,568 @@
+THINK GREEN TEMPLATE DUPLICATION INTAKE
+=======================================
+
+Use this file in Google Apps Script to auto-create a complete intake Google Form for new clients.
+
+HOW TO RUN
+----------
+1) Go to https://script.google.com
+2) Create a New Project
+3) Paste the script below into Code.gs
+4) Save
+5) Run `createLandscaperClientIntakeForm`
+6) Authorize once
+7) Check Logs for the Edit URL + Live Form URL
+
+
+GOOGLE APPS SCRIPT (COPY EVERYTHING BELOW)
+------------------------------------------
+
+function createLandscaperClientIntakeForm() {
+  const form = FormApp.create('Landscape Website Build Intake — Premium Client Onboarding');
+  form.setDescription(
+    'Complete this form so we can duplicate and customize your website + lead system. ' +
+    'Please provide real business details, branding assets, service areas, compliance info, and lead routing preferences.'
+  );
+  form.setCollectEmail(true);
+  form.setRequireLogin(false);
+  form.setAllowResponseEdits(true);
+  form.setProgressBar(true);
+  form.setConfirmationMessage(
+    'Thanks — we received your intake. We will review everything and begin your custom build setup.'
+  );
+
+  // =========================
+  // SECTION 1: CORE BUSINESS
+  // =========================
+  form.addSectionHeaderItem().setTitle('1) Core Business Information');
+
+  form.addTextItem()
+    .setTitle('Legal Business Name')
+    .setHelpText('Exact registered business name.')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Public Brand Name (if different)')
+    .setHelpText('What should appear on the website header, footer, and emails?')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Owner / Primary Decision Maker Full Name')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Primary Contact Email')
+    .setHelpText('Main email for project communication.')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Primary Contact Phone')
+    .setHelpText('Main number we should call/text for implementation questions.')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Business Phone Number for Website')
+    .setHelpText('This becomes click-to-call site-wide.')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Business Email for Website')
+    .setHelpText('Public-facing contact email shown on site.')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Business Address Line 1')
+    .setRequired(true);
+
+  form.addTextItem().setTitle('Business Address Line 2 (optional)');
+
+  form.addTextItem()
+    .setTitle('City')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('State')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('ZIP Code')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Business Hours')
+    .setHelpText('Example: Mon–Fri 7:00 AM – 5:00 PM')
+    .setRequired(true);
+
+  // =========================
+  // SECTION 2: BRANDING
+  // =========================
+  form.addPageBreakItem().setTitle('2) Branding & Visual Assets');
+
+  form.addParagraphTextItem()
+    .setTitle('Logo Files (links)')
+    .setHelpText('Upload logos to Google Drive/Dropbox and paste links. Include primary logo, white logo, icon/favicon if available.')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Brand Color Codes')
+    .setHelpText('Hex values preferred. Example: #1B4332, #EFEAE1')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Typography Preferences (if any)')
+    .setHelpText('If none, we keep the premium template typography.')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('Do you have brand guidelines?')
+    .setChoiceValues(['Yes', 'No'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Brand Guidelines Link (if yes)')
+    .setHelpText('PDF or Drive link.')
+    .setRequired(false);
+
+  // =========================
+  // SECTION 3: SERVICES & POSITIONING
+  // =========================
+  form.addPageBreakItem().setTitle('3) Services, Offer Positioning, and Sales Focus');
+
+  form.addCheckboxItem()
+    .setTitle('Primary Services Offered')
+    .setChoiceValues([
+      'Landscape Design & Build',
+      'Hardscaping',
+      'Outdoor Kitchens',
+      'Fire Features',
+      'Artificial Turf',
+      'Irrigation',
+      'Lighting',
+      'Pergolas / Shade Structures',
+      'Water Features',
+      'Maintenance',
+      'Other'
+    ])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Any Additional Services Not Listed')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('Top 3 Most Profitable Services')
+    .setHelpText('Used to prioritize CTA flow and section emphasis.')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Average Project Budget Ranges by Service')
+    .setHelpText('Example: Turf $5k-$15k, Hardscape $10k-$40k, Outdoor Kitchen $20k-$60k')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Ideal Client Profile')
+    .setHelpText('Who do you want more of? Home value, neighborhood type, project type, urgency level, etc.')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Main Competitive Advantage')
+    .setHelpText('Why should homeowners choose you over competitors?')
+    .setRequired(true);
+
+  // =========================
+  // SECTION 4: LOCAL SEO + COVERAGE
+  // =========================
+  form.addPageBreakItem().setTitle('4) Service Areas, Local SEO, and Maps');
+
+  form.addParagraphTextItem()
+    .setTitle('Primary Service Areas')
+    .setHelpText('List cities/neighborhoods in priority order (Scottsdale, Paradise Valley, etc.).')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Secondary Service Areas')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('Google Business Profile URL')
+    .setHelpText('Direct GBP profile link.')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Google Reviews URL (Direct)')
+    .setHelpText('Direct “leave/read reviews” URL.')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Local Keywords You Want to Rank For')
+    .setHelpText('Example: "hardscaping scottsdale", "outdoor kitchen phoenix"')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Top Competitors (URLs)')
+    .setHelpText('Paste links to 3–5 competing local companies.')
+    .setRequired(false);
+
+  // =========================
+  // SECTION 5: TRUST / LEGAL / COMPLIANCE
+  // =========================
+  form.addPageBreakItem().setTitle('5) Licensing, Insurance, and Compliance Proof');
+
+  form.addTextItem()
+    .setTitle('Arizona ROC License Number')
+    .setHelpText('Required for trust/compliance section if applicable.')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('ROC Verification URL (direct if available)')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('Bonding Provider Name')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('Bond Verification URL (if available)')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('Insurance Provider Name')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('Insurance Coverage Summary (public-safe)')
+    .setHelpText('Only include details safe to show on public site.')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('Can we display licensing/insured statements publicly?')
+    .setChoiceValues(['Yes', 'No', 'Yes, but no exact numbers'])
+    .setRequired(true);
+
+  // =========================
+  // SECTION 6: PORTFOLIO + CONTENT ASSETS
+  // =========================
+  form.addPageBreakItem().setTitle('6) Portfolio, Images, and Case Study Inputs');
+
+  form.addParagraphTextItem()
+    .setTitle('Portfolio Image Folder Link')
+    .setHelpText('Google Drive/Dropbox folder with website-ready images.')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Before/After Image Pairs')
+    .setHelpText('Paste links in pairs with labels. Example: Project Name | Before URL | After URL')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('Featured Project Story Details')
+    .setHelpText('Include location, scope, timeline, budget range, and homeowner outcome.')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Image Usage Rights Confirmation')
+    .setHelpText('Confirm all uploaded media can be used on your website.')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Video Assets (optional)')
+    .setHelpText('Links for owner intro video, walkthrough clips, drone footage.')
+    .setRequired(false);
+
+  // =========================
+  // SECTION 7: REVIEWS + SOCIAL PROOF
+  // =========================
+  form.addPageBreakItem().setTitle('7) Reviews, Testimonials, and Social Proof');
+
+  form.addMultipleChoiceItem()
+    .setTitle('Can we publish selected customer reviews on the site?')
+    .setChoiceValues(['Yes', 'No'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Review Snippets to Feature')
+    .setHelpText('Paste 6–12 real review snippets with first name + last initial + city.')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('Current Google Rating (verified)')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('Current Google Review Count (verified)')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('If rating/review count changes, should we use softened trust copy instead of exact numbers?')
+    .setChoiceValues(['Yes', 'No'])
+    .setRequired(true);
+
+  // =========================
+  // SECTION 8: LEAD ROUTING + EMAILS + CRM
+  // =========================
+  form.addPageBreakItem().setTitle('8) Lead Routing, Notifications, and CRM');
+
+  form.addTextItem()
+    .setTitle('Owner Notification Email (receives new lead alerts)')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Secondary Notification Email (optional)')
+    .setRequired(false);
+
+  form.addTextItem()
+    .setTitle('Client Confirmation Sender Name')
+    .setHelpText('Example: Think Green Landscape')
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Reply-To Email for Client Confirmation')
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('Preferred Email Delivery Method')
+    .setChoiceValues(['SMTP (Gmail/Workspace app password)', 'Resend', 'Both with fallback'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('Google Sheet URL for Lead Dashboard')
+    .setHelpText('If not created yet, write: CREATE_FOR_ME')
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('Enable duplicate detection (email/phone within 7 days)?')
+    .setChoiceValues(['Yes', 'No'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('CRM/Webhook Destination (optional)')
+    .setHelpText('Zapier/Make/HubSpot/Airtable webhook URL if needed.')
+    .setRequired(false);
+
+  // =========================
+  // SECTION 9: ANALYTICS + ATTRIBUTION
+  // =========================
+  form.addPageBreakItem().setTitle('9) Analytics and Attribution Setup');
+
+  form.addTextItem()
+    .setTitle('GA4 Measurement ID')
+    .setHelpText('Example: G-XXXXXXXXXX')
+    .setRequired(true);
+
+  form.addMultipleChoiceItem()
+    .setTitle('Google Tag Manager container provided?')
+    .setChoiceValues(['Yes', 'No'])
+    .setRequired(true);
+
+  form.addTextItem()
+    .setTitle('GTM Container ID (if available)')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('Enable conversion events tracking?')
+    .setChoiceValues(['Yes', 'No'])
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Paid Traffic Sources in Use')
+    .setHelpText('Google Ads, Local Service Ads, Meta, etc.')
+    .setRequired(false);
+
+  // =========================
+  // SECTION 10: FINAL APPROVALS
+  // =========================
+  form.addPageBreakItem().setTitle('10) Final Build Instructions and Approvals');
+
+  form.addParagraphTextItem()
+    .setTitle('Top 5 Pages You Want Perfect First')
+    .setHelpText('Priority list for launch pass.')
+    .setRequired(true);
+
+  form.addParagraphTextItem()
+    .setTitle('Anything We Must Avoid / Compliance Notes')
+    .setHelpText('Any legal wording constraints, regulated terms, or prohibited claims.')
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('Ready for us to use placeholder-safe copy where proof is not verified yet?')
+    .setChoiceValues(['Yes', 'No'])
+    .setRequired(true);
+
+  form.addCheckboxItem()
+    .setTitle('Launch Readiness Checklist')
+    .setChoiceValues([
+      'I confirm all business contact details are correct',
+      'I confirm I have rights to all logos/images submitted',
+      'I confirm lead notification emails are correct',
+      'I understand exact trust stats must be verified before publishing',
+      'I approve build kickoff after submission'
+    ])
+    .setRequired(true);
+
+  Logger.log('Form created (edit): ' + form.getEditUrl());
+  Logger.log('Form live URL: ' + form.getPublishedUrl());
+}
+
+
+============================================================
+PROMPT TEMPLATE YOU CAN USE TO DUPLICATE THIS SITE FOR ANY BUSINESS
+============================================================
+
+Copy/paste this prompt and replace bracket fields with the client’s intake answers:
+
+Preferred repo docs:
+- `docs/client-questionnaire-template.md`
+- `docs/client-answer-paste-template.md`
+- `docs/client-build-prompt-template.md`
+
+Use the docs above as the primary workflow if you want a cleaner intake-to-build handoff.
+
+"""
+You are a senior front-end engineer + CRO specialist + local SEO implementer.
+
+Duplicate the landscaping premium template for this business using the provided intake data.
+Do not redesign the system. Keep the same premium style direction and conversion architecture.
+Implement only business-specific customization + trust-safe copy + launch-safe routing.
+
+BUSINESS CORE
+- Legal name: [LEGAL_NAME]
+- Public brand: [BRAND_NAME]
+- Owner/contact name: [OWNER_NAME]
+- Primary email: [PRIMARY_EMAIL]
+- Website phone: [WEBSITE_PHONE]
+- Website email: [WEBSITE_EMAIL]
+- Address: [ADDRESS_LINE_1], [ADDRESS_LINE_2], [CITY], [STATE] [ZIP]
+- Hours: [HOURS]
+
+BRANDING
+- Logo links: [LOGO_LINKS]
+- Brand colors: [COLOR_HEXES]
+- Brand guide: [BRAND_GUIDE_LINK]
+
+SERVICES + POSITIONING
+- Primary services: [SERVICES]
+- Top 3 profitable services: [TOP_PROFIT_SERVICES]
+- Budget ranges: [BUDGET_RANGES]
+- Ideal client profile: [IDEAL_CLIENT]
+- Competitive advantage: [ADVANTAGE]
+
+LOCAL SEO
+- Primary service areas: [PRIMARY_AREAS]
+- Secondary service areas: [SECONDARY_AREAS]
+- GBP URL: [GBP_URL]
+- Review URL: [REVIEW_URL]
+- Target keywords: [KEYWORDS]
+
+TRUST/COMPLIANCE
+- ROC #: [ROC_NUMBER]
+- ROC link: [ROC_LINK]
+- Bond info: [BOND_INFO]
+- Insurance info: [INSURANCE_INFO]
+- Public display permission: [PUBLIC_COMPLIANCE_PERMISSION]
+
+PORTFOLIO CONTENT
+- Image folder: [IMAGE_FOLDER]
+- Before/After pairs: [BEFORE_AFTER_PAIRS]
+- Featured project details: [FEATURED_PROJECT]
+- Review snippets: [REVIEWS]
+
+LEAD PIPELINE
+- Owner notification email: [OWNER_EMAIL]
+- Secondary notification email: [SECONDARY_OWNER_EMAIL]
+- Reply-to email: [REPLY_TO_EMAIL]
+- Delivery method: [SMTP_OR_RESEND]
+- Google Sheet URL: [SHEET_URL]
+- Duplicate detection: [YES_NO]
+- CRM webhook: [CRM_WEBHOOK]
+
+ANALYTICS
+- GA4 ID: [GA4_ID]
+- GTM ID: [GTM_ID]
+- Track conversions: [YES_NO]
+
+REQUIRED OUTPUT
+1) Update all business identity fields site-wide.
+2) Replace demo proof with verified-safe wording where exact numbers are not verified.
+3) Keep CTA system standardized:
+   - Primary: Get Free Design Consultation
+   - Secondary: Call Now
+4) Keep form + email + sheet pipeline working.
+5) Ensure portfolio and service pages reflect this business specifically.
+6) Run mobile + desktop QA.
+7) Deploy to Netlify production and provide final URLs.
+8) Send one test form submission after deploy.
+"""
+
+
+============================================================
+MASTER LIST: WHAT THE CLIENT MUST PROVIDE (COMPLETE)
+============================================================
+
+1) Identity
+- Legal business name
+- Public brand name
+- Owner name
+- Main phone
+- Main email
+- Physical address
+- Service hours
+
+2) Brand Assets
+- Primary logo (SVG/PNG)
+- Dark/light logo variants
+- Favicon / icon logo
+- Brand color codes (hex)
+- Optional typography preferences
+
+3) Service Data
+- Full list of services
+- Top priority services to push
+- Typical project budget ranges by service
+- Ideal project minimum
+- Service exclusions (if any)
+
+4) Local Coverage
+- Primary cities/neighborhoods
+- Secondary cities
+- Areas not served
+- Priority local SEO targets
+
+5) Proof + Trust
+- Google Business Profile URL
+- Review profile URL
+- Approved review snippets
+- Verified rating/count (optional, only if accurate)
+- Licenses/certifications
+- ROC number and verification path (if applicable)
+- Insurance/bond statements safe for public display
+
+6) Portfolio Content
+- Image folder with usage rights
+- Before/after pairs
+- Featured project case study details
+- Optional video clips
+
+7) Lead Handling
+- Owner alert email(s)
+- Client confirmation reply-to email
+- Preferred send method (SMTP/Resend)
+- Lead dashboard sheet URL
+- Duplicate policy preference
+- CRM/webhook endpoint (optional)
+
+8) Measurement
+- GA4 measurement ID
+- GTM container ID (optional)
+- Ad platforms in use
+- Attribution preferences
+
+9) Legal/Compliance
+- Restricted claims list
+- Warranty language constraints
+- Any regulated terms to avoid
+
+10) Launch Approvals
+- Final contact details approved
+- Final trust claims approved
+- Final page priority approved
+- Permission to launch

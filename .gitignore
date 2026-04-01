@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Database
+data/
+
+# TypeScript
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# OS
+.DS_Store
+
+# Local Netlify folder
+.netlify
+
+# Local Codex/browser artifacts
+.codex-tmp/
+test-results/

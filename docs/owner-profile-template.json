@@ -1,0 +1,53 @@
+{
+  "ownerName": "",
+  "businessName": "",
+  "primaryPhone": "",
+  "primaryEmail": "",
+  "serviceCities": [],
+  "topServices": [],
+  "brandTone": "",
+  "idealClient": "",
+  "projectMinimums": "",
+  "consultationNotes": "",
+  "trustNotes": {
+    "licensed": "",
+    "bonded": "",
+    "insured": "",
+    "reviewSource": "",
+    "reviewSummary": "",
+    "googleBusinessProfileUrl": ""
+  },
+  "salesNotes": {
+    "bestLeadTypes": [],
+    "badFitProjects": [],
+    "responsePreferences": "",
+    "followUpPreferences": ""
+  },
+  "contentNotes": {
+    "aboutSummary": "",
+    "processSummary": "",
+    "faqNotes": [],
+    "citySpecificNotes": []
+  },
+  "opsNotes": {
+    "sheetOwnerViewNotes": "",
+    "emailRoutingNotes": "",
+    "crmNotes": ""
+  },
+  "agencyContractNotes": {
+    "_note": "Internal agency records. Not used by any site script.",
+    "initialPaymentAmount": 375,
+    "initialPaymentDate": "",
+    "completionPaymentAmount": 375,
+    "completionPaymentDate": "",
+    "monthlyUpkeepAmount": 250,
+    "monthlyUpkeepStartDate": "",
+    "launchDate": "",
+    "contractSignedDate": "",
+    "invoicingPlatform": "",
+    "paymentMethod": "",
+    "autoInvoiceDay": 1,
+    "cancellationNoticeDays": 30,
+    "notes": ""
+  }
+}

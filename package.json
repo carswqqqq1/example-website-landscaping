@@ -1,0 +1,27 @@
+{
+  "name": "think-green-landscape-template",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "check:js": "node --check script.js && node --check services.js && node --check portfolio.js && node --check netlify/functions/send-ticket-emails.js",
+    "check:a11y": "node scripts/check-accessibility-baseline.js",
+    "check:speed": "node scripts/check-speed-budget.js",
+    "check:site": "node scripts/check-site-quality.js",
+    "check:all": "npm run check:js && npm run check:a11y && npm run check:speed && npm run check:site",
+    "generate:llms": "node scripts/generate-llms-files.js",
+    "generate:client-package": "node scripts/generate-client-package.js docs/client-config-template.json",
+    "build:css": "npx cleancss -O2 -o styles.min.css styles.css && npx cleancss -O2 -o pages.min.css pages.css && npx cleancss -O2 -o services.min.css services.css && npx cleancss -O2 -o portfolio.min.css portfolio.css && npx cleancss -O2 -o fonts.min.css fonts.css",
+    "build:js": "npx terser script.js -o script.min.js -c -m && npx terser services.js -o services.min.js -c -m && npx terser portfolio.js -o portfolio.min.js -c -m && npx terser services-data.js -o services-data.min.js -c -m && npx terser projects-data.js -o projects-data.min.js -c -m",
+    "build:assets": "npm run build:css && npm run build:js",
+    "deploy:netlify": "npx netlify deploy --prod --dir . --site=afa9fd9e-aa69-4368-a08f-d93aa497b0a8",
+    "apply:client-config": "node scripts/apply-client-config.js docs/client-config-template.json"
+  },
+  "dependencies": {
+    "nodemailer": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "clean-css-cli": "^5.6.3",
+    "terser": "^5.39.0"
+  }
+}

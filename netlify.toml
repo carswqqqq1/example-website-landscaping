@@ -1,0 +1,466 @@
+[build]
+  publish = "."
+  command = ""
+
+[build.environment]
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+[functions]
+  directory = "netlify/functions"
+  included_files = ["emails/**"]
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(self), payment=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://region1.analytics.google.com; frame-src 'none'; object-src 'none'; base-uri 'self';"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.min.css"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/*.min.js"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/site-config.js"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/search.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, follow"
+
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/services"
+  to = "/services.html"
+  status = 200
+
+[[redirects]]
+  from = "/portfolio"
+  to = "/portfolio.html"
+  status = 200
+
+[[redirects]]
+  from = "/portfolio/"
+  to = "/portfolio.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/"
+  to = "/services.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/landscape-design"
+  to = "/services/landscape-design.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/hardscaping"
+  to = "/services/hardscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/outdoor-kitchens"
+  to = "/services/outdoor-kitchens.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/fire-features"
+  to = "/services/fire-features.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/artificial-turf"
+  to = "/services/artificial-turf.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/desert-landscaping"
+  to = "/services/desert-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/irrigation"
+  to = "/services/irrigation.html"
+  status = 200
+
+[[redirects]]
+  from = "/scottsdale-landscaping"
+  to = "/scottsdale-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/scottsdale-landscaping/"
+  to = "/scottsdale-landscaping"
+  status = 301
+
+[[redirects]]
+  from = "/phoenix-landscaping"
+  to = "/phoenix-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/phoenix-landscaping/"
+  to = "/phoenix-landscaping"
+  status = 301
+
+[[redirects]]
+  from = "/search"
+  to = "/search.html"
+  status = 200
+
+[[redirects]]
+  from = "/search/"
+  to = "/search"
+  status = 301
+
+[[redirects]]
+  from = "/resources"
+  to = "/resources.html"
+  status = 200
+
+[[redirects]]
+  from = "/resources/"
+  to = "/resources"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/about/"
+  to = "/about"
+  status = 301
+
+[[redirects]]
+  from = "/process"
+  to = "/process.html"
+  status = 200
+
+[[redirects]]
+  from = "/process/"
+  to = "/process"
+  status = 301
+
+[[redirects]]
+  from = "/reviews"
+  to = "/reviews.html"
+  status = 200
+
+[[redirects]]
+  from = "/reviews/"
+  to = "/reviews"
+  status = 301
+
+[[redirects]]
+  from = "/free-consultation"
+  to = "/free-consultation.html"
+  status = 200
+
+[[redirects]]
+  from = "/free-consultation/"
+  to = "/free-consultation"
+  status = 301
+
+[[redirects]]
+  from = "/best-landscaper-scottsdale"
+  to = "/best-landscaper-scottsdale.html"
+  status = 200
+
+[[redirects]]
+  from = "/best-landscaper-scottsdale/"
+  to = "/best-landscaper-scottsdale"
+  status = 301
+
+[[redirects]]
+  from = "/project-planning-checklist"
+  to = "/project-planning-checklist.html"
+  status = 200
+
+[[redirects]]
+  from = "/project-planning-checklist/"
+  to = "/project-planning-checklist"
+  status = 301
+
+[[redirects]]
+  from = "/thank-you"
+  to = "/thank-you.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/outdoor-lighting"
+  to = "/services/outdoor-lighting.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/pergola-shade"
+  to = "/services/pergola-shade.html"
+  status = 200
+
+[[redirects]]
+  from = "/arcadia-landscaping"
+  to = "/arcadia-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/arcadia-landscaping/"
+  to = "/arcadia-landscaping"
+  status = 301
+
+[[redirects]]
+  from = "/mesa-landscaping"
+  to = "/mesa-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/mesa-landscaping/"
+  to = "/mesa-landscaping"
+  status = 301
+
+[[redirects]]
+  from = "/chandler-landscaping"
+  to = "/chandler-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/chandler-landscaping/"
+  to = "/chandler-landscaping"
+  status = 301
+
+[[redirects]]
+  from = "/paradise-valley-landscaping"
+  to = "/paradise-valley-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/paradise-valley-landscaping/"
+  to = "/paradise-valley-landscaping"
+  status = 301
+
+[[redirects]]
+  from = "/tempe-landscaping"
+  to = "/tempe-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/tempe-landscaping/"
+  to = "/tempe-landscaping"
+  status = 301
+
+[[redirects]]
+  from = "/gilbert-landscaping"
+  to = "/gilbert-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/gilbert-landscaping/"
+  to = "/gilbert-landscaping"
+  status = 301
+
+[[redirects]]
+  from = "/fountain-hills-landscaping"
+  to = "/fountain-hills-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/fountain-hills-landscaping/"
+  to = "/fountain-hills-landscaping"
+  status = 301
+
+[[redirects]]
+  from = "/cave-creek-landscaping"
+  to = "/cave-creek-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/cave-creek-landscaping/"
+  to = "/cave-creek-landscaping"
+  status = 301
+
+[[redirects]]
+  from = "/landscaping-cost-scottsdale"
+  to = "/landscaping-cost-scottsdale.html"
+  status = 200
+
+[[redirects]]
+  from = "/landscaping-cost-scottsdale/"
+  to = "/landscaping-cost-scottsdale"
+  status = 301
+
+[[redirects]]
+  from = "/xeriscape-vs-turf-arizona"
+  to = "/xeriscape-vs-turf-arizona.html"
+  status = 200
+
+[[redirects]]
+  from = "/xeriscape-vs-turf-arizona/"
+  to = "/xeriscape-vs-turf-arizona"
+  status = 301
+
+[[redirects]]
+  from = "/pavers-vs-concrete-arizona"
+  to = "/pavers-vs-concrete-arizona.html"
+  status = 200
+
+[[redirects]]
+  from = "/pavers-vs-concrete-arizona/"
+  to = "/pavers-vs-concrete-arizona"
+  status = 301
+
+[[redirects]]
+  from = "/outdoor-kitchen-planning-arizona"
+  to = "/outdoor-kitchen-planning-arizona.html"
+  status = 200
+
+[[redirects]]
+  from = "/outdoor-kitchen-planning-arizona/"
+  to = "/outdoor-kitchen-planning-arizona"
+  status = 301
+
+[[redirects]]
+  from = "/scottsdale-hardscaping"
+  to = "/scottsdale-hardscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/scottsdale-hardscaping/"
+  to = "/scottsdale-hardscaping"
+  status = 301
+
+[[redirects]]
+  from = "/phoenix-outdoor-kitchens"
+  to = "/phoenix-outdoor-kitchens.html"
+  status = 200
+
+[[redirects]]
+  from = "/paradise-valley-outdoor-lighting"
+  to = "/paradise-valley-outdoor-lighting.html"
+  status = 200
+
+[[redirects]]
+  from = "/paradise-valley-outdoor-lighting/"
+  to = "/paradise-valley-outdoor-lighting"
+  status = 301
+
+[[redirects]]
+  from = "/mesa-artificial-turf"
+  to = "/mesa-artificial-turf.html"
+  status = 200
+
+[[redirects]]
+  from = "/mesa-artificial-turf/"
+  to = "/mesa-artificial-turf"
+  status = 301
+
+[[redirects]]
+  from = "/tempe-pergola-shade"
+  to = "/tempe-pergola-shade.html"
+  status = 200
+
+[[redirects]]
+  from = "/tempe-pergola-shade/"
+  to = "/tempe-pergola-shade"
+  status = 301
+
+[[redirects]]
+  from = "/glendale-hardscaping"
+  to = "/glendale-hardscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/glendale-hardscaping/"
+  to = "/glendale-hardscaping"
+  status = 301
+
+[[redirects]]
+  from = "/peoria-artificial-turf"
+  to = "/peoria-artificial-turf.html"
+  status = 200
+
+[[redirects]]
+  from = "/peoria-artificial-turf/"
+  to = "/peoria-artificial-turf"
+  status = 301
+
+[[redirects]]
+  from = "/north-phoenix-outdoor-lighting"
+  to = "/north-phoenix-outdoor-lighting.html"
+  status = 200
+
+[[redirects]]
+  from = "/north-phoenix-outdoor-lighting/"
+  to = "/north-phoenix-outdoor-lighting"
+  status = 301
+
+[[redirects]]
+  from = "/ahwatukee-landscape-design"
+  to = "/ahwatukee-landscape-design.html"
+  status = 200
+
+[[redirects]]
+  from = "/ahwatukee-landscape-design/"
+  to = "/ahwatukee-landscape-design"
+  status = 301
+
+[[redirects]]
+  from = "/phoenix-outdoor-kitchens/"
+  to = "/phoenix-outdoor-kitchens"
+  status = 301
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

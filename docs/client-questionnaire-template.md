@@ -1,0 +1,161 @@
+# Client Website Intake Questionnaire
+
+Use this as the source copy for a Google Form, Typeform, Airtable form, or manual onboarding doc. The goal is to collect enough detail once so the site can be customized without chasing basic info later.
+
+## 1. Business Identity
+
+1. Legal business name
+2. Public brand name
+3. Owner or primary decision-maker full name
+4. Best project contact email
+5. Best project contact phone
+6. Public website phone number
+7. Public website email
+8. Business address line 1
+9. Business address line 2
+10. City
+11. State
+12. ZIP code
+13. Business hours
+14. Years in business
+15. Family-owned, veteran-owned, or other ownership notes
+
+## 2. Brand Assets
+
+1. Primary logo link
+2. Alternate logo link
+3. Icon or favicon link
+4. Brand color codes
+5. Font or typography preferences
+6. Brand guidelines link
+7. Social media links
+8. Any visual styles to avoid
+
+## 3. Services And Sales Priorities
+
+1. Full list of services offered
+2. Top 3 services to prioritize on the site
+3. Most profitable services
+4. Services you do not want leads for
+5. Typical budget ranges by service
+6. Ideal minimum project size
+7. Average project timeline
+8. Financing available or not
+9. Main competitive advantage
+10. Why customers choose you over competitors
+
+## 4. Ideal Client
+
+1. Ideal homeowner profile
+2. Preferred neighborhoods or home values
+3. Best-fit project types
+4. Common objections prospects have
+5. What usually closes the sale
+6. What makes a bad-fit lead
+
+## 5. Service Areas And Local SEO
+
+1. Primary service areas in priority order
+2. Secondary service areas
+3. Areas not served
+4. City or neighborhood pages you want first
+5. Google Business Profile URL
+6. Review platform URL
+7. Top local keywords to target
+8. Top local competitors with URLs
+
+## 6. Trust, Compliance, And Proof
+
+1. License numbers
+2. License verification URL
+3. Bonding provider name
+4. Bond verification URL
+5. Insurance provider name
+6. Insurance summary safe for public use
+7. Can exact license numbers be shown publicly?
+8. Can exact review numbers be shown publicly?
+9. Current verified review rating
+10. Current verified review count
+11. Review snapshot date
+12. Warranty details
+13. Any associations, awards, certifications, or memberships
+
+## 7. Portfolio And Content Assets
+
+1. Portfolio image folder link
+2. Best 12 to 20 website-ready image links
+3. Before and after image pairs
+4. Featured project story
+5. Project locations
+6. Project scopes
+7. Budget examples safe to show
+8. Video links
+9. Image usage rights confirmation
+
+## 8. Reviews And Testimonials
+
+1. Can customer reviews be published on-site?
+2. 6 to 12 review snippets with first name, last initial, and city
+3. Which reviews should be used on the homepage?
+4. Which reviews should be tied to specific services?
+5. Any review platforms besides Google or Birdeye
+
+## 9. Lead Routing And Operations
+
+1. Owner notification email
+2. Secondary notification email
+3. Reply-to email
+4. Preferred sender name
+5. Preferred email delivery method
+6. Google Sheet URL for leads
+7. CRM or webhook destination
+8. Duplicate lead detection preference
+9. Best follow-up time window
+10. Preferred lead routing notes
+
+## 10. Analytics And Tracking
+
+1. GA4 measurement ID
+2. GTM container ID
+3. Paid traffic sources in use
+4. Phone tracking needs
+5. Conversion events required
+6. Any ad platform integrations
+
+## 11. Content Direction
+
+1. Words or phrases the brand should sound like
+2. Words or phrases to avoid
+3. Tone direction
+4. Competitor sites you like
+5. Competitor sites you dislike
+6. Any required claims or differentiators
+7. Any regulated or compliance-sensitive wording to avoid
+
+## 12. Launch Priorities
+
+1. Top 5 pages that must be perfect first
+2. Anything that must not change from your current site
+3. Anything missing from the template that you definitely need
+4. Deadline or launch target
+5. Final approval contact
+
+## Short Form Version
+
+If a client will only answer one pass, collect these minimum fields:
+
+1. Brand name
+2. Website phone
+3. Website email
+4. Address
+5. Top services
+6. Top cities served
+7. Main competitive advantage
+8. Review URL
+9. Review rating
+10. Review count
+11. License info
+12. Portfolio folder link
+13. 6 review snippets
+14. Notification email
+15. GA4 ID
