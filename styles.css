@@ -3674,18 +3674,18 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   }
   .hero {
     height: auto;
-    min-height: 84svh;
+    min-height: 78svh;
     padding-bottom: 0;
   }
   .hero__content {
-    padding-top: 98px;
-    padding-bottom: 2.35rem;
+    padding-top: 84px;
+    padding-bottom: 1.5rem;
     margin-inline: auto;
     padding-inline: clamp(.95rem, 4.2vw, 1.3rem);
   }
   .hero__panel {
     border-radius: 14px;
-    padding: .82rem .82rem .88rem;
+    padding: .72rem .72rem .8rem;
     background: rgba(0,0,0,.22);
   }
   .hero__overlay { background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.60) 100%); }
@@ -3784,7 +3784,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   }
   .hero__eyebrow {
     max-width: calc(100% - 68px);
-    margin-bottom: .55rem;
+    margin-bottom: .45rem;
   }
   .statement__proof {
     grid-template-columns: 1fr;
@@ -3820,11 +3820,11 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .hero__indicators { display: none; }
   .hero__stats {
     grid-template-columns: 1fr 1fr;
-    gap: .48rem;
-    margin-top: .95rem;
+    gap: .42rem;
+    margin-top: .8rem;
   }
   .hero-stat {
-    padding: .66rem .68rem;
+    padding: .58rem .62rem;
     border-radius: 12px;
     background: rgba(8, 16, 11, .32);
   }
@@ -3837,7 +3837,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     line-height: 1.35;
   }
   .hero-stat__cta {
-    margin-top: .42rem;
+    margin-top: .34rem;
     font-size: .64rem;
     letter-spacing: .1em;
   }
@@ -4274,9 +4274,28 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .cookie-banner__decline:hover { color: var(--ink); border-color: var(--ink-faint); }
 @media (max-width: 640px) {
-  .cookie-banner { flex-direction: column; align-items: stretch; }
-  .cookie-banner__actions { justify-content: stretch; }
-  .cookie-banner__accept, .cookie-banner__decline { flex: 1; text-align: center; }
+  .cookie-banner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: .8rem .95rem calc(.8rem + env(safe-area-inset-bottom));
+    gap: .8rem;
+  }
+  .cookie-banner p {
+    font-size: .78rem;
+    line-height: 1.45;
+    min-width: 0;
+  }
+  .cookie-banner__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: .55rem;
+  }
+  .cookie-banner__accept, .cookie-banner__decline {
+    width: 100%;
+    text-align: center;
+    padding: .62rem .8rem;
+  }
 }
 
 /* ============================================================

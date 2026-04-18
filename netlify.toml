@@ -1,9 +1,10 @@
 [build]
   publish = "."
-  command = ""
+  command = "npm install && npm run build:assets"
 
 [build.environment]
   NETLIFY_NEXT_PLUGIN_SKIP = "true"
+  NODE_VERSION = "20"
 
 [functions]
   directory = "netlify/functions"
@@ -213,6 +214,76 @@
 [[redirects]]
   from = "/free-consultation/"
   to = "/free-consultation"
+  status = 301
+
+[[redirects]]
+  from = "/financing"
+  to = "/financing.html"
+  status = 200
+
+[[redirects]]
+  from = "/financing/"
+  to = "/financing"
+  status = 301
+
+[[redirects]]
+  from = "/warranty"
+  to = "/warranty.html"
+  status = 200
+
+[[redirects]]
+  from = "/warranty/"
+  to = "/warranty"
+  status = 301
+
+[[redirects]]
+  from = "/faq"
+  to = "/faq.html"
+  status = 200
+
+[[redirects]]
+  from = "/faq/"
+  to = "/faq"
+  status = 301
+
+[[redirects]]
+  from = "/cost-calculator"
+  to = "/cost-calculator.html"
+  status = 200
+
+[[redirects]]
+  from = "/cost-calculator/"
+  to = "/cost-calculator"
+  status = 301
+
+[[redirects]]
+  from = "/privacy-policy"
+  to = "/privacy-policy.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy-policy/"
+  to = "/privacy-policy"
+  status = 301
+
+[[redirects]]
+  from = "/terms-of-service"
+  to = "/terms-of-service.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms-of-service/"
+  to = "/terms-of-service"
+  status = 301
+
+[[redirects]]
+  from = "/cookie-policy"
+  to = "/cookie-policy.html"
+  status = 200
+
+[[redirects]]
+  from = "/cookie-policy/"
+  to = "/cookie-policy"
   status = 301
 
 [[redirects]]

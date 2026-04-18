@@ -205,11 +205,20 @@
         { href: '/about', label: 'About' },
         { href: '/process', label: 'Process' },
         { href: '/reviews', label: 'Reviews' },
+        { href: '/financing', label: 'Financing' },
         { href: '/free-consultation', label: 'Free Consultation' }
       ];
 
       desiredLinks.forEach(function (entry) {
-        if (list.querySelector('a[href="' + entry.href + '"]')) return;
+        var existing = Array.prototype.slice.call(list.querySelectorAll('a')).find(function (link) {
+          return String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() === entry.label.toLowerCase();
+        });
+
+        if (existing) {
+          existing.setAttribute('href', entry.href);
+          return;
+        }
+
         var item = document.createElement('li');
         var link = document.createElement('a');
         link.href = entry.href;
@@ -217,6 +226,94 @@
         item.appendChild(link);
         list.appendChild(item);
       });
+    });
+  }
+
+  function ensureFooterResourceLinks() {
+    document.querySelectorAll('.footer__col').forEach(function (column) {
+      var heading = column.querySelector('h4');
+      var list = column.querySelector('ul');
+      if (!heading || !list) return;
+
+      var headingText = String(heading.textContent || '').trim().toLowerCase();
+      if (headingText !== 'resources' && headingText !== 'related pages') return;
+
+      var desiredLinks = [
+        { href: '/financing', label: 'Financing' },
+        { href: '/warranty', label: 'Warranty' },
+        { href: '/faq', label: 'FAQ' },
+        { href: '/cost-calculator', label: 'Cost Calculator' }
+      ];
+
+      desiredLinks.forEach(function (entry) {
+        var existing = Array.prototype.slice.call(list.querySelectorAll('a')).find(function (link) {
+          return String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() === entry.label.toLowerCase();
+        });
+
+        if (existing) {
+          existing.setAttribute('href', entry.href);
+          return;
+        }
+
+        var item = document.createElement('li');
+        var link = document.createElement('a');
+        link.href = entry.href;
+        link.textContent = entry.label;
+        item.appendChild(link);
+        list.appendChild(item);
+      });
+    });
+  }
+
+  function ensurePrimaryNavigationLinks() {
+    var navContainers = document.querySelectorAll('.nav__links, .nav__overlay nav');
+    if (!navContainers.length) return;
+
+    navContainers.forEach(function (nav) {
+      var navClass = nav.classList.contains('nav__links') ? 'nav__link' : 'nav__overlay-link';
+      var navItems = Array.prototype.slice.call(nav.querySelectorAll('a'));
+      var contactLink = navItems.find(function (link) {
+        return String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() === 'contact';
+      }) || null;
+      var financingLink = navItems.find(function (link) {
+        return String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() === 'financing';
+      }) || null;
+      var processLink = navItems.find(function (link) {
+        return String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() === 'process';
+      }) || null;
+      var aboutLink = navItems.find(function (link) {
+        return String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() === 'about';
+      }) || null;
+      var consultationLink = navItems.find(function (link) {
+        return /consultation/i.test(String(link.textContent || ''));
+      }) || null;
+
+      if (processLink) {
+        processLink.setAttribute('href', '/process');
+      }
+
+      if (aboutLink) {
+        aboutLink.setAttribute('href', '/about');
+      }
+
+      if (FINANCING.enabled !== false) {
+        if (financingLink) {
+          financingLink.setAttribute('href', '/financing');
+        } else {
+          financingLink = document.createElement('a');
+          financingLink.className = navClass;
+          financingLink.href = '/financing';
+          financingLink.textContent = 'Financing';
+
+          if (contactLink && contactLink.parentElement === nav) {
+            contactLink.insertAdjacentElement('beforebegin', financingLink);
+          } else if (consultationLink && consultationLink.parentElement === nav) {
+            consultationLink.insertAdjacentElement('beforebegin', financingLink);
+          } else {
+            nav.appendChild(financingLink);
+          }
+        }
+      }
     });
   }
 
@@ -664,6 +761,7 @@
       { label: 'Services', href: '/services' },
       { label: 'Portfolio', href: '/portfolio' },
       { label: 'Process', href: '/process' },
+      { label: 'Financing', href: '/financing' },
       { label: 'Reviews', href: '/reviews' }
     ];
   }
@@ -1005,6 +1103,8 @@
   applySiteBranding();
   ensureFooterServiceLinks();
   ensureFooterStudioLinks();
+  ensureFooterResourceLinks();
+  ensurePrimaryNavigationLinks();
   renderFooterSocialLinks();
   applyContactFormServices();
   applyProjectFitCards();
