@@ -367,6 +367,76 @@
     });
   }
 
+  function renderFooterMeta() {
+    var footerConfig = SITE_CONFIG.footer || {};
+    var businessHours = SITE_CONFIG.businessHours || {};
+    var hoursText = [businessHours.weekday, businessHours.saturday, businessHours.sunday]
+      .filter(Boolean)
+      .join(' · ');
+    var reviewLabel = String(footerConfig.reviewLabel || 'Read Google reviews').trim();
+    var reviewUrl = String(footerConfig.reviewUrl || REVIEW_SOURCE_URL || '').trim();
+    var blurb = String(
+      footerConfig.blurb ||
+        'Premium landscape design and construction for Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities.'
+    ).trim();
+    var note = String(footerConfig.note || 'Arizona licensed, bonded, and insured team').trim();
+    var reviewSummary = REVIEW_STATE.rating && REVIEW_STATE.count
+      ? REVIEW_STATE.rating + '-star Google rating · ' + REVIEW_STATE.count + ' reviews'
+      : 'Google reviews';
+
+    document.querySelectorAll('.footer').forEach(function (footer) {
+      var brand = footer.querySelector('.footer__brand');
+      if (brand) {
+        var brandCopy = brand.querySelector(':scope > p');
+        if (brandCopy && blurb) {
+          brandCopy.textContent = blurb;
+        }
+
+        var license = brand.querySelector('.footer__license');
+        if (!license && note) {
+          license = document.createElement('p');
+          license.className = 'footer__license';
+          brand.appendChild(license);
+        }
+        if (license && note) {
+          license.textContent = note;
+        }
+
+        var meta = brand.querySelector('.footer__meta');
+        if (!meta && (hoursText || reviewUrl)) {
+          meta = document.createElement('div');
+          meta.className = 'footer__meta';
+
+          if (hoursText) {
+            var hours = document.createElement('p');
+            hours.className = 'footer__meta-item';
+            hours.textContent = hoursText;
+            meta.appendChild(hours);
+          }
+
+          if (reviewUrl) {
+            var reviewLink = document.createElement('a');
+            reviewLink.className = 'footer__meta-link';
+            reviewLink.href = reviewUrl;
+            reviewLink.target = '_blank';
+            reviewLink.rel = 'noopener noreferrer';
+            reviewLink.textContent = reviewLabel;
+            reviewLink.setAttribute('aria-label', reviewLabel + ' on Google Maps');
+
+            var reviewLine = document.createElement('p');
+            reviewLine.className = 'footer__meta-item';
+            reviewLine.textContent = reviewSummary;
+            reviewLine.appendChild(document.createTextNode(' · '));
+            reviewLine.appendChild(reviewLink);
+            meta.appendChild(reviewLine);
+          }
+
+          brand.appendChild(meta);
+        }
+      }
+    });
+  }
+
   function escapeHtml(value) {
     return String(value || '')
       .replace(/&/g, '&amp;')
@@ -1224,6 +1294,7 @@
   ensureFooterResourceLinks();
   ensurePrimaryNavigationLinks();
   renderFooterSocialLinks();
+  renderFooterMeta();
   applyContactFormServices();
   applyProjectFitCards();
   applyBeforeAfterContent();

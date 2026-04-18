@@ -50,6 +50,17 @@
       state: 'AZ',
       zip: '85260'
     },
+    businessHours: {
+      weekday: 'Mon–Fri: 8:00 AM – 4:00 PM',
+      saturday: 'Sat: By appointment',
+      sunday: 'Sun: Closed'
+    },
+    footer: {
+      blurb: 'Premium landscape design and construction for Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities.',
+      note: 'Arizona licensed, bonded, and insured team',
+      reviewLabel: 'Read Google reviews',
+      reviewUrl: reviewSourceUrl
+    },
     serviceAreas: [
       'Scottsdale',
       'Paradise Valley',

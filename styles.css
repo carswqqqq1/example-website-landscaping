@@ -3169,6 +3169,29 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   color: rgba(255,255,255,.42);
   line-height: 1.7;
 }
+.footer__meta {
+  display: grid;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+.footer__meta-item {
+  margin: 0;
+  font-size: .75rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,.58);
+}
+.footer__meta-link {
+  color: rgba(250,247,243,.88);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(250,247,243,.25);
+  text-underline-offset: .18em;
+}
+.footer__meta-link:hover,
+.footer__meta-link:focus-visible {
+  color: var(--white);
+  text-decoration-color: rgba(250,247,243,.6);
+}
 .footer__social {
   display: flex;
   flex-wrap: wrap;
