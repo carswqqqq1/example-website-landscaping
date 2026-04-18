@@ -282,7 +282,7 @@
       count: '43',
       source: 'Google',
       sourceUrl: reviewSourceUrl,
-      snapshotDate: 'Reviewed March 8, 2026'
+      snapshotDate: 'Cached snapshot as of March 8, 2026'
     },
     reviewRating: '4.7',
     reviewCount: '43',
@@ -420,7 +420,7 @@
       count: '43',
       platform: 'Google',
       profileUrl: reviewSourceUrl,
-      snapshotDate: 'Reviewed March 8, 2026'
+      snapshotDate: 'Cached snapshot as of March 8, 2026'
     },
     trustAssets: {
       licenseVerifyUrl: 'https://roc.az.gov/contractor-search?combined=157201',

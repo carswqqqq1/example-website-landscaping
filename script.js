@@ -380,9 +380,7 @@
         'Premium landscape design and construction for Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities.'
     ).trim();
     var note = String(footerConfig.note || 'Arizona licensed, bonded, and insured team').trim();
-    var reviewSummary = REVIEW_STATE.rating && REVIEW_STATE.count
-      ? REVIEW_STATE.rating + '-star Google rating · ' + REVIEW_STATE.count + ' reviews'
-      : 'Google reviews';
+    var reviewSummary = getReviewPresentationCopy(REVIEW_STATE).summary;
 
     document.querySelectorAll('.footer').forEach(function (footer) {
       var brand = footer.querySelector('.footer__brand');
@@ -564,30 +562,85 @@
     });
   }
 
+  function getReviewPresentationCopy(state) {
+    var currentState = state || getReviewState();
+    var rating = String(currentState.rating || '').trim();
+    var count = String(currentState.count || '').trim();
+    var source = String(currentState.source || 'Google').trim() || 'Google';
+    var live = Boolean(currentState.live);
+
+    if (live) {
+      if (rating && count) {
+        return {
+          summary: rating + '-star ' + source + ' rating across ' + count + ' reviews',
+          badge: 'Live Google reviews',
+          dateText: 'Live from Google Business Profile'
+        };
+      }
+      if (rating) {
+        return {
+          summary: rating + '-star ' + source + ' rating',
+          badge: 'Live Google reviews',
+          dateText: 'Live from Google Business Profile'
+        };
+      }
+      if (count) {
+        return {
+          summary: count + ' verified reviews on ' + source,
+          badge: 'Live Google reviews',
+          dateText: 'Live from Google Business Profile'
+        };
+      }
+
+      return {
+        summary: 'Read recent homeowner feedback on ' + source,
+        badge: 'Live Google reviews',
+        dateText: 'Live from Google Business Profile'
+      };
+    }
+
+    if (rating && count) {
+      return {
+        summary: 'Cached ' + source + ' review snapshot: ' + rating + '-star rating across ' + count + ' reviews',
+        badge: 'Cached Google review snapshot',
+        dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Cached review snapshot'
+      };
+    }
+    if (rating) {
+      return {
+        summary: 'Cached ' + source + ' review snapshot: ' + rating + '-star rating',
+        badge: 'Cached Google review snapshot',
+        dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Cached review snapshot'
+      };
+    }
+    if (count) {
+      return {
+        summary: 'Cached ' + source + ' review snapshot: ' + count + ' reviews',
+        badge: 'Cached Google review snapshot',
+        dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Cached review snapshot'
+      };
+    }
+
+    return {
+      summary: 'Cached ' + source + ' review snapshot',
+      badge: 'Cached Google review snapshot',
+      dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Cached review snapshot'
+    };
+  }
+
   function updateReviewPresentationTexts() {
     var state = getReviewState();
     var rating = String(state.rating || '').trim();
     var count = String(state.count || '').trim();
     var source = String(state.source || 'Google').trim() || 'Google';
-    var summary = '';
+    var copy = getReviewPresentationCopy(state);
 
-    if (rating && count) {
-      summary = rating + '-star ' + source + ' rating across ' + count + ' reviews';
-    } else if (rating) {
-      summary = rating + '-star ' + source + ' rating';
-    } else if (count) {
-      summary = count + ' verified reviews on ' + source;
-    } else {
-      summary = 'Read recent homeowner feedback on ' + source;
+    if (copy.summary) {
+      setText('[data-google-reviews-summary]', copy.summary);
     }
 
-    if (summary) {
-      setText('[data-google-reviews-summary]', summary);
-    }
-
-    var dateText = state.live ? 'Live from Google Business Profile' : state.snapshotDate;
-    if (dateText) {
-      setText('[data-google-reviews-date]', dateText);
+    if (copy.dateText) {
+      setText('[data-google-reviews-date]', copy.dateText);
     }
 
     var profileUrl = state.sourceUrl;
@@ -606,8 +659,11 @@
     document.querySelectorAll('[data-review-source]').forEach(function (el) {
       el.textContent = source;
     });
+    document.querySelectorAll('[data-review-state-label]').forEach(function (el) {
+      el.textContent = state.live ? '' : 'Cached snapshot: ';
+    });
     document.querySelectorAll('[data-review-live-badge]').forEach(function (el) {
-      el.textContent = state.live ? 'Live Google reviews' : 'Google reviews';
+      el.textContent = copy.badge;
     });
   }
 
@@ -724,6 +780,8 @@
       if (Array.isArray(payload.reviews) && payload.reviews.length) {
         renderReviewCards(payload.reviews.map(normalizeLiveGoogleReview));
       }
+
+      renderFooterMeta();
 
       if (payload.placeName) {
         document.querySelectorAll('[data-google-reviews-source-name]').forEach(function (node) {
@@ -895,6 +953,7 @@
     var proofBlock = document.createElement('div');
     proofBlock.className = 'local-proof reveal';
     proofBlock.setAttribute('data-location-proof-panel', 'true');
+    var reviewCopy = getReviewPresentationCopy(REVIEW_STATE);
     proofBlock.innerHTML = '' +
       '<div class="local-proof__intro">' +
       '  <p class="eyebrow">Verified Local Proof</p>' +
@@ -903,8 +962,8 @@
       '</div>' +
       '<div class="local-proof__grid">' +
       '  <article class="local-proof__card local-proof__card--review">' +
-      '    <p class="local-proof__label"><span data-review-rating>' + REVIEW_STATE.rating + '</span>-star <span data-review-source>' + REVIEW_STATE.source + '</span> rating across <span data-review-count>' + REVIEW_STATE.count + '</span> reviews</p>' +
-      '    <p class="reviews__proof"><span data-review-live-badge>' + (REVIEW_STATE.live ? 'Live Google reviews' : 'Google reviews') + '</span></p>' +
+      '    <p class="local-proof__label"><span data-review-state-label>' + (REVIEW_STATE.live ? '' : 'Cached snapshot: ') + '</span><span data-review-rating>' + REVIEW_STATE.rating + '</span>-star <span data-review-source>' + REVIEW_STATE.source + '</span> rating across <span data-review-count>' + REVIEW_STATE.count + '</span> reviews</p>' +
+      '    <p class="reviews__proof"><span data-review-live-badge>' + reviewCopy.badge + '</span></p>' +
       '    <blockquote>' + review.quote + '</blockquote>' +
       '    <p class="local-proof__meta">' + review.author + ' · ' + review.projectType + ' · ' + review.reviewDate + '</p>' +
       '  </article>' +

@@ -4008,6 +4008,60 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .nav__burger {
     padding: .4rem 0 .4rem .4rem;
   }
+  .footer__top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    padding-bottom: 2rem;
+  }
+  .footer__top > * {
+    min-width: 0;
+  }
+  .footer__brand,
+  .footer__col:last-child {
+    grid-column: 1 / -1;
+  }
+  .footer__brand {
+    order: 2;
+  }
+  .footer__col:last-child {
+    order: 1;
+  }
+  .footer__col:nth-of-type(2),
+  .footer__col:nth-of-type(3) {
+    order: 3;
+  }
+  .footer__brand > p {
+    margin-top: .75rem;
+    margin-bottom: .55rem;
+    font-size: .8125rem;
+    line-height: 1.65;
+  }
+  .footer__license {
+    font-size: .7rem;
+    line-height: 1.5;
+  }
+  .footer__col h4 {
+    margin-bottom: .7rem;
+  }
+  .footer__col ul {
+    gap: .35rem;
+  }
+  .footer__col ul li a,
+  .footer__col address p,
+  .footer__col address p a {
+    font-size: .8125rem;
+    line-height: 1.5;
+  }
+  .footer__col address p:first-child a {
+    font-size: .98rem;
+  }
+  .footer__bottom {
+    padding-block: 1.15rem;
+    gap: .35rem;
+  }
+  .footer__bottom p {
+    line-height: 1.5;
+  }
 }
 
 @media (max-width: 480px) {
@@ -4062,6 +4116,24 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     right: .9rem;
     width: 40px;
     height: 40px;
+  }
+  .footer__top {
+    grid-template-columns: 1fr;
+    gap: .9rem;
+  }
+  .footer__brand,
+  .footer__col {
+    grid-column: 1 / -1;
+  }
+  .footer__brand {
+    order: 1;
+  }
+  .footer__col:last-child {
+    order: 0;
+  }
+  .footer__col:nth-of-type(2),
+  .footer__col:nth-of-type(3) {
+    order: 2;
   }
   .consult-drawer__panel {
     width: 100%;
