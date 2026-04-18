@@ -54,6 +54,7 @@ Update:
 - `brand.logoPath`
 - `reviewSummary`
 - `googleReviews.profileUrl`
+- `googleReviews.platform`
 - `trustAssets.licenseVerifyUrl`
 - `trustAssets.bondVerifyUrl`
 - `analytics.ga4MeasurementId`
@@ -146,6 +147,17 @@ Optional:
 
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
+
+### Google Reviews Feed
+
+If you want the reviews page and local proof sections to pull live Google reviews, set:
+
+- `GOOGLE_PLACES_API_KEY`
+- `GOOGLE_PLACES_PLACE_ID` if you already know the place ID
+- `GOOGLE_PLACES_QUERY` if you want the function to resolve the place by business name and address
+- `GOOGLE_PLACES_PROFILE_URL` for the public Google Maps profile link shown on the site
+
+The site falls back to the static review cards if the Google Places key is missing, so the public pages still work during setup.
 
 ## Local QA Checklist
 

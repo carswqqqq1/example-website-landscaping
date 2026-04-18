@@ -1965,6 +1965,17 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   font-size: .76rem;
   color: var(--ink-faint);
 }
+.review-card__source {
+  margin-top: .35rem;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+.review-card__source:hover {
+  color: var(--green-mid);
+}
 
 /* ============================================================
    TESTIMONIALS

@@ -11,7 +11,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   var siteBaseUrl = 'https://thinkgreen-az.netlify.app';
   var manifestPath = '/manifest.json';
-  var reviewSourceUrl = 'https://reviews.birdeye.com/think-green-design-build-landscape-156221164342730';
+  var reviewSourceUrl = 'https://www.google.com/maps/place/Think+Green+Design+%7C+Build+Landscape/@33.61549,-111.9165894,17z/data=!3m1!4b1!4m6!3m5!1s0x872b74777c987d53:0x8acb242f61538220!8m2!3d33.6154856!4d-111.9140145!16s%2Fg%2F1vg4k7_v?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D';
 
   return {
     siteBaseUrl: siteBaseUrl,
@@ -81,7 +81,7 @@
       bonded: true,
       insured: true,
       responsePromise: 'Most project requests receive a response within one business day.',
-      reviewSourceLabel: 'Birdeye Reviews',
+      reviewSourceLabel: 'Google Reviews',
       projectCountLabel: '150+ completed outdoor living and landscape projects shown across site proof sections',
       noFakeClaimsNote: 'Do not invent awards, years in business, rankings, or review counts when cloning this template.'
     },
@@ -269,13 +269,13 @@
     reviewSummary: {
       rating: '4.7',
       count: '43',
-      source: 'Birdeye',
+      source: 'Google',
       sourceUrl: reviewSourceUrl,
       snapshotDate: 'Reviewed March 8, 2026'
     },
     reviewRating: '4.7',
     reviewCount: '43',
-    reviewSource: 'Birdeye',
+    reviewSource: 'Google',
     reviewSourceUrl: reviewSourceUrl,
     reviewSnapshotDate: 'Reviewed March 8, 2026',
     socialProfiles: [
@@ -407,7 +407,7 @@
     googleReviews: {
       rating: '4.7',
       count: '43',
-      platform: 'Birdeye',
+      platform: 'Google',
       profileUrl: reviewSourceUrl,
       snapshotDate: 'Reviewed March 8, 2026'
     },
@@ -422,7 +422,7 @@
       workmanshipWarranty: 'Workmanship warranty details are reviewed during handoff so scope, coverage, and maintenance expectations stay clear.',
       trustHighlights: [
         'Licensed, bonded, and insured for Arizona residential work',
-        'Verified Birdeye review snapshot shown directly on the site',
+        'Verified Google review snapshot shown directly on the site',
         'Local project experience across Scottsdale, Paradise Valley, Phoenix, Mesa, and Chandler'
       ]
     },

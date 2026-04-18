@@ -16,6 +16,7 @@
   var LOCATION_PAGES = SITE_CONFIG.locationPages || {};
   var FINANCING = SITE_CONFIG.financing || {};
   var ANALYTICS = SITE_CONFIG.analytics || {};
+  var REVIEW_FEED_ENDPOINT = String(GOOGLE_REVIEWS.feedEndpoint || '/.netlify/functions/google-reviews').trim();
   var URL_PARAMS = new URLSearchParams(window.location.search);
 
   var SITE_NAME = SITE_CONFIG.businessName || 'Think Green Design | Build Landscape';
@@ -34,6 +35,14 @@
   var REVIEW_SNAPSHOT_DATE = String(REVIEW_SUMMARY.snapshotDate || SITE_CONFIG.reviewSnapshotDate || GOOGLE_REVIEWS.snapshotDate || '').trim();
   var BUSINESS_YEARS = String(SITE_CONFIG.businessYears || '').trim();
   var SOCIAL_PROFILES = Array.isArray(SITE_CONFIG.socialProfiles) ? SITE_CONFIG.socialProfiles : [];
+  var REVIEW_STATE = {
+    rating: REVIEW_RATING,
+    count: REVIEW_COUNT,
+    source: REVIEW_SOURCE || 'Google',
+    sourceUrl: REVIEW_SOURCE_URL,
+    snapshotDate: REVIEW_SNAPSHOT_DATE,
+    live: false
+  };
 
   function setText(selector, value) {
     document.querySelectorAll(selector).forEach(function (el) {
@@ -469,14 +478,95 @@
     }
   }
 
-  function renderReviewCards() {
+  function getReviewState() {
+    return REVIEW_STATE;
+  }
+
+  function setReviewState(nextState) {
+    if (!nextState) return;
+    REVIEW_STATE = Object.assign({}, REVIEW_STATE, {
+      rating: String(nextState.rating || nextState.reviewSummaryRating || REVIEW_STATE.rating || '').trim(),
+      count: String(nextState.count || nextState.reviewCount || REVIEW_STATE.count || '').trim(),
+      source: String(nextState.source || nextState.platform || REVIEW_STATE.source || 'Google').trim(),
+      sourceUrl: String(nextState.sourceUrl || nextState.profileUrl || REVIEW_STATE.sourceUrl || '').trim(),
+      snapshotDate: String(nextState.snapshotDate || nextState.updatedAt || REVIEW_STATE.snapshotDate || '').trim(),
+      live: Boolean(nextState.live)
+    });
+  }
+
+  function updateReviewPresentationTexts() {
+    var state = getReviewState();
+    var rating = String(state.rating || '').trim();
+    var count = String(state.count || '').trim();
+    var source = String(state.source || 'Google').trim() || 'Google';
+    var summary = '';
+
+    if (rating && count) {
+      summary = rating + '-star ' + source + ' rating across ' + count + ' reviews';
+    } else if (rating) {
+      summary = rating + '-star ' + source + ' rating';
+    } else if (count) {
+      summary = count + ' verified reviews on ' + source;
+    } else {
+      summary = 'Read recent homeowner feedback on ' + source;
+    }
+
+    if (summary) {
+      setText('[data-google-reviews-summary]', summary);
+    }
+
+    var dateText = state.live ? 'Live from Google Business Profile' : state.snapshotDate;
+    if (dateText) {
+      setText('[data-google-reviews-date]', dateText);
+    }
+
+    var profileUrl = state.sourceUrl;
+    if (profileUrl) {
+      document.querySelectorAll('[data-google-reviews-link], [data-review-feed-link]').forEach(function (link) {
+        link.setAttribute('href', profileUrl);
+      });
+    }
+
+    document.querySelectorAll('[data-review-rating]').forEach(function (el) {
+      el.textContent = rating || 'Google';
+    });
+    document.querySelectorAll('[data-review-count]').forEach(function (el) {
+      el.textContent = count || 'recent';
+    });
+    document.querySelectorAll('[data-review-source]').forEach(function (el) {
+      el.textContent = source;
+    });
+    document.querySelectorAll('[data-review-live-badge]').forEach(function (el) {
+      el.textContent = state.live ? 'Live Google reviews' : 'Google reviews';
+    });
+  }
+
+  function normalizeLiveGoogleReview(review) {
+    var author = review && review.authorAttribution ? review.authorAttribution : {};
+    var publishTime = review && (review.relativePublishTimeDescription || review.publishTime || review.relativePublishTime || '');
+    var text = String(review && (review.text || review.originalText || '') || '').trim();
+
+    return {
+      rating: Number(review && review.rating) || 5,
+      text: text,
+      author: String(author.displayName || 'Google reviewer').trim(),
+      authorUrl: String(author.uri || '').trim(),
+      authorPhoto: String(author.photoUri || author.photoURI || '').trim(),
+      location: String(review && review.location || '').trim(),
+      reviewDate: String(publishTime || 'Recent review').trim(),
+      sourceUrl: String(review && (review.googleMapsUri || review.reviewUri || '') || '').trim()
+    };
+  }
+
+  function renderReviewCards(reviews) {
     var grid = document.getElementById('reviews-grid');
-    var reviews = SITE_CONFIG.reviews;
-    if (!grid || !Array.isArray(reviews) || !reviews.length) return;
+    var reviewList = Array.isArray(reviews) && reviews.length ? reviews : SITE_CONFIG.reviews;
+    if (!grid || !Array.isArray(reviewList) || !reviewList.length) return;
 
     grid.innerHTML = '';
 
-    reviews.forEach(function (review) {
+    reviewList.forEach(function (review) {
+      var sourceUrl = String(review.sourceUrl || review.googleMapsUri || review.reviewUri || REVIEW_STATE.sourceUrl || '').trim();
       var article = document.createElement('article');
       article.className = 'review-card reveal reveal--tilt';
 
@@ -509,6 +599,16 @@
       meta.appendChild(author);
       meta.appendChild(location);
 
+      if (sourceUrl) {
+        var sourceLink = document.createElement('a');
+        sourceLink.className = 'review-card__source';
+        sourceLink.href = sourceUrl;
+        sourceLink.target = '_blank';
+        sourceLink.rel = 'noopener noreferrer';
+        sourceLink.textContent = 'Open in Google Maps';
+        meta.appendChild(sourceLink);
+      }
+
       article.appendChild(stars);
       article.appendChild(text);
       article.appendChild(meta);
@@ -517,35 +617,53 @@
   }
 
   function applyGoogleReviewSnapshot() {
-    var rating = REVIEW_RATING;
-    var count = REVIEW_COUNT;
-    var platform = REVIEW_SOURCE || 'Birdeye';
-    var summary = '';
+    updateReviewPresentationTexts();
+  }
 
-    if (rating && count) {
-      summary = rating + '-star ' + platform + ' rating across ' + count + ' reviews';
-    } else if (rating) {
-      summary = rating + '-star ' + platform + ' rating';
-    } else if (count) {
-      summary = count + ' verified reviews on ' + platform;
-    } else {
-      summary = 'Read recent homeowner feedback on ' + platform;
-    }
+  async function loadLiveGoogleReviews() {
+    if (!REVIEW_FEED_ENDPOINT) return false;
 
-    if (summary) {
-      setText('[data-google-reviews-summary]', summary);
-    }
+    var hasReviewTargets = !!document.getElementById('reviews-grid') ||
+      !!document.querySelector('[data-google-reviews-summary]') ||
+      !!document.querySelector('[data-review-live-badge]');
+    if (!hasReviewTargets) return false;
 
-    var dateText = REVIEW_SNAPSHOT_DATE;
-    if (dateText) {
-      setText('[data-google-reviews-date]', dateText);
-    }
-
-    var profileUrl = REVIEW_SOURCE_URL;
-    if (profileUrl) {
-      document.querySelectorAll('[data-google-reviews-link]').forEach(function (link) {
-        link.setAttribute('href', profileUrl);
+    try {
+      var response = await fetch(REVIEW_FEED_ENDPOINT, {
+        headers: {
+          Accept: 'application/json'
+        }
       });
+
+      if (!response.ok) return false;
+
+      var payload = await response.json();
+      if (!payload || payload.ok === false) return false;
+
+      setReviewState({
+        rating: payload.rating,
+        count: payload.reviewCount,
+        source: payload.source || 'Google',
+        sourceUrl: payload.profileUrl,
+        snapshotDate: payload.snapshotDate,
+        live: Boolean(payload.live)
+      });
+
+      updateReviewPresentationTexts();
+
+      if (Array.isArray(payload.reviews) && payload.reviews.length) {
+        renderReviewCards(payload.reviews.map(normalizeLiveGoogleReview));
+      }
+
+      if (payload.placeName) {
+        document.querySelectorAll('[data-google-reviews-source-name]').forEach(function (node) {
+          node.textContent = payload.placeName;
+        });
+      }
+
+      return true;
+    } catch (error) {
+      return false;
     }
   }
 
@@ -704,7 +822,6 @@
 
     var review = locationData.featuredReview || {};
     var trustBullets = Array.isArray(locationData.trustBullets) ? locationData.trustBullets : [];
-    var reviewSourceLabel = REVIEW_SOURCE || 'Birdeye';
     var proofBlock = document.createElement('div');
     proofBlock.className = 'local-proof reveal';
     proofBlock.setAttribute('data-location-proof-panel', 'true');
@@ -712,11 +829,12 @@
       '<div class="local-proof__intro">' +
       '  <p class="eyebrow">Verified Local Proof</p>' +
       '  <h3>Why ' + locationData.city + ' homeowners use Think Green</h3>' +
-      '  <p>Licensed Arizona landscape contractor support, visible review proof, and a consultation-first process for ' + locationData.nearbyAreas + '.</p>' +
+      '  <p>Licensed Arizona landscape contractor support, visible Google review proof, and a consultation-first process for ' + locationData.nearbyAreas + '.</p>' +
       '</div>' +
       '<div class="local-proof__grid">' +
       '  <article class="local-proof__card local-proof__card--review">' +
-      '    <p class="local-proof__label">' + REVIEW_RATING + '-star ' + reviewSourceLabel + ' rating across ' + REVIEW_COUNT + ' reviews</p>' +
+      '    <p class="local-proof__label"><span data-review-rating>' + REVIEW_STATE.rating + '</span>-star <span data-review-source>' + REVIEW_STATE.source + '</span> rating across <span data-review-count>' + REVIEW_STATE.count + '</span> reviews</p>' +
+      '    <p class="reviews__proof"><span data-review-live-badge>' + (REVIEW_STATE.live ? 'Live Google reviews' : 'Google reviews') + '</span></p>' +
       '    <blockquote>' + review.quote + '</blockquote>' +
       '    <p class="local-proof__meta">' + review.author + ' · ' + review.projectType + ' · ' + review.reviewDate + '</p>' +
       '  </article>' +
@@ -1117,6 +1235,7 @@
   injectLocationProofPanels();
   applyFinancingNote();
   renderRecentProjects();
+  loadLiveGoogleReviews();
   applyImageTitleFallbacks();
   installAnalytics();
 
@@ -2446,6 +2565,44 @@
       });
     });
   }
+
+  function setupFaqSearch() {
+    var searchInputs = document.querySelectorAll('[data-faq-filter]');
+    var faqItems = Array.prototype.slice.call(document.querySelectorAll('.faq-item'));
+    if (!searchInputs.length || !faqItems.length) return;
+
+    var emptyState = document.querySelector('[data-faq-empty]');
+
+    function applyFilter(value) {
+      var query = String(value || '').trim().toLowerCase();
+      var visibleCount = 0;
+
+      faqItems.forEach(function (item) {
+        var text = String(item.textContent || '').toLowerCase();
+        var match = !query || text.indexOf(query) >= 0;
+        item.hidden = !match;
+        item.setAttribute('aria-hidden', match ? 'false' : 'true');
+        if (match) visibleCount++;
+      });
+
+      if (emptyState) {
+        emptyState.hidden = visibleCount > 0;
+      }
+    }
+
+    searchInputs.forEach(function (input) {
+      input.addEventListener('input', function () {
+        applyFilter(input.value);
+      });
+      input.addEventListener('change', function () {
+        applyFilter(input.value);
+      });
+    });
+
+    applyFilter(searchInputs[0].value);
+  }
+
+  setupFaqSearch();
 
   /* ---- CONTACT FORM ---- */
   var form = document.getElementById('contact-form');

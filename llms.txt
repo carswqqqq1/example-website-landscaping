@@ -38,7 +38,7 @@
 - Licensed: Yes
 - Bonded: Yes
 - Insured: Yes
-- Review summary shown on site: 4.7 stars across 43 reviews on Birdeye (Reviewed March 8, 2026)
+- Review summary shown on site: Google review feed with a live profile link
 - Response promise shown on site: Most project requests receive a response within one business day.
 
 ## Contact
