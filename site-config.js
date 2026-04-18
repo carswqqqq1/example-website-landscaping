@@ -146,7 +146,7 @@
           author: 'Amanda L.',
           projectType: 'Modern xeriscape design-build',
           reviewDate: 'November 2025',
-          quote: 'Our Arcadia yard needed a modern xeriscape plan. The 3D concept matched the finished build almost exactly.'
+          quote: 'Our Phoenix yard needed a modern xeriscape plan. The 3D concept matched the finished build almost exactly and helped us make better material choices.'
         }
       },
       '/paradise-valley-landscaping': {
@@ -176,7 +176,7 @@
           author: 'Rachel S.',
           projectType: 'Shade patio and low-water planting update',
           reviewDate: 'December 2025',
-          quote: 'We wanted the Arcadia yard to feel cleaner and easier to use. The new patio layout and planting plan gave us that without losing the mature character of the property.'
+          quote: 'We wanted the yard to feel cleaner and easier to use. The new patio layout and planting plan gave us that without losing the mature character of the property.'
         }
       },
       '/mesa-landscaping': {
@@ -282,13 +282,13 @@
       count: '43',
       source: 'Google',
       sourceUrl: reviewSourceUrl,
-      snapshotDate: 'Cached snapshot as of March 8, 2026'
+      snapshotDate: 'Cached Google snapshot as of March 8, 2026'
     },
     reviewRating: '4.7',
     reviewCount: '43',
     reviewSource: 'Google',
     reviewSourceUrl: reviewSourceUrl,
-    reviewSnapshotDate: 'Reviewed March 8, 2026',
+    reviewSnapshotDate: 'Cached Google snapshot as of March 8, 2026',
     socialProfiles: [
       {
         label: 'Yelp',

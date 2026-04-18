@@ -83,11 +83,11 @@
       <button class="nav__burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
-      <nav class="nav__links" aria-label="Primary navigation">
+      <nav class="nav__links" id="nav-links" aria-label="Primary navigation">
         <a href="/" class="nav__link">Home</a>
-        <a href="/services" class="nav__link">Services</a>
+        <a href="/services" class="nav__link nav__link--active" aria-current="page">Services</a>
         <a href="/portfolio" class="nav__link">Portfolio</a>
-        <a href="/process" class="nav__link">Process</a>
+        <a href="/#process" class="nav__link">Process</a>
         <a href="/reviews" class="nav__link">Reviews</a>
         <a href="/free-consultation?service=pergola-shade&source=service_page&autostart=1" class="nav__link">Contact</a>
       </nav>
@@ -104,7 +104,7 @@
       <a href="/" class="nav__overlay-link">Home</a>
       <a href="/services" class="nav__overlay-link">Services</a>
       <a href="/portfolio" class="nav__overlay-link">Portfolio</a>
-      <a href="/process" class="nav__overlay-link">Process</a>
+        <a href="/#process" class="nav__overlay-link">Process</a>
       <a href="/reviews" class="nav__overlay-link">Reviews</a>
       <a href="/free-consultation?service=pergola-shade&source=service_page&autostart=1" class="nav__overlay-link">Contact</a>
       <a href="/free-consultation?service=pergola-shade&source=service_page&autostart=1" class="nav__overlay-link nav__overlay-cta">Get Free Design Consultation</a>
@@ -143,7 +143,7 @@
     </section>
 
     <section class="service-proof-strip" aria-label="Trust indicators">
-      <div class="container service-proof-strip__inner" id="service-proof"></div>
+      <div class="container service-proof-strip__inner" id="service-proof"><article class="service-proof__item"><span class="service-proof__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l8 4v6c0 5-3.2 7.8-8 9-4.8-1.2-8-4-8-9V7l8-4z"></path><path d="M9 12l2 2 4-4"></path></svg></span><p>Shade structures are sized around the way you actually use the patio, not just dropped in as an afterthought.</p></article><article class="service-proof__item"><span class="service-proof__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 19h16"></path><path d="M5 19V7l7-4 7 4v12"></path><path d="M9 12h6"></path></svg></span><p>Post placement, traffic flow, and roof orientation are coordinated with outdoor kitchens, fire features, and planting beds.</p></article><article class="service-proof__item"><span class="service-proof__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h10"></path><path d="M17 17l2 2 3-3"></path></svg></span><p>Material and finish choices are matched to the home so the structure feels built-in instead of bolted on.</p></article></div>
     </section>
 
     <section class="service-layout">
@@ -151,14 +151,14 @@
         <section class="service-block service-block--primary">
           <p class="eyebrow">What You Get</p>
           <h2 class="section-title">Shade Planning That Fits Real Outdoor Living Use</h2>
-          <ul class="service-checklist" id="service-what-you-get"></ul>
+          <ul class="service-checklist" id="service-what-you-get"><li>Pergola and shade-structure planning around lounge and dining zones</li><li>Layout coordination with kitchens, patios, fire features, and circulation</li><li>Material, finish, and roof-style recommendations</li><li>Sun-angle and comfort planning for hotter afternoon use</li><li>Integrated lighting and utility coordination where needed</li><li>Build-ready structure strategy for long-term outdoor living use</li></ul>
         </section>
 
         <aside class="service-sidebar">
-          <div class="service-review-proof" id="service-review-proof"></div>
+          <div class="service-review-proof" id="service-review-proof"><a href="/reviews">Visible Google reviews, Arizona ROC info, and project examples</a></div>
           <div class="service-sidebar__card">
             <p class="eyebrow">Service Area</p>
-            <p id="service-area-text"></p>
+            <p id="service-area-text">Think Green plans pergolas and shade structures across Scottsdale, Paradise Valley, Phoenix, Chandler, Mesa, and nearby Valley communities.</p>
           </div>
         </aside>
       </div>
@@ -169,13 +169,34 @@
         <section class="service-block">
           <p class="eyebrow">Process</p>
           <h2 class="section-title">How Pergola and Shade Projects Move Forward</h2>
-          <ol class="service-process" id="service-process"></ol>
+          <ol class="service-process" id="service-process"><li class="service-step"><span class="service-step__num">01</span><p>Site walkthrough and shade-comfort planning</p></li><li class="service-step"><span class="service-step__num">02</span><p>Structure sizing, placement, and finish direction</p></li><li class="service-step"><span class="service-step__num">03</span><p>Integration with hardscape, utilities, and surrounding features</p></li><li class="service-step"><span class="service-step__num">04</span><p>Construction coordination and final walkthrough</p></li></ol>
         </section>
 
         <section class="service-block">
           <p class="eyebrow">Project Inspiration</p>
           <h2 class="section-title">Pergola and Shade Structure Examples</h2>
-          <div class="service-gallery" id="service-gallery"></div>
+          <div class="service-gallery" id="service-gallery"><a class="service-gallery__item" href="/portfolio?service=pergola-shade">
+      <picture>
+        <source type="image/avif" srcset="../img/projects/shade-structure-640.avif" />
+        <img src="../img/projects/shade-structure.jpg" alt="Custom pergola and shade structure for a Phoenix outdoor lounge" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="1000" height="668" />
+      </picture>
+      <span class="service-gallery__chip">Shade Structure</span>
+      <span class="service-gallery__label">Covered Lounge Zone</span>
+    </a><a class="service-gallery__item" href="/portfolio?service=pergola-shade">
+      <picture>
+        <source type="image/avif" srcset="../img/projects/firepit-640.avif" />
+        <img src="../img/projects/firepit.jpg" alt="Pergola and fire feature layout in Scottsdale Arizona" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="1600" height="900" />
+      </picture>
+      <span class="service-gallery__chip">Outdoor Living</span>
+      <span class="service-gallery__label">Shade + Fire</span>
+    </a><a class="service-gallery__item" href="/portfolio?service=pergola-shade">
+      <picture>
+        <source type="image/avif" srcset="../img/projects/after-29-640.avif" />
+        <img src="../img/projects/after-29.jpg" alt="Pergola and dining patio design in Chandler Arizona" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="880" height="670" />
+      </picture>
+      <span class="service-gallery__chip">Dining Patio</span>
+      <span class="service-gallery__label">Hosting Upgrade</span>
+    </a></div>
         </section>
       </div>
     </section>
@@ -185,13 +206,43 @@
         <section class="service-block">
           <p class="eyebrow">Questions Homeowners Ask</p>
           <h2 class="section-title">Pergola and Shade Structure FAQ</h2>
-          <div class="faq__list" id="service-faq"></div>
+          <div class="faq__list" id="service-faq">
+    <article class="faq-item service-faq__item is-open">
+      <button class="faq__question service-faq__question" type="button" aria-expanded="true">
+        <span>Do pergolas make sense in Arizona heat?</span><span class="faq__icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__answer"><p>Yes, when they are positioned correctly. Shade structures are most effective when orientation, roof style, and adjacent uses are planned around real afternoon sun exposure.</p></div>
+    </article>
+    <article class="faq-item service-faq__item">
+      <button class="faq__question service-faq__question" type="button" aria-expanded="false">
+        <span>Can a pergola be integrated with an outdoor kitchen or fire feature?</span><span class="faq__icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__answer"><p>Absolutely. Many of the strongest backyard layouts combine structure, cooking, seating, and lighting so each element works together instead of competing for space.</p></div>
+    </article>
+    <article class="faq-item service-faq__item">
+      <button class="faq__question service-faq__question" type="button" aria-expanded="false">
+        <span>What is the typical cost range for a pergola or shade structure?</span><span class="faq__icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__answer"><p>It depends on size, materials, electrical scope, finish level, and whether the structure is tied into a larger patio or outdoor living renovation.</p></div>
+    </article>
+    <article class="faq-item service-faq__item">
+      <button class="faq__question service-faq__question" type="button" aria-expanded="false">
+        <span>Can you help if we are not sure between a pergola, ramada, or covered patio idea?</span><span class="faq__icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__answer"><p>Yes. We can compare shade options during consultation and recommend the structure type that best fits your budget, style, and comfort goals.</p></div>
+    </article>
+    <article class="faq-item service-faq__item">
+      <button class="faq__question service-faq__question" type="button" aria-expanded="false">
+        <span>Do shade structures work as part of a phased project?</span><span class="faq__icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__answer"><p>Yes. We can plan the pergola or shade structure as a first phase or integrate it into a broader design-build master plan.</p></div>
+    </article></div>
         </section>
 
         <section class="service-block service-related">
           <p class="eyebrow">Related Services</p>
           <h2 class="section-title">Pair Shade With the Right Outdoor-Living Scope</h2>
-          <ul class="service-related__list" id="related-services-list"></ul>
+          <ul class="service-related__list" id="related-services-list"><li><a href="/services/landscape-design">Landscape Design &amp; Build</a></li><li><a href="/services/hardscaping">Hardscaping</a></li><li><a href="/services/outdoor-kitchens">Outdoor Kitchens</a></li></ul>
         </section>
       </div>
     </section>
@@ -236,7 +287,7 @@
         <h4>Studio</h4>
         <ul>
           <li><a href="/about">About</a></li>
-          <li><a href="/process">Process</a></li>
+          <li><a href="/#process">Process</a></li>
           <li><a href="/portfolio">Portfolio</a></li>
           <li><a href="/resources">Resources</a></li>
           <li><a href="/reviews">Reviews</a></li>

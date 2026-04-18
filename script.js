@@ -370,6 +370,7 @@
   function renderFooterMeta() {
     var footerConfig = SITE_CONFIG.footer || {};
     var businessHours = SITE_CONFIG.businessHours || {};
+    var address = SITE_CONFIG.address || {};
     var hoursText = [businessHours.weekday, businessHours.saturday, businessHours.sunday]
       .filter(Boolean)
       .join(' · ');
@@ -381,6 +382,14 @@
     ).trim();
     var note = String(footerConfig.note || 'Arizona licensed, bonded, and insured team').trim();
     var reviewSummary = getReviewPresentationCopy(REVIEW_STATE).summary;
+    var phoneDisplay = String(SITE_PHONE_DISPLAY || '').trim();
+    var phoneRaw = String(SITE_PHONE_RAW || '').trim();
+    var addressParts = [
+      String(address.line1 || SITE_ADDRESS_LINE1 || '').trim(),
+      [address.city || SITE_CITY, address.state || SITE_STATE, address.zip || SITE_ZIP].filter(Boolean).join(' ')
+    ].filter(Boolean);
+    var addressText = addressParts.join(', ');
+    var addressUrl = addressText ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addressText) : '';
 
     document.querySelectorAll('.footer').forEach(function (footer) {
       var brand = footer.querySelector('.footer__brand');
@@ -401,7 +410,7 @@
         }
 
         var meta = brand.querySelector('.footer__meta');
-        if (!meta && (hoursText || reviewUrl)) {
+        if (!meta && (hoursText || reviewUrl || phoneRaw || addressText)) {
           meta = document.createElement('div');
           meta.className = 'footer__meta';
 
@@ -410,6 +419,35 @@
             hours.className = 'footer__meta-item';
             hours.textContent = hoursText;
             meta.appendChild(hours);
+          }
+
+          if (phoneRaw) {
+            var phoneLine = document.createElement('p');
+            phoneLine.className = 'footer__meta-item footer__meta-item--contact';
+            var phoneLink = document.createElement('a');
+            phoneLink.href = 'tel:' + phoneRaw;
+            phoneLink.textContent = phoneDisplay || SITE_PHONE_DISPLAY || phoneRaw;
+            phoneLink.setAttribute('aria-label', 'Call ' + (phoneDisplay || SITE_PHONE_DISPLAY || phoneRaw));
+            phoneLine.appendChild(document.createTextNode('Call '));
+            phoneLine.appendChild(phoneLink);
+            meta.appendChild(phoneLine);
+          }
+
+          if (addressText) {
+            var addressLine = document.createElement('p');
+            addressLine.className = 'footer__meta-item footer__meta-item--contact';
+            if (addressUrl) {
+              var addressLink = document.createElement('a');
+              addressLink.href = addressUrl;
+              addressLink.target = '_blank';
+              addressLink.rel = 'noopener noreferrer';
+              addressLink.textContent = addressText;
+              addressLink.setAttribute('aria-label', 'Open office location in Google Maps');
+              addressLine.appendChild(addressLink);
+            } else {
+              addressLine.textContent = addressText;
+            }
+            meta.appendChild(addressLine);
           }
 
           if (reviewUrl) {

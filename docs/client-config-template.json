@@ -25,13 +25,13 @@
     "count": "120",
     "source": "Google",
     "sourceUrl": "https://example.com/reviews",
-    "snapshotDate": "Reviewed March 8, 2026"
+    "snapshotDate": "Cached Google snapshot as of March 8, 2026"
   },
   "reviewRating": "4.8",
   "reviewCount": "120",
   "reviewSource": "Google",
   "reviewSourceUrl": "https://example.com/reviews",
-  "reviewSnapshotDate": "Reviewed March 8, 2026",
+  "reviewSnapshotDate": "Cached Google snapshot as of March 8, 2026",
   "socialProfiles": [
     {
       "label": "Google",

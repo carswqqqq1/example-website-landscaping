@@ -3180,6 +3180,22 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   line-height: 1.65;
   color: rgba(255,255,255,.58);
 }
+.footer__meta-item--contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .28rem;
+}
+.footer__meta-item--contact a {
+  color: rgba(250,247,243,.9);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: .18em;
+}
+.footer__meta-item--contact a:hover,
+.footer__meta-item--contact a:focus-visible {
+  color: #fff;
+  text-decoration-color: rgba(250,247,243,.65);
+}
 .footer__meta-link {
   color: rgba(250,247,243,.88);
   font-weight: 600;
@@ -4036,9 +4052,20 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     font-size: .8125rem;
     line-height: 1.65;
   }
+  .footer__meta {
+    gap: .4rem;
+    margin-top: .85rem;
+  }
   .footer__license {
     font-size: .7rem;
     line-height: 1.5;
+  }
+  .footer__meta-item {
+    font-size: .72rem;
+    line-height: 1.55;
+  }
+  .footer__meta-item--contact {
+    gap: .22rem;
   }
   .footer__col h4 {
     margin-bottom: .7rem;
