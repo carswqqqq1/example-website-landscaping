@@ -1,0 +1,112 @@
+{
+  "siteBaseUrl": "https://example-client-site.netlify.app",
+  "manifestPath": "/manifest.json",
+  "businessName": "Client Landscaping Company",
+  "shortName": "Client Name",
+  "email": "hello@example.com",
+  "ownerEmail": "owner@example.com",
+  "phone": {
+    "raw": "4805550000",
+    "display": "(480) 555-0000"
+  },
+  "address": {
+    "line1": "1234 Example Ave",
+    "city": "Scottsdale",
+    "state": "AZ",
+    "zip": "85260"
+  },
+  "serviceAreas": [
+    "Scottsdale",
+    "Phoenix"
+  ],
+  "businessYears": "10+ years serving Arizona homeowners",
+  "reviewSummary": {
+    "rating": "4.8",
+    "count": "120",
+    "source": "Google",
+    "sourceUrl": "https://example.com/reviews",
+    "snapshotDate": "Reviewed March 8, 2026"
+  },
+  "reviewRating": "4.8",
+  "reviewCount": "120",
+  "reviewSource": "Google",
+  "reviewSourceUrl": "https://example.com/reviews",
+  "reviewSnapshotDate": "Reviewed March 8, 2026",
+  "socialProfiles": [
+    {
+      "label": "Google",
+      "url": "https://example.com/google-profile",
+      "footerLabel": "Find Us on Google"
+    }
+  ],
+  "brand": {
+    "logoPath": "img/logo.png",
+    "primary": "#1b4332",
+    "primaryMid": "#2d6a4f",
+    "paper": "#faf7f3"
+  },
+  "trustAssets": {
+    "licenseVerifyUrl": "https://example.com/license",
+    "bondVerifyUrl": "https://example.com/bond",
+    "licenseNumbers": [
+      "123456"
+    ],
+    "licensePrompt": "Verify licensing using the official state contractor search.",
+    "bondPrompt": "Bond and insurance documentation is available during consultation.",
+    "insuranceStatement": "Current insurance documentation is available during consultation.",
+    "responsePromise": "Most new project requests receive a response within one business day.",
+    "workmanshipWarranty": "Workmanship warranty details are reviewed during handoff.",
+    "trustHighlights": [
+      "Licensed, bonded, and insured"
+    ]
+  },
+  "contactFormServices": [
+    "Landscape Design & Build",
+    "Hardscaping",
+    "Outdoor Kitchens",
+    "Outdoor Lighting",
+    "Artificial Turf",
+    "Not sure yet"
+  ],
+  "locationPages": {
+    "/city-landscaping": {
+      "city": "Scottsdale",
+      "nearbyAreas": "North Scottsdale and nearby neighborhoods",
+      "trustBullets": [
+        "Projects are planned around the way homeowners actually use the yard."
+      ],
+      "featuredReview": {
+        "author": "Client Name",
+        "projectType": "Outdoor living remodel",
+        "reviewDate": "January 2026",
+        "quote": "Short verified review quote."
+      }
+    }
+  },
+  "reviews": [
+    {
+      "author": "Client Name",
+      "location": "Scottsdale, AZ",
+      "rating": 5,
+      "projectType": "Outdoor living remodel",
+      "reviewDate": "January 2026",
+      "text": "Verified review text."
+    }
+  ],
+  "_agencyMeta": {
+    "_note": "Internal agency records only. Not read by site-config.js or any build script.",
+    "agencyProjectId": "",
+    "clientSlug": "",
+    "netlifySiteId": "",
+    "githubBranch": "",
+    "initialPaymentDate": "",
+    "initialPaymentAmount": 375,
+    "completionPaymentDate": "",
+    "completionPaymentAmount": 375,
+    "monthlyUpkeepAmount": 250,
+    "monthlyUpkeepStartDate": "",
+    "launchDate": "",
+    "contractSignedDate": "",
+    "notes": ""
+  }
+}

@@ -1,0 +1,65 @@
+CLIENT BUILD PROMPT TEMPLATE
+============================
+
+Paste the completed intake block under CLIENT DATA. This prompt is written so Codex can take the client answers and customize the full site from head to toe while staying trust-safe.
+
+PROMPT
+------
+
+You are a senior web engineer, CRO strategist, local SEO implementer, and template customization specialist.
+
+Your job is to fully customize the existing landscaping website template for a real client using the intake data below.
+
+Rules:
+- Preserve the existing design system unless the intake clearly calls for a style adjustment.
+- Do not fabricate trust signals, ratings, review counts, licenses, warranties, project budgets, or service areas.
+- If a field is missing or marked UNKNOWN, use softened safe copy instead of fake specifics.
+- If a trust field is marked UNVERIFIED, do not present it as a precise public claim.
+- Keep the lead pipeline, Netlify setup, analytics, forms, and owner/client email flow working.
+- Update the site from head to toe: copy, branding, metadata, trust blocks, service pages, schema, portfolio labels, local pages, contact details, email templates, and config.
+- Keep all changes production-ready and resale-clean.
+
+Process:
+1. Read the full client intake.
+2. Identify what must change in config, content, assets, forms, schema, trust proof, and operations.
+3. Apply the customization across the full website.
+4. If intake answers are incomplete, use safe fallback wording and list exactly what still needs verification.
+5. Run validation and QA after edits.
+6. Summarize:
+   - files changed
+   - what was customized
+   - what still needs client verification
+   - final launch-readiness assessment
+
+Important implementation requirements:
+- Update all business identity fields site-wide.
+- Replace demo-specific content with client-specific content.
+- Match review schema only to visible and verified review data.
+- Keep CTA architecture coherent:
+  - primary consultation action
+  - secondary call or project-view action
+- Update service priorities based on the intake.
+- Update service areas and local SEO language based on the intake.
+- Customize homepage, services hub, service pages, portfolio, local pages, thank-you page, metadata, structured data, and branded email templates.
+- Update site-config.js, service data, and any business-specific content blocks first.
+- Keep mobile UX clean and do not introduce duplicate CTA paths.
+- Flag any legal/compliance risk instead of guessing.
+
+CLIENT DATA
+[PASTE THE COMPLETED CLIENT ANSWER BLOCK HERE]
+
+SHORT VERSION
+-------------
+
+Customize the existing landscaping website template for this client using the intake below.
+
+Requirements:
+- full brand + business identity swap
+- trust-safe copy only
+- client-specific services, service areas, portfolio, reviews, and metadata
+- keep forms, emails, analytics, and Netlify pipeline working
+- use softened wording anywhere data is missing or unverified
+- at the end, list files changed, what was customized, what still needs client verification, and whether the site is launch-ready
+
+CLIENT DATA
+[PASTE CLIENT INTAKE HERE]

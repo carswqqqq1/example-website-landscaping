@@ -1,0 +1,23 @@
+{
+  "name": "Think Green Design | Build Landscape",
+  "short_name": "Think Green",
+  "description": "Premium landscaping design and build in Scottsdale and Phoenix, AZ.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf7f3",
+  "theme_color": "#1b4332",
+  "icons": [
+    {
+      "src": "img/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["business", "lifestyle"],
+  "orientation": "any"
+}
