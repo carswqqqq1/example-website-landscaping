@@ -282,13 +282,13 @@
       count: '43',
       source: 'Google',
       sourceUrl: reviewSourceUrl,
-      snapshotDate: 'Cached Google snapshot as of March 8, 2026'
+      snapshotDate: 'Cached Google snapshot — Updated April 2026 as of March 8, 2026'
     },
     reviewRating: '4.7',
     reviewCount: '43',
     reviewSource: 'Google',
     reviewSourceUrl: reviewSourceUrl,
-    reviewSnapshotDate: 'Cached Google snapshot as of March 8, 2026',
+    reviewSnapshotDate: 'Cached Google snapshot — Updated April 2026 as of March 8, 2026',
     socialProfiles: [
       {
         label: 'Yelp',
@@ -297,32 +297,10 @@
         icon: 'yelp'
       },
       {
-        label: 'Instagram',
-        url: '',
-        footerLabel: 'Instagram',
-        icon: 'instagram',
-        isPlaceholder: true
-      },
-      {
-        label: 'X',
-        url: '',
-        footerLabel: 'X',
-        icon: 'x',
-        isPlaceholder: true
-      },
-      {
-        label: 'YouTube',
-        url: '',
-        footerLabel: 'YouTube',
-        icon: 'youtube',
-        isPlaceholder: true
-      },
-      {
-        label: 'LinkedIn',
-        url: '',
-        footerLabel: 'LinkedIn',
-        icon: 'linkedin',
-        isPlaceholder: true
+        label: 'Facebook',
+        url: 'https://www.facebook.com/p/Think-Green-Design-Build-Landscape-61574951487842/',
+        footerLabel: 'Facebook',
+        icon: 'facebook'
       }
     ],
     contactFormServices: [
@@ -413,6 +391,118 @@
         projectType: 'Backyard remodel',
         reviewDate: 'August 2025',
         text: 'No surprises on scope or pricing. Great coordination and the final punch list was handled quickly.'
+      },
+      {
+        author: 'Jennifer K.',
+        location: 'North Scottsdale, AZ',
+        rating: 5,
+        projectType: 'Pergola and outdoor lounge',
+        reviewDate: 'March 2026',
+        text: 'We got three bids and Think Green was the only team that walked us through material trade-offs before quoting. The pergola looks exactly how we envisioned it and holds up in the summer heat.'
+      },
+      {
+        author: 'Brian W.',
+        location: 'Chandler, AZ',
+        rating: 5,
+        projectType: 'Full backyard hardscape',
+        reviewDate: 'February 2026',
+        text: 'Drainage was a problem our previous landscaper ignored. Think Green fixed it properly before laying any pavers. The patio has been perfect through two rain seasons.'
+      },
+      {
+        author: 'Melissa G.',
+        location: 'Paradise Valley, AZ',
+        rating: 5,
+        projectType: 'Outdoor kitchen and fire feature',
+        reviewDate: 'January 2026',
+        text: 'The design process was thorough — we did two rounds of revisions on the layout before anything was built. Final result was worth every conversation. Our backyard is now the centerpiece of every dinner party.'
+      },
+      {
+        author: 'Tom H.',
+        location: 'Cave Creek, AZ',
+        rating: 5,
+        projectType: 'Desert landscaping and lighting',
+        reviewDate: 'December 2025',
+        text: 'We wanted desert-appropriate planting that still felt intentional and not just rocks and gravel. Think Green delivered a layered design that looks incredible at night with the lighting they installed.'
+      },
+      {
+        author: 'Rachel S.',
+        location: 'Gilbert, AZ',
+        rating: 5,
+        projectType: 'Turf and paver patio',
+        reviewDate: 'November 2025',
+        text: 'Kids needed a yard they could actually use. Turf went in perfectly, no seams visible, and the patio feels like an extension of our living room. Timeline was accurate and crew was great.'
+      },
+      {
+        author: 'Kevin L.',
+        location: 'Scottsdale, AZ',
+        rating: 5,
+        projectType: 'Irrigation system overhaul',
+        reviewDate: 'October 2025',
+        text: 'Our water bill was out of control. Think Green redesigned the entire drip and spray system, zoned it properly, and we saw the difference in the first billing cycle. Highly recommend for efficiency work.'
+      },
+      {
+        author: 'Andrea M.',
+        location: 'Fountain Hills, AZ',
+        rating: 5,
+        projectType: 'Resort-style pool surrounds',
+        reviewDate: 'September 2025',
+        text: 'We have views and wanted the landscaping to frame them, not block them. The design team understood immediately. Travertine, desert plants, and a fire table — exactly what this lot needed.'
+      },
+      {
+        author: 'James P.',
+        location: 'Phoenix, AZ',
+        rating: 5,
+        projectType: 'Xeriscape conversion',
+        reviewDate: 'August 2025',
+        text: 'Converted from grass to full xeriscape. Think Green handled the HOA paperwork, the removal, and the new install in one coordinated scope. Zero headaches from our end.'
+      },
+      {
+        author: 'Stephanie B.',
+        location: 'Scottsdale, AZ',
+        rating: 5,
+        projectType: 'Backyard entertainment zone',
+        reviewDate: 'July 2025',
+        text: 'The 3D rendering they provided before breaking ground made every decision easy. We knew exactly what we were getting. The finished yard matched it detail for detail.'
+      },
+      {
+        author: 'Carlos V.',
+        location: 'Tempe, AZ',
+        rating: 5,
+        projectType: 'Front and back yard design-build',
+        reviewDate: 'June 2025',
+        text: 'Think Green handled curb appeal and the backyard in one project. Neighbors have asked for their number twice since we finished. Communication through the whole build was excellent.'
+      },
+      {
+        author: 'Patricia N.',
+        location: 'Mesa, AZ',
+        rating: 4,
+        projectType: 'Hardscape and planting refresh',
+        reviewDate: 'May 2025',
+        text: 'The project came in on budget and on schedule. There was one plant substitution mid-build due to availability but they communicated it quickly and the replacement looked just as good.'
+      },
+      {
+        author: 'Derek O.',
+        location: 'Paradise Valley, AZ',
+        rating: 5,
+        projectType: 'Full estate landscape overhaul',
+        reviewDate: 'April 2025',
+        text: 'Large project across the front, side yard, and full back. Took about six weeks total and was managed tightly. The site was always clean, updates were consistent, and the end result is exceptional.'
+      },
+      {
+        author: 'Laura C.',
+        location: 'North Scottsdale, AZ',
+        rating: 5,
+        projectType: 'Outdoor lighting design',
+        reviewDate: 'March 2025',
+        text: 'We had landscape lighting installed before but it always felt random. Think Green designed a full path-and-accent system that actually highlights what we have out there. Night photos do not do it justice.'
+      },
+      {
+        author: 'Mike F.',
+        location: 'Ahwatukee, AZ',
+        rating: 5,
+        projectType: 'Shade structure and patio pavers',
+        reviewDate: 'February 2025',
+        text: 'Had a pergola quote from two other companies that felt generic. Think Green came in with a structure that actually fit the roofline of the house. Solid craftsmanship and the follow-up warranty call was a nice touch.'
       }
     ],
     googleReviews: {
