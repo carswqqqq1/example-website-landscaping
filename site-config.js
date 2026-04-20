@@ -282,13 +282,13 @@
       count: '43',
       source: 'Google',
       sourceUrl: reviewSourceUrl,
-      snapshotDate: 'Cached Google snapshot — Updated April 2026 as of March 8, 2026'
+      snapshotDate: 'Last updated April 2026'
     },
     reviewRating: '4.7',
     reviewCount: '43',
     reviewSource: 'Google',
     reviewSourceUrl: reviewSourceUrl,
-    reviewSnapshotDate: 'Cached Google snapshot — Updated April 2026 as of March 8, 2026',
+    reviewSnapshotDate: 'Last updated April 2026',
     socialProfiles: [
       {
         label: 'Yelp',
@@ -510,7 +510,7 @@
       count: '43',
       platform: 'Google',
       profileUrl: reviewSourceUrl,
-      snapshotDate: 'Cached snapshot as of March 8, 2026'
+      snapshotDate: 'Last updated April 2026'
     },
     trustAssets: {
       licenseVerifyUrl: 'https://roc.az.gov/contractor-search?combined=157201',

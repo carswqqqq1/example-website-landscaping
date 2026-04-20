@@ -41,7 +41,7 @@
 
 .page-hero {
   position: relative;
-  padding-top: 114px;
+  padding-top: 84px;
   min-height: 430px;
   display: flex;
   align-items: flex-end;
@@ -116,12 +116,13 @@
   font-size: .94rem;
   line-height: 1.72;
   color: var(--ink-light);
+  max-width: 680px;
 }
 
 .page-section[id],
 .faq[id],
 .contact[id] {
-  scroll-margin-top: 104px;
+  scroll-margin-top: 84px;
 }
 
 .local-proof {
@@ -334,6 +335,13 @@
   background: #fff;
   box-shadow: var(--shadow-sm);
   padding: 1.2rem;
+}
+
+.thank-you-card > p,
+.page-section .prose-block > p {
+  max-width: 680px;
+  line-height: 1.75;
+  color: var(--ink-light);
 }
 
 .thank-you-card + .thank-you-card,

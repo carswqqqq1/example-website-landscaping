@@ -150,7 +150,8 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   letter-spacing: .08em;
   text-transform: uppercase;
   font-weight: 600;
-  color: rgba(255,255,255,.78);
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 1px 6px rgba(0,0,0,.55);
 }
 
 .service-breadcrumb a {

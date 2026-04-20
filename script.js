@@ -1113,6 +1113,9 @@
         isActive = false;
       } else if (linkTarget.charAt(0) === '#') {
         isActive = current === '/' && linkTarget === currentHash;
+      } else if (linkTarget === '/services') {
+        // Mark Services active on all /services/* sub-pages too
+        isActive = current === '/services' || current.indexOf('/services/') === 0;
       } else {
         isActive = linkTarget === current;
       }
