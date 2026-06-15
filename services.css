@@ -471,6 +471,33 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   font-size: .9rem;
 }
 
+.service-fit {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.service-fit__panel {
+  padding: 1rem 1.05rem;
+  border: 1px solid #e2d8ca;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.service-fit__panel ul {
+  margin-top: .7rem;
+  display: grid;
+  gap: .48rem;
+  padding-left: 1.05rem;
+}
+
+.service-fit__panel li {
+  color: var(--ink-light);
+  line-height: 1.6;
+  font-size: .9rem;
+}
+
 .service-steps {
   margin-top: 1rem;
   display: grid;
@@ -871,6 +898,10 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   }
 
   .service-range {
+    grid-template-columns: 1fr;
+  }
+
+  .service-fit {
     grid-template-columns: 1fr;
   }
 

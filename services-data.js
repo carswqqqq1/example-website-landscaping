@@ -13,6 +13,16 @@
       heroHeadline: 'Landscape Design & Build in Scottsdale and Phoenix',
       heroSubtext: 'From concept sketches to final walkthrough, we design and build cohesive outdoor spaces that elevate curb appeal and day-to-day living.',
       typicalRange: '$5k-$15k design planning',
+      goodFit: [
+        'You want a full-yard plan before spending money on disconnected upgrades.',
+        'You need layout, materials, shade, lighting, and planting to work as one design.',
+        'You want one accountable team from design direction through construction.'
+      ],
+      planFor: [
+        'A strong design phase depends on photos, measurements, priorities, and budget comfort.',
+        'Larger builds may need phasing so the most important area gets built first.',
+        'Final construction pricing changes with materials, utilities, grading, and feature scope.'
+      ],
       proofBlurbs: [
         'Design presentations are built around circulation, shade, and how the yard will actually be used.',
         'Selections are coordinated with the home architecture so the finished build feels intentional, not pieced together.',
@@ -130,6 +140,16 @@
       heroHeadline: 'Hardscaping in Scottsdale and Phoenix',
       heroSubtext: 'We build pavers, patios, walkways, and structural stonework that look clean, perform in Arizona heat, and hold up for years.',
       typicalRange: '$10k-$40k',
+      goodFit: [
+        'You want a patio, walkway, wall, or paver area that looks built-in, not patched on.',
+        'Your yard has drainage, grade, or circulation issues that need to be solved before finishes.',
+        'You care about long-term durability and clean edges as much as the first photo.'
+      ],
+      planFor: [
+        'Access, demolition, base prep, drainage, and paver choice can change the range quickly.',
+        'Furniture layout and traffic flow should be decided before the patio size is final.',
+        'Existing concrete or failing hardscape may need removal before the new system goes in.'
+      ],
       proofBlurbs: [
         'Hardscape layouts are planned for drainage, circulation, and daily use before materials are finalized.',
         'Patios and walkways are detailed to feel clean and architectural instead of oversized or disconnected.',
@@ -247,6 +267,16 @@
       heroHeadline: 'Outdoor Kitchens in Scottsdale and Phoenix',
       heroSubtext: 'Create an outdoor kitchen that is beautiful, functional, and built for real entertaining in Arizona conditions.',
       typicalRange: '$20k-$60k',
+      goodFit: [
+        'You host outside often and want cooking, prep, serving, and seating to feel connected.',
+        'You need utility planning handled before appliances and finishes are selected.',
+        'You want the kitchen to match the patio and home instead of looking like a standalone island.'
+      ],
+      planFor: [
+        'Appliances, gas, electric, plumbing, counters, shade, and cabinetry drive most budget swings.',
+        'A kitchen works best when seating and traffic flow are planned before construction.',
+        'Lead times can vary for appliances, specialty finishes, and utility coordination.'
+      ],
       proofBlurbs: [
         'Outdoor kitchens are laid out around prep flow, seating, and entertaining zones instead of appliance lists alone.',
         'Utility planning is coordinated early so gas, power, and water do not create last-minute surprises.',
@@ -364,6 +394,16 @@
       heroHeadline: 'Outdoor Lighting in Scottsdale and Phoenix',
       heroSubtext: 'Layered landscape lighting improves safety, curb appeal, and evening usability without making the yard feel overlit or generic.',
       typicalRange: '$3k-$18k',
+      goodFit: [
+        'Your yard looks finished during the day but disappears or feels unsafe at night.',
+        'You want paths, trees, architecture, and gathering areas lit with restraint.',
+        'You need a clean retrofit or a lighting plan tied into a larger outdoor project.'
+      ],
+      planFor: [
+        'Fixture count, transformer size, wire runs, controls, and access drive pricing.',
+        'Nighttime aiming matters; small adjustments can change the whole feel of the yard.',
+        'Lighting should be serviceable later, not buried in a way that makes maintenance painful.'
+      ],
       proofBlurbs: [
         'Lighting plans are built around pathways, focal points, and entertaining zones instead of random fixture placement.',
         'Fixture choices are matched to the home style so the yard feels refined at night, not overdone.',
@@ -464,6 +504,16 @@
       heroHeadline: 'Pergolas and Shade Structures in Scottsdale and Phoenix',
       heroSubtext: 'Shade structures help patios, kitchens, and lounge zones work harder through Arizona heat while giving the yard stronger architectural definition.',
       typicalRange: '$8k-$45k',
+      goodFit: [
+        'Your patio is too exposed to use comfortably during Arizona heat.',
+        'You want shade that feels architectural and tied into the house, patio, or kitchen.',
+        'You need better comfort without overbuilding the entire yard at once.'
+      ],
+      planFor: [
+        'Size, posts, roof style, electrical, finishes, and structural requirements shape the range.',
+        'Sun angle and furniture layout should guide placement before the structure is priced.',
+        'Some structures may require additional engineering, permitting, or utility coordination.'
+      ],
       proofBlurbs: [
         'Shade structures are sized around the way you actually use the patio, not just dropped in as an afterthought.',
         'Post placement, traffic flow, and roof orientation are coordinated with outdoor kitchens, fire features, and planting beds.',
@@ -564,6 +614,16 @@
       heroHeadline: 'Fire Features in Scottsdale and Phoenix',
       heroSubtext: 'Add warmth, ambiance, and year-round gathering space with custom fire pits and fireplaces built into your outdoor layout.',
       typicalRange: '$5k-$20k',
+      goodFit: [
+        'You want a stronger evening gathering point without rebuilding the whole backyard.',
+        'Your patio has seating potential but lacks a reason for people to stay outside.',
+        'You want the fire feature integrated with hardscape, lighting, and traffic flow.'
+      ],
+      planFor: [
+        'Fuel type, gas routing, finish material, seating layout, and patio work affect pricing.',
+        'Placement needs enough distance for comfort, safety, and furniture movement.',
+        'Code, utility, and municipality requirements can affect schedule and scope.'
+      ],
       proofBlurbs: [
         'Fire features are positioned to improve evening use and social flow, not just to fill an empty corner of the yard.',
         'Scale, seating distance, and finish detailing are planned so the feature feels integrated with the patio.',
@@ -680,6 +740,16 @@
       heroHeadline: 'Desert Landscaping in Scottsdale and Phoenix',
       heroSubtext: 'Build a refined Arizona yard with xeriscape planning, drought-tolerant planting, and low-maintenance materials designed for heat, runoff, and year-round curb appeal.',
       typicalRange: '$8k-$35k',
+      goodFit: [
+        'You want a lower-water yard that still feels designed and finished.',
+        'Your current planting is tired, messy, or too maintenance-heavy for Arizona heat.',
+        'You want turf, hardscape, boulders, gravel, and planting to feel balanced.'
+      ],
+      planFor: [
+        'Plant size, irrigation changes, rock quantities, grading, and hardscape tie-ins affect cost.',
+        'The best desert yards use structure and layers, not just fewer plants.',
+        'Older irrigation may need correction before new planting makes sense.'
+      ],
       proofBlurbs: [
         'Desert-smart layouts focus on shade, drainage, and clean material transitions so the yard feels intentional instead of sparse.',
         'Plant palettes are selected for Arizona heat tolerance, lower maintenance, and visual depth across the full year.',
@@ -796,6 +866,16 @@
       heroHeadline: 'Artificial Turf Installation in Scottsdale and Phoenix',
       heroSubtext: 'Upgrade to premium turf systems with natural appearance, clean edges, and drainage-aware installation for Arizona homes.',
       typicalRange: '$5k-$15k',
+      goodFit: [
+        'You want a cleaner lawn look with less water and less weekly maintenance.',
+        'You need turf tied into pavers, borders, planting, or a small play/putting area.',
+        'You care about base prep, drainage, and seams instead of just the cheapest roll of turf.'
+      ],
+      planFor: [
+        'Square footage, base depth, edge complexity, drainage, and turf product drive pricing.',
+        'Heat exposure matters; layout and product choice should match how the space is used.',
+        'Old grass, rock, concrete, or irrigation may need removal or adjustment first.'
+      ],
       whatYouGet: [
         'Premium turf product recommendations for your use case',
         'Sub-base prep and grading for long-term performance',
@@ -917,6 +997,16 @@
       heroHeadline: 'Irrigation Systems in Scottsdale and Phoenix',
       heroSubtext: 'Keep your landscape healthy with efficient irrigation planning, modern controls, and climate-aware water management built for Arizona.',
       typicalRange: '$2k-$10k',
+      goodFit: [
+        'Your plants are struggling even though the system runs often.',
+        'You see runoff, dry spots, leaks, pressure issues, or mismatched watering zones.',
+        'You want irrigation corrected before adding new planting or turf.'
+      ],
+      planFor: [
+        'Existing system condition, valve access, pressure, controller needs, and zone count shape price.',
+        'The best fix may be a targeted retrofit, not a full replacement.',
+        'Plant type and sun exposure should determine zones and scheduling.'
+      ],
       proofBlurbs: [
         'Irrigation upgrades focus on healthier plants and lower waste, not just swapping out controllers.',
         'Zones are evaluated by plant type, exposure, and runoff so watering is more accurate across the property.',

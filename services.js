@@ -153,6 +153,34 @@
       '</article>';
   }
 
+  function serviceFitItems(service) {
+    if (service && Array.isArray(service.goodFit) && service.goodFit.length) {
+      return service.goodFit;
+    }
+    return [
+      'You want a clearer plan before comparing contractor quotes.',
+      'You need the finished yard to look good and work better day to day.',
+      'You want pricing, timing, and next steps explained before work starts.'
+    ];
+  }
+
+  function servicePlanningItems(service) {
+    if (service && Array.isArray(service.planFor) && service.planFor.length) {
+      return service.planFor;
+    }
+    return [
+      'Final pricing depends on access, existing conditions, finish choices, and total scope.',
+      'Photos, rough measurements, and priority areas help the first callback stay specific.',
+      'Some projects are best phased so the highest-value area gets handled first.'
+    ];
+  }
+
+  function buildFitList(items) {
+    return items.map(function (item) {
+      return '<li>' + item + '</li>';
+    }).join('');
+  }
+
   function renderHubStories() {
     var ctaSection = document.querySelector('.services-hub-cta');
     if (!ctaSection) return;
@@ -295,6 +323,19 @@
           '  <p class="service-range__note">Final pricing depends on scope and site conditions.</p>' +
           '</div>';
         whatYouGet.insertAdjacentElement('afterend', rangeCard);
+        var fitCard = document.createElement('div');
+        fitCard.className = 'service-fit reveal';
+        fitCard.id = 'service-fit';
+        fitCard.innerHTML = '' +
+          '<article class="service-fit__panel">' +
+          '  <p class="eyebrow">Good Fit If</p>' +
+          '  <ul>' + buildFitList(serviceFitItems(service)) + '</ul>' +
+          '</article>' +
+          '<article class="service-fit__panel">' +
+          '  <p class="eyebrow">Plan For</p>' +
+          '  <ul>' + buildFitList(servicePlanningItems(service)) + '</ul>' +
+          '</article>';
+        rangeCard.insertAdjacentElement('afterend', fitCard);
         if (Array.isArray(service.proofBlurbs) && service.proofBlurbs.length) {
           var proofStrip = document.createElement('div');
           proofStrip.className = 'service-proof-blurbs reveal';
@@ -304,7 +345,7 @@
               '  <p>' + item + '</p>' +
               '</article>';
           }).join('');
-          rangeCard.insertAdjacentElement('afterend', proofStrip);
+          fitCard.insertAdjacentElement('afterend', proofStrip);
         }
       }
     }
