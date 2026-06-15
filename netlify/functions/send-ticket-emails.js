@@ -291,7 +291,7 @@ function isPlaceholderValue(value) {
     .replace(/\s+/g, ' ')
     .replace(/[.,;:!?]+$/g, '')
     .trim();
-  if (/^(not set|not provided|not selected|not specified|not discussed yet|to be discussed|to be discussed during consultation|unknown|none|null|undefined|n\/a|na)$/i.test(normalized)) {
+  if (/^(not set|not provided|not selected|not specified|not discussed yet|to be discussed|to be discussed during consultation|to be discussed during project review|unknown|none|null|undefined|n\/a|na)$/i.test(normalized)) {
     return true;
   }
   if (

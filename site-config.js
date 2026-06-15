@@ -202,7 +202,7 @@
         trustBullets: [
           'Mesa homeowners often want lower-maintenance backyards that still feel finished and usable for families.',
           'Popular requests combine turf strategy, hardscape cleanup, irrigation tuning, and easier circulation.',
-          'Consultations help separate must-have function upgrades from later-phase visual improvements.'
+          'Project reviews help separate must-have function upgrades from later-phase visual improvements.'
         ],
         featuredReview: {
           author: 'Nicole P.',
@@ -232,7 +232,7 @@
         trustBullets: [
           'Tempe projects usually need shade, patio usability, and lower-maintenance planning without losing entertainment value.',
           'Family use, guest flow, and long-term upkeep typically matter more than one oversized feature.',
-          'Consultations help narrow the best first zone so the yard improves quickly without wasted scope.'
+          'Project reviews help narrow the best first zone so the yard improves quickly without wasted scope.'
         ],
         featuredReview: {
           author: 'Chris T.',
@@ -277,7 +277,7 @@
         trustBullets: [
           'Cave Creek homeowners usually need shade, desert planting structure, and materials that feel intentional at larger scales.',
           'The best projects coordinate hardscape, lighting, and planting early instead of treating them as separate add-ons.',
-          'Consultations help define what creates the biggest day-to-day comfort and property impact first.'
+          'Project reviews help define what creates the biggest day-to-day comfort and property impact first.'
         ],
         featuredReview: {
           author: 'Dana H.',

@@ -1002,7 +1002,7 @@
       '<div class="local-proof__intro">' +
       '  <p class="eyebrow">Verified Local Proof</p>' +
       '  <h3>Why ' + locationData.city + ' homeowners use Think Green</h3>' +
-      '  <p>Licensed Arizona landscape contractor support, visible Google review proof, and a consultation-first process for ' + locationData.nearbyAreas + '.</p>' +
+      '  <p>Licensed Arizona landscape contractor support, visible Google review proof, and a quote-first process for ' + locationData.nearbyAreas + '.</p>' +
       '</div>' +
       '<div class="local-proof__grid">' +
       '  <article class="local-proof__card local-proof__card--review">' +
@@ -1631,7 +1631,7 @@
       return {
         kicker: 'Scottsdale Design-Build',
         title: 'Plan Your Outdoor Space',
-        sub: 'Jump into services, project inspiration, reviews, or start a consultation without hunting through the page.'
+        sub: 'Jump into services, project inspiration, reviews, or start a quote request without hunting through the page.'
       };
     }
     if (normalizedPath === '/services' || normalizedPath.indexOf('/services/') === 0) {
@@ -1645,7 +1645,7 @@
       return {
         kicker: 'Project Inspiration',
         title: 'Browse Then Request',
-        sub: 'Compare project styles, save what fits your yard, and use the consultation path when you are ready.'
+        sub: 'Compare project styles, save what fits your yard, and use the quote request path when you are ready.'
       };
     }
     return {
