@@ -96,10 +96,27 @@
       projectCountLabel: '150+ completed outdoor living and landscape projects shown across site proof sections',
       noFakeClaimsNote: 'Do not invent awards, years in business, rankings, or review counts when cloning this template.'
     },
+    primaryOffer: {
+      label: 'Request Free Quote',
+      shortLabel: 'Get Quote',
+      pageTitle: 'Free Landscaping Quote',
+      formTitle: 'Request a Free Landscaping Quote',
+      submitLabel: 'Request My Free Quote',
+      path: '/free-consultation',
+      promise: 'No pressure, no obligation, and a local team member follows up within one business day.',
+      customizableExamples: [
+        'Free Landscaping Quote',
+        'Free Turf Estimate',
+        'Free Backyard Walkthrough',
+        'Free Design Consultation',
+        'Same-Week Estimate Request'
+      ],
+      cloningNote: 'Change this offer to match the landscaper sales process before launch. Keep the CTA outcome-specific and easy to understand.'
+    },
     aiReadability: {
       summary: 'Think Green Design | Build Landscape is a Scottsdale-based residential landscaping and outdoor living company serving homeowners across Scottsdale, Paradise Valley, Phoenix, and nearby East Valley communities.',
-      homeownerFit: 'Best fit for homeowners who want design-build planning, premium hardscape and outdoor living upgrades, desert-climate durability, and a clear consultation path.',
-      consultationPath: '/free-consultation',
+      homeownerFit: 'Best fit for homeowners who want design-build planning, premium hardscape and outdoor living upgrades, desert-climate durability, and a clear quote request path.',
+      quotePath: '/free-consultation',
       priorityPages: [
         { label: 'Home', path: '/' },
         { label: 'Services', path: '/services' },
@@ -114,7 +131,7 @@
         { label: 'About', path: '/about' },
         { label: 'Reviews', path: '/reviews' },
         { label: 'Process', path: '/process' },
-        { label: 'Free Consultation', path: '/free-consultation' },
+        { label: 'Free Quote', path: '/free-consultation' },
         { label: 'Resources', path: '/resources' }
       ]
     },
@@ -125,7 +142,7 @@
         trustBullets: [
           'Most Scottsdale requests center on full backyard transformations, pavers, fire features, and premium lighting.',
           'Project planning usually needs HOA-aware finish coordination, clear phasing, and stronger shade strategy.',
-          'Consultations focus on layout flow, finish level, and the highest-value first phase before construction starts.'
+          'Project reviews focus on layout flow, finish level, and the highest-value first phase before construction starts.'
         ],
         featuredReview: {
           author: 'Sarah M.',
@@ -140,7 +157,7 @@
         trustBullets: [
           'Phoenix homeowners usually need stronger outdoor living flow, water-wise planting, and heat-aware material planning.',
           'Design choices are shaped around daily usability, not just curb appeal photos.',
-          'The first consultation is used to narrow scope, city fit, and the most efficient project phase.'
+          'The first project review is used to narrow scope, city fit, and the most efficient project phase.'
         ],
         featuredReview: {
           author: 'Amanda L.',
@@ -155,7 +172,7 @@
         trustBullets: [
           'Paradise Valley projects usually demand stronger material coordination, privacy planning, and entertaining layout clarity.',
           'Luxury scopes benefit from one design-build team instead of fragmented trades and handoffs.',
-          'Consultations focus on circulation, shade, finish hierarchy, and what the property needs first.'
+          'Project reviews focus on circulation, shade, finish hierarchy, and what the property needs first.'
         ],
         featuredReview: {
           author: 'David R.',
@@ -200,7 +217,7 @@
         trustBullets: [
           'Chandler projects usually focus on outdoor kitchens, patio upgrades, and cleaner entertaining zones.',
           'A strong first plan avoids mismatched appliance, patio, and shade decisions later in the build.',
-          'We use consultations to map how the yard is used today and what should be phased first.'
+          'We use project reviews to map how the yard is used today and what should be phased first.'
         ],
         featuredReview: {
           author: 'Brandon K.',
@@ -230,7 +247,7 @@
         trustBullets: [
           'Gilbert requests usually blend family-friendly function, irrigation efficiency, and lower-maintenance layout improvements.',
           'Backyard lighting, turf strategy, and patio flow are often more valuable than starting with decorative features alone.',
-          'The first consultation helps define the strongest initial phase and the right long-term plan.'
+          'The first project review helps define the strongest initial phase and the right long-term plan.'
         ],
         featuredReview: {
           author: 'Erin W.',
@@ -245,7 +262,7 @@
         trustBullets: [
           'Fountain Hills work usually needs stronger grade awareness, view preservation, and nighttime usability planning.',
           'Hardscape, lighting, and drought-smart planting need to be planned together to avoid a sparse or disjointed result.',
-          'Consultations focus on slope, access, and the most important living zones first.'
+          'Project reviews focus on slope, access, and the most important living zones first.'
         ],
         featuredReview: {
           author: 'Matt R.',
@@ -517,8 +534,8 @@
       bondVerifyUrl: '',
       licenseNumbers: ['157201 CR-21', '304902 B-4'],
       licensePrompt: 'Homeowners can verify Think Green Design | Build Landscape through the official Arizona ROC contractor search using the license numbers shown below.',
-      bondPrompt: 'Bond and insurance documentation is provided during consultation so you can review current coverage before project start.',
-      insuranceStatement: 'Current insurance and bonding documentation is available during consultation for full transparency.',
+      bondPrompt: 'Bond and insurance documentation is provided during project review so you can review current coverage before project start.',
+      insuranceStatement: 'Current insurance and bonding documentation is available during project review for full transparency.',
       responsePromise: 'Most new project requests receive a response within one business day, often sooner.',
       workmanshipWarranty: 'Workmanship warranty details are reviewed during handoff so scope, coverage, and maintenance expectations stay clear.',
       trustHighlights: [
@@ -529,7 +546,7 @@
     },
     financing: {
       enabled: true,
-      copy: 'Financing options may be available for qualified projects. Ask about payment plans during your free consultation.',
+      copy: 'Financing options may be available for qualified projects. Ask about payment plans during your free quote.',
       ctaLabel: 'Ask About Financing',
       ctaHref: '/free-consultation?source=financing_inquiry'
     },

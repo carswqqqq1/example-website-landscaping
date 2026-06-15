@@ -16,6 +16,7 @@
   var LOCATION_PAGES = SITE_CONFIG.locationPages || {};
   var FINANCING = SITE_CONFIG.financing || {};
   var ANALYTICS = SITE_CONFIG.analytics || {};
+  var PRIMARY_OFFER = SITE_CONFIG.primaryOffer || {};
   var REVIEW_FEED_ENDPOINT = String(GOOGLE_REVIEWS.feedEndpoint || '/.netlify/functions/google-reviews').trim();
   var URL_PARAMS = new URLSearchParams(window.location.search);
 
@@ -43,6 +44,11 @@
     snapshotDate: REVIEW_SNAPSHOT_DATE,
     live: false
   };
+  var OFFER_LABEL = String(PRIMARY_OFFER.label || 'Request Free Quote').trim();
+  var OFFER_SHORT_LABEL = String(PRIMARY_OFFER.shortLabel || 'Get Quote').trim();
+  var OFFER_FORM_TITLE = String(PRIMARY_OFFER.formTitle || 'Request a Free Landscaping Quote').trim();
+  var OFFER_SUBMIT_LABEL = String(PRIMARY_OFFER.submitLabel || 'Request My Free Quote').trim();
+  var OFFER_PROMISE = String(PRIMARY_OFFER.promise || 'No pressure, no obligation, and a local team member follows up within one business day.').trim();
 
   function setText(selector, value) {
     document.querySelectorAll(selector).forEach(function (el) {
@@ -215,7 +221,7 @@
         { href: '/process', label: 'Process' },
         { href: '/reviews', label: 'Reviews' },
         { href: '/financing', label: 'Financing' },
-        { href: '/free-consultation', label: 'Free Consultation' }
+        { href: '/free-consultation', label: 'Free Quote' }
       ];
 
       desiredLinks.forEach(function (entry) {
@@ -553,7 +559,7 @@
       button.type = 'button';
       button.className = 'fit-card__action';
       button.setAttribute('data-service-choice', item.ctaService || item.title || 'Not sure yet');
-      button.textContent = 'Request Free Quote';
+      button.textContent = OFFER_LABEL;
 
       article.appendChild(label);
       article.appendChild(title);
@@ -1082,7 +1088,7 @@
 
     if (primaryCta) {
       primaryCta.setAttribute('href', consultHref);
-      primaryCta.textContent = 'Request Free Quote';
+      primaryCta.textContent = OFFER_LABEL;
     }
 
     if (overlayNav) {
@@ -1093,7 +1099,7 @@
         overlayNav.appendChild(createPrimaryNavLink(entry, 'nav__overlay-link'));
       });
       var overlayCta = createPrimaryNavLink(
-        { href: consultHref, label: 'Request Free Quote' },
+        { href: consultHref, label: OFFER_LABEL },
         'nav__overlay-link nav__overlay-cta'
       );
       overlayNav.appendChild(overlayCta);
@@ -1506,7 +1512,7 @@
     var bodyServiceSlug = document.body && document.body.dataset ? document.body.dataset.serviceSlug : '';
 
     if (pathname === '/' || pathname === '/index.html') {
-      return { href: buildConsultationPageHref({ source: 'homepage_sticky' }), label: 'Get Quote' };
+      return { href: buildConsultationPageHref({ source: 'homepage_sticky' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname === '/services') {
       return { href: '/portfolio', label: 'View Portfolio' };
@@ -1563,7 +1569,7 @@
     if (pathname.indexOf('best-landscaper') >= 0) {
       return { href: '/services', label: 'Compare Services' };
     }
-    return { href: '#contact', label: 'Request Free Quote' };
+    return { href: '#contact', label: OFFER_LABEL };
   }
 
   function getOverlayConsultHref() {
@@ -1690,7 +1696,7 @@
       actions.className = 'nav__overlay-actions';
       actions.innerHTML =
         '<a class="nav__overlay-action nav__overlay-action--ghost" data-overlay-call href="#">Call Now</a>' +
-        '<a class="nav__overlay-action nav__overlay-action--solid" data-overlay-consult href="#">Request Free Quote</a>';
+        '<a class="nav__overlay-action nav__overlay-action--solid" data-overlay-consult href="#">' + OFFER_LABEL + '</a>';
       navPanel.insertAdjacentElement('afterend', actions);
     }
 
@@ -1703,7 +1709,7 @@
     }
     if (consultAction) {
       consultAction.setAttribute('href', getOverlayConsultHref());
-      consultAction.textContent = 'Request Free Quote';
+      consultAction.textContent = OFFER_LABEL;
     }
 
     actions.querySelectorAll('a').forEach(function (link) {
@@ -1989,10 +1995,10 @@
       '  <button type="button" class="consult-drawer__close" id="consult-drawer-close" aria-label="Close consultation drawer">&#x2715;</button>' +
       '  <div class="consult-drawer__content">' +
       '    <span class="consult-drawer__eyebrow">Fastest Way to Start</span>' +
-      '    <h2 class="consult-drawer__title" id="consult-drawer-title">Request a Free Landscaping Quote</h2>' +
+      '    <h2 class="consult-drawer__title" id="consult-drawer-title">' + OFFER_FORM_TITLE + '</h2>' +
       '    <p class="consult-drawer__sub">Share the basics about your yard. We will review the project type, location, and timing before calling with the right next step.</p>' +
       '    <ul class="consult-drawer__proof">' +
-      '      <li>No pressure and no obligation</li>' +
+      '      <li>' + OFFER_PROMISE + '</li>' +
       '      <li>Simple upgrades and full transformations are both welcome</li>' +
       '      <li>A local team member follows up within one business day</li>' +
       '    </ul>' +
@@ -2074,7 +2080,7 @@
       '        <textarea id="consult-message" name="message" rows="5" placeholder="Share goals, style preferences, or the kind of yard you want to build."></textarea>' +
       '      </div>' +
       '      <div class="consult-drawer__actions">' +
-      '        <button type="submit" class="btn btn--submit" id="consult-submit">Request My Free Quote</button>' +
+      '        <button type="submit" class="btn btn--submit" id="consult-submit">' + OFFER_SUBMIT_LABEL + '</button>' +
       '        <p class="consult-drawer__note" id="consult-contact-help">We use this only to follow up about your landscaping project.</p>' +
       '        <p class="consult-drawer__error" id="consult-drawer-error" role="alert" aria-live="polite"></p>' +
       '      </div>' +
@@ -2303,7 +2309,7 @@
     state.form.hidden = false;
     state.success.classList.remove('is-visible');
     state.submit.disabled = false;
-    state.submit.textContent = 'Request My Free Quote';
+    state.submit.textContent = OFFER_SUBMIT_LABEL;
     state.error.textContent = '';
     state.error.classList.remove('is-visible');
 
@@ -2398,7 +2404,7 @@
       trigger.hasAttribute('data-form-prefill-trigger') ||
       href.indexOf('#contact') >= 0 ||
       href.indexOf('selected_style=') >= 0 ||
-      text.indexOf('get free design consultation') >= 0 ||
+      text.indexOf('get free landscaping quote') >= 0 ||
       text.indexOf('request a similar project') >= 0;
 
     if (!isConsultTrigger) return;
@@ -3628,7 +3634,7 @@
       '<h2 class="exit-popup__title">Want a clear next step for your yard?</h2>' +
       '<p class="exit-popup__sub">Share your project goals and we will follow up with a clear next-step plan.</p>' +
       '<div class="exit-popup__actions">' +
-      '<a href="' + popupConsultHref + '" class="btn btn--solid exit-popup__cta">Request Free Quote</a>' +
+      '<a href="' + popupConsultHref + '" class="btn btn--solid exit-popup__cta">' + OFFER_LABEL + '</a>' +
       '<button class="exit-popup__dismiss" type="button">Continue browsing</button>' +
       '</div>' +
       '</div>';

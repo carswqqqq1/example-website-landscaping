@@ -19,7 +19,7 @@
         'Clients get one design-build team instead of separate design and construction handoffs.'
       ],
       whatYouGet: [
-        'On-site design consultation and project discovery',
+        'On-site project review and design discovery',
         'Layout planning for circulation, shade, and entertaining',
         'Material and finish selections that match your architecture',
         '3D visual planning before construction begins',
@@ -28,7 +28,7 @@
         'Final walkthrough with punch-list and warranty review'
       ],
       process: [
-        'On-site consultation and scope definition',
+        'On-site walkthrough and scope definition',
         'Concept layout + design direction',
         'Detailed plan, selections, and scheduling',
         'Build execution and final walkthrough'
@@ -49,7 +49,7 @@
       faqs: [
         {
           q: 'How much does landscape design and build cost in Scottsdale?',
-          a: 'Pricing depends on square footage, hardscape scope, features, and material level. During your consultation we provide a practical budget range based on your property and goals.'
+          a: 'Pricing depends on square footage, hardscape scope, features, and material level. During your project review we provide a practical budget range based on your property and goals.'
         },
         {
           q: 'Do you provide 3D renderings before construction?',
@@ -65,7 +65,7 @@
         },
         {
           q: 'What is the first step to get started?',
-          a: 'Start with a free consultation. We review your property, discuss goals, and recommend the best path for design and construction.'
+          a: 'Start with a free quote. We review your property, discuss goals, and recommend the best path for design and construction.'
         }
       ],
       gallery: [
@@ -299,7 +299,7 @@
         },
         {
           q: 'How do we start the design process?',
-          a: 'Book a free consultation and we will map kitchen goals, intended use, and the surrounding layout before finalizing design direction.'
+          a: 'Book a free quote and we will map kitchen goals, intended use, and the surrounding layout before finalizing design direction.'
         }
       ],
       gallery: [
@@ -394,7 +394,7 @@
       resources: [
         { title: 'Scottsdale service area page', path: '/scottsdale-landscaping' },
         { title: 'Resources hub', path: '/resources' },
-        { title: 'Free consultation page', path: '/free-consultation' }
+        { title: 'Free quote page', path: '/free-consultation' }
       ],
       faqs: [
         {
@@ -494,7 +494,7 @@
       resources: [
         { title: 'Outdoor kitchen planning guide', path: '/outdoor-kitchen-planning-arizona' },
         { title: 'Portfolio outdoor living projects', path: '/portfolio?service=pergola-shade' },
-        { title: 'Free consultation page', path: '/free-consultation' }
+        { title: 'Free quote page', path: '/free-consultation' }
       ],
       faqs: [
         {
@@ -511,7 +511,7 @@
         },
         {
           q: 'Can you help if we are not sure between a pergola, ramada, or covered patio idea?',
-          a: 'Yes. We can compare shade options during consultation and recommend the structure type that best fits your budget, style, and comfort goals.'
+          a: 'Yes. We can compare shade options during project review and recommend the structure type that best fits your budget, style, and comfort goals.'
         },
         {
           q: 'Do shade structures work as part of a phased project?',
@@ -615,7 +615,7 @@
         },
         {
           q: 'How quickly can we start?',
-          a: 'After consultation and scope approval, we schedule your project based on complexity and current pipeline timing.'
+          a: 'After project review and scope approval, we schedule your project based on complexity and current pipeline timing.'
         }
       ],
       gallery: [
@@ -832,7 +832,7 @@
       faqs: [
         {
           q: 'How much does artificial turf cost in Scottsdale?',
-          a: 'Pricing depends on area size, base prep, edge complexity, and turf product selection. We provide a clear range during consultation.'
+          a: 'Pricing depends on area size, base prep, edge complexity, and turf product selection. We provide a clear range during project review.'
         },
         {
           q: 'Will artificial turf get too hot in summer?',
@@ -852,7 +852,7 @@
         },
         {
           q: 'How soon can installation be scheduled?',
-          a: 'Scheduling depends on project size and pipeline timing, but we provide an estimated timeline during your consultation.'
+          a: 'Scheduling depends on project size and pipeline timing, but we provide an estimated timeline during your project review.'
         }
       ],
       gallery: [

@@ -5,6 +5,8 @@
   if (!services.length) return;
   var root = document.body;
   var isNestedServicePage = !!(root && root.classList.contains('service-page'));
+  var offerConfig = (window.SITE_CONFIG && window.SITE_CONFIG.primaryOffer) || {};
+  var offerLabel = String(offerConfig.label || 'Request Free Quote').trim();
 
   function byId(id) {
     return document.getElementById(id);
@@ -145,7 +147,7 @@
       '  </ul>' +
       '  <p class="service-story-card__outcome">' + story.outcome + '</p>' +
       '  <div class="service-story-card__actions">' +
-      '    <a class="btn btn--dark" href="' + serviceConsultationHref(service) + '">Get Free Design Consultation</a>' +
+      '    <a class="btn btn--dark" href="' + serviceConsultationHref(service) + '">' + offerLabel + '</a>' +
       '    <a class="text-link" href="' + normalizeDisplayPath(service.path) + '">' + detailLinkLabel + ' &rarr;</a>' +
       '  </div>' +
       '</article>';
@@ -172,7 +174,7 @@
       '  <header class="service-block__header reveal reveal--left">' +
       '    <p class="eyebrow">Project Stories</p>' +
       '    <h2 class="section-title">How These Services Show Up in Real Arizona Projects</h2>' +
-      '    <p>Short scope snapshots help homeowners compare service fit before they book a consultation.</p>' +
+      '    <p>Short scope snapshots help homeowners compare service fit before they request a quote.</p>' +
       '  </header>' +
       '  <div class="service-story-grid">' +
       storyServices.map(function (service) {
@@ -212,7 +214,7 @@
         }).join('') +
         '  </ul>' +
         '  <div class="service-card__actions">' +
-        '    <a class="btn btn--dark" href="' + serviceConsultationHref(service) + '">Get Free Design Consultation</a>' +
+        '    <a class="btn btn--dark" href="' + serviceConsultationHref(service) + '">' + offerLabel + '</a>' +
         '    <a class="text-link" href="' + service.path + '">View Service Details &rarr;</a>' +
         '  </div>' +
         '</article>';
@@ -255,7 +257,7 @@
       heroBackground.style.backgroundImage = 'url(\"../' + service.gallery[0].src + '\")';
     }
 
-    var ctaLabel = 'Get Free Design Consultation';
+    var ctaLabel = offerLabel;
     ctaPrimaryAll.forEach(function (link) {
       link.setAttribute('href', serviceConsultationHref(service));
       link.textContent = ctaLabel;
