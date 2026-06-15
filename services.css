@@ -498,6 +498,57 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   font-size: .9rem;
 }
 
+.service-quote-guide {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.service-quote-guide__panel {
+  border: 1px solid #e2d8ca;
+  border-radius: 14px;
+  background: #fff;
+  padding: 1rem 1.05rem;
+  box-shadow: 0 14px 30px rgba(28, 44, 36, .06);
+}
+
+.service-quote-guide__panel--dark {
+  background: var(--ink);
+  border-color: rgba(255,255,255,.08);
+  color: #fff;
+}
+
+.service-quote-guide__panel h3 {
+  margin-top: .28rem;
+  font-family: var(--font-head);
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  line-height: 1.12;
+}
+
+.service-quote-guide__panel ul {
+  margin-top: .75rem;
+  display: grid;
+  gap: .52rem;
+  padding-left: 1.05rem;
+}
+
+.service-quote-guide__panel li {
+  color: var(--ink-light);
+  line-height: 1.62;
+  font-size: .9rem;
+}
+
+.service-quote-guide__panel--dark .eyebrow,
+.service-quote-guide__panel--dark li {
+  color: rgba(255,255,255,.78);
+}
+
+.service-quote-guide__panel .text-link {
+  margin-top: .82rem;
+  display: inline-flex;
+}
+
 .service-steps {
   margin-top: 1rem;
   display: grid;
@@ -902,6 +953,10 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   }
 
   .service-fit {
+    grid-template-columns: 1fr;
+  }
+
+  .service-quote-guide {
     grid-template-columns: 1fr;
   }
 

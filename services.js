@@ -181,6 +181,142 @@
     }).join('');
   }
 
+  function pricingDriversFor(service) {
+    var fallback = {
+      'landscape-design': [
+        'Whether the scope needs concept planning, 3D visuals, construction details, or full design-build coordination.',
+        'How many zones need decisions: patio, planting, lighting, irrigation, shade, kitchen, or fire features.',
+        'Revision depth, material selections, site measurements, and HOA or permitting requirements.'
+      ],
+      hardscaping: [
+        'Square footage, demo, base depth, drainage correction, edge restraint, and finish material.',
+        'Transitions into doors, steps, walls, turf, planting, fire features, kitchens, or existing concrete.',
+        'Access, haul-off, grade changes, compaction needs, and whether the patio supports future phases.'
+      ],
+      'outdoor-kitchens': [
+        'Appliance package, utility routing, island size, counter material, and cabinet or masonry style.',
+        'Whether the kitchen needs adjacent patio work, shade, lighting, seating, or fire-feature coordination.',
+        'Gas, electric, water, drainage, access, and finish choices that affect labor and schedule.'
+      ],
+      'outdoor-lighting': [
+        'Fixture count, transformer capacity, wiring access, control type, and number of lighting zones.',
+        'Whether the scope is path safety, patio use, accent lighting, architecture, trees, or full-property coverage.',
+        'Existing system condition, trenching access, voltage drop, and future landscape plans.'
+      ],
+      'pergola-shade': [
+        'Structure size, material, footing needs, attachment method, fan or lighting integration, and finish detail.',
+        'Sun exposure, roofline relationship, patio layout, drainage, and whether permits or engineering are needed.',
+        'Access, demolition, existing slab condition, and coordination with kitchens, seating, or lighting.'
+      ],
+      'fire-features': [
+        'Gas line distance, feature type, finish material, seating layout, ventilation, and ignition controls.',
+        'Whether the feature is standalone or tied into pavers, seat walls, kitchens, or full patio redesign.',
+        'Access, utility trenching, code clearance, drainage, and surrounding hardscape complexity.'
+      ],
+      'desert-landscaping': [
+        'Plant palette, boulder or rock quantities, irrigation conversion, grading, removals, and lighting tie-ins.',
+        'Whether the goal is curb appeal, lower water use, privacy, slope control, or full-yard transformation.',
+        'Soil condition, existing irrigation, drainage, HOA rules, and how sparse or lush the final look should feel.'
+      ],
+      'artificial-turf': [
+        'Square footage, turf product, base depth, drainage, seams, edge complexity, and removal work.',
+        'Pet use, heat exposure, putting or play areas, and how turf connects to pavers or planting beds.',
+        'Existing grass, rock, irrigation, concrete, grade changes, and access for base material.'
+      ],
+      irrigation: [
+        'Zone count, valve access, controller needs, water pressure, drip conversion, and system condition.',
+        'Whether the scope is troubleshooting, retrofit, new planting support, or full system redesign.',
+        'Plant types, sun exposure, runoff, leaks, trenching access, and compatibility with future landscape work.'
+      ]
+    };
+    return service && Array.isArray(service.pricingDrivers) && service.pricingDrivers.length
+      ? service.pricingDrivers
+      : (fallback[service.slug] || [
+        'Final price depends on scope, access, finish choices, and existing site conditions.',
+        'Photos and rough measurements help narrow the first realistic planning range.',
+        'The best quote separates must-have work from later-phase upgrades.'
+      ]);
+  }
+
+  function quotePrepFor(service) {
+    var fallback = {
+      'landscape-design': [
+        'Photos from each corner of the yard and from the main indoor view looking out.',
+        'A must-have list, a nice-to-have list, and any style references you already like.',
+        'Timing, HOA, access, drainage, or budget limits that should shape the first design direction.'
+      ],
+      hardscaping: [
+        'Approximate patio or walkway dimensions and photos of existing concrete, steps, slopes, and gates.',
+        'How the area will be used: dining, lounge, fire, kitchen, pool access, or daily walkway.',
+        'Any cracking, pooling water, grade problems, or transitions that already bother you.'
+      ],
+      'outdoor-kitchens': [
+        'Desired appliances and whether gas, electric, or water already exists nearby.',
+        'Photos of the patio, utility area, seating zone, and shade conditions.',
+        'How you host: quick grilling, full meals, bar seating, prep space, or weekend entertaining.'
+      ],
+      'outdoor-lighting': [
+        'A few dusk or night photos showing dark paths, patios, entries, trees, or feature areas.',
+        'Whether you have an existing transformer, timer, or low-voltage wiring.',
+        'The main goal: safety, curb appeal, patio comfort, feature accents, or all of the above.'
+      ],
+      'pergola-shade': [
+        'Photos of the patio, roofline, sun direction, and any slab or footing area.',
+        'Desired use: dining shade, lounge comfort, grill cover, fans, lighting, or visual structure.',
+        'Any HOA, permit, material, color, or attachment constraints you already know.'
+      ],
+      'fire-features': [
+        'Where the feature should sit and whether gas is already available nearby.',
+        'Preferred style: fire pit, fireplace, linear feature, seat-wall integration, or lounge zone.',
+        'Photos of surrounding patio, furniture plan, shade, drainage, and access.'
+      ],
+      'desert-landscaping': [
+        'Photos of the current planting, irrigation, rock, turf, slopes, and sun exposure.',
+        'Whether the goal is lower water use, better curb appeal, privacy, color, or less maintenance.',
+        'Plants or looks you like, plus anything you definitely want removed.'
+      ],
+      'artificial-turf': [
+        'Approximate turf area and photos of edges, gates, slopes, irrigation, and adjacent surfaces.',
+        'How the turf will be used: pets, kids, putting, curb appeal, or low-maintenance green.',
+        'Whether old grass, rock, concrete, or sprinklers need removal or adjustment.'
+      ],
+      irrigation: [
+        'Photos or notes showing dry spots, runoff, leaks, controller location, and valve areas.',
+        'What changed recently: new plants, dead plants, high water bills, pressure issues, or uneven coverage.',
+        'Whether irrigation is standalone or part of planting, turf, or full landscape work.'
+      ]
+    };
+    return service && Array.isArray(service.quotePrep) && service.quotePrep.length
+      ? service.quotePrep
+      : (fallback[service.slug] || [
+        'Photos of the area from a few angles.',
+        'A rough budget range, timeline, and must-have outcome.',
+        'Any access, HOA, drainage, utility, or maintenance constraints.'
+      ]);
+  }
+
+  function insertServiceQuoteGuide(service, anchor) {
+    if (!anchor || !service || document.getElementById('service-quote-guide')) return;
+
+    var section = document.createElement('div');
+    section.className = 'service-quote-guide reveal';
+    section.id = 'service-quote-guide';
+    section.innerHTML = '' +
+      '<article class="service-quote-guide__panel service-quote-guide__panel--dark">' +
+      '  <p class="eyebrow">Why Prices Move</p>' +
+      '  <h3>What Changes ' + service.title + ' Pricing</h3>' +
+      '  <ul>' + buildFitList(pricingDriversFor(service).slice(0, 3)) + '</ul>' +
+      '</article>' +
+      '<article class="service-quote-guide__panel">' +
+      '  <p class="eyebrow">Before You Request a Quote</p>' +
+      '  <h3>What Helps Us Respond Faster</h3>' +
+      '  <ul>' + buildFitList(quotePrepFor(service).slice(0, 3)) + '</ul>' +
+      '  <a class="text-link" href="' + serviceConsultationHref(service) + '">' + offerLabel + ' &rarr;</a>' +
+      '</article>';
+
+    anchor.insertAdjacentElement('afterend', section);
+  }
+
   function renderHubStories() {
     var ctaSection = document.querySelector('.services-hub-cta');
     if (!ctaSection) return;
@@ -336,6 +472,7 @@
           '  <ul>' + buildFitList(servicePlanningItems(service)) + '</ul>' +
           '</article>';
         rangeCard.insertAdjacentElement('afterend', fitCard);
+        insertServiceQuoteGuide(service, fitCard);
         if (Array.isArray(service.proofBlurbs) && service.proofBlurbs.length) {
           var proofStrip = document.createElement('div');
           proofStrip.className = 'service-proof-blurbs reveal';
@@ -440,6 +577,8 @@
       if (existingResourceBlock) existingResourceBlock.remove();
       if (Array.isArray(service.resources) && service.resources.length) {
         var resourceBlock = document.createElement('div');
+        var relatedContainer = relatedSection.querySelector('.container');
+        if (!relatedContainer) return;
         resourceBlock.className = 'service-related__resources reveal';
         resourceBlock.innerHTML =
           '<p class="service-related__eyebrow">Related Guides</p>' +
@@ -448,7 +587,7 @@
             return '<li><a href="' + normalizeDisplayPath(item.path) + '">' + item.title + '</a></li>';
           }).join('') +
           '</ul>';
-        relatedSection.querySelector('.container').appendChild(resourceBlock);
+        relatedContainer.appendChild(resourceBlock);
       }
     }
 
