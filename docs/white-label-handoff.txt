@@ -22,7 +22,7 @@ See `docs/pricing-and-contracts.md` for full payment terms.
 
 1. Create a new client branch from the current production-ready template branch:
    ```bash
-   git checkout claude/landscaping-company-website-hl2cg
+   git checkout master
    git checkout -b codex/<client-slug>-site
    ```
 2. Link or create a dedicated Netlify site for that client.

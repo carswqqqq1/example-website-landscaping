@@ -4,9 +4,9 @@ This branch contains the reusable static landscaping template that powers the li
 
 ## Source Of Truth
 
-- GitHub repo: `https://github.com/carswqqqq1/README`
-- Branch: `claude/landscaping-company-website-hl2cg`
-- Live site: `https://thinkgreendesignbuild.com`
+- GitHub repo: `https://github.com/carswqqqq1/example-website-landscaping`
+- Branch: `master`
+- Live demo: `https://example-website-landscaping.netlify.app`
 
 If production and branch ever drift, fix that before making visual or funnel edits. The branch should stay the source of truth for this template.
 

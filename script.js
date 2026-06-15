@@ -30,7 +30,7 @@
   var SITE_ZIP = ADDRESS.zip || '85260';
   var REVIEW_RATING = String(REVIEW_SUMMARY.rating || SITE_CONFIG.reviewRating || GOOGLE_REVIEWS.rating || '').trim();
   var REVIEW_COUNT = String(REVIEW_SUMMARY.count || SITE_CONFIG.reviewCount || GOOGLE_REVIEWS.count || '').trim();
-  var REVIEW_SOURCE = String(REVIEW_SUMMARY.source || SITE_CONFIG.reviewSource || GOOGLE_REVIEWS.platform || 'Birdeye').trim();
+  var REVIEW_SOURCE = String(REVIEW_SUMMARY.source || SITE_CONFIG.reviewSource || GOOGLE_REVIEWS.platform || 'Google').trim();
   var REVIEW_SOURCE_URL = String(REVIEW_SUMMARY.sourceUrl || SITE_CONFIG.reviewSourceUrl || GOOGLE_REVIEWS.profileUrl || '').trim();
   var REVIEW_SNAPSHOT_DATE = String(REVIEW_SUMMARY.snapshotDate || SITE_CONFIG.reviewSnapshotDate || GOOGLE_REVIEWS.snapshotDate || '').trim();
   var BUSINESS_YEARS = String(SITE_CONFIG.businessYears || '').trim();
@@ -3613,6 +3613,7 @@
     var popupBrand = popupConfig.brand || {};
     var popupLogoPath = String(popupBrand.logoPath || 'img/logo.png').trim();
     var popupLogo = popupLogoPath.charAt(0) === '/' ? popupLogoPath : '/' + popupLogoPath.replace(/^\.?\//, '');
+    var popupConsultHref = '/free-consultation?source=exit_popup&autostart=1';
     var popup = document.createElement('div');
     popup.className = 'exit-popup';
     popup.setAttribute('role', 'dialog');
@@ -3627,7 +3628,7 @@
       '<h2 class="exit-popup__title">Get Free Design Consultation</h2>' +
       '<p class="exit-popup__sub">Share your project goals and we will follow up with a clear next-step plan.</p>' +
       '<div class="exit-popup__actions">' +
-      '<a href="' + getGlobalConsultFallbackHref() + '" class="btn btn--solid exit-popup__cta">Get Free Design Consultation</a>' +
+      '<a href="' + popupConsultHref + '" class="btn btn--solid exit-popup__cta">Get Free Design Consultation</a>' +
       '<button class="exit-popup__dismiss" type="button">Continue browsing</button>' +
       '</div>' +
       '</div>';

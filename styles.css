@@ -872,6 +872,14 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   flex-wrap: wrap;
   animation: heroSlideUp .85s var(--ease-out) .8s both;
 }
+.hero__reassurance {
+  margin-top: .78rem;
+  color: rgba(255,255,255,.82);
+  font-size: .84rem;
+  line-height: 1.55;
+  text-shadow: 0 2px 12px rgba(0,0,0,.55);
+  animation: heroSlideUp .85s var(--ease-out) .92s both;
+}
 .hero__stats {
   margin-top: 1.6rem;
   max-width: 920px;
@@ -3001,6 +3009,10 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   color: var(--ink-light);
   letter-spacing: .03em;
 }
+.field-optional {
+  color: var(--ink-faint);
+  font-weight: 400;
+}
 .form-field input,
 .form-field select,
 .form-field textarea {
@@ -3740,6 +3752,15 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     border-radius: 14px;
     padding: .72rem .72rem .8rem;
     background: rgba(0,0,0,.22);
+  }
+  .hero__eyebrow,
+  .hero__heading,
+  .hero__sub,
+  .hero__actions,
+  .hero__reassurance {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
   .hero__overlay { background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.60) 100%); }
   .featured,

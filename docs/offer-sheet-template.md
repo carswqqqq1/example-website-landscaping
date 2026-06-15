@@ -91,7 +91,7 @@ Reply with **"GO"** and we send your intake form + invoice within the hour.
 
 ## Agency Notes (Internal — Do Not Send to Client)
 
-**Template:** `carswqqqq1/README` — branch `claude/landscaping-company-website-hl2cg`
+**Template:** `carswqqqq1/example-website-landscaping` — branch `master`
 
 **Setup time per client:** 4–6 hours active work across 3 days
 
