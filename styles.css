@@ -2918,6 +2918,17 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   font-size: .83rem;
   line-height: 1.55;
 }
+.contact__steps {
+  margin: .8rem 0 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: .42rem;
+}
+.contact__steps li {
+  color: #4f4841;
+  font-size: .84rem;
+  line-height: 1.55;
+}
 .contact__trust a {
   color: var(--green);
   font-weight: 600;

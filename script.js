@@ -553,7 +553,7 @@
       button.type = 'button';
       button.className = 'fit-card__action';
       button.setAttribute('data-service-choice', item.ctaService || item.title || 'Not sure yet');
-      button.textContent = 'Get Free Design Consultation';
+      button.textContent = 'Request Free Quote';
 
       article.appendChild(label);
       article.appendChild(title);
@@ -1082,7 +1082,7 @@
 
     if (primaryCta) {
       primaryCta.setAttribute('href', consultHref);
-      primaryCta.textContent = 'Get Free Design Consultation';
+      primaryCta.textContent = 'Request Free Quote';
     }
 
     if (overlayNav) {
@@ -1093,7 +1093,7 @@
         overlayNav.appendChild(createPrimaryNavLink(entry, 'nav__overlay-link'));
       });
       var overlayCta = createPrimaryNavLink(
-        { href: consultHref, label: 'Get Free Design Consultation' },
+        { href: consultHref, label: 'Request Free Quote' },
         'nav__overlay-link nav__overlay-cta'
       );
       overlayNav.appendChild(overlayCta);
@@ -1506,7 +1506,7 @@
     var bodyServiceSlug = document.body && document.body.dataset ? document.body.dataset.serviceSlug : '';
 
     if (pathname === '/' || pathname === '/index.html') {
-      return { href: '/services', label: 'View Services' };
+      return { href: buildConsultationPageHref({ source: 'homepage_sticky' }), label: 'Get Quote' };
     }
     if (pathname === '/services') {
       return { href: '/portfolio', label: 'View Portfolio' };
@@ -1563,7 +1563,7 @@
     if (pathname.indexOf('best-landscaper') >= 0) {
       return { href: '/services', label: 'Compare Services' };
     }
-    return { href: '#contact', label: 'Get Free Design Consultation' };
+    return { href: '#contact', label: 'Request Free Quote' };
   }
 
   function getOverlayConsultHref() {
@@ -1690,7 +1690,7 @@
       actions.className = 'nav__overlay-actions';
       actions.innerHTML =
         '<a class="nav__overlay-action nav__overlay-action--ghost" data-overlay-call href="#">Call Now</a>' +
-        '<a class="nav__overlay-action nav__overlay-action--solid" data-overlay-consult href="#">Get Free Design Consultation</a>';
+        '<a class="nav__overlay-action nav__overlay-action--solid" data-overlay-consult href="#">Request Free Quote</a>';
       navPanel.insertAdjacentElement('afterend', actions);
     }
 
@@ -1703,7 +1703,7 @@
     }
     if (consultAction) {
       consultAction.setAttribute('href', getOverlayConsultHref());
-      consultAction.textContent = 'Get Free Design Consultation';
+      consultAction.textContent = 'Request Free Quote';
     }
 
     actions.querySelectorAll('a').forEach(function (link) {
@@ -1989,12 +1989,12 @@
       '  <button type="button" class="consult-drawer__close" id="consult-drawer-close" aria-label="Close consultation drawer">&#x2715;</button>' +
       '  <div class="consult-drawer__content">' +
       '    <span class="consult-drawer__eyebrow">Fastest Way to Start</span>' +
-      '    <h2 class="consult-drawer__title" id="consult-drawer-title">Get Free Design Consultation</h2>' +
-      '    <p class="consult-drawer__sub">Share your project type, city, and best contact details. We will follow up quickly with the right next step.</p>' +
+      '    <h2 class="consult-drawer__title" id="consult-drawer-title">Request a Free Landscaping Quote</h2>' +
+      '    <p class="consult-drawer__sub">Share the basics about your yard. We will review the project type, location, and timing before calling with the right next step.</p>' +
       '    <ul class="consult-drawer__proof">' +
-      '      <li>No homepage scrolling required</li>' +
-      '      <li>Service and style context stay attached to your request</li>' +
-      '      <li>Arizona response team follows up within one business day</li>' +
+      '      <li>No pressure and no obligation</li>' +
+      '      <li>Simple upgrades and full transformations are both welcome</li>' +
+      '      <li>A local team member follows up within one business day</li>' +
       '    </ul>' +
       '    <div class="consult-drawer__context" id="consult-drawer-context">' +
       '      <strong id="consult-drawer-context-label">Request Context</strong>' +
@@ -2074,7 +2074,7 @@
       '        <textarea id="consult-message" name="message" rows="5" placeholder="Share goals, style preferences, or the kind of yard you want to build."></textarea>' +
       '      </div>' +
       '      <div class="consult-drawer__actions">' +
-      '        <button type="submit" class="btn btn--submit" id="consult-submit">Get Free Design Consultation</button>' +
+      '        <button type="submit" class="btn btn--submit" id="consult-submit">Request My Free Quote</button>' +
       '        <p class="consult-drawer__note" id="consult-contact-help">We use this only to follow up about your landscaping project.</p>' +
       '        <p class="consult-drawer__error" id="consult-drawer-error" role="alert" aria-live="polite"></p>' +
       '      </div>' +
@@ -2303,7 +2303,7 @@
     state.form.hidden = false;
     state.success.classList.remove('is-visible');
     state.submit.disabled = false;
-    state.submit.textContent = 'Get Free Design Consultation';
+    state.submit.textContent = 'Request My Free Quote';
     state.error.textContent = '';
     state.error.classList.remove('is-visible');
 
@@ -3625,10 +3625,10 @@
       '<button class="exit-popup__close" aria-label="Close">&times;</button>' +
       '<div class="exit-popup__icon" aria-hidden="true"><img src="' + popupLogo + '" alt="" loading="lazy" decoding="async" width="68" height="68"></div>' +
       '<p class="exit-popup__eyebrow">Before You Leave</p>' +
-      '<h2 class="exit-popup__title">Get Free Design Consultation</h2>' +
+      '<h2 class="exit-popup__title">Want a clear next step for your yard?</h2>' +
       '<p class="exit-popup__sub">Share your project goals and we will follow up with a clear next-step plan.</p>' +
       '<div class="exit-popup__actions">' +
-      '<a href="' + popupConsultHref + '" class="btn btn--solid exit-popup__cta">Get Free Design Consultation</a>' +
+      '<a href="' + popupConsultHref + '" class="btn btn--solid exit-popup__cta">Request Free Quote</a>' +
       '<button class="exit-popup__dismiss" type="button">Continue browsing</button>' +
       '</div>' +
       '</div>';
