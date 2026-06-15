@@ -14,6 +14,7 @@
   var SERVICE_AREAS = Array.isArray(SITE_CONFIG.serviceAreas) ? SITE_CONFIG.serviceAreas : [];
   var TRUST_ASSETS = SITE_CONFIG.trustAssets || {};
   var LOCATION_PAGES = SITE_CONFIG.locationPages || {};
+  var PAGE_CONVERSION_GUIDES = SITE_CONFIG.pageConversionGuides || {};
   var FINANCING = SITE_CONFIG.financing || {};
   var ANALYTICS = SITE_CONFIG.analytics || {};
   var PRIMARY_OFFER = SITE_CONFIG.primaryOffer || {};
@@ -49,6 +50,101 @@
   var OFFER_FORM_TITLE = String(PRIMARY_OFFER.formTitle || 'Request a Free Landscaping Quote').trim();
   var OFFER_SUBMIT_LABEL = String(PRIMARY_OFFER.submitLabel || 'Request My Free Quote').trim();
   var OFFER_PROMISE = String(PRIMARY_OFFER.promise || 'No pressure, no obligation, and a local team member follows up within one business day.').trim();
+  var DEFAULT_PAGE_CONVERSION_GUIDES = {
+    '/ahwatukee-landscape-design': {
+      eyebrow: 'Design Quote Fit',
+      title: 'Use This Page When the Yard Needs a Plan Before a Price',
+      intro: 'Ahwatukee homeowners usually get the most value when the first conversation sorts layout, shade, and phasing before construction numbers are treated as final.',
+      bullets: ['You are comparing ideas but do not yet know which backyard zone should happen first.', 'The yard needs patios, shade, planting, lighting, or turf to feel connected instead of patched together.', 'You want a quote path that can separate design scope from build-ready work.'],
+      questions: ['Photos of the yard from the house, patio, side gate, and any problem corners.', 'A rough must-have list, even if the finish style is still undecided.', 'Any HOA, drainage, access, or timing constraints that could affect build sequencing.'],
+      nextSteps: ['Whether the first step is a design plan, a focused quote, or a phased project roadmap.', 'Which features should be priced now and which should stay in a later phase.', 'What information is still needed before a realistic construction range can be given.'],
+      ctaHref: '/free-consultation?city=Ahwatukee&service=landscape-design&source=conversion_guide&autostart=1'
+    },
+    '/chandler-landscaping': {
+      eyebrow: 'Chandler Quote Fit',
+      title: 'Make the First Quote About the Backyard You Actually Use',
+      intro: 'For Chandler yards, the strongest first quote usually connects entertaining space, shade, kitchen or grill plans, and everyday maintenance instead of pricing one isolated feature.',
+      bullets: ['You want a patio, outdoor kitchen, turf, or lighting plan that works together.', 'The yard is usable now but feels unfinished, hot, or awkward for hosting.', 'You need help deciding whether the first phase should be hardscape, shade, or utilities.'],
+      questions: ['How many people the yard needs to handle on a normal weekend.', 'Whether gas, electric, water, or drainage already exists near the project area.', 'Which part of the yard feels most annoying or underused today.'],
+      nextSteps: ['A clear first-phase recommendation for the highest-use area.', 'Whether kitchen, patio, shade, or lighting decisions should be bundled.', 'Budget direction before appliance or finish choices create false expectations.'],
+      ctaHref: '/free-consultation?city=Chandler&source=conversion_guide&autostart=1'
+    },
+    '/mesa-landscaping': {
+      eyebrow: 'Mesa Quote Fit',
+      title: 'Start With the Practical Upgrade That Changes Daily Use',
+      intro: 'Mesa projects often convert from scattered maintenance problems into cleaner family-use spaces. The quote should identify the most useful first phase before chasing every cosmetic idea.',
+      bullets: ['You want lower maintenance without making the yard feel empty.', 'Turf, pavers, irrigation, or lighting all touch the same area.', 'You need a budget-conscious first phase that still supports a long-term plan.'],
+      questions: ['Which areas get used by kids, pets, guests, or no one at all.', 'Current irrigation, drainage, grass, rock, or concrete problems.', 'The rough budget range you are comfortable exploring first.'],
+      nextSteps: ['Whether turf, pavers, irrigation, or planting should lead the scope.', 'Which items are must-fix function problems versus later visual upgrades.', 'How to phase work without rebuilding the same area twice.'],
+      ctaHref: '/free-consultation?city=Mesa&source=conversion_guide&autostart=1'
+    },
+    '/glendale-hardscaping': {
+      eyebrow: 'Hardscape Quote Fit',
+      title: 'Price the Patio Around Use, Drainage, and Edge Details',
+      intro: 'A useful hardscape quote should clarify base prep, drainage, access, borders, steps, and how the new surface meets the rest of the yard.',
+      bullets: ['You are comparing pavers, concrete, or patio expansion options.', 'The current patio is too small, cracked, poorly drained, or disconnected from seating areas.', 'You want a durable layout that supports shade, fire, lighting, or kitchen upgrades later.'],
+      questions: ['Approximate patio size and whether demolition is needed.', 'Photos showing slope, gates, existing concrete, steps, and drainage trouble spots.', 'Whether the patio needs to support furniture, cooking, fire, or a future cover.'],
+      nextSteps: ['A realistic hardscape range based on prep and finish level.', 'Which details affect durability: base depth, edge restraint, drainage, and transitions.', 'Whether the project should include lighting, seating walls, or future utility planning.'],
+      ctaHref: '/free-consultation?city=Glendale&service=hardscaping&source=conversion_guide&autostart=1'
+    },
+    '/north-phoenix-outdoor-lighting': {
+      eyebrow: 'Lighting Quote Fit',
+      title: 'Quote Lighting Around Safety, Curb Appeal, and Night Use',
+      intro: 'Good lighting is not just fixture count. The first quote should separate path safety, accent lighting, patio comfort, wiring access, and the zones that matter after sunset.',
+      bullets: ['The yard looks unfinished or unsafe at night.', 'You want path, patio, tree, wall, or architecture lighting to feel coordinated.', 'Existing lighting is dim, random, over-bright, or hard to maintain.'],
+      questions: ['Night photos or a short list of areas that feel too dark.', 'Whether existing low-voltage wiring, transformer, or timers are already installed.', 'Which zones matter most: entry, path, patio, pool-adjacent area, or feature plants.'],
+      nextSteps: ['Which fixtures and zones should be included in the first phase.', 'Whether wiring access or transformer capacity affects price.', 'How lighting can support future planting, patio, or hardscape upgrades.'],
+      ctaHref: '/free-consultation?city=North%20Phoenix&service=outdoor-lighting&source=conversion_guide&autostart=1'
+    },
+    '/outdoor-kitchen-planning-arizona': {
+      eyebrow: 'Kitchen Quote Fit',
+      title: 'Avoid Pricing an Outdoor Kitchen Before the Layout Works',
+      intro: 'Outdoor kitchen quotes vary fast because utility routing, shade, counters, appliances, and seating flow all change the scope.',
+      bullets: ['You know you want a grill area but not the exact layout or appliance package.', 'The kitchen needs to connect to shade, seating, patio traffic, or a pool area.', 'You want to avoid buying appliances before the build plan is clear.'],
+      questions: ['Preferred cooking style: quick grilling, hosting, prep space, bar seating, or full kitchen.', 'Photos of nearby utilities, patio surface, shade, and access path.', 'Appliance must-haves versus nice-to-haves.'],
+      nextSteps: ['Whether the first quote should include utilities, shade, patio changes, or just the kitchen island.', 'Which appliance and counter choices drive the budget most.', 'Whether the kitchen should be phased with hardscape, lighting, or fire features.'],
+      ctaHref: '/free-consultation?service=outdoor-kitchens&source=conversion_guide&autostart=1'
+    },
+    '/pavers-vs-concrete-arizona': {
+      eyebrow: 'Material Quote Fit',
+      title: 'Choose the Surface After You Understand the Tradeoffs',
+      intro: 'This comparison should lead to a better quote conversation: not just pavers versus concrete, but how each option handles cracking, repair, drainage, heat, and finish level.',
+      bullets: ['You are replacing or expanding a patio, walkway, driveway edge, or gathering area.', 'You care about repair flexibility, premium finish, or long-term appearance.', 'You need to understand whether concrete savings are worth the visual and repair tradeoffs.'],
+      questions: ['Photos of the existing surface, edges, cracks, grade, and nearby walls or steps.', 'Approximate square footage and how the area will be used.', 'Whether the surface needs to tie into fire, seating, lighting, kitchen, or planting zones.'],
+      nextSteps: ['A recommendation based on use, finish expectations, and repair tolerance.', 'Which prep items matter before any square-foot price is meaningful.', 'Whether the patio should be quoted alone or with surrounding outdoor-living features.'],
+      ctaHref: '/free-consultation?service=hardscaping&source=conversion_guide&autostart=1'
+    },
+    '/peoria-artificial-turf': {
+      eyebrow: 'Turf Quote Fit',
+      title: 'Make the Turf Quote About Prep, Drainage, and Real Use',
+      intro: 'Artificial turf pricing depends on more than square footage. A useful quote should account for base prep, edges, drainage, heat exposure, pets, play, and how turf meets hardscape.',
+      bullets: ['You want a cleaner lawn look without constant watering or patch repair.', 'The area needs to work for pets, kids, curb appeal, or a small putting/play zone.', 'You care about installation quality instead of just the cheapest turf roll.'],
+      questions: ['Approximate turf area and whether old grass, rock, concrete, or irrigation must be removed.', 'How the turf will be used: pets, kids, front-yard curb appeal, putting, or low-maintenance green.', 'Photos showing edges, slopes, drainage, and adjacent pavers or planting.'],
+      nextSteps: ['A range based on prep, product, drainage, and edge complexity.', 'Whether heat exposure or pet use changes the turf recommendation.', 'How turf should connect to pavers, rock, lighting, or planting beds.'],
+      ctaHref: '/free-consultation?city=Peoria&service=artificial-turf&source=conversion_guide&autostart=1'
+    },
+    '/xeriscape-vs-turf-arizona': {
+      eyebrow: 'Yard Strategy Fit',
+      title: 'Choose the Yard Strategy Before Choosing Materials',
+      intro: 'The right answer is not always turf or xeriscape. The better quote conversation starts with water use, maintenance tolerance, shade, pets, curb appeal, and how the family uses the yard.',
+      bullets: ['You are deciding between lower-water planting, artificial turf, or a mixed layout.', 'The current yard feels too hot, too thirsty, too bare, or too much work.', 'You want a plan that looks intentional instead of just replacing grass with rock.'],
+      questions: ['Where the yard needs green softness versus where it can be lower-water planting.', 'Pet, kid, HOA, shade, and maintenance requirements.', 'Current irrigation condition and whether grass removal or grading is needed.'],
+      nextSteps: ['Whether turf, xeriscape, or a hybrid plan fits the actual use case.', 'Which irrigation and soil-prep changes belong in the first quote.', 'How to phase the project if front yard and backyard priorities differ.'],
+      ctaHref: '/free-consultation?service=desert-landscaping&source=conversion_guide&autostart=1'
+    },
+    '/landscaping-cost-scottsdale': {
+      eyebrow: 'Budget Quote Fit',
+      title: 'Turn a Rough Budget Into a Scope You Can Compare',
+      intro: 'The cost guide should help homeowners avoid fake precision. A quote is most useful when budget, finish level, site conditions, and the first phase are all discussed together.',
+      bullets: ['You have a rough budget but are not sure what it realistically buys.', 'The project includes several possible scopes: patio, turf, planting, kitchen, lighting, or shade.', 'You want to compare options without getting trapped by a vague low estimate.'],
+      questions: ['A comfortable budget range and the absolute must-have outcome.', 'Photos and rough measurements for the highest-priority area.', 'Whether you want the full yard priced or the strongest first phase priced first.'],
+      nextSteps: ['A realistic scope range instead of a misleading single number.', 'Which features should be included, phased, or removed to match the budget.', 'What site conditions could change pricing after an on-site review.'],
+      ctaHref: '/free-consultation?source=cost_guide_conversion&autostart=1'
+    }
+  };
+  if (!Object.keys(PAGE_CONVERSION_GUIDES).length) {
+    PAGE_CONVERSION_GUIDES = DEFAULT_PAGE_CONVERSION_GUIDES;
+  }
 
   function setText(selector, value) {
     document.querySelectorAll(selector).forEach(function (el) {
@@ -1031,6 +1127,52 @@
     }
   }
 
+  function injectPageConversionGuide() {
+    var guidePath = normalizedPath.replace(/\.html$/i, '');
+    var guide = PAGE_CONVERSION_GUIDES[normalizedPath] || PAGE_CONVERSION_GUIDES[guidePath];
+    if (!guide || document.querySelector('[data-page-conversion-guide]')) return;
+
+    var targetSection = document.querySelector('.page-section--alt') || document.querySelector('.faq.page-section') || document.querySelector('main .page-section:last-of-type');
+    if (!targetSection || !targetSection.parentNode) return;
+
+    var bullets = Array.isArray(guide.bullets) ? guide.bullets.slice(0, 3) : [];
+    var questions = Array.isArray(guide.questions) ? guide.questions.slice(0, 3) : [];
+    var nextSteps = Array.isArray(guide.nextSteps) ? guide.nextSteps.slice(0, 3) : [];
+    if (!bullets.length && !questions.length && !nextSteps.length) return;
+
+    var section = document.createElement('section');
+    section.className = 'page-section page-section--conversion';
+    section.setAttribute('data-page-conversion-guide', 'true');
+    section.innerHTML = '' +
+      '<div class="container">' +
+      '  <header class="page-section__header reveal reveal--left">' +
+      '    <p class="eyebrow">' + (guide.eyebrow || 'Quote Fit') + '</p>' +
+      '    <h2 class="section-title">' + (guide.title || 'Know If This Is the Right Next Step') + '</h2>' +
+      '    <p>' + (guide.intro || 'Use these notes to decide whether to request a quote now or keep planning first.') + '</p>' +
+      '  </header>' +
+      '  <div class="conversion-guide">' +
+      buildConversionGuideCard('Good fit when', bullets) +
+      buildConversionGuideCard('Prepare before the callback', questions) +
+      buildConversionGuideCard('What the follow-up should clarify', nextSteps) +
+      '  </div>' +
+      '  <div class="conversion-guide__actions reveal">' +
+      '    <a class="btn btn--solid" href="' + (guide.ctaHref || recommendedConsultHref()) + '">' + (guide.ctaLabel || OFFER_LABEL) + '</a>' +
+      '    <a class="text-link" href="/project-planning-checklist">Use the planning checklist &rarr;</a>' +
+      '  </div>' +
+      '</div>';
+
+    targetSection.parentNode.insertBefore(section, targetSection);
+  }
+
+  function buildConversionGuideCard(label, items) {
+    if (!items || !items.length) return '';
+    return '' +
+      '<article class="conversion-guide__card reveal reveal--scale">' +
+      '  <p class="conversion-guide__label">' + label + '</p>' +
+      '  <ul>' + items.map(function (item) { return '<li>' + item + '</li>'; }).join('') + '</ul>' +
+      '</article>';
+  }
+
   function toPathname(href) {
     if (!href) return '';
     if (href.charAt(0) === '#') return normalizedPath === '/' ? href : '';
@@ -1482,6 +1624,7 @@
   dedupeConsultNavigationLinks();
   applyActiveNavigationState();
   normalizeConsultationLinks();
+  injectPageConversionGuide();
 
   /* ---- MOBILE MENU ---- */
   var burger = document.getElementById('nav-burger');
