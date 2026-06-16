@@ -88,6 +88,119 @@ function writeFile(filePath, contents) {
   fs.writeFileSync(filePath, contents);
 }
 
+function loadServicesData() {
+  const previousWindow = global.window;
+  global.window = {};
+  delete require.cache[require.resolve(path.join(root, 'services-data.js'))];
+  require(path.join(root, 'services-data.js'));
+  const services = Array.isArray(global.window.SERVICES_DATA) ? global.window.SERVICES_DATA : [];
+  global.window = previousWindow;
+  return services;
+}
+
+function listItems(items) {
+  return (Array.isArray(items) ? items : [])
+    .map((item) => `- ${item}`)
+    .join('\n');
+}
+
+function buildServiceConversionPlan(services, config) {
+  const offerLabel = config.primaryOffer && config.primaryOffer.label
+    ? config.primaryOffer.label
+    : 'Request Free Quote';
+
+  return `# ${config.businessName} Service Conversion Plan
+
+Use this file before launch to make every service page feel specific to the landscaper's actual sales process. Replace any demo examples that do not match the client, especially project ranges, proof, photo captions, FAQs, and CTA language.
+
+## Global Offer Check
+- Primary CTA: ${offerLabel}
+- Quote page: ${config.primaryOffer && config.primaryOffer.path ? config.primaryOffer.path : '/free-consultation'}
+- Response promise: ${config.trustSignals && config.trustSignals.responsePromise ? config.trustSignals.responsePromise : 'Confirm with client before launch.'}
+- Financing: ${config.financing && config.financing.enabled === false ? 'Disabled' : 'Enabled or available if approved by client'}
+
+## Service Page Review
+${services.map((service) => {
+  const project = service.featuredProject || {};
+  const resources = Array.isArray(service.resources) ? service.resources.map((item) => `${item.title} (${item.path})`) : [];
+
+  return `### ${service.title}
+- URL: ${service.path}
+- Form value: ${service.formValue || service.title}
+- Current planning range: ${service.typicalRange || 'Add a realistic planning range or remove the range block.'}
+- Current hero: ${service.heroHeadline}
+
+**Best-fit buyers to confirm**
+${listItems(service.goodFit)}
+
+**Price drivers to confirm**
+${listItems(service.pricingDrivers || [
+  'Scope, square footage, access, finish selections, and existing site conditions.',
+  'Utility, drainage, grade, and demolition complexity.',
+  'Whether the project should be phased or bundled with adjacent services.'
+])}
+
+**Quote-prep questions to ask**
+${listItems(service.quotePrep || [
+  'Photos from several angles.',
+  'Rough measurements and intended use.',
+  'Budget comfort, timing, HOA, access, utility, or maintenance constraints.'
+])}
+
+**Proof blurbs to replace with verified client proof**
+${listItems(service.proofBlurbs)}
+
+**Featured project story**
+- Title: ${project.title || 'Add verified project story'}
+- Location: ${project.location || 'Add city/neighborhood'}
+- Scope: ${project.scope || 'Add project scope'}
+- Timeline: ${project.timeline || 'Add timeline'}
+- Outcome: ${project.outcome || 'Add measurable or specific homeowner outcome'}
+
+**Related resources**
+${listItems(resources)}
+
+**Launch questions**
+- Does this service deserve a dedicated page for this client, or should it be removed from nav?
+- What is the CTA label homeowners should see for this service?
+- What 3 real photos prove this service best?
+- What objection keeps homeowners from requesting a quote for this service?
+- What job size should the client accept, decline, or refer out?
+`;
+}).join('\n')}
+`;
+}
+
+function buildServiceOverrideStarter(services) {
+  const overrides = {};
+  services.forEach((service) => {
+    overrides[service.slug] = {
+      enabled: true,
+      ctaLabel: `Plan My ${service.title} Project`,
+      typicalRange: service.typicalRange || '',
+      goodFit: service.goodFit || [],
+      planFor: service.planFor || [],
+      pricingDrivers: service.pricingDrivers || [],
+      quotePrep: service.quotePrep || [],
+      proofBlurbs: service.proofBlurbs || [],
+      featuredProject: service.featuredProject || {
+        title: '',
+        location: '',
+        scope: '',
+        timeline: '',
+        outcome: ''
+      },
+      faqNotes: 'Replace generic FAQs with questions this client actually answers during sales calls.',
+      photoNotes: 'Map final project photos to this service before launch.'
+    };
+  });
+
+  return `${JSON.stringify({
+    _note: 'Starter worksheet for service-level conversion copy. This file is generated for client onboarding; apply approved values to services-data.js before launch.',
+    serviceContentOverrides: overrides
+  }, null, 2)}\n`;
+}
+
 const inputPath = process.argv[2];
 if (!inputPath) {
   console.error('Usage: node scripts/generate-client-package.js <path-to-client-config.json> [output-dir]');
@@ -102,6 +215,7 @@ const outputRoot = process.argv[3]
 const incoming = JSON.parse(fs.readFileSync(absoluteInputPath, 'utf8'));
 const mergedConfig = merge(loadSiteConfig(), incoming);
 validate(mergedConfig);
+const services = loadServicesData();
 
 const slug = slugify(mergedConfig.shortName || mergedConfig.businessName || 'client-site');
 const buildDir = path.join(outputRoot, slug);
@@ -168,12 +282,13 @@ Generated on ${today} from ${absoluteInputPath}
 2. Run \`node scripts/apply-client-config.js ${absoluteInputPath}\`.
 3. Update review URLs, license verification URLs, and social profiles if needed.
 4. Confirm the offer, financing language, service list, and city-specific quote guide match the client.
-5. Run \`npm run build:assets\`.
-6. Run all release checks, including \`npm run check:client-package\`.
-7. Collect completion payment before pointing DNS.
-8. Link or create Netlify site \`${netlifySite}\`.
-9. Deploy and do the manual accessibility checklist before final launch.
-10. Set up monthly auto-invoice for $${monthlyAmt}/month.
+5. Fill out \`service-conversion-plan.md\` and apply approved service-specific copy to \`services-data.js\`.
+6. Run \`npm run build:assets\`.
+7. Run all release checks, including \`npm run check:client-package\`.
+8. Collect completion payment before pointing DNS.
+9. Link or create Netlify site \`${netlifySite}\`.
+10. Deploy and do the manual accessibility checklist before final launch.
+11. Set up monthly auto-invoice for $${monthlyAmt}/month.
 `;
 
 const envTemplate = `NETLIFY_AUTH_TOKEN=
@@ -200,6 +315,7 @@ const checklist = `# ${mergedConfig.shortName} Release Checklist
 - [ ] Confirm all service areas and location pages
 - [ ] Confirm primary offer label and promise
 - [ ] Confirm financing is enabled, disabled, or rewritten for this client
+- [ ] Complete \`service-conversion-plan.md\`: service CTAs, price drivers, quote-prep questions, project stories, proof blurbs, FAQs, and accepted job sizes
 - [ ] Confirm page conversion guide language matches the client sales process
 - [ ] Sweep for any remaining demo/template brand residue
 
@@ -233,6 +349,8 @@ writeFile(path.join(buildDir, 'client-summary.md'), summary);
 writeFile(path.join(buildDir, 'netlify-env-template.txt'), envTemplate);
 writeFile(path.join(buildDir, 'launch-checklist.md'), checklist);
 writeFile(path.join(buildDir, 'merged-site-config-preview.json'), `${JSON.stringify(mergedConfig, null, 2)}\n`);
+writeFile(path.join(buildDir, 'service-conversion-plan.md'), buildServiceConversionPlan(services, mergedConfig));
+writeFile(path.join(buildDir, 'service-content-overrides-starter.json'), buildServiceOverrideStarter(services));
 
 console.log(`Generated client package in ${buildDir}`);
 console.log(`  Branch:       ${branchName}`);
