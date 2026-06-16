@@ -283,12 +283,13 @@ Generated on ${today} from ${absoluteInputPath}
 3. Update review URLs, license verification URLs, and social profiles if needed.
 4. Confirm the offer, financing language, service list, and city-specific quote guide match the client.
 5. Fill out \`service-conversion-plan.md\` and apply approved service-specific copy to \`services-data.js\`.
-6. Run \`npm run build:assets\`.
-7. Run all release checks, including \`npm run check:client-package\`.
-8. Collect completion payment before pointing DNS.
-9. Link or create Netlify site \`${netlifySite}\`.
-10. Deploy and do the manual accessibility checklist before final launch.
-11. Set up monthly auto-invoice for $${monthlyAmt}/month.
+6. Use \`competitor-positioning-checklist.md\` to confirm portfolio depth, process model, team proof, calculator ranges, financing, and local trust positioning.
+7. Run \`npm run build:assets\`.
+8. Run all release checks, including \`npm run check:client-package\`.
+9. Collect completion payment before pointing DNS.
+10. Link or create Netlify site \`${netlifySite}\`.
+11. Deploy and do the manual accessibility checklist before final launch.
+12. Set up monthly auto-invoice for $${monthlyAmt}/month.
 `;
 
 const envTemplate = `NETLIFY_AUTH_TOKEN=
@@ -316,6 +317,7 @@ const checklist = `# ${mergedConfig.shortName} Release Checklist
 - [ ] Confirm primary offer label and promise
 - [ ] Confirm financing is enabled, disabled, or rewritten for this client
 - [ ] Complete \`service-conversion-plan.md\`: service CTAs, price drivers, quote-prep questions, project stories, proof blurbs, FAQs, and accepted job sizes
+- [ ] Complete \`competitor-positioning-checklist.md\`: real project photos, process model, team proof, budget calculator ranges, financing language, and local trust proof
 - [ ] Confirm page conversion guide language matches the client sales process
 - [ ] Sweep for any remaining demo/template brand residue
 
@@ -345,9 +347,47 @@ const checklist = `# ${mergedConfig.shortName} Release Checklist
 - [ ] Archive client config JSON in \`client-builds/${slug}/\`
 `;
 
+const competitorChecklist = `# ${mergedConfig.shortName} Competitor Positioning Checklist
+
+This launch checklist is based on current Arizona landscaping competitors that emphasize portfolio depth, clear process, budget confidence, team proof, financing, and visible licensing. Use it to make this clone feel like a real local company, not a filled-in template.
+
+## 1. Portfolio Depth
+- [ ] Add at least 8-12 real project photos before launch.
+- [ ] Map each strongest photo to a service page or portfolio filter.
+- [ ] Replace any demo photo that does not match the client's actual work quality, market, or services.
+- [ ] Add captions that explain scope, location, material, or outcome.
+
+## 2. Process Model
+- [ ] Confirm how the client sells: free quote, paid design, design deposit, phased estimate, or maintenance-first relationship.
+- [ ] Rewrite homepage/process copy around that real model.
+- [ ] Confirm what happens after form submission and how fast the client actually follows up.
+
+## 3. Budget Confidence
+- [ ] Confirm every public planning range on service pages and \`/cost-calculator\`.
+- [ ] Remove or rewrite ranges the client cannot stand behind.
+- [ ] Add "what changes price" bullets for services where final scope varies heavily.
+
+## 4. Human and Trust Proof
+- [ ] Add owner/team names or photos if the client approves.
+- [ ] Verify review rating, review count, and source URL.
+- [ ] Verify license, bond, insurance, warranty, and any award claims.
+- [ ] Do not invent years in business, project counts, awards, or review quotes.
+
+## 5. Financing and Large-Project Fit
+- [ ] Confirm whether financing should be shown.
+- [ ] Confirm provider, eligibility language, and compliance wording before launch.
+- [ ] Pair financing copy with scope clarity so it supports confidence instead of pressure.
+
+## 6. Local Market Position
+- [ ] List the client's top 3 local competitors and URLs.
+- [ ] Identify one thing the client can credibly say better: faster communication, better design, better clean-up, luxury portfolio, water-wise expertise, warranty clarity, or transparent pricing.
+- [ ] Make sure the homepage hero, service pages, and quote drawer all reinforce that same position.
+`;
+
 writeFile(path.join(buildDir, 'client-summary.md'), summary);
 writeFile(path.join(buildDir, 'netlify-env-template.txt'), envTemplate);
 writeFile(path.join(buildDir, 'launch-checklist.md'), checklist);
+writeFile(path.join(buildDir, 'competitor-positioning-checklist.md'), competitorChecklist);
 writeFile(path.join(buildDir, 'merged-site-config-preview.json'), `${JSON.stringify(mergedConfig, null, 2)}\n`);
 writeFile(path.join(buildDir, 'service-conversion-plan.md'), buildServiceConversionPlan(services, mergedConfig));
 writeFile(path.join(buildDir, 'service-content-overrides-starter.json'), buildServiceOverrideStarter(services));

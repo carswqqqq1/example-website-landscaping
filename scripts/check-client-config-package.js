@@ -94,6 +94,7 @@ try {
 
   const requiredFiles = [
     'client-summary.md',
+    'competitor-positioning-checklist.md',
     'launch-checklist.md',
     'merged-site-config-preview.json',
     'netlify-env-template.txt',
@@ -123,10 +124,19 @@ try {
     'featuredProject',
     'photoNotes'
   ]);
+  const competitorFindings = assertIncludes(path.join(buildDir, 'competitor-positioning-checklist.md'), [
+    'Competitor Positioning Checklist',
+    'Portfolio Depth',
+    'Process Model',
+    'Budget Confidence',
+    'Human and Trust Proof',
+    'Financing and Large-Project Fit',
+    'Local Market Position'
+  ]);
 
-  if (conversionPlanFindings.length || starterFindings.length) {
+  if (conversionPlanFindings.length || starterFindings.length || competitorFindings.length) {
     console.error('Client package service conversion files are incomplete:');
-    conversionPlanFindings.concat(starterFindings).forEach((finding) => {
+    conversionPlanFindings.concat(starterFindings, competitorFindings).forEach((finding) => {
       console.error(`- ${finding.file}: missing "${finding.term}"`);
     });
     process.exit(1);
