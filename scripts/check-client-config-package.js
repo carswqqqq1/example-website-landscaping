@@ -116,6 +116,10 @@ try {
     'Proof blurbs to replace with verified client proof',
     'What job size should the client accept, decline, or refer out?'
   ]);
+  const summaryFindings = assertIncludes(path.join(buildDir, 'client-summary.md'), [
+    'apply-service-content-overrides.js',
+    'service-content-overrides-starter.json'
+  ]);
   const starterFindings = assertIncludes(path.join(buildDir, 'service-content-overrides-starter.json'), [
     'serviceContentOverrides',
     'pricingDrivers',
@@ -134,9 +138,9 @@ try {
     'Local Market Position'
   ]);
 
-  if (conversionPlanFindings.length || starterFindings.length || competitorFindings.length) {
+  if (conversionPlanFindings.length || summaryFindings.length || starterFindings.length || competitorFindings.length) {
     console.error('Client package service conversion files are incomplete:');
-    conversionPlanFindings.concat(starterFindings, competitorFindings).forEach((finding) => {
+    conversionPlanFindings.concat(summaryFindings, starterFindings, competitorFindings).forEach((finding) => {
       console.error(`- ${finding.file}: missing "${finding.term}"`);
     });
     process.exit(1);

@@ -221,6 +221,7 @@ const slug = slugify(mergedConfig.shortName || mergedConfig.businessName || 'cli
 const buildDir = path.join(outputRoot, slug);
 const branchName = `codex/${slug}-site`;
 const netlifySite = `${slug}-site`;
+const serviceOverrideCommand = `node scripts/apply-service-content-overrides.js client-builds/${slug}/service-content-overrides-starter.json`;
 
 // Pull agency meta if present (not merged into site config)
 const agencyMeta = incoming._agencyMeta || {};
@@ -282,7 +283,7 @@ Generated on ${today} from ${absoluteInputPath}
 2. Run \`node scripts/apply-client-config.js ${absoluteInputPath}\`.
 3. Update review URLs, license verification URLs, and social profiles if needed.
 4. Confirm the offer, financing language, service list, and city-specific quote guide match the client.
-5. Fill out \`service-conversion-plan.md\` and apply approved service-specific copy to \`services-data.js\`.
+5. Fill out \`service-conversion-plan.md\`, update \`service-content-overrides-starter.json\`, then run \`${serviceOverrideCommand}\`.
 6. Use \`competitor-positioning-checklist.md\` to confirm portfolio depth, process model, team proof, calculator ranges, financing, and local trust positioning.
 7. Run \`npm run build:assets\`.
 8. Run all release checks, including \`npm run check:client-package\`.
@@ -317,6 +318,7 @@ const checklist = `# ${mergedConfig.shortName} Release Checklist
 - [ ] Confirm primary offer label and promise
 - [ ] Confirm financing is enabled, disabled, or rewritten for this client
 - [ ] Complete \`service-conversion-plan.md\`: service CTAs, price drivers, quote-prep questions, project stories, proof blurbs, FAQs, and accepted job sizes
+- [ ] Apply approved service edits with \`${serviceOverrideCommand}\`
 - [ ] Complete \`competitor-positioning-checklist.md\`: real project photos, process model, team proof, budget calculator ranges, financing language, and local trust proof
 - [ ] Confirm page conversion guide language matches the client sales process
 - [ ] Sweep for any remaining demo/template brand residue
