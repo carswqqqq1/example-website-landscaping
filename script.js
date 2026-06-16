@@ -1653,18 +1653,16 @@
   function getPageSecondaryAction() {
     var pathname = normalizedPath;
     var bodyServiceSlug = document.body && document.body.dataset ? document.body.dataset.serviceSlug : '';
+    var nativeQuoteAction = getNativeQuoteAction();
 
     if (pathname === '/' || pathname === '/index.html') {
       return { href: buildConsultationPageHref({ source: 'homepage_sticky' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname === '/services') {
-      return { href: '/portfolio', label: 'View Portfolio' };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'services_hub' }), label: 'Start My Project Review' };
     }
     if (pathname.indexOf('/services/') === 0 && bodyServiceSlug) {
-      return {
-        href: '/portfolio?service=' + encodeURIComponent(bodyServiceSlug),
-        label: 'View Similar Projects'
-      };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'service_page' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname.indexOf('/portfolio') === 0) {
       return { href: '#portfolio-consultation', label: 'Request Similar Project' };
@@ -1677,10 +1675,10 @@
       pathname.indexOf('mesa-landscaping') >= 0 ||
       pathname.indexOf('chandler-landscaping') >= 0
     ) {
-      return { href: '/portfolio', label: 'View Local Projects' };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'location_page' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname.indexOf('/resources') === 0) {
-      return { href: '/services', label: 'Explore Services' };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'resources_hub' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname.indexOf('project-planning-checklist') >= 0) {
       return { href: '#checklist-gate', label: 'Download Checklist' };
@@ -1698,21 +1696,40 @@
       return { href: '/services', label: 'Explore Services' };
     }
     if (pathname.indexOf('landscaping-cost-scottsdale') >= 0) {
-      return { href: '/scottsdale-landscaping', label: 'View Scottsdale Page' };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'cost_guide' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname.indexOf('xeriscape-vs-turf-arizona') >= 0) {
-      return { href: '/services/desert-landscaping', label: 'Compare Services' };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'resource_article' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname.indexOf('pavers-vs-concrete-arizona') >= 0) {
-      return { href: '/services/hardscaping', label: 'Compare Services' };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'resource_article' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname.indexOf('outdoor-kitchen-planning-arizona') >= 0) {
-      return { href: '/services/outdoor-kitchens', label: 'Compare Services' };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'resource_article' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname.indexOf('best-landscaper') >= 0) {
-      return { href: '/services', label: 'Compare Services' };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'comparison_page' }), label: OFFER_SHORT_LABEL };
     }
-    return { href: '#contact', label: OFFER_LABEL };
+    return nativeQuoteAction || { href: getGlobalConsultFallbackHref(), label: OFFER_SHORT_LABEL };
+  }
+
+  function getNativeQuoteAction() {
+    var links = Array.prototype.slice.call(document.querySelectorAll('a[href*="free-consultation"]'));
+    var genericLabels = /^(contact|quote|free quote|get quote|request free quote|request my free quote)$/i;
+    var best = links.find(function (link) {
+      if (link.closest('.nav__overlay-actions')) return false;
+      var label = String(link.textContent || '').replace(/\s+/g, ' ').trim();
+      return label && !genericLabels.test(label);
+    }) || links.find(function (link) {
+      var label = String(link.textContent || '').replace(/\s+/g, ' ').trim();
+      return label && !/^contact$/i.test(label);
+    });
+
+    if (!best) return null;
+    return {
+      href: best.getAttribute('href'),
+      label: String(best.textContent || '').replace(/\s+/g, ' ').trim()
+    };
   }
 
   function getOverlayConsultHref() {

@@ -40,6 +40,22 @@
     return withBase('/free-consultation?' + params.toString());
   }
 
+  function serviceCtaLabel(service) {
+    var labels = {
+      'landscape-design': 'Plan My Landscape Project',
+      'hardscaping': 'Plan My Hardscape Project',
+      'outdoor-kitchens': 'Plan My Outdoor Kitchen',
+      'fire-features': 'Plan My Fire Feature',
+      'artificial-turf': 'Plan My Turf Project',
+      'irrigation': 'Plan My Irrigation Fix',
+      'desert-landscaping': 'Plan My Desert Yard',
+      'outdoor-lighting': 'Plan My Lighting Layout',
+      'pergola-shade': 'Plan My Shade Structure'
+    };
+
+    return labels[service && service.slug] || offerLabel;
+  }
+
   function servicePortfolioHref(service) {
     return withBase('portfolio?service=' + encodeURIComponent(service.slug));
   }
@@ -421,7 +437,7 @@
       heroBackground.style.backgroundImage = 'url(\"../' + service.gallery[0].src + '\")';
     }
 
-    var ctaLabel = offerLabel;
+    var ctaLabel = serviceCtaLabel(service);
     ctaPrimaryAll.forEach(function (link) {
       link.setAttribute('href', serviceConsultationHref(service));
       link.textContent = ctaLabel;

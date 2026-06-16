@@ -64,6 +64,23 @@ function hasOnlyOnPageQuotePath(html) {
     /href="#[^"]*(?:consultation|quote|contact)[^"]*"/i.test(html);
 }
 
+function stripTags(value) {
+  return String(value || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function extractQuoteCtas(html) {
+  return [...html.matchAll(/<a\b[^>]*href="([^"]*free-consultation[^"]*)"[^>]*>([\s\S]*?)<\/a>/gi)]
+    .map((match) => ({
+      href: match[1],
+      text: stripTags(match[2])
+    }))
+    .filter((cta) => cta.text);
+}
+
+function isGenericQuoteText(text) {
+  return /^(?:Contact|Quote|Free Quote|Get Quote|Request Free Quote|Request My Free Quote)$/i.test(text);
+}
+
 function getAttr(tag, attr) {
   const match = tag.match(new RegExp(`\\s${attr}="([^"]*)"`, 'i'));
   return match ? match[1].trim() : '';
@@ -160,6 +177,25 @@ htmlFiles.forEach((file) => {
 
   if (hasOnlyOnPageQuotePath(html) && !/free-consultation\.html|index\.html/.test(file)) {
     failures.push(`${file}: high-intent quote/contact CTA still points only to an on-page anchor`);
+  }
+
+  const quoteCtas = extractQuoteCtas(html);
+  const isMoneyPage = file.startsWith('services/') ||
+    /(?:landscaping|hardscaping|outdoor-kitchens|outdoor-lighting|artificial-turf|pergola-shade|landscape-design)\.html$/.test(file) ||
+    [
+      'services.html',
+      'best-landscaper-scottsdale.html',
+      'project-planning-checklist.html',
+      'landscaping-cost-scottsdale.html',
+      'xeriscape-vs-turf-arizona.html',
+      'pavers-vs-concrete-arizona.html',
+      'outdoor-kitchen-planning-arizona.html',
+      'resources.html'
+    ].includes(file);
+  const intentCtas = quoteCtas.filter((cta) => !isGenericQuoteText(cta.text));
+
+  if (isMoneyPage && quoteCtas.length && intentCtas.length < 2) {
+    failures.push(`${file}: money page needs at least two intent-specific quote CTA labels`);
   }
 
   if (isIndexedPage && !/<meta\s+(?:property|name)="og:image"/i.test(html)) {
