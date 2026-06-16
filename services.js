@@ -163,7 +163,7 @@
       '  </ul>' +
       '  <p class="service-story-card__outcome">' + story.outcome + '</p>' +
       '  <div class="service-story-card__actions">' +
-      '    <a class="btn btn--dark" href="' + serviceConsultationHref(service) + '">' + offerLabel + '</a>' +
+      '    <a class="btn btn--dark" href="' + serviceConsultationHref(service) + '">' + serviceCtaLabel(service) + '</a>' +
       '    <a class="text-link" href="' + normalizeDisplayPath(service.path) + '">' + detailLinkLabel + ' &rarr;</a>' +
       '  </div>' +
       '</article>';
