@@ -90,9 +90,10 @@ function localAssetExists(assetPath, file) {
   return !localPath || fs.existsSync(path.join(root, localPath));
 }
 
-function extractOgImagePath(html) {
-  const match = html.match(/<meta\s+(?:property|name)="og:image"\s+content="([^"]+)"/i) ||
-    html.match(/<meta\s+content="([^"]+)"\s+(?:property|name)="og:image"/i);
+function extractMetaImagePath(html, metaName) {
+  const escapedName = metaName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = html.match(new RegExp(`<meta\\s+(?:property|name)="${escapedName}"\\s+content="([^"]+)"`, 'i')) ||
+    html.match(new RegExp(`<meta\\s+content="([^"]+)"\\s+(?:property|name)="${escapedName}"`, 'i'));
   if (!match) return '';
 
   try {
@@ -165,9 +166,14 @@ htmlFiles.forEach((file) => {
     failures.push(`${file}: indexed page missing og:image`);
   }
 
-  const ogImagePath = extractOgImagePath(html);
+  const ogImagePath = extractMetaImagePath(html, 'og:image');
   if (ogImagePath && !fs.existsSync(path.join(root, ogImagePath))) {
     failures.push(`${file}: og:image points to missing asset ${ogImagePath}`);
+  }
+
+  const twitterImagePath = extractMetaImagePath(html, 'twitter:image');
+  if (twitterImagePath && !fs.existsSync(path.join(root, twitterImagePath))) {
+    failures.push(`${file}: twitter:image points to missing asset ${twitterImagePath}`);
   }
 
   [...html.matchAll(/<img\b[^>]*>/gi)].forEach((match) => {
