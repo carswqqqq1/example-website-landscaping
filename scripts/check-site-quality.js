@@ -64,9 +64,53 @@ function hasOnlyOnPageQuotePath(html) {
     /href="#[^"]*(?:consultation|quote|contact)[^"]*"/i.test(html);
 }
 
+function getAttr(tag, attr) {
+  const match = tag.match(new RegExp(`\\s${attr}="([^"]*)"`, 'i'));
+  return match ? match[1].trim() : '';
+}
+
+function isExternalAsset(assetPath) {
+  return /^(?:https?:)?\/\//i.test(assetPath) || /^data:/i.test(assetPath);
+}
+
+function normalizeLocalAssetPath(assetPath, file) {
+  if (!assetPath || isExternalAsset(assetPath)) return null;
+
+  const cleanPath = assetPath.split('?')[0].split('#')[0];
+  const fileDir = path.dirname(file);
+  const joined = cleanPath.startsWith('/')
+    ? cleanPath.replace(/^\/+/, '')
+    : path.normalize(path.join(fileDir === '.' ? '' : fileDir, cleanPath));
+
+  return joined.replace(/\\/g, '/');
+}
+
+function localAssetExists(assetPath, file) {
+  const localPath = normalizeLocalAssetPath(assetPath, file);
+  return !localPath || fs.existsSync(path.join(root, localPath));
+}
+
+function extractOgImagePath(html) {
+  const match = html.match(/<meta\s+(?:property|name)="og:image"\s+content="([^"]+)"/i) ||
+    html.match(/<meta\s+content="([^"]+)"\s+(?:property|name)="og:image"/i);
+  if (!match) return '';
+
+  try {
+    const url = new URL(match[1]);
+    return url.pathname.replace(/^\/+/, '');
+  } catch {
+    return match[1].replace(/^\/+/, '');
+  }
+}
+
+const sitemapRoutes = extractSitemapRoutes();
+const sitemapFiles = sitemapRoutes.map(routeToFile);
+const sitemapFileSet = new Set(sitemapFiles);
+
 // HTML checks
 htmlFiles.forEach((file) => {
   const html = read(file);
+  const isIndexedPage = sitemapFileSet.has(file);
 
   const manifestMatches = html.match(/rel="manifest"/g) || [];
   if (manifestMatches.length > 1) {
@@ -116,11 +160,47 @@ htmlFiles.forEach((file) => {
   if (hasOnlyOnPageQuotePath(html) && !/free-consultation\.html|index\.html/.test(file)) {
     failures.push(`${file}: high-intent quote/contact CTA still points only to an on-page anchor`);
   }
-});
 
-const sitemapRoutes = extractSitemapRoutes();
-const sitemapFiles = sitemapRoutes.map(routeToFile);
-const sitemapFileSet = new Set(sitemapFiles);
+  if (isIndexedPage && !/<meta\s+(?:property|name)="og:image"/i.test(html)) {
+    failures.push(`${file}: indexed page missing og:image`);
+  }
+
+  const ogImagePath = extractOgImagePath(html);
+  if (ogImagePath && !fs.existsSync(path.join(root, ogImagePath))) {
+    failures.push(`${file}: og:image points to missing asset ${ogImagePath}`);
+  }
+
+  [...html.matchAll(/<img\b[^>]*>/gi)].forEach((match) => {
+    const tag = match[0];
+    const src = getAttr(tag, 'src');
+    const alt = getAttr(tag, 'alt');
+    const width = getAttr(tag, 'width');
+    const height = getAttr(tag, 'height');
+    const className = getAttr(tag, 'class');
+    const isLogo = /nav__logo-img|site-logo/i.test(`${className} ${tag}`);
+
+    if (!src) {
+      failures.push(`${file}: image is missing src`);
+      return;
+    }
+
+    if (!alt) failures.push(`${file}: image ${src} is missing alt text`);
+    if (!width || !height) failures.push(`${file}: image ${src} is missing width/height`);
+    if (!localAssetExists(src, file)) failures.push(`${file}: image src points to missing asset ${src}`);
+
+    if (!isLogo) {
+      if (!/loading="lazy"/i.test(tag)) failures.push(`${file}: image ${src} is missing loading="lazy"`);
+      if (!/decoding="async"/i.test(tag)) failures.push(`${file}: image ${src} is missing decoding="async"`);
+    }
+  });
+
+  [...html.matchAll(/background-image\s*:\s*url\((['"]?)([^'")]+)\1\)/gi)].forEach((match) => {
+    const imagePath = match[2].trim();
+    if (!localAssetExists(imagePath, file)) {
+      failures.push(`${file}: background image points to missing asset ${imagePath}`);
+    }
+  });
+});
 
 sitemapFiles.forEach((file) => {
   if (!fs.existsSync(path.join(root, file))) {
