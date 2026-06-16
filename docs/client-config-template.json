@@ -9,17 +9,106 @@
     "raw": "4805550000",
     "display": "(480) 555-0000"
   },
+  "phoneTracking": {
+    "default": {
+      "raw": "4805550000",
+      "display": "(480) 555-0000"
+    },
+    "sources": {
+      "google": {
+        "raw": "4805550000",
+        "display": "(480) 555-0000"
+      },
+      "gbp": {
+        "raw": "4805550000",
+        "display": "(480) 555-0000"
+      },
+      "ads": {
+        "raw": "4805550001",
+        "display": "(480) 555-0001"
+      }
+    }
+  },
   "address": {
     "line1": "1234 Example Ave",
     "city": "Scottsdale",
     "state": "AZ",
     "zip": "85260"
   },
+  "footer": {
+    "blurb": "Premium landscape design and construction for Scottsdale, Phoenix, and nearby service areas.",
+    "note": "Licensed, bonded, and insured local landscaping team",
+    "reviewLabel": "Read Google reviews",
+    "reviewUrl": "https://example.com/reviews"
+  },
   "serviceAreas": [
     "Scottsdale",
     "Phoenix"
   ],
+  "coreServices": [
+    "Landscape Design & Build",
+    "Hardscaping",
+    "Outdoor Kitchens",
+    "Fire Features",
+    "Desert Landscaping",
+    "Artificial Turf",
+    "Irrigation Systems",
+    "Outdoor Lighting",
+    "Pergolas and Shade Structures"
+  ],
   "businessYears": "10+ years serving Arizona homeowners",
+  "primaryOffer": {
+    "label": "Request Free Quote",
+    "shortLabel": "Get Quote",
+    "pageTitle": "Free Landscaping Quote",
+    "formTitle": "Request a Free Landscaping Quote",
+    "submitLabel": "Request My Free Quote",
+    "path": "/free-consultation",
+    "promise": "No pressure, no obligation, and a local team member follows up within one business day.",
+    "customizableExamples": [
+      "Free Landscaping Quote",
+      "Free Turf Estimate",
+      "Free Backyard Walkthrough",
+      "Free Design Consultation",
+      "Same-Week Estimate Request"
+    ],
+    "cloningNote": "Change this offer to match the landscaper sales process before launch. Keep the CTA outcome-specific and easy to understand."
+  },
+  "trustSignals": {
+    "licensed": true,
+    "bonded": true,
+    "insured": true,
+    "responsePromise": "Most project requests receive a response within one business day.",
+    "projectCountLabel": "Replace with a verified project-count or remove before launch.",
+    "noFakeClaimsNote": "Do not invent awards, years in business, rankings, or review counts when cloning this template."
+  },
+  "aiReadability": {
+    "summary": "Client Landscaping Company is a residential landscaping and outdoor living company serving homeowners across Scottsdale, Phoenix, and nearby communities.",
+    "homeownerFit": "Best fit for homeowners who want clear project planning, durable outdoor living upgrades, and an easy quote request path.",
+    "quotePath": "/free-consultation",
+    "priorityPages": [
+      {
+        "label": "Home",
+        "path": "/"
+      },
+      {
+        "label": "Services",
+        "path": "/services"
+      },
+      {
+        "label": "Portfolio",
+        "path": "/portfolio"
+      },
+      {
+        "label": "Reviews",
+        "path": "/reviews"
+      },
+      {
+        "label": "Free Quote",
+        "path": "/free-consultation"
+      }
+    ]
+  },
   "reviewSummary": {
     "rating": "4.8",
     "count": "120",
@@ -32,6 +121,15 @@
   "reviewSource": "Google",
   "reviewSourceUrl": "https://example.com/reviews",
   "reviewSnapshotDate": "Cached Google snapshot as of March 8, 2026",
+  "googleReviews": {
+    "enabled": false,
+    "platform": "Google",
+    "rating": "4.8",
+    "count": "120",
+    "profileUrl": "https://example.com/reviews",
+    "snapshotDate": "Cached Google snapshot as of March 8, 2026",
+    "feedEndpoint": "/.netlify/functions/google-reviews"
+  },
   "socialProfiles": [
     {
       "label": "Google",
@@ -60,6 +158,13 @@
       "Licensed, bonded, and insured"
     ]
   },
+  "financing": {
+    "enabled": true,
+    "label": "Financing",
+    "copy": "Financing options are available for qualified projects, with details reviewed before final scope approval.",
+    "ctaLabel": "Ask about financing",
+    "ctaHref": "/financing"
+  },
   "contactFormServices": [
     "Landscape Design & Build",
     "Hardscaping",
@@ -81,6 +186,29 @@
         "reviewDate": "January 2026",
         "quote": "Short verified review quote."
       }
+    }
+  },
+  "pageConversionGuides": {
+    "/city-landscaping": {
+      "eyebrow": "Quote Fit",
+      "title": "Use This Page To Plan The First Useful Quote",
+      "intro": "The best quote starts by matching the yard, budget, timeline, and highest-value first phase instead of guessing at a generic price.",
+      "bullets": [
+        "You want a clear first project phase before comparing contractor quotes.",
+        "The yard needs more than one disconnected upgrade.",
+        "You want pricing tied to actual use, site conditions, and finish expectations."
+      ],
+      "questions": [
+        "Photos from each corner of the project area.",
+        "A must-have list, a nice-to-have list, and any rough budget guardrails.",
+        "Timing, HOA, drainage, access, utility, or maintenance constraints."
+      ],
+      "nextSteps": [
+        "Which project scope should be quoted first.",
+        "Which details change price, timing, or phasing.",
+        "What the client should gather before an on-site visit."
+      ],
+      "ctaHref": "/free-consultation?source=conversion_guide&autostart=1"
     }
   },
   "reviews": [

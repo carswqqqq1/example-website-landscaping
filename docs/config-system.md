@@ -7,16 +7,22 @@ All client-specific website data is centralized in `site-config.js`.
 Update these fields for each new client:
 - `businessName`, `shortName`
 - `phone.raw`, `phone.display`
+- `phoneTracking.default` and `phoneTracking.sources` if call tracking numbers differ by source
 - `email`
 - `ownerEmail`
 - `address.line1`, `city`, `state`, `zip`
 - `serviceAreas`
+- `coreServices`
+- `primaryOffer`
 - `brand.logoPath`, `brand.primary`, `brand.primaryMid`, `brand.paper`
 - `reviewRating`, `reviewCount`, `reviewSource`, `reviewSourceUrl`, `reviewSnapshotDate`
  - `reviewSummary`
 - `socialProfiles`
+- `trustSignals`
 - `trustAssets`
+- `financing`
 - `locationPages`
+- `pageConversionGuides`
 - `contactFormServices`
 - `projectFit`
 - `beforeAfter`
@@ -35,7 +41,20 @@ Update these fields for each new client:
 - Project-fit cards
 - Before/after slider media + note
 - Reviews cards
+- Financing notes and financing navigation visibility
+- Primary offer labels, quote form title, submit button, and offer promise
 - GA4 events (`call_click`, `form_submit`)
+
+## What The Config Tools Update Statically
+
+`scripts/apply-client-config.js` also sweeps static files for clone-critical residue:
+- old `siteBaseUrl`
+- old `businessName` and `shortName`
+- old email/owner email
+- old raw and display phone numbers
+- old review source URL
+
+This protects SEO tags, schema blocks, sitemap URLs, manifest content, footer copy, and docs from staying branded to the demo company after a client config is applied.
 
 ## Clone Workflow
 
@@ -44,7 +63,8 @@ Update these fields for each new client:
 3. Generate a launch package with `node scripts/generate-client-package.js path/to/client-config.json`.
 4. Apply it with `node scripts/apply-client-config.js path/to/client-config.json` or edit `site-config.js` directly.
 5. Set Netlify env vars for email routing.
-6. Deploy.
+6. Run `npm run check:client-package` to make sure generated client materials do not contain demo brand/contact residue.
+7. Deploy.
 
 ## Generated Launch Package
 
@@ -70,6 +90,7 @@ npm run check:js
 npm run check:a11y
 npm run check:site
 npm run check:speed
+npm run check:client-package
 ```
 
 Use `docs/white-label-handoff.md` for the full release-safe clone checklist.

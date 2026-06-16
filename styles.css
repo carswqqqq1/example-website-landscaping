@@ -4198,10 +4198,24 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     order: 2;
   }
   .consult-drawer__panel {
-    width: 100%;
+    width: 100vw;
+    min-width: 100vw;
+    height: 100dvh;
+    margin-left: 0;
+    box-shadow: none;
+    transform: none;
+    opacity: 0;
+    transition: opacity .22s var(--ease);
+  }
+  .consult-drawer.is-open .consult-drawer__panel {
+    transform: none;
+    opacity: 1;
   }
   .consult-drawer__content {
+    height: 100dvh;
     padding: calc(1.05rem + env(safe-area-inset-top)) .9rem calc(1.15rem + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .consult-drawer__title {
     font-size: clamp(1.8rem, 10vw, 2.3rem);

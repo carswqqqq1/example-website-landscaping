@@ -14,6 +14,11 @@ function isObject(value) {
   return value && typeof value === 'object' && !Array.isArray(value);
 }
 
+const REPLACE_OBJECT_KEYS = new Set([
+  'locationPages',
+  'pageConversionGuides'
+]);
+
 function merge(target, source) {
   const output = Array.isArray(target) ? target.slice() : { ...target };
   Object.keys(source || {}).forEach((key) => {
@@ -22,6 +27,11 @@ function merge(target, source) {
 
     if (Array.isArray(sourceValue)) {
       output[key] = sourceValue;
+      return;
+    }
+
+    if (REPLACE_OBJECT_KEYS.has(key) && isObject(sourceValue)) {
+      output[key] = { ...sourceValue };
       return;
     }
 
@@ -100,6 +110,9 @@ const netlifySite = `${slug}-site`;
 
 // Pull agency meta if present (not merged into site config)
 const agencyMeta = incoming._agencyMeta || {};
+const primaryOffer = mergedConfig.primaryOffer || {};
+const financing = mergedConfig.financing || {};
+const trustSignals = mergedConfig.trustSignals || {};
 const initialAmt = agencyMeta.initialPaymentAmount || 375;
 const completionAmt = agencyMeta.completionPaymentAmount || 375;
 const monthlyAmt = agencyMeta.monthlyUpkeepAmount || 250;
@@ -125,6 +138,14 @@ Generated on ${today} from ${absoluteInputPath}
 - Email: ${mergedConfig.email}
 - Address: ${mergedConfig.address.line1}, ${mergedConfig.address.city}, ${mergedConfig.address.state} ${mergedConfig.address.zip}
 - Service areas: ${mergedConfig.serviceAreas.join(', ')}
+- Primary offer: ${primaryOffer.label || 'Request Free Quote'}
+- Offer promise: ${primaryOffer.promise || 'No pressure follow-up within one business day.'}
+- Financing: ${financing.enabled === false ? 'Disabled' : `${financing.label || 'Financing'} — ${financing.copy || 'Review with client before launch.'}`}
+- Trust position: ${[
+  trustSignals.licensed ? 'licensed' : '',
+  trustSignals.bonded ? 'bonded' : '',
+  trustSignals.insured ? 'insured' : ''
+].filter(Boolean).join(', ') || 'verify before launch'}
 - Reviews: ${mergedConfig.reviewRating} stars across ${mergedConfig.reviewCount} reviews on ${mergedConfig.reviewSource}
 - Review snapshot: ${mergedConfig.reviewSnapshotDate}
 
@@ -146,12 +167,13 @@ Generated on ${today} from ${absoluteInputPath}
 1. Create branch \`${branchName}\`.
 2. Run \`node scripts/apply-client-config.js ${absoluteInputPath}\`.
 3. Update review URLs, license verification URLs, and social profiles if needed.
-4. Run \`npm run build:assets\`.
-5. Run all release checks.
-6. Collect completion payment before pointing DNS.
-7. Link or create Netlify site \`${netlifySite}\`.
-8. Deploy and do the manual accessibility checklist before final launch.
-9. Set up monthly auto-invoice for $${monthlyAmt}/month.
+4. Confirm the offer, financing language, service list, and city-specific quote guide match the client.
+5. Run \`npm run build:assets\`.
+6. Run all release checks, including \`npm run check:client-package\`.
+7. Collect completion payment before pointing DNS.
+8. Link or create Netlify site \`${netlifySite}\`.
+9. Deploy and do the manual accessibility checklist before final launch.
+10. Set up monthly auto-invoice for $${monthlyAmt}/month.
 `;
 
 const envTemplate = `NETLIFY_AUTH_TOKEN=
@@ -176,6 +198,9 @@ const checklist = `# ${mergedConfig.shortName} Release Checklist
 - [ ] Confirm license, bond, and insurance proof
 - [ ] Confirm review rating, count, and review source URL
 - [ ] Confirm all service areas and location pages
+- [ ] Confirm primary offer label and promise
+- [ ] Confirm financing is enabled, disabled, or rewritten for this client
+- [ ] Confirm page conversion guide language matches the client sales process
 - [ ] Sweep for any remaining demo/template brand residue
 
 ## Build & QA
@@ -184,6 +209,7 @@ const checklist = `# ${mergedConfig.shortName} Release Checklist
 - [ ] \`npm run check:a11y\`
 - [ ] \`npm run check:site\`
 - [ ] \`npm run check:speed\`
+- [ ] \`npm run check:client-package\`
 - [ ] Run manual accessibility/device audit
 - [ ] Test contact form (client email + owner email both arrive)
 - [ ] Test sticky mobile CTA and consultation drawer

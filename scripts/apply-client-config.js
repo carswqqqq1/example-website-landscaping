@@ -14,6 +14,11 @@ function isObject(value) {
   return value && typeof value === 'object' && !Array.isArray(value);
 }
 
+const REPLACE_OBJECT_KEYS = new Set([
+  'locationPages',
+  'pageConversionGuides'
+]);
+
 function merge(target, source) {
   const output = Array.isArray(target) ? target.slice() : { ...target };
   Object.keys(source || {}).forEach((key) => {
@@ -22,6 +27,11 @@ function merge(target, source) {
 
     if (Array.isArray(sourceValue)) {
       output[key] = sourceValue;
+      return;
+    }
+
+    if (REPLACE_OBJECT_KEYS.has(key) && isObject(sourceValue)) {
+      output[key] = { ...sourceValue };
       return;
     }
 
@@ -63,6 +73,81 @@ function validate(config) {
   }
 }
 
+function escapeRegExp(value) {
+  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function listFiles(dir, files = []) {
+  fs.readdirSync(dir, { withFileTypes: true }).forEach((entry) => {
+    if (entry.name === '.git' || entry.name === 'node_modules' || entry.name === 'client-builds') return;
+
+    const entryPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      listFiles(entryPath, files);
+      return;
+    }
+
+    files.push(entryPath);
+  });
+
+  return files;
+}
+
+function replaceLiteral(content, before, after) {
+  const oldValue = String(before || '');
+  const newValue = String(after || '');
+
+  if (!oldValue || oldValue === newValue) return content;
+  return content.replace(new RegExp(escapeRegExp(oldValue), 'g'), newValue);
+}
+
+function applyStaticReplacements(previousConfig, nextConfig) {
+  const replaceableExtensions = new Set([
+    '.html',
+    '.xml',
+    '.txt',
+    '.json',
+    '.md',
+    '.js',
+    '.css'
+  ]);
+  const skipFiles = new Set([
+    path.join(root, 'scripts', 'apply-client-config.js')
+  ]);
+  const oldPhone = previousConfig.phone || {};
+  const newPhone = nextConfig.phone || {};
+  const oldReview = previousConfig.reviewSummary || {};
+  const newReview = nextConfig.reviewSummary || {};
+  const replacements = [
+    [previousConfig.siteBaseUrl, nextConfig.siteBaseUrl],
+    [previousConfig.businessName, nextConfig.businessName],
+    [previousConfig.shortName, nextConfig.shortName],
+    [previousConfig.email, nextConfig.email],
+    [previousConfig.ownerEmail, nextConfig.ownerEmail],
+    [oldPhone.raw, newPhone.raw],
+    [oldPhone.display, newPhone.display],
+    [previousConfig.reviewSourceUrl, nextConfig.reviewSourceUrl],
+    [oldReview.sourceUrl, newReview.sourceUrl]
+  ];
+
+  let changedCount = 0;
+
+  listFiles(root)
+    .filter((filePath) => replaceableExtensions.has(path.extname(filePath)))
+    .filter((filePath) => !skipFiles.has(filePath))
+    .forEach((filePath) => {
+      const original = fs.readFileSync(filePath, 'utf8');
+      const updated = replacements.reduce((content, pair) => replaceLiteral(content, pair[0], pair[1]), original);
+
+      if (updated !== original) {
+        fs.writeFileSync(filePath, updated);
+        changedCount += 1;
+      }
+    });
+
+  return changedCount;
+}
+
 function serializeConfig(config) {
   return `(function (root, factory) {\n` +
     `  var config = factory();\n\n` +
@@ -91,5 +176,7 @@ const mergedConfig = merge(currentConfig, incoming);
 
 validate(mergedConfig);
 fs.writeFileSync(configPath, serializeConfig(mergedConfig));
+const staticFilesUpdated = applyStaticReplacements(currentConfig, mergedConfig);
 
 console.log(`Updated site-config.js from ${absoluteInputPath}`);
+console.log(`Updated ${staticFilesUpdated} static template files with client brand/contact/base URL replacements`);
