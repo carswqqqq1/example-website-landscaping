@@ -71,9 +71,12 @@ const DIRECT_SHEET_HEADERS = [
   'submitted_local',
   'last_touched',
   'page_url',
+  'referrer',
+  'landing_path',
   'utm_source',
   'utm_medium',
-  'utm_campaign'
+  'utm_campaign',
+  'utm_content'
 ];
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 const DISPOSABLE_EMAIL_DOMAINS = new Set([
@@ -1493,9 +1496,12 @@ async function sendToGoogleSheetsDirect(row) {
     ownerSheetValue(row.submitted_local),
     lastTouched,
     ownerSheetValue(row.page_url),
+    ownerSheetValue(row.referrer),
+    ownerSheetValue(row.landing_path),
     ownerSheetValue(row.utm_source),
     ownerSheetValue(row.utm_medium),
-    ownerSheetValue(row.utm_campaign)
+    ownerSheetValue(row.utm_campaign),
+    ownerSheetValue(row.utm_content)
   ];
 
   const appendResult = await appendGoogleSheetRow(accessToken, spreadsheetId, tabName, rowValues);

@@ -43,3 +43,16 @@ Expected behavior:
    - `row_id`
    - `row_url`
    - `status`
+
+Lead attribution fields to confirm in the owner sheet:
+
+- `lead_source`
+- `page_url`
+- `referrer`
+- `landing_path`
+- `utm_source`
+- `utm_medium`
+- `utm_campaign`
+- `utm_content`
+
+These fields help the landscaper see which page, campaign, service CTA, or resource produced the lead before they call back.
