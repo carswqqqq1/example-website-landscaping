@@ -1681,7 +1681,7 @@
       return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'resources_hub' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname.indexOf('project-planning-checklist') >= 0) {
-      return { href: '#checklist-gate', label: 'Download Checklist' };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'checklist_page' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname.indexOf('/about') === 0) {
       return { href: '/reviews', label: 'Read Reviews' };
