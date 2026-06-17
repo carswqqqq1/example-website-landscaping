@@ -9,7 +9,7 @@
       scope: 'Layout planning, turf accents, feature planting',
       timeline: '4 weeks',
       proof: 'Built around lower-maintenance entertaining and stronger night use.',
-      image: 'img/projects/slide1.webp',
+      image: 'img/projects/zen-garden.jpg',
       imageAlt: 'Modern desert backyard project in Paradise Valley Arizona',
       width: 1630,
       height: 860,
