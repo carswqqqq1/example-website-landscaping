@@ -26,3 +26,4 @@ next-env.d.ts
 # Local Codex/browser artifacts
 .codex-tmp/
 test-results/
+research/screenshots/

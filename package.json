@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/node": "^20",
     "clean-css-cli": "^5.6.3",
+    "playwright": "^1.61.0",
     "terser": "^5.39.0"
   }
 }

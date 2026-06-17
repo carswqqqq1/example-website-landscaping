@@ -97,15 +97,15 @@
       noFakeClaimsNote: 'Do not invent awards, years in business, rankings, or review counts when cloning this template.'
     },
     primaryOffer: {
-      label: 'Request Free Quote',
-      shortLabel: 'Get Quote',
-      pageTitle: 'Free Landscaping Quote',
-      formTitle: 'Request a Free Landscaping Quote',
-      submitLabel: 'Request My Free Quote',
+      label: 'Get Free Estimate',
+      shortLabel: 'Free Estimate',
+      pageTitle: 'Free Landscaping Estimate',
+      formTitle: 'Request a Free Landscaping Estimate',
+      submitLabel: 'Request My Free Estimate',
       path: '/free-consultation',
       promise: 'No pressure, no obligation, and a local team member follows up within one business day.',
       customizableExamples: [
-        'Free Landscaping Quote',
+        'Free Landscaping Estimate',
         'Free Turf Estimate',
         'Free Backyard Walkthrough',
         'Free Design Consultation',
@@ -131,7 +131,7 @@
         { label: 'About', path: '/about' },
         { label: 'Reviews', path: '/reviews' },
         { label: 'Process', path: '/process' },
-        { label: 'Free Quote', path: '/free-consultation' },
+        { label: 'Free Estimate', path: '/free-consultation' },
         { label: 'Resources', path: '/resources' }
       ]
     },
