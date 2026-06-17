@@ -6,6 +6,16 @@ Reviewed June 16, 2026 for the landscaping template positioning pass.
 
 - Creative Environments: https://creativeenvironments.com/
 - Straight Line Landscape: https://straightlinelandscape.com/
+- Griffin's Desert Scapes: https://www.azdesertscapes.com/
+- Legacy Green Solutions: https://www.legacygreensolutions.com/
+- Infinity Turf and Landscaping: https://infinityturfandlandscaping.com/
+- Bassett Tree Service: https://www.bassetttree.com/
+- Turf Monsters AZ: https://turfmonstersaz.com/
+- Shugart Landscaping: https://shugartlandscaping.com/
+- Redwood Landscaping: https://redwoodlandscaping.com/
+- CYC Landscaping: https://cyclandscaping.com/
+- ZeroScape Turf: https://zeroscapeturf.com/
+- Silver Fern Landscaping: https://www.silverfernlandscaping.com/
 
 ## Patterns Worth Matching
 
@@ -48,6 +58,17 @@ Template implication:
 - About/team copy should not feel like a placeholder.
 - The client questionnaire must collect owner story, team names when allowed, review source, license proof, and differentiators.
 - If the landscaper has no team photos, use verified project/process proof instead of inventing personality.
+
+### Fast Estimate Routing
+
+The 10-site Chrome batch showed that high-performing contractor pages make the next step painfully obvious: phone number, free quote, estimate wording, and a quick service-route cue are visible before a homeowner has to interpret the whole site. Griffin's Desert Scapes pairs same-day estimates with years, warranty, and owner involvement. Legacy Green Solutions combines book-online/request-estimate language with service buckets. ZeroScape Turf is especially direct: free quote, phone, warranty, install speed, rebate handling, and water-savings proof all appear in the first screen.
+
+Template implication:
+
+- Add a compact estimate-path chooser near the top of the homepage.
+- Route by homeowner intent rather than generic "contact": full yard design-build, hardscape, turf, or call now.
+- Prefill the quote drawer where possible so the CTA feels immediate instead of dumping every visitor into the same blank form.
+- Keep phone, proof, warranty, license, and response-time language visible around the chooser.
 
 ### Financing and Large-Project Confidence
 
