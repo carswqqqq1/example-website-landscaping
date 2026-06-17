@@ -19,7 +19,7 @@
     "build:css": "npx cleancss -O2 -o styles.min.css styles.css && npx cleancss -O2 -o pages.min.css pages.css && npx cleancss -O2 -o services.min.css services.css && npx cleancss -O2 -o portfolio.min.css portfolio.css && npx cleancss -O2 -o fonts.min.css fonts.css",
     "build:js": "npx terser script.js -o script.min.js -c -m && npx terser services.js -o services.min.js -c -m && npx terser portfolio.js -o portfolio.min.js -c -m && npx terser services-data.js -o services-data.min.js -c -m && npx terser projects-data.js -o projects-data.min.js -c -m",
     "build:assets": "npm run build:css && npm run build:js",
-    "deploy:netlify": "npx netlify deploy --prod --dir . --site=c5e9c275-b622-4f34-b3cb-de22b98c884e",
+    "deploy:netlify": "npx netlify deploy --prod --dir . --site=example-website-landscaping",
     "apply:client-config": "node scripts/apply-client-config.js docs/client-config-template.json",
     "apply:service-overrides": "node scripts/apply-service-content-overrides.js client-builds/client-name/service-content-overrides-starter.json"
   },
