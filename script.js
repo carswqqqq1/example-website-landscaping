@@ -2727,43 +2727,112 @@
       '.cost-card',
       '.why-card',
       '.process__step',
+      '.faq-item',
       '.pf-item',
       '.pf-story',
+      '.portfolio__item',
+      '.before-after',
+      '.feature-strip__image',
+      '.feature-strip__body',
       '.trust-assets__card',
+      '.search-intent__card',
+      '.owner-proof-strip__item',
+      '.local-proof__card',
+      '.topic-list li',
       '.recent-project'
     ];
 
+    var variantClasses = [
+      'reveal--left',
+      'reveal--right',
+      'reveal--lift',
+      'reveal--scale',
+      'reveal--soft',
+      'reveal--zoom',
+      'reveal--fade',
+      'reveal--rotate',
+      'reveal--clip',
+      'reveal--drift',
+      'reveal--sweep',
+      'reveal--mask-up',
+      'reveal--blur',
+      'reveal--flip',
+      'reveal--pin',
+      'reveal--tilt'
+    ];
+
+    function hasRevealVariant(el) {
+      return variantClasses.some(function (className) {
+        return el.classList.contains(className);
+      });
+    }
+
+    function addVariant(el, variants, index) {
+      el.classList.add(variants[index % variants.length]);
+    }
+
     selectors.forEach(function (selector) {
       document.querySelectorAll(selector + '.reveal').forEach(function (el, index) {
-        if (el.classList.contains('reveal--left') ||
-            el.classList.contains('reveal--right') ||
-            el.classList.contains('reveal--lift') ||
-            el.classList.contains('reveal--scale') ||
-            el.classList.contains('reveal--soft')) {
+        if (hasRevealVariant(el)) {
           return;
         }
 
-        if (selector === '.pf-item') {
-          el.classList.add(index % 3 === 0 ? 'reveal--left' : (index % 3 === 1 ? 'reveal--lift' : 'reveal--right'));
+        if (selector === '.feature-strip__image') {
+          addVariant(el, ['reveal--sweep', 'reveal--clip', 'reveal--mask-up'], index);
+          return;
+        }
+
+        if (selector === '.feature-strip__body') {
+          addVariant(el, ['reveal--drift', 'reveal--soft'], index);
+          return;
+        }
+
+        if (selector === '.pf-item' || selector === '.portfolio__item') {
+          addVariant(el, ['reveal--scale', 'reveal--drift', 'reveal--mask-up', 'reveal--zoom'], index);
           return;
         }
 
         if (selector === '.review-card' || selector === '.recent-project') {
-          el.classList.add(index % 2 === 0 ? 'reveal--soft' : 'reveal--scale');
+          addVariant(el, ['reveal--flip', 'reveal--soft', 'reveal--blur'], index);
           return;
         }
 
-        if (selector === '.process__step' || selector === '.cost-card' || selector === '.why-card') {
-          el.classList.add(index % 2 === 0 ? 'reveal--left' : 'reveal--right');
+        if (selector === '.process__step') {
+          addVariant(el, ['reveal--pin', 'reveal--lift'], index);
+          return;
+        }
+
+        if (selector === '.service-item') {
+          addVariant(el, ['reveal--right', 'reveal--drift', 'reveal--sweep'], index);
+          return;
+        }
+
+        if (selector === '.faq-item') {
+          addVariant(el, ['reveal--right', 'reveal--mask-up'], index);
+          return;
+        }
+
+        if (selector === '.cost-card' || selector === '.why-card' || selector === '.trust-assets__card' || selector === '.search-intent__card') {
+          addVariant(el, ['reveal--pin', 'reveal--blur', 'reveal--lift'], index);
           return;
         }
 
         if (selector === '.pf-story' || selector === '.feature-strip') {
-          el.classList.add('reveal--lift');
+          el.classList.add('reveal--drift');
           return;
         }
 
-        el.classList.add(index % 2 === 0 ? 'reveal--left' : 'reveal--right');
+        if (selector === '.before-after') {
+          el.classList.add('reveal--mask-up');
+          return;
+        }
+
+        if (selector === '.owner-proof-strip__item' || selector === '.local-proof__card' || selector === '.topic-list li') {
+          addVariant(el, ['reveal--soft', 'reveal--pin', 'reveal--drift'], index);
+          return;
+        }
+
+        addVariant(el, ['reveal--left', 'reveal--right', 'reveal--lift'], index);
       });
     });
 
@@ -2780,6 +2849,9 @@
           el.classList.contains('why-choose__header') ||
           el.classList.contains('pf-grid__header') ||
           el.classList.contains('pf-request')) {
+        if (hasRevealVariant(el)) {
+          return;
+        }
         el.classList.add('reveal--soft');
       }
     });
@@ -2800,7 +2872,7 @@
     /* Per-section stagger: elements in the same section get incrementing delays */
     var sectionCounters = new Map();
     document.querySelectorAll('.reveal').forEach(function (el) {
-      if (/reveal--d[1-8]/.test(el.className)) {
+      if (/reveal--d(?:10|[1-9])/.test(el.className)) {
         revealObs.observe(el);
         return;
       }
