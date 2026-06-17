@@ -834,7 +834,7 @@
     reviewList.forEach(function (review) {
       var sourceUrl = String(review.sourceUrl || review.googleMapsUri || review.reviewUri || REVIEW_STATE.sourceUrl || '').trim();
       var article = document.createElement('article');
-      article.className = 'review-card reveal reveal--tilt';
+      article.className = 'review-card reveal';
 
       var stars = document.createElement('div');
       stars.className = 'review-card__stars';
@@ -1167,7 +1167,7 @@
   function buildConversionGuideCard(label, items) {
     if (!items || !items.length) return '';
     return '' +
-      '<article class="conversion-guide__card reveal reveal--scale">' +
+      '<article class="conversion-guide__card reveal">' +
       '  <p class="conversion-guide__label">' + label + '</p>' +
       '  <ul>' + items.map(function (item) { return '<li>' + item + '</li>'; }).join('') + '</ul>' +
       '</article>';
@@ -1377,7 +1377,7 @@
       });
 
       return '' +
-        '<article class="recent-project reveal reveal--scale">' +
+        '<article class="recent-project reveal">' +
         '  <figure class="recent-project__media">' +
         '    <img src="' + src + '" alt="' + alt + '" title="' + alt + '" loading="lazy" decoding="async" width="' + width + '" height="' + height + '"' +
         (srcset ? ' srcset="' + srcset + '" sizes="(max-width: 768px) 100vw, 33vw"' : '') +
@@ -2739,7 +2739,8 @@
       '.owner-proof-strip__item',
       '.local-proof__card',
       '.topic-list li',
-      '.recent-project'
+      '.recent-project',
+      '.conversion-guide__card'
     ];
 
     var variantClasses = [
@@ -2758,7 +2759,13 @@
       'reveal--blur',
       'reveal--flip',
       'reveal--pin',
-      'reveal--tilt'
+      'reveal--tilt',
+      'reveal--glide-left',
+      'reveal--glide-right',
+      'reveal--unfold',
+      'reveal--settle',
+      'reveal--focus',
+      'reveal--tuck'
     ];
 
     function hasRevealVariant(el) {
@@ -2778,42 +2785,47 @@
         }
 
         if (selector === '.feature-strip__image') {
-          addVariant(el, ['reveal--sweep', 'reveal--clip', 'reveal--mask-up'], index);
+          addVariant(el, ['reveal--sweep', 'reveal--clip', 'reveal--focus'], index);
           return;
         }
 
         if (selector === '.feature-strip__body') {
-          addVariant(el, ['reveal--drift', 'reveal--soft'], index);
+          addVariant(el, ['reveal--glide-right', 'reveal--tuck', 'reveal--soft'], index);
           return;
         }
 
         if (selector === '.pf-item' || selector === '.portfolio__item') {
-          addVariant(el, ['reveal--scale', 'reveal--drift', 'reveal--mask-up', 'reveal--zoom'], index);
+          addVariant(el, ['reveal--mask-up', 'reveal--focus', 'reveal--glide-left', 'reveal--settle'], index);
           return;
         }
 
         if (selector === '.review-card' || selector === '.recent-project') {
-          addVariant(el, ['reveal--flip', 'reveal--soft', 'reveal--blur'], index);
+          addVariant(el, ['reveal--tilt', 'reveal--unfold', 'reveal--settle'], index);
+          return;
+        }
+
+        if (selector === '.conversion-guide__card') {
+          addVariant(el, ['reveal--settle', 'reveal--focus', 'reveal--tuck'], index);
           return;
         }
 
         if (selector === '.process__step') {
-          addVariant(el, ['reveal--pin', 'reveal--lift'], index);
+          addVariant(el, ['reveal--pin', 'reveal--lift', 'reveal--unfold'], index);
           return;
         }
 
         if (selector === '.service-item') {
-          addVariant(el, ['reveal--right', 'reveal--drift', 'reveal--sweep'], index);
+          addVariant(el, ['reveal--glide-right', 'reveal--tuck', 'reveal--sweep'], index);
           return;
         }
 
         if (selector === '.faq-item') {
-          addVariant(el, ['reveal--right', 'reveal--mask-up'], index);
+          addVariant(el, ['reveal--glide-left', 'reveal--mask-up', 'reveal--tuck'], index);
           return;
         }
 
         if (selector === '.cost-card' || selector === '.why-card' || selector === '.trust-assets__card' || selector === '.search-intent__card') {
-          addVariant(el, ['reveal--pin', 'reveal--blur', 'reveal--lift'], index);
+          addVariant(el, ['reveal--settle', 'reveal--focus', 'reveal--pin'], index);
           return;
         }
 
@@ -2828,7 +2840,7 @@
         }
 
         if (selector === '.owner-proof-strip__item' || selector === '.local-proof__card' || selector === '.topic-list li') {
-          addVariant(el, ['reveal--soft', 'reveal--pin', 'reveal--drift'], index);
+          addVariant(el, ['reveal--soft', 'reveal--settle', 'reveal--glide-left'], index);
           return;
         }
 
@@ -2853,6 +2865,12 @@
           return;
         }
         el.classList.add('reveal--soft');
+      }
+    });
+
+    document.querySelectorAll('.lead-tier__actions.reveal, .portfolio__footer.reveal, .conversion-guide__actions.reveal, .recent-projects__links.reveal').forEach(function (el) {
+      if (!hasRevealVariant(el)) {
+        el.classList.add('reveal--settle');
       }
     });
   }
