@@ -4617,6 +4617,11 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   transition: opacity .24s var(--ease-out), transform .24s var(--ease-out);
 }
 .cookie-banner.is-visible { opacity: 1; transform: none; }
+body.has-consult-drawer-open .cookie-banner {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+}
 .cookie-banner p {
   margin: 0;
   font-size: .78rem;
