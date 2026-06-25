@@ -2896,7 +2896,7 @@
       }
       var section = el.closest('section') || el.closest('main') || document.body;
       var idx = sectionCounters.get(section) || 0;
-      el.style.transitionDelay = Math.min(idx * 0.1, 0.5) + 's';
+      el.style.transitionDelay = Math.min(idx * 0.04, 0.16) + 's';
       sectionCounters.set(section, idx + 1);
       revealObs.observe(el);
     });
@@ -3822,8 +3822,8 @@
   banner.setAttribute('role', 'region');
   banner.setAttribute('aria-label', 'Cookie consent');
   banner.innerHTML =
-    '<p>We use cookies to improve your experience and analyze site traffic. ' +
-    'By continuing, you agree to our use of cookies.</p>' +
+    '<p>We use cookies to improve performance and measure quote activity. ' +
+    '<a href="/cookie-policy">Cookie policy</a></p>' +
     '<div class="cookie-banner__actions">' +
     '<button class="cookie-banner__decline" type="button">Decline</button>' +
     '<button class="cookie-banner__accept" type="button">Accept All</button>' +
