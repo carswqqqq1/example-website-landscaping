@@ -3960,6 +3960,31 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     opacity: 1;
     transform: none;
   }
+  .reveal,
+  .reveal--left,
+  .reveal--right,
+  .reveal--scale,
+  .reveal--zoom,
+  .reveal--rotate,
+  .reveal--drift,
+  .reveal--sweep,
+  .reveal--mask-up,
+  .reveal--blur,
+  .reveal--flip,
+  .reveal--pin,
+  .reveal--glide-left,
+  .reveal--glide-right,
+  .reveal--unfold,
+  .reveal--settle,
+  .reveal--focus,
+  .reveal--tuck,
+  .reveal--clip {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    clip-path: inset(0);
+    transition: none;
+  }
   .hero__overlay { background: linear-gradient(180deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.66) 100%); }
   .featured,
   .services,
