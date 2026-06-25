@@ -4439,8 +4439,8 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     order: 2;
   }
   .consult-drawer__panel {
-    width: 100vw;
-    min-width: 100vw;
+    width: 100%;
+    min-width: 0;
     height: 100dvh;
     margin-left: 0;
     box-shadow: none;
