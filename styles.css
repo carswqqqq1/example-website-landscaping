@@ -3144,10 +3144,14 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .hidden-field {
   position: absolute;
-  left: -10000px;
+  left: 0;
+  top: 0;
   width: 1px;
   height: 1px;
   overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 .contact__form-title {
   font-family: var(--font-head);
@@ -4191,11 +4195,23 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .contact__grid {
     gap: 1.1rem;
   }
+  .contact__grid > * {
+    min-width: 0;
+  }
   .contact__info {
     padding-block: 2.2rem;
+    width: 100%;
+    max-width: 100%;
+  }
+  .contact__info-inner {
+    width: 100%;
+    max-width: 100%;
+    padding: 2rem 1.15rem;
   }
   .contact__form-wrap {
     padding: 1.45rem .95rem;
+    width: 100%;
+    max-width: 100%;
   }
   .contact__form-title {
     margin-bottom: 1.1rem;
@@ -4461,7 +4477,14 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   }
   .about__badge { bottom: 1rem; left: 1rem; padding: 1rem; }
   .about__badge strong { font-size: 1.75rem; }
-  .contact__form-wrap { padding: 2.2rem 1.25rem; }
+  .contact__form-wrap { padding: 2rem 1rem; }
+  .contact__form,
+  .contact__trust,
+  .contact__quote,
+  .response-promise {
+    max-width: 100%;
+    min-width: 0;
+  }
   .services,
   .portfolio,
   .reviews,
