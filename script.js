@@ -2162,7 +2162,7 @@
       '    <ul class="consult-drawer__proof">' +
       '      <li>' + OFFER_PROMISE + '</li>' +
       '      <li>Simple upgrades and full transformations are both welcome</li>' +
-      '      <li>A local team member follows up within one business day</li>' +
+      '      <li>Budget, timeline, and license details are reviewed before next steps</li>' +
       '    </ul>' +
       '    <div class="consult-drawer__trust-row" aria-label="Quote request trust signals">' +
       '      <span>43 verified reviews</span>' +
@@ -2246,7 +2246,7 @@
       '      <div class="form-field">' +
       '        <label for="consult-contact-method-choice">Preferred Contact Method <span class="field-optional">Optional</span></label>' +
       '        <select id="consult-contact-method-choice" aria-describedby="consult-contact-help">' +
-      '          <option value="">Select if you have a preference</option>' +
+      '          <option value="">No preference</option>' +
       '          <option value="Phone call">Phone call</option>' +
       '          <option value="Text message">Text message</option>' +
       '          <option value="Email">Email</option>' +
