@@ -1907,6 +1907,26 @@
     scrollTopButton.classList.toggle('is-visible', shouldShow && !menuOpen && !drawerOpen);
   }
 
+  function setBackgroundInertForMenu(isInert) {
+    var targets = document.querySelectorAll('#nav, .breadcrumbs, main, footer, .sticky-bar, .scroll-top');
+    targets.forEach(function (target) {
+      if (!target || target === overlay || (target.contains && target.contains(overlay))) return;
+      if (isInert) {
+        target.dataset.menuPreviousAriaHidden = target.getAttribute('aria-hidden') || '';
+        target.setAttribute('aria-hidden', 'true');
+        if ('inert' in target) target.inert = true;
+      } else {
+        if (target.dataset.menuPreviousAriaHidden) {
+          target.setAttribute('aria-hidden', target.dataset.menuPreviousAriaHidden);
+        } else {
+          target.removeAttribute('aria-hidden');
+        }
+        delete target.dataset.menuPreviousAriaHidden;
+        if ('inert' in target) target.inert = false;
+      }
+    });
+  }
+
   function openMenu() {
     if (!overlay || !burger) return;
     if (typeof closeConsultDrawer === 'function') closeConsultDrawer(false);
@@ -1916,6 +1936,7 @@
     overlay.setAttribute('aria-hidden', 'false');
     burger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    setBackgroundInertForMenu(true);
     if (menuFocusTrap) {
       menuFocusTrap.activate(close || overlay);
     }
@@ -1931,6 +1952,7 @@
     overlay.setAttribute('aria-hidden', 'true');
     burger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = document.body.classList.contains('has-consult-drawer-open') ? 'hidden' : '';
+    setBackgroundInertForMenu(false);
     if (menuFocusTrap) {
       menuFocusTrap.deactivate(restoreFocus !== false);
     }
@@ -3850,6 +3872,7 @@
 
   requestAnimationFrame(function () {
     requestAnimationFrame(function () {
+      document.body.classList.add('has-cookie-banner-visible');
       banner.classList.add('is-visible');
     });
   });
@@ -3859,6 +3882,7 @@
     if (accepted && typeof window.initSiteAnalytics === 'function') {
       window.initSiteAnalytics();
     }
+    document.body.classList.remove('has-cookie-banner-visible');
     banner.classList.remove('is-visible');
     setTimeout(function () { banner.remove(); }, 450);
   }
