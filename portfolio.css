@@ -691,7 +691,12 @@
   }
   .pf-lightbox__dialog {
     grid-template-columns: 1fr;
-    align-items: stretch;
+    align-items: center;
+  }
+  .pf-lightbox__figure {
+    align-self: center;
+    max-height: calc(100dvh - 1.5rem);
+    overflow: auto;
   }
   .pf-lightbox__nav {
     position: absolute;
