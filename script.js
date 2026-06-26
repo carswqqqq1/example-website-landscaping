@@ -2133,6 +2133,7 @@
         prefill.selected_project_label = parsedUrl.searchParams.get('selected_project_label') || prefill.selected_project_label;
         prefill.prefill_message = parsedUrl.searchParams.get('prefill_message') || prefill.prefill_message;
         prefill.estimated_timeline = parsedUrl.searchParams.get('estimated_timeline') || parsedUrl.searchParams.get('timeline') || prefill.estimated_timeline;
+        prefill.budget_range = parsedUrl.searchParams.get('budget_range') || prefill.budget_range;
       }
 
       if (trigger.hasAttribute('data-service-choice')) {
@@ -2188,7 +2189,7 @@
       '    </ul>' +
       '    <div class="consult-drawer__trust-row" aria-label="Quote request trust signals">' +
       '      <span>43 verified reviews</span>' +
-      '      <span>ROC license shown</span>' +
+      '      <span>ROC + warranty review</span>' +
       '      <span>1-business-day follow-up</span>' +
       '    </div>' +
       '    <div class="consult-drawer__context" id="consult-drawer-context">' +
@@ -2648,7 +2649,8 @@
           selected_image: URL_PARAMS.get('selected_image') || '',
           selected_project_label: URL_PARAMS.get('selected_project_label') || '',
           prefill_message: URL_PARAMS.get('prefill_message') || '',
-          estimated_timeline: URL_PARAMS.get('estimated_timeline') || URL_PARAMS.get('timeline') || ''
+          estimated_timeline: URL_PARAMS.get('estimated_timeline') || URL_PARAMS.get('timeline') || '',
+          budget_range: URL_PARAMS.get('budget_range') || ''
         });
       });
     }
