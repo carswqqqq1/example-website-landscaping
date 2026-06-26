@@ -6,7 +6,7 @@
   var root = document.body;
   var isNestedServicePage = !!(root && root.classList.contains('service-page'));
   var offerConfig = (window.SITE_CONFIG && window.SITE_CONFIG.primaryOffer) || {};
-  var offerLabel = String(offerConfig.label || 'Request Free Quote').trim();
+  var offerLabel = String(offerConfig.label || 'Start Project Review').trim();
 
   function byId(id) {
     return document.getElementById(id);

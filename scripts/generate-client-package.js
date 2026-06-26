@@ -107,7 +107,7 @@ function listItems(items) {
 function buildServiceConversionPlan(services, config) {
   const offerLabel = config.primaryOffer && config.primaryOffer.label
     ? config.primaryOffer.label
-    : 'Request Free Quote';
+    : 'Start Project Review';
 
   return `# ${config.businessName} Service Conversion Plan
 
@@ -253,7 +253,7 @@ Generated on ${today} from ${absoluteInputPath}
 - Email: ${mergedConfig.email}
 - Address: ${mergedConfig.address.line1}, ${mergedConfig.address.city}, ${mergedConfig.address.state} ${mergedConfig.address.zip}
 - Service areas: ${mergedConfig.serviceAreas.join(', ')}
-- Primary offer: ${primaryOffer.label || 'Request Free Quote'}
+- Primary offer: ${primaryOffer.label || 'Start Project Review'}
 - Offer promise: ${primaryOffer.promise || 'No pressure follow-up within one business day.'}
 - Financing: ${financing.enabled === false ? 'Disabled' : `${financing.label || 'Financing'} — ${financing.copy || 'Review with client before launch.'}`}
 - Trust position: ${[
@@ -360,7 +360,7 @@ This launch checklist is based on current Arizona landscaping competitors that e
 - [ ] Add captions that explain scope, location, material, or outcome.
 
 ## 2. Process Model
-- [ ] Confirm how the client sells: free quote, paid design, design deposit, phased estimate, or maintenance-first relationship.
+- [ ] Confirm how the client sells: project review, paid design, design deposit, phased estimate, or maintenance-first relationship.
 - [ ] Rewrite homepage/process copy around that real model.
 - [ ] Confirm what happens after form submission and how fast the client actually follows up.
 

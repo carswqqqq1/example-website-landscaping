@@ -44,7 +44,7 @@ const landscapingKeywords = [
 ];
 
 const conversionTerms = {
-  cta: ["free estimate", "free quote", "request a quote", "request quote", "get a quote", "schedule", "book", "consultation", "contact us", "call now", "call today"],
+  cta: ["free estimate", "project review", "request a quote", "request quote", "get a quote", "schedule", "book", "consultation", "contact us", "call now", "call today"],
   trust: ["review", "reviews", "stars", "licensed", "insured", "bonded", "certified", "award", "warranty", "guarantee", "years", "family owned", "locally owned", "bbb"],
   proof: ["before", "after", "gallery", "portfolio", "projects", "case study", "testimonials", "our work"],
   offer: ["landscape design", "lawn care", "maintenance", "hardscape", "irrigation", "outdoor living", "artificial turf", "pavers", "tree", "patio", "lighting"],
@@ -716,7 +716,7 @@ ${topSites.map((row, index) => `${index + 1}. ${row.businessName} — ${row.url}
 ## Original Template Weaknesses Identified Before Redesign
 
 - The existing first viewport was visually polished but too editorial: the headline did not immediately say "landscaping estimate" or name the core services.
-- The CTA used "Request Free Quote," but the page did not maximize urgent homeowner paths like a paired phone/estimate choice and short proof line.
+- The CTA used "Start Project Review," but the page did not maximize urgent homeowner paths like a paired phone/estimate choice and short proof line.
 - The page had many useful sections, but too many were spread out and repeated similar proof/process ideas, which diluted the conversion path.
 - Trust signals existed, including reviews and licensing, but the strongest proof needed a tighter above-the-fold trust bar and clearer homeowner reassurance.
 - The design leaned premium but slightly template-like in section rhythm; the redesign should create a more decisive lead-generation homepage with clearer offer hierarchy.

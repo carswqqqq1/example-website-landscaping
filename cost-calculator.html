@@ -22,9 +22,9 @@
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="canonical" href="https://thinkgreendesignbuild.com/cost-calculator" />
-  <link rel="stylesheet" href="/fonts.min.css?v=20260625o" />
-  <link rel="stylesheet" href="/styles.min.css?v=20260625o" />
-  <link rel="stylesheet" href="/pages.min.css?v=20260625o" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20260626a" />
+  <link rel="stylesheet" href="/styles.min.css?v=20260626a" />
+  <link rel="stylesheet" href="/pages.min.css?v=20260626a" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -115,13 +115,13 @@
         <h1>Estimate your landscape budget before you book</h1>
         <p>Use this calculator to estimate a starter planning range. Full-yard, estate, utility, and phased scopes may differ once the team reviews site conditions.</p>
         <div class="page-hero__actions">
-          <a href="/free-consultation?source=calculator_page&autostart=1" class="btn btn--solid">Price My Project Range</a>
+          <a href="#calculator-inputs" class="btn btn--solid">Use the Calculator</a>
           <a href="/resources" class="btn btn--ghost">Browse resources</a>
         </div>
       </div>
     </section>
 
-    <section class="page-section">
+    <section class="page-section" id="calculator-inputs">
       <div class="container">
         <div class="page-grid">
           <article class="page-card reveal reveal--scale">
@@ -181,7 +181,7 @@
               <p class="eyebrow">Starter Range</p>
               <h2 class="section-title" id="calc-range">$0 - $0</h2>
               <p id="calc-summary">Choose a project type and the calculator will estimate a starter planning range.</p>
-              <div class="financing-note financing-note--panel" id="calc-note">Starter planning range only. Full-yard range may differ, and we can phase from here.</div>
+              <div class="financing-note financing-note--panel" id="calc-note">Starter planning range only. Projects below our normal build minimum may be referred or phased, and full-yard scopes may differ after site review.</div>
               <ul class="checklist" id="calc-drivers">
                 <li>Project scope and finish level</li>
                 <li>Approximate yard size</li>
@@ -189,7 +189,7 @@
                 <li>Number of major features</li>
               </ul>
               <div class="page-hero__actions">
-                <a href="/free-consultation?source=calculator_page&autostart=1" class="btn btn--solid">Turn Estimate Into Scope</a>
+                <a href="/free-consultation?source=calculator_page&autostart=1" class="btn btn--solid" id="calc-review-link">Turn Estimate Into Scope</a>
                 <a href="/financing" class="btn btn--outline-dark">View financing</a>
               </div>
             </div>
@@ -213,7 +213,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>Landscape Design &amp; Build</td><td>$5,000 - $15,000</td></tr>
+              <tr><td>Landscape Design &amp; Build</td><td>$10,000 - $45,000 starter planning</td></tr>
               <tr><td>Hardscaping</td><td>$10,000 - $40,000</td></tr>
               <tr><td>Outdoor Kitchens</td><td>$15,000 - $60,000</td></tr>
               <tr><td>Fire Features</td><td>$5,000 - $25,000</td></tr>
@@ -259,7 +259,7 @@
           <li><a href="/portfolio">Portfolio</a></li>
           <li><a href="/reviews">Reviews</a></li>
           <li><a href="/financing">Financing</a></li>
-          <li><a href="/free-consultation?source=calculator_page&autostart=1">Price My Project Range</a></li>
+          <li><a href="/free-consultation?source=calculator_page&autostart=1">Project Review</a></li>
         </ul>
       </div>
       <div class="footer__col">
@@ -293,7 +293,7 @@
       <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
       Call Now
     </a>
-    <a href="/free-consultation?source=calculator_page&autostart=1" class="btn btn--outline-dark">Start Estimate Request</a>
+    <a href="/free-consultation?source=calculator_page&autostart=1" class="btn btn--outline-dark">Project Review</a>
   </div>
 
   <script>
@@ -301,7 +301,7 @@
       'use strict';
 
       var SERVICE_RANGES = {
-        'landscape-design': { label: 'Landscape Design & Build', low: 5000, high: 15000, note: 'Good for master planning and phased yard transformations.' },
+        'landscape-design': { label: 'Landscape Design & Build', low: 10000, high: 45000, note: 'Good for master planning, starter phases, and phased yard transformations.' },
         'hardscaping': { label: 'Hardscaping', low: 10000, high: 40000, note: 'Common when patios, pavers, walls, and drainage work all move together.' },
         'outdoor-kitchens': { label: 'Outdoor Kitchens', low: 15000, high: 60000, note: 'Appliances, utility routing, and shade can raise the scope quickly.' },
         'fire-features': { label: 'Fire Features', low: 5000, high: 25000, note: 'Often part of a larger patio or entertaining zone.' },
@@ -322,6 +322,7 @@
       var rangeField = document.getElementById('calc-range');
       var summaryField = document.getElementById('calc-summary');
       var driversField = document.getElementById('calc-drivers');
+      var reviewLink = document.getElementById('calc-review-link');
 
       var currency = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -339,6 +340,32 @@
 
       function formatRange(low, high) {
         return currency.format(low) + ' - ' + currency.format(high);
+      }
+
+      function mapRangeForReview(low, high) {
+        if (high <= 25000) return '$10,000 - $25,000';
+        if (high <= 60000) return '$25,000 - $60,000';
+        if (high <= 150000) return '$60,000 - $150,000';
+        return '$150,000+';
+      }
+
+      function mapGoalForReview(low, high, features) {
+        if (high <= 25000) return 'Focused first phase';
+        if (high >= 150000 || features >= 4) return 'Private estate project review';
+        return 'Whole-yard design-build';
+      }
+
+      function updateReviewLink(service, low, high, timeline, features) {
+        if (!reviewLink) return;
+        var params = new URLSearchParams({
+          source: 'calculator_page',
+          autostart: '1',
+          service: service.label,
+          budget_range: mapRangeForReview(low, high),
+          project_goal: mapGoalForReview(low, high, features),
+          estimated_timeline: timeline === 'asap' ? 'ASAP' : timeline === 'this-season' ? '1-3 months' : '3-6 months'
+        });
+        reviewLink.href = '/free-consultation?' + params.toString();
       }
 
       function sizeMultiplier(size) {
@@ -400,6 +427,8 @@
         ].map(function (item) {
           return '<li>' + item + '</li>';
         }).join('');
+
+        updateReviewLink(service, low, high, timeline, features);
       }
 
       sizeField.addEventListener('input', renderEstimate);
@@ -412,7 +441,7 @@
       renderEstimate();
     })();
   </script>
-  <script src="/site-config.js?v=20260625o" defer></script>
-  <script src="/script.min.js?v=20260625o" defer></script>
+  <script src="/site-config.js?v=20260626a" defer></script>
+  <script src="/script.min.js?v=20260626a" defer></script>
 </body>
 </html>

@@ -1199,6 +1199,21 @@
     ];
   }
 
+  function getOverlayNavigationItems() {
+    return [
+      { label: 'Home', href: '/' },
+      { label: 'Services', href: '/services' },
+      { label: 'Portfolio', href: '/portfolio' },
+      { label: 'Cost Calculator', href: '/cost-calculator' },
+      { label: 'Warranty', href: '/warranty' },
+      { label: 'Financing', href: '/financing' },
+      { label: 'FAQ', href: '/faq' },
+      { label: 'Resources', href: '/resources' },
+      { label: 'Process', href: '/process' },
+      { label: 'Reviews', href: '/reviews' }
+    ];
+  }
+
   function createPrimaryNavLink(entry, className) {
     var link = document.createElement('a');
     link.className = className;
@@ -1237,7 +1252,7 @@
       Array.prototype.slice.call(overlayNav.querySelectorAll('.nav__overlay-link')).forEach(function (link) {
         link.remove();
       });
-      navItems.forEach(function (entry) {
+      getOverlayNavigationItems().forEach(function (entry) {
         overlayNav.appendChild(createPrimaryNavLink(entry, 'nav__overlay-link'));
       });
       var overlayCta = createPrimaryNavLink(
@@ -1715,7 +1730,7 @@
 
   function getNativeQuoteAction() {
     var links = Array.prototype.slice.call(document.querySelectorAll('a[href*="free-consultation"]'));
-    var genericLabels = /^(contact|quote|free quote|get quote|request free quote|request my free quote)$/i;
+    var genericLabels = /^(contact|quote|free quote|project review|get quote|request free quote|request project review|request my free quote|request my project review)$/i;
     var best = links.find(function (link) {
       if (link.closest('.nav__overlay-actions')) return false;
       var label = String(link.textContent || '').replace(/\s+/g, ' ').trim();
@@ -1922,6 +1937,26 @@
           target.removeAttribute('aria-hidden');
         }
         delete target.dataset.menuPreviousAriaHidden;
+        if ('inert' in target) target.inert = false;
+      }
+    });
+  }
+
+  function setBackgroundInertForConsult(isInert) {
+    var targets = document.querySelectorAll('#nav, .breadcrumbs, main, footer, .sticky-bar, .scroll-top, .cookie-banner');
+    targets.forEach(function (target) {
+      if (!target || (consultDrawerState && consultDrawerState.drawer && (target === consultDrawerState.drawer || target.contains(consultDrawerState.drawer)))) return;
+      if (isInert) {
+        target.dataset.consultPreviousAriaHidden = target.getAttribute('aria-hidden') || '';
+        target.setAttribute('aria-hidden', 'true');
+        if ('inert' in target) target.inert = true;
+      } else {
+        if (target.dataset.consultPreviousAriaHidden) {
+          target.setAttribute('aria-hidden', target.dataset.consultPreviousAriaHidden);
+        } else {
+          target.removeAttribute('aria-hidden');
+        }
+        delete target.dataset.consultPreviousAriaHidden;
         if ('inert' in target) target.inert = false;
       }
     });
@@ -2187,11 +2222,11 @@
       '  <div class="consult-drawer__content">' +
       '    <span class="consult-drawer__eyebrow">Fastest Way to Start</span>' +
       '    <h2 class="consult-drawer__title" id="consult-drawer-title">' + OFFER_FORM_TITLE + '</h2>' +
-      '    <p class="consult-drawer__sub" id="consult-drawer-sub">Share the basics about your yard. We will review the project type, location, and timing before calling with the right next step.</p>' +
+      '    <p class="consult-drawer__sub" id="consult-drawer-sub">Share the basics only. We use this to understand your yard before calling. No spam, no obligation.</p>' +
       '    <ul class="consult-drawer__proof">' +
-      '      <li>' + OFFER_PROMISE + '</li>' +
-      '      <li>Simple upgrades and full transformations are both welcome</li>' +
-      '      <li>Budget, timeline, and license details are reviewed before next steps</li>' +
+      '      <li>Prefer not to fill this out? Call ' + SITE_PHONE_DISPLAY + ' and we will talk it through.</li>' +
+      '      <li>Starter phases and full transformations are both welcome when the scope is prioritized.</li>' +
+      '      <li>We use your phone only to clarify this project request. Prefer text? Choose text below.</li>' +
       '    </ul>' +
       '    <div class="consult-drawer__trust-row" aria-label="Project review trust signals">' +
       '      <span>43 verified reviews</span>' +
@@ -2249,10 +2284,13 @@
       '          <select id="consult-service" name="service" data-service-select required></select>' +
       '        </div>' +
       '      </div>' +
+      '      <p class="consult-drawer__talk-note">Prefer to talk it through? Call ' + SITE_PHONE_DISPLAY + ', or choose text below and send only the basics.</p>' +
+      '      <details class="consult-drawer__details">' +
+      '        <summary>Add optional details</summary>' +
       '      <div class="consult-drawer__grid">' +
       '        <div class="form-field">' +
-      '          <label for="consult-project-goal">Project Goal <span class="field-required">Required</span></label>' +
-      '          <select id="consult-project-goal" name="project_goal" required>' +
+      '          <label for="consult-project-goal">Project Goal <span class="field-optional">Optional</span></label>' +
+      '          <select id="consult-project-goal" name="project_goal">' +
       '            <option value="">Select goal</option>' +
       '            <option value="Focused first phase">Focused first phase</option>' +
       '            <option value="Whole-yard design-build">Whole-yard design-build</option>' +
@@ -2276,8 +2314,8 @@
       '      </div>' +
       '      <div class="consult-drawer__grid">' +
       '        <div class="form-field">' +
-      '          <label for="consult-budget-range">Budget Range <span class="field-required">Required</span></label>' +
-      '          <select id="consult-budget-range" name="budget_range" required>' +
+      '          <label for="consult-budget-range">Rough Budget <span class="field-optional">Optional</span></label>' +
+      '          <select id="consult-budget-range" name="budget_range">' +
       '            <option value="">Select a planning range</option>' +
       '            <option value="$10,000 - $25,000">$10,000 - $25,000</option>' +
       '            <option value="$25,000 - $60,000">$25,000 - $60,000</option>' +
@@ -2310,10 +2348,11 @@
       '        <label for="consult-message">Project Notes <span class="field-optional">Optional</span></label>' +
       '        <textarea id="consult-message" name="message" rows="4" placeholder="Optional: share goals, HOA or access needs, phasing, style preferences, or the kind of yard you want to build."></textarea>' +
       '      </div>' +
+      '      </details>' +
       '      <div class="consult-drawer__actions">' +
       '        <button type="submit" class="btn btn--submit" id="consult-submit">' + OFFER_SUBMIT_LABEL + '</button>' +
       '        <p class="consult-drawer__budget-note" id="consult-budget-note">Focused first phases and larger builds are reviewed by the same local team. We filter out maintenance-only, tree trimming, mow/blow, and tiny repair calls before scheduling.</p>' +
-      '        <p class="consult-drawer__note" id="consult-contact-help">We use this only to follow up about your landscaping project.</p>' +
+      '        <p class="consult-drawer__note" id="consult-contact-help">Takes about 60 seconds. No obligation. Your phone is used only to follow up about this project, and we do not sell or share your request.</p>' +
       '        <p class="consult-drawer__error" id="consult-drawer-error" role="alert" aria-live="polite"></p>' +
       '      </div>' +
       '    </form>' +
@@ -2436,9 +2475,7 @@
         consultDrawerState.fullName,
         consultDrawerState.phone,
         consultDrawerState.city,
-        consultDrawerState.service,
-        consultDrawerState.budgetRange,
-        consultDrawerState.projectGoal
+        consultDrawerState.service
       ];
       var valid = true;
 
@@ -2651,6 +2688,7 @@
     state.drawer.setAttribute('aria-hidden', 'false');
     document.body.classList.add('has-consult-drawer-open');
     document.body.style.overflow = 'hidden';
+    setBackgroundInertForConsult(true);
     state.focusTrap.activate(state.close);
     state.fullName.focus();
     updateStickyBar();
@@ -2672,6 +2710,7 @@
     consultDrawerState.drawer.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('has-consult-drawer-open');
     document.body.style.overflow = overlay && overlay.classList.contains('is-open') ? 'hidden' : '';
+    setBackgroundInertForConsult(false);
     consultDrawerState.focusTrap.deactivate(restoreFocus !== false);
     updateStickyBar();
     updateScrollTop();
@@ -3964,12 +4003,13 @@
     '</div>';
   document.body.appendChild(banner);
 
-  requestAnimationFrame(function () {
+  var cookieDelay = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 2200 : 0;
+  setTimeout(function () {
     requestAnimationFrame(function () {
       document.body.classList.add('has-cookie-banner-visible');
       banner.classList.add('is-visible');
     });
-  });
+  }, cookieDelay);
 
   function dismiss(accepted) {
     localStorage.setItem(COOKIE_KEY, accepted ? 'accepted' : 'declined');

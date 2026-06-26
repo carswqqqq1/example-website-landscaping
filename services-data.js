@@ -75,7 +75,7 @@
         },
         {
           q: 'What is the first step to get started?',
-          a: 'Start with a free quote. We review your property, discuss goals, and recommend the best path for design and construction.'
+          a: 'Start with a project review. We review your property, discuss goals, and recommend the best path for design and construction.'
         }
       ],
       gallery: [
@@ -329,7 +329,7 @@
         },
         {
           q: 'How do we start the design process?',
-          a: 'Book a free quote and we will map kitchen goals, intended use, and the surrounding layout before finalizing design direction.'
+          a: 'Book a project review and we will map kitchen goals, intended use, and the surrounding layout before finalizing design direction.'
         }
       ],
       gallery: [
@@ -434,7 +434,7 @@
       resources: [
         { title: 'Scottsdale service area page', path: '/scottsdale-landscaping' },
         { title: 'Resources hub', path: '/resources' },
-        { title: 'Free quote page', path: '/free-consultation' }
+        { title: 'Free project review page', path: '/free-consultation' }
       ],
       faqs: [
         {
@@ -544,7 +544,7 @@
       resources: [
         { title: 'Outdoor kitchen planning guide', path: '/outdoor-kitchen-planning-arizona' },
         { title: 'Portfolio outdoor living projects', path: '/portfolio?service=pergola-shade' },
-        { title: 'Free quote page', path: '/free-consultation' }
+        { title: 'Free project review page', path: '/free-consultation' }
       ],
       faqs: [
         {

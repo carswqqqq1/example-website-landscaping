@@ -60,7 +60,7 @@ function hasRealQuotePath(html) {
 }
 
 function hasOnlyOnPageQuotePath(html) {
-  return /(?:Request Free Quote|Get Quote)[\s\S]{0,120}href="#/i.test(html) ||
+  return /(?:Start Project Review|Get Quote)[\s\S]{0,120}href="#/i.test(html) ||
     /href="#[^"]*(?:consultation|quote|contact)[^"]*"/i.test(html);
 }
 
@@ -78,7 +78,7 @@ function extractQuoteCtas(html) {
 }
 
 function isGenericQuoteText(text) {
-  return /^(?:Contact|Quote|Free Quote|Get Quote|Request Free Quote|Request My Free Quote)$/i.test(text);
+  return /^(?:Contact|Quote|Project Review|Get Quote|Start Project Review|Request My Project Review)$/i.test(text);
 }
 
 function getAttr(tag, attr) {
@@ -171,7 +171,7 @@ htmlFiles.forEach((file) => {
     failures.push(`${file}: unversioned CSS or JS asset reference`);
   }
 
-  if (/Request Free Quote|Get Quote/i.test(html) && !hasRealQuotePath(html)) {
+  if (/Start Project Review|Get Quote/i.test(html) && !hasRealQuotePath(html)) {
     failures.push(`${file}: quote CTA does not link to the real quote path`);
   }
 
