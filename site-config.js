@@ -97,25 +97,25 @@
       noFakeClaimsNote: 'Do not invent awards, years in business, rankings, or review counts when cloning this template.'
     },
     primaryOffer: {
-      label: 'Get Free Estimate',
-      shortLabel: 'Free Estimate',
-      pageTitle: 'Free Landscaping Estimate',
-      formTitle: 'Request a Free Landscaping Estimate',
-      submitLabel: 'Request My Free Estimate',
+      label: 'Start Project Review',
+      shortLabel: 'Project Review',
+      pageTitle: 'Landscaping Project Review',
+      formTitle: 'Start Your Project Review',
+      submitLabel: 'Send My Project Review',
       path: '/free-consultation',
       promise: 'No pressure, no obligation, and a local team member follows up within one business day.',
       customizableExamples: [
-        'Free Landscaping Estimate',
-        'Free Turf Estimate',
-        'Free Backyard Walkthrough',
-        'Free Design Consultation',
+        'Project Review',
+        'Turf Project Review',
+        'Backyard Walkthrough',
+        'Design Consultation',
         'Same-Week Estimate Request'
       ],
       cloningNote: 'Change this offer to match the landscaper sales process before launch. Keep the CTA outcome-specific and easy to understand.'
     },
     aiReadability: {
       summary: 'Think Green Design | Build Landscape is a Scottsdale-based residential landscaping and outdoor living company serving homeowners across Scottsdale, Paradise Valley, Phoenix, and nearby East Valley communities.',
-      homeownerFit: 'Best fit for homeowners who want design-build planning, premium hardscape and outdoor living upgrades, desert-climate durability, and a clear quote request path.',
+      homeownerFit: 'Best fit for homeowners who want design-build planning, premium hardscape and outdoor living upgrades, desert-climate durability, and a clear project review path.',
       quotePath: '/free-consultation',
       priorityPages: [
         { label: 'Home', path: '/' },
@@ -131,7 +131,7 @@
         { label: 'About', path: '/about' },
         { label: 'Reviews', path: '/reviews' },
         { label: 'Process', path: '/process' },
-        { label: 'Free Estimate', path: '/free-consultation' },
+        { label: 'Project Review', path: '/free-consultation' },
         { label: 'Resources', path: '/resources' }
       ]
     },
@@ -758,7 +758,7 @@
     },
     financing: {
       enabled: true,
-      copy: 'Financing options may be available for qualified projects. Ask about payment plans during your free quote.',
+      copy: 'Financing options may be available for qualified projects. Ask about payment plans during your project review.',
       ctaLabel: 'Ask About Financing',
       ctaHref: '/free-consultation?source=financing_inquiry'
     },

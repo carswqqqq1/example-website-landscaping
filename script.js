@@ -45,10 +45,10 @@
     snapshotDate: REVIEW_SNAPSHOT_DATE,
     live: false
   };
-  var OFFER_LABEL = String(PRIMARY_OFFER.label || 'Request Free Quote').trim();
-  var OFFER_SHORT_LABEL = String(PRIMARY_OFFER.shortLabel || 'Get Quote').trim();
-  var OFFER_FORM_TITLE = String(PRIMARY_OFFER.formTitle || 'Request a Free Landscaping Quote').trim();
-  var OFFER_SUBMIT_LABEL = String(PRIMARY_OFFER.submitLabel || 'Request My Free Quote').trim();
+  var OFFER_LABEL = String(PRIMARY_OFFER.label || 'Start Project Review').trim();
+  var OFFER_SHORT_LABEL = String(PRIMARY_OFFER.shortLabel || 'Project Review').trim();
+  var OFFER_FORM_TITLE = String(PRIMARY_OFFER.formTitle || 'Start Your Project Review').trim();
+  var OFFER_SUBMIT_LABEL = String(PRIMARY_OFFER.submitLabel || 'Send My Project Review').trim();
   var OFFER_PROMISE = String(PRIMARY_OFFER.promise || 'No pressure, no obligation, and a local team member follows up within one business day.').trim();
   var DEFAULT_PAGE_CONVERSION_GUIDES = {
     '/ahwatukee-landscape-design': {
@@ -317,7 +317,7 @@
         { href: '/process', label: 'Process' },
         { href: '/reviews', label: 'Reviews' },
         { href: '/financing', label: 'Financing' },
-        { href: '/free-consultation', label: 'Free Quote' }
+        { href: '/free-consultation', label: 'Project Review' }
       ];
 
       desiredLinks.forEach(function (entry) {
@@ -741,30 +741,30 @@
 
     if (rating && count) {
       return {
-        summary: 'Cached ' + source + ' review snapshot: ' + rating + '-star rating across ' + count + ' reviews',
-        badge: 'Cached Google review snapshot',
-        dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Cached review snapshot'
+        summary: source + ' review source: ' + rating + '-star rating across ' + count + ' reviews',
+        badge: 'Google review source',
+        dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Recent review source'
       };
     }
     if (rating) {
       return {
-        summary: 'Cached ' + source + ' review snapshot: ' + rating + '-star rating',
-        badge: 'Cached Google review snapshot',
-        dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Cached review snapshot'
+        summary: source + ' review source: ' + rating + '-star rating',
+        badge: 'Google review source',
+        dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Recent review source'
       };
     }
     if (count) {
       return {
-        summary: 'Cached ' + source + ' review snapshot: ' + count + ' reviews',
-        badge: 'Cached Google review snapshot',
-        dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Cached review snapshot'
+        summary: source + ' review source: ' + count + ' reviews',
+        badge: 'Google review source',
+        dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Recent review source'
       };
     }
 
     return {
-      summary: 'Cached ' + source + ' review snapshot',
-      badge: 'Cached Google review snapshot',
-      dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Cached review snapshot'
+      summary: source + ' review source',
+      badge: 'Google review source',
+      dateText: currentState.snapshotDate ? String(currentState.snapshotDate) : 'Recent review source'
     };
   }
 
@@ -1791,7 +1791,7 @@
       return {
         kicker: 'Scottsdale Design-Build',
         title: 'Plan Your Outdoor Space',
-        sub: 'Jump into services, project inspiration, reviews, or start a quote request without hunting through the page.'
+        sub: 'Jump into services, project inspiration, reviews, or start a project review without hunting through the page.'
       };
     }
     if (normalizedPath === '/services' || normalizedPath.indexOf('/services/') === 0) {
@@ -1805,7 +1805,7 @@
       return {
         kicker: 'Project Inspiration',
         title: 'Browse Then Request',
-        sub: 'Compare project styles, save what fits your yard, and use the quote request path when you are ready.'
+        sub: 'Compare project styles, save what fits your yard, and use the project review path when you are ready.'
       };
     }
     return {
@@ -2120,7 +2120,9 @@
       estimated_timeline: '',
       consultation_tier: '',
       lead_tier: '',
-      budget_range: ''
+      budget_range: '',
+      project_goal: '',
+      priority_zone: ''
     };
     var parsedUrl = null;
 
@@ -2136,6 +2138,8 @@
         prefill.prefill_message = parsedUrl.searchParams.get('prefill_message') || prefill.prefill_message;
         prefill.estimated_timeline = parsedUrl.searchParams.get('estimated_timeline') || parsedUrl.searchParams.get('timeline') || prefill.estimated_timeline;
         prefill.budget_range = parsedUrl.searchParams.get('budget_range') || prefill.budget_range;
+        prefill.project_goal = parsedUrl.searchParams.get('project_goal') || prefill.project_goal;
+        prefill.priority_zone = parsedUrl.searchParams.get('priority_zone') || prefill.priority_zone;
       }
 
       if (trigger.hasAttribute('data-service-choice')) {
@@ -2183,13 +2187,13 @@
       '  <div class="consult-drawer__content">' +
       '    <span class="consult-drawer__eyebrow">Fastest Way to Start</span>' +
       '    <h2 class="consult-drawer__title" id="consult-drawer-title">' + OFFER_FORM_TITLE + '</h2>' +
-      '    <p class="consult-drawer__sub">Share the basics about your yard. We will review the project type, location, and timing before calling with the right next step.</p>' +
+      '    <p class="consult-drawer__sub" id="consult-drawer-sub">Share the basics about your yard. We will review the project type, location, and timing before calling with the right next step.</p>' +
       '    <ul class="consult-drawer__proof">' +
       '      <li>' + OFFER_PROMISE + '</li>' +
       '      <li>Simple upgrades and full transformations are both welcome</li>' +
       '      <li>Budget, timeline, and license details are reviewed before next steps</li>' +
       '    </ul>' +
-      '    <div class="consult-drawer__trust-row" aria-label="Quote request trust signals">' +
+      '    <div class="consult-drawer__trust-row" aria-label="Project review trust signals">' +
       '      <span>43 verified reviews</span>' +
       '      <span>ROC + warranty review</span>' +
       '      <span>1-business-day follow-up</span>' +
@@ -2247,6 +2251,31 @@
       '      </div>' +
       '      <div class="consult-drawer__grid">' +
       '        <div class="form-field">' +
+      '          <label for="consult-project-goal">Project Goal <span class="field-required">Required</span></label>' +
+      '          <select id="consult-project-goal" name="project_goal" required>' +
+      '            <option value="">Select goal</option>' +
+      '            <option value="Focused first phase">Focused first phase</option>' +
+      '            <option value="Whole-yard design-build">Whole-yard design-build</option>' +
+      '            <option value="Private estate project review">Private estate project review</option>' +
+      '            <option value="Fix layout, drainage, or usability">Fix layout, drainage, or usability</option>' +
+      '            <option value="Not sure yet">Not sure yet</option>' +
+      '          </select>' +
+      '        </div>' +
+      '        <div class="form-field">' +
+      '          <label for="consult-priority-zone">Top Priority Zone <span class="field-optional">Optional</span></label>' +
+      '          <select id="consult-priority-zone" name="priority_zone">' +
+      '            <option value="">Select priority zone</option>' +
+      '            <option value="Front yard curb appeal">Front yard curb appeal</option>' +
+      '            <option value="Backyard entertaining">Backyard entertaining</option>' +
+      '            <option value="Patio or pavers">Patio or pavers</option>' +
+      '            <option value="Turf or play zone">Turf or play zone</option>' +
+      '            <option value="Pool-adjacent living">Pool-adjacent living</option>' +
+      '            <option value="Irrigation, drainage, or lighting">Irrigation, drainage, or lighting</option>' +
+      '          </select>' +
+      '        </div>' +
+      '      </div>' +
+      '      <div class="consult-drawer__grid">' +
+      '        <div class="form-field">' +
       '          <label for="consult-budget-range">Budget Range <span class="field-required">Required</span></label>' +
       '          <select id="consult-budget-range" name="budget_range" required>' +
       '            <option value="">Select a planning range</option>' +
@@ -2283,6 +2312,7 @@
       '      </div>' +
       '      <div class="consult-drawer__actions">' +
       '        <button type="submit" class="btn btn--submit" id="consult-submit">' + OFFER_SUBMIT_LABEL + '</button>' +
+      '        <p class="consult-drawer__budget-note" id="consult-budget-note">Focused first phases and larger builds are reviewed by the same local team. We filter out maintenance-only, tree trimming, mow/blow, and tiny repair calls before scheduling.</p>' +
       '        <p class="consult-drawer__note" id="consult-contact-help">We use this only to follow up about your landscaping project.</p>' +
       '        <p class="consult-drawer__error" id="consult-drawer-error" role="alert" aria-live="polite"></p>' +
       '      </div>' +
@@ -2303,6 +2333,8 @@
       close: drawer.querySelector('#consult-drawer-close'),
       backdrop: drawer.querySelector('[data-consult-close]'),
       form: drawer.querySelector('#consult-drawer-form'),
+      title: drawer.querySelector('#consult-drawer-title'),
+      sub: drawer.querySelector('#consult-drawer-sub'),
       context: drawer.querySelector('#consult-drawer-context'),
       contextBody: drawer.querySelector('#consult-drawer-context-body'),
       fullName: drawer.querySelector('#consult-full-name'),
@@ -2332,6 +2364,8 @@
       consultationTier: drawer.querySelector('#consult-consultation-tier'),
       leadTier: drawer.querySelector('#consult-lead-tier'),
       budgetRange: drawer.querySelector('#consult-budget-range'),
+      projectGoal: drawer.querySelector('#consult-project-goal'),
+      priorityZone: drawer.querySelector('#consult-priority-zone'),
       contactMethod: drawer.querySelector('#consult-contact-method'),
       contactMethodValue: drawer.querySelector('#consult-contact-method-value'),
       timelineHidden: drawer.querySelector('#consult-timeline-hidden'),
@@ -2403,7 +2437,8 @@
         consultDrawerState.phone,
         consultDrawerState.city,
         consultDrawerState.service,
-        consultDrawerState.budgetRange
+        consultDrawerState.budgetRange,
+        consultDrawerState.projectGoal
       ];
       var valid = true;
 
@@ -2517,12 +2552,34 @@
       return OFFER_SUBMIT_LABEL;
     }
 
+    function getConsultTitle() {
+      if (contextSource === 'mesa_first_phase' || /first phase/i.test(String(nextPrefill.prefill_message || nextPrefill.project_goal || ''))) {
+        return 'Price a Practical First Phase';
+      }
+      if (contextSource === 'paradise_valley_private_review' || contextSource === 'estate_project_review' || /estate/i.test(String(nextPrefill.project_goal || ''))) {
+        return 'Tell Us About the Property and Project Scope';
+      }
+      return 'Start Your Project Review';
+    }
+
+    function getConsultSubcopy() {
+      if (contextSource === 'mesa_first_phase' || /first phase/i.test(String(nextPrefill.prefill_message || nextPrefill.project_goal || ''))) {
+        return 'Share the city, priority zone, budget comfort range, and timing so the team can price the highest-impact first phase before a larger rebuild.';
+      }
+      if (contextSource === 'paradise_valley_private_review' || contextSource === 'estate_project_review' || /estate/i.test(String(nextPrefill.project_goal || ''))) {
+        return 'Share the property context, finish expectations, access or trade coordination needs, budget range, and timing for a private estate project review.';
+      }
+      return 'Share city, project type, budget range, and timing first. Contact details are used only to follow up about this project.';
+    }
+
     closeMenu(false);
 
     state.form.reset();
     state.form.hidden = false;
     state.success.classList.remove('is-visible');
     state.submit.disabled = false;
+    state.title.textContent = getConsultTitle();
+    state.sub.textContent = getConsultSubcopy();
     state.submit.textContent = getConsultSubmitLabel();
     state.error.textContent = '';
     state.error.classList.remove('is-visible');
@@ -2539,6 +2596,8 @@
     state.consultationTier.value = nextPrefill.consultation_tier || '';
     state.leadTier.value = nextPrefill.lead_tier || nextPrefill.consultation_tier || '';
     state.budgetRange.value = nextPrefill.budget_range || '';
+    state.projectGoal.value = nextPrefill.project_goal || '';
+    state.priorityZone.value = nextPrefill.priority_zone || '';
     state.pageUrl.value = String(window.location.href || '');
     state.referrer.value = String(document.referrer || 'direct');
     state.landingPath.value = String(window.location.pathname || '/');
@@ -2562,6 +2621,12 @@
     }
     if (nextPrefill.budget_range) {
       contextLines.push('Planning range: ' + nextPrefill.budget_range);
+    }
+    if (nextPrefill.project_goal) {
+      contextLines.push('Project goal: ' + nextPrefill.project_goal);
+    }
+    if (nextPrefill.priority_zone) {
+      contextLines.push('Priority zone: ' + nextPrefill.priority_zone);
     }
     if (contextSource === 'mesa_first_phase') {
       contextLines.push('First-phase request: price the highest-impact Mesa scope before a whole-yard rebuild.');
@@ -2675,7 +2740,9 @@
           selected_project_label: URL_PARAMS.get('selected_project_label') || '',
           prefill_message: URL_PARAMS.get('prefill_message') || '',
           estimated_timeline: URL_PARAMS.get('estimated_timeline') || URL_PARAMS.get('timeline') || '',
-          budget_range: URL_PARAMS.get('budget_range') || ''
+          budget_range: URL_PARAMS.get('budget_range') || '',
+          project_goal: URL_PARAMS.get('project_goal') || '',
+          priority_zone: URL_PARAMS.get('priority_zone') || ''
         });
       });
     }
@@ -3889,7 +3956,7 @@
   banner.setAttribute('role', 'region');
   banner.setAttribute('aria-label', 'Cookie consent');
   banner.innerHTML =
-    '<p>We use cookies to improve performance and measure quote activity. ' +
+    '<p>We use cookies to improve performance and measure project review activity. ' +
     '<a href="/cookie-policy">Cookie policy</a></p>' +
     '<div class="cookie-banner__actions">' +
     '<button class="cookie-banner__decline" type="button">Decline</button>' +
