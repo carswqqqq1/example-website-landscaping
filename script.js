@@ -1649,6 +1649,16 @@
   var isContactInView = false;
   var scrollTopButton = document.createElement('button');
   var menuFocusTrap = null;
+  var consultDrawerReturnFocus = null;
+  if (burger && overlay) {
+    burger.setAttribute('aria-controls', overlay.id || 'nav-overlay');
+    burger.setAttribute('aria-label', 'Open menu');
+  }
+  if (overlay) {
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Mobile navigation');
+  }
   scrollTopButton.type = 'button';
   scrollTopButton.className = 'scroll-top';
   scrollTopButton.setAttribute('aria-label', 'Scroll back to top');
@@ -1748,6 +1758,9 @@
   }
 
   function getOverlayConsultHref() {
+    var calculatorReviewLink = document.getElementById('calc-review-link');
+    var calculatorReviewHref = calculatorReviewLink ? String(calculatorReviewLink.getAttribute('href') || '').trim() : '';
+    if (normalizedPath.indexOf('/cost-calculator') === 0 && calculatorReviewHref) return calculatorReviewHref;
     if (normalizedPath === '/services') return buildConsultationPageHref({ source: 'services_hub' });
     if (normalizedPath.indexOf('/services/') === 0) return buildConsultationPageHref({ source: 'service_page' });
     if (normalizedPath.indexOf('/portfolio') === 0) return buildConsultationPageHref({ source: 'portfolio' });
@@ -1767,6 +1780,9 @@
   }
 
   function getGlobalConsultFallbackHref() {
+    var calculatorReviewLink = document.getElementById('calc-review-link');
+    var calculatorReviewHref = calculatorReviewLink ? String(calculatorReviewLink.getAttribute('href') || '').trim() : '';
+    if (normalizedPath.indexOf('/cost-calculator') === 0 && calculatorReviewHref) return calculatorReviewHref;
     if (normalizedPath === '/services') return buildConsultationPageHref({ source: 'services_hub' });
     if (normalizedPath.indexOf('/services/') === 0) return buildConsultationPageHref({ source: 'service_page' });
     if (normalizedPath.indexOf('/portfolio') === 0) return buildConsultationPageHref({ source: 'portfolio' });
@@ -1970,6 +1986,7 @@
     document.body.classList.add('has-nav-overlay-open');
     overlay.setAttribute('aria-hidden', 'false');
     burger.setAttribute('aria-expanded', 'true');
+    burger.setAttribute('aria-label', 'Close menu');
     document.body.style.overflow = 'hidden';
     setBackgroundInertForMenu(true);
     if (menuFocusTrap) {
@@ -1986,6 +2003,7 @@
     document.body.classList.remove('has-nav-overlay-open');
     overlay.setAttribute('aria-hidden', 'true');
     burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Open menu');
     document.body.style.overflow = document.body.classList.contains('has-consult-drawer-open') ? 'hidden' : '';
     setBackgroundInertForMenu(false);
     if (menuFocusTrap) {
@@ -2127,6 +2145,19 @@
     }
 
     var configuredServices = Array.isArray(SITE_CONFIG.contactFormServices) ? SITE_CONFIG.contactFormServices : [];
+    var serviceAliases = {
+      'outdoor-kitchens': 'Fire Feature / Outdoor Kitchen',
+      'outdoor-kitchen': 'Fire Feature / Outdoor Kitchen',
+      'fire-features': 'Fire Feature / Outdoor Kitchen',
+      'fire-feature': 'Fire Feature / Outdoor Kitchen',
+      'pergola-shade': 'Pergola / Shade Structure',
+      'pergola-shade-structure': 'Pergola / Shade Structure',
+      'desert-landscaping': 'Desert / Drought-Tolerant Design',
+      'desert-drought-tolerant-design': 'Desert / Drought-Tolerant Design'
+    };
+    if (serviceAliases[requestedSlug] && configuredServices.indexOf(serviceAliases[requestedSlug]) >= 0) {
+      return serviceAliases[requestedSlug];
+    }
     var exactMatch = configuredServices.find(function (service) {
       return normalizeSlug(service) === requestedSlug;
     });
@@ -2572,12 +2603,30 @@
     return consultDrawerState;
   }
 
+  function getConsultDrawerFallbackFocus() {
+    var candidates = [
+      consultDrawerReturnFocus,
+      document.querySelector('.nav__cta'),
+      document.getElementById('nav-burger'),
+      document.querySelector('main a[href], main button:not([disabled])')
+    ];
+
+    return candidates.find(function (candidate) {
+      return candidate &&
+        typeof candidate.focus === 'function' &&
+        document.contains(candidate) &&
+        candidate.getClientRects().length > 0 &&
+        !(consultDrawerState && consultDrawerState.drawer && consultDrawerState.drawer.contains(candidate));
+    }) || null;
+  }
+
   function openConsultDrawer(prefill) {
     var state = ensureConsultDrawer();
     var nextPrefill = prefill || {};
     var resolvedService = resolveServiceFormValue(nextPrefill.service);
     var contextLines = [];
     var contextSource = String(nextPrefill.source || '').trim();
+    var activeBeforeDrawer = document.activeElement;
 
     function getConsultSubmitLabel() {
       if (contextSource === 'mesa_first_phase' || /first phase/i.test(String(nextPrefill.prefill_message || ''))) {
@@ -2610,6 +2659,11 @@
     }
 
     closeMenu(false);
+    if (activeBeforeDrawer && activeBeforeDrawer !== document.body && !state.drawer.contains(activeBeforeDrawer)) {
+      consultDrawerReturnFocus = activeBeforeDrawer;
+    } else {
+      consultDrawerReturnFocus = document.querySelector('.nav__cta') || document.getElementById('nav-burger');
+    }
 
     state.form.reset();
     state.form.hidden = false;
@@ -2706,12 +2760,19 @@
 
   function closeConsultDrawer(restoreFocus) {
     if (!consultDrawerState || !consultDrawerState.drawer.classList.contains('is-open')) return;
+    var shouldRestoreFocus = restoreFocus !== false;
+    var focusTarget = shouldRestoreFocus ? getConsultDrawerFallbackFocus() : null;
     consultDrawerState.drawer.classList.remove('is-open');
     consultDrawerState.drawer.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('has-consult-drawer-open');
     document.body.style.overflow = overlay && overlay.classList.contains('is-open') ? 'hidden' : '';
     setBackgroundInertForConsult(false);
-    consultDrawerState.focusTrap.deactivate(restoreFocus !== false);
+    consultDrawerState.focusTrap.deactivate(false);
+    if (focusTarget) {
+      window.setTimeout(function () {
+        focusTarget.focus({ preventScroll: true });
+      }, 0);
+    }
     updateStickyBar();
     updateScrollTop();
   }
@@ -3624,6 +3685,19 @@
       var options = Array.from(serviceInput.options).map(function (option) {
         return String(option.value || '').trim();
       }).filter(Boolean);
+      var serviceAliases = {
+        'outdoor-kitchens': 'Fire Feature / Outdoor Kitchen',
+        'outdoor-kitchen': 'Fire Feature / Outdoor Kitchen',
+        'fire-features': 'Fire Feature / Outdoor Kitchen',
+        'fire-feature': 'Fire Feature / Outdoor Kitchen',
+        'pergola-shade': 'Pergola / Shade Structure',
+        'pergola-shade-structure': 'Pergola / Shade Structure',
+        'desert-landscaping': 'Desert / Drought-Tolerant Design',
+        'desert-drought-tolerant-design': 'Desert / Drought-Tolerant Design'
+      };
+      if (serviceAliases[requestedSlug] && options.indexOf(serviceAliases[requestedSlug]) >= 0) {
+        return serviceAliases[requestedSlug];
+      }
 
       var directMatch = options.find(function (option) {
         return option.toLowerCase() === cleanValue.toLowerCase();

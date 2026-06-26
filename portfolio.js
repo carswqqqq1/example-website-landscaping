@@ -14,6 +14,7 @@
   var lastFocusedElement = null;
   var requestStyleButton = document.getElementById('pf-request-style');
   var pageParams = new URLSearchParams(window.location.search);
+  var storyMedia = document.querySelector('.pf-story__media');
 
   var lightbox = document.getElementById('pf-lightbox');
   var lightboxImg = document.getElementById('pf-lightbox-img');
@@ -152,6 +153,17 @@
     updateRequestLinks(item);
   }
 
+  function getStoryLightboxItem() {
+    return items.find(function (item) {
+      var heading = item.querySelector('.pf-item__cap h3');
+      return heading && /architectural grounds/i.test(heading.textContent || '');
+    }) || items.find(function (item) {
+      var image = item.querySelector('img');
+      var src = image ? String(image.getAttribute('src') || image.currentSrc || '') : '';
+      return src.indexOf('fireplace-1280') >= 0;
+    }) || items[0];
+  }
+
   function openLightboxByItem(item) {
     var visible = visibleItems();
     var index = visible.indexOf(item);
@@ -224,6 +236,25 @@
       }
     });
   });
+
+  if (storyMedia) {
+    storyMedia.setAttribute('tabindex', '0');
+    storyMedia.setAttribute('role', 'button');
+    storyMedia.setAttribute('aria-label', 'Open featured project preview');
+    storyMedia.addEventListener('click', function () {
+      var storyItem = getStoryLightboxItem();
+      if (storyItem) {
+        applyFilter(storyItem.dataset.cat || 'all');
+        openLightboxByItem(storyItem);
+      }
+    });
+    storyMedia.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        storyMedia.click();
+      }
+    });
+  }
 
   if (lightbox) {
     if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);

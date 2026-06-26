@@ -1083,14 +1083,29 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   gap: .5rem;
 }
 .hero__dot {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  border-radius: 2px;
+  background: transparent;
+  transition: background .3s, width .3s;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero__dot::before {
+  content: "";
   width: 28px;
   height: 3px;
   border-radius: 2px;
   background: rgba(255,255,255,.35);
   transition: background .3s, width .3s;
-  padding: 0;
 }
 .hero__dot.is-active {
+  width: 48px;
+}
+.hero__dot.is-active::before {
   background: var(--white);
   width: 48px;
 }
@@ -3240,6 +3255,9 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   clip-path: inset(50%);
   white-space: nowrap;
 }
+.contact__form .hidden {
+  display: none !important;
+}
 .contact__form-title {
   font-family: var(--font-head);
   font-size: 1.625rem;
@@ -3646,9 +3664,9 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   pointer-events: auto;
 }
 body.has-cookie-banner-visible .sticky-bar {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(110%);
+  pointer-events: none;
 }
 .sticky-bar .btn {
   flex: 1;
@@ -3902,13 +3920,11 @@ body.has-cookie-banner-visible .sticky-bar {
   line-height: 1.6;
 }
 .consult-drawer__actions {
-  position: sticky;
-  bottom: calc(-1.3rem - env(safe-area-inset-bottom));
-  z-index: 2;
+  position: static;
   display: grid;
   gap: .72rem;
-  padding: .85rem 0 calc(.9rem + env(safe-area-inset-bottom));
-  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.98) 18%, rgba(255,255,255,.99) 100%);
+  padding: .4rem 0 0;
+  background: transparent;
 }
 .consult-drawer__budget-note {
   padding: .62rem .72rem;
@@ -4870,7 +4886,13 @@ body.has-nav-overlay-open .cookie-banner {
   flex: 1;
   min-width: 0;
 }
-.cookie-banner p a { color: var(--green); font-weight: 500; }
+.cookie-banner p a {
+  color: var(--green);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
 .cookie-banner__actions {
   display: flex;
   gap: .5rem;
@@ -4878,6 +4900,7 @@ body.has-nav-overlay-open .cookie-banner {
 }
 .cookie-banner__accept {
   padding: .48rem .88rem;
+  min-height: 44px;
   font-size: .78rem;
   font-weight: 600;
   background: var(--green);
@@ -4890,6 +4913,7 @@ body.has-nav-overlay-open .cookie-banner {
 .cookie-banner__accept:hover { background: var(--green-dark, #14532d); }
 .cookie-banner__decline {
   padding: .48rem .78rem;
+  min-height: 44px;
   font-size: .78rem;
   font-weight: 500;
   color: var(--ink-faint);
@@ -4903,7 +4927,8 @@ body.has-nav-overlay-open .cookie-banner {
 @media (max-width: 640px) {
   .cookie-banner {
     right: .72rem;
-    bottom: calc(92px + .72rem + env(safe-area-inset-bottom));
+    top: calc(70px + env(safe-area-inset-top));
+    bottom: auto;
     left: .72rem;
     width: auto;
     flex-direction: row;
@@ -4928,8 +4953,9 @@ body.has-nav-overlay-open .cookie-banner {
   }
   .cookie-banner__accept, .cookie-banner__decline {
     width: auto;
+    min-height: 44px;
     text-align: center;
-    padding: .48rem .54rem;
+    padding: .54rem .62rem;
     font-size: .68rem;
     white-space: nowrap;
   }
@@ -4971,7 +4997,7 @@ body.has-nav-overlay-open .cookie-banner {
     gap: .72rem;
   }
   .consult-drawer__actions {
-    bottom: calc(-.75rem - env(safe-area-inset-bottom));
+    padding-top: .3rem;
   }
   .consult-drawer__grid {
     gap: .62rem;

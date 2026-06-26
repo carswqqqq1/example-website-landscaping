@@ -217,6 +217,11 @@
   border-radius: 14px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+.pf-story__media:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
 }
 .pf-story__media img {
   width: 100%;
@@ -633,6 +638,7 @@
   }
   .pf-filter {
     width: 100%;
+    min-height: 44px;
     min-width: 0;
     justify-content: center;
     font-size: .74rem;
