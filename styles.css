@@ -920,7 +920,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .hero__heading {
   font-family: var(--font-head);
-  font-size: clamp(2.55rem, 5vw, 4.65rem);
+  font-size: clamp(2.45rem, 4.25vw, 3.9rem);
   font-weight: 600;
   line-height: 1.07;
   letter-spacing: 0;
@@ -3265,6 +3265,12 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   border-radius: 8px;
   padding: .56rem .66rem;
   box-shadow: 0 1px 0 rgba(20, 20, 20, .04);
+}
+.page-hero .financing-note {
+  color: #29231f;
+  background: #fff8ea;
+  border-color: #d5b879;
+  text-shadow: none;
 }
 
 .financing-note__link {
