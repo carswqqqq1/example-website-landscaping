@@ -18,7 +18,7 @@
   var FINANCING = SITE_CONFIG.financing || {};
   var ANALYTICS = SITE_CONFIG.analytics || {};
   var PRIMARY_OFFER = SITE_CONFIG.primaryOffer || {};
-  var REVIEW_FEED_ENDPOINT = String(GOOGLE_REVIEWS.feedEndpoint || '/.netlify/functions/google-reviews').trim();
+  var REVIEW_FEED_ENDPOINT = String(GOOGLE_REVIEWS.feedEndpoint || '').trim();
   var URL_PARAMS = new URLSearchParams(window.location.search);
 
   var SITE_NAME = SITE_CONFIG.businessName || 'Think Green Design | Build Landscape';
