@@ -1912,6 +1912,7 @@
     if (typeof closeConsultDrawer === 'function') closeConsultDrawer(false);
     overlay.classList.add('is-open');
     burger.classList.add('is-open');
+    document.body.classList.add('has-nav-overlay-open');
     overlay.setAttribute('aria-hidden', 'false');
     burger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
@@ -1926,6 +1927,7 @@
     if (!overlay || !burger) return;
     overlay.classList.remove('is-open');
     burger.classList.remove('is-open');
+    document.body.classList.remove('has-nav-overlay-open');
     overlay.setAttribute('aria-hidden', 'true');
     burger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = document.body.classList.contains('has-consult-drawer-open') ? 'hidden' : '';

@@ -4670,6 +4670,11 @@ body.has-consult-drawer-open .cookie-banner {
   pointer-events: none;
   transform: translateY(12px);
 }
+body.has-nav-overlay-open .cookie-banner {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+}
 .cookie-banner p {
   margin: 0;
   font-size: .78rem;
