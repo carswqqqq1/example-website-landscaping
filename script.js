@@ -2164,6 +2164,11 @@
       '      <li>Simple upgrades and full transformations are both welcome</li>' +
       '      <li>A local team member follows up within one business day</li>' +
       '    </ul>' +
+      '    <div class="consult-drawer__trust-row" aria-label="Quote request trust signals">' +
+      '      <span>43 verified reviews</span>' +
+      '      <span>ROC license shown</span>' +
+      '      <span>1-business-day follow-up</span>' +
+      '    </div>' +
       '    <div class="consult-drawer__context" id="consult-drawer-context">' +
       '      <strong id="consult-drawer-context-label">Request Context</strong>' +
       '      <p id="consult-drawer-context-body"></p>' +
@@ -2187,47 +2192,48 @@
       '      <input type="hidden" name="page_url" id="consult-page-url" value="" />' +
       '      <input type="hidden" name="consultation_tier" id="consult-consultation-tier" value="" />' +
       '      <input type="hidden" name="lead_tier" id="consult-lead-tier" value="" />' +
-      '      <input type="hidden" name="budget_range" id="consult-budget-range" value="" />' +
       '      <input type="hidden" name="preferred_contact_method" id="consult-contact-method" value="" />' +
       '      <input type="hidden" name="contact_method" id="consult-contact-method-value" value="" />' +
       '      <input type="hidden" name="timeline" id="consult-timeline-hidden" value="" />' +
       '      <input type="hidden" name="start_timeline" id="consult-start-timeline" value="" />' +
       '      <div class="form-field">' +
-      '        <label for="consult-full-name">Name</label>' +
+      '        <label for="consult-full-name">Name <span class="field-required">Required</span></label>' +
       '        <input type="text" id="consult-full-name" name="full_name" placeholder="Your full name" autocomplete="name" required />' +
       '      </div>' +
       '      <div class="consult-drawer__grid">' +
       '        <div class="form-field">' +
-      '          <label for="consult-phone">Phone Number</label>' +
+      '          <label for="consult-phone">Phone Number <span class="field-required">Required</span></label>' +
       '          <input type="tel" id="consult-phone" name="phone" placeholder="(480) 555-0000" autocomplete="tel" inputmode="tel" required />' +
       '        </div>' +
       '        <div class="form-field">' +
-      '          <label for="consult-city">City</label>' +
+      '          <label for="consult-city">City <span class="field-required">Required</span></label>' +
       '          <input type="text" id="consult-city" name="city" placeholder="' + SITE_CITY + '" autocomplete="address-level2" required />' +
       '        </div>' +
       '      </div>' +
       '      <div class="consult-drawer__grid">' +
       '        <div class="form-field">' +
-      '          <label for="consult-email">Email (optional)</label>' +
+      '          <label for="consult-email">Email <span class="field-optional">Optional</span></label>' +
       '          <input type="email" id="consult-email" name="email_visible" placeholder="you@example.com" autocomplete="email" inputmode="email" />' +
       '        </div>' +
       '        <div class="form-field">' +
-      '          <label for="consult-service">Project Type</label>' +
+      '          <label for="consult-service">Project Type <span class="field-required">Required</span></label>' +
       '          <select id="consult-service" name="service" data-service-select required></select>' +
       '        </div>' +
       '      </div>' +
       '      <div class="consult-drawer__grid">' +
       '        <div class="form-field">' +
-      '          <label for="consult-contact-method-choice">Preferred Contact Method</label>' +
-      '          <select id="consult-contact-method-choice" aria-describedby="consult-contact-help">' +
-      '            <option value="">Select if you have a preference</option>' +
-      '            <option value="Phone call">Phone call</option>' +
-      '            <option value="Text message">Text message</option>' +
-      '            <option value="Email">Email</option>' +
+      '          <label for="consult-budget-range">Budget Range <span class="field-required">Required</span></label>' +
+      '          <select id="consult-budget-range" name="budget_range" required>' +
+      '            <option value="">Select a planning range</option>' +
+      '            <option value="$10,000 - $25,000">$10,000 - $25,000</option>' +
+      '            <option value="$25,000 - $60,000">$25,000 - $60,000</option>' +
+      '            <option value="$60,000 - $150,000">$60,000 - $150,000</option>' +
+      '            <option value="$150,000+">$150,000+</option>' +
+      '            <option value="Not sure yet">Not sure yet</option>' +
       '          </select>' +
       '        </div>' +
       '        <div class="form-field">' +
-      '          <label for="consult-estimated-timeline">Estimated Timeline</label>' +
+      '          <label for="consult-estimated-timeline">Estimated Timeline <span class="field-optional">Optional</span></label>' +
       '          <select id="consult-estimated-timeline" name="estimated_timeline">' +
       '            <option value="">Select a timeline</option>' +
       '            <option value="3-6 months">3-6 months</option>' +
@@ -2238,8 +2244,17 @@
       '        </div>' +
       '      </div>' +
       '      <div class="form-field">' +
-      '        <label for="consult-message">Project Notes (optional)</label>' +
-      '        <textarea id="consult-message" name="message" rows="5" placeholder="Share goals, style preferences, or the kind of yard you want to build."></textarea>' +
+      '        <label for="consult-contact-method-choice">Preferred Contact Method <span class="field-optional">Optional</span></label>' +
+      '        <select id="consult-contact-method-choice" aria-describedby="consult-contact-help">' +
+      '          <option value="">Select if you have a preference</option>' +
+      '          <option value="Phone call">Phone call</option>' +
+      '          <option value="Text message">Text message</option>' +
+      '          <option value="Email">Email</option>' +
+      '        </select>' +
+      '      </div>' +
+      '      <div class="form-field">' +
+      '        <label for="consult-message">Project Notes <span class="field-optional">Optional</span></label>' +
+      '        <textarea id="consult-message" name="message" rows="4" placeholder="Optional: share goals, HOA or access needs, phasing, style preferences, or the kind of yard you want to build."></textarea>' +
       '      </div>' +
       '      <div class="consult-drawer__actions">' +
       '        <button type="submit" class="btn btn--submit" id="consult-submit">' + OFFER_SUBMIT_LABEL + '</button>' +
@@ -2362,7 +2377,8 @@
         consultDrawerState.fullName,
         consultDrawerState.phone,
         consultDrawerState.city,
-        consultDrawerState.service
+        consultDrawerState.service,
+        consultDrawerState.budgetRange
       ];
       var valid = true;
 
