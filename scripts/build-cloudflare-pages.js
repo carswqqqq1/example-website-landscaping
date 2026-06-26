@@ -12,6 +12,7 @@ const publicFiles = [
   'best-landscaper-scottsdale.html',
   'cave-creek-landscaping.html',
   'chandler-landscaping.html',
+  'contact.html',
   'cookie-policy.html',
   'cost-calculator.html',
   'faq.html',
