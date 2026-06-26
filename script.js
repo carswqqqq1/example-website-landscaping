@@ -1690,7 +1690,7 @@
       return { href: '/about', label: 'About The Team' };
     }
     if (pathname.indexOf('/reviews') === 0) {
-      return { href: '/portfolio', label: 'View Portfolio' };
+      return nativeQuoteAction || { href: buildConsultationPageHref({ source: 'reviews_page' }), label: OFFER_SHORT_LABEL };
     }
     if (pathname.indexOf('/free-consultation') === 0) {
       return { href: '/services', label: 'Explore Services' };
@@ -2111,6 +2111,7 @@
   function buildConsultPrefillFromTrigger(trigger) {
     var prefill = {
       source: deriveConsultSource(),
+      city: '',
       service: '',
       selected_style: '',
       selected_image: '',
@@ -2127,6 +2128,7 @@
       parsedUrl = parseConsultUrl(trigger.getAttribute('href'));
       if (parsedUrl) {
         prefill.source = parsedUrl.searchParams.get('source') || prefill.source;
+        prefill.city = parsedUrl.searchParams.get('city') || prefill.city;
         prefill.service = parsedUrl.searchParams.get('service') || prefill.service;
         prefill.selected_style = parsedUrl.searchParams.get('selected_style') || prefill.selected_style;
         prefill.selected_image = parsedUrl.searchParams.get('selected_image') || prefill.selected_image;
@@ -2503,6 +2505,17 @@
     var nextPrefill = prefill || {};
     var resolvedService = resolveServiceFormValue(nextPrefill.service);
     var contextLines = [];
+    var contextSource = String(nextPrefill.source || '').trim();
+
+    function getConsultSubmitLabel() {
+      if (contextSource === 'mesa_first_phase' || /first phase/i.test(String(nextPrefill.prefill_message || ''))) {
+        return 'Price My First Phase';
+      }
+      if (contextSource === 'paradise_valley_private_review' || contextSource === 'estate_project_review') {
+        return 'Request My Private Review';
+      }
+      return OFFER_SUBMIT_LABEL;
+    }
 
     closeMenu(false);
 
@@ -2510,7 +2523,7 @@
     state.form.hidden = false;
     state.success.classList.remove('is-visible');
     state.submit.disabled = false;
-    state.submit.textContent = OFFER_SUBMIT_LABEL;
+    state.submit.textContent = getConsultSubmitLabel();
     state.error.textContent = '';
     state.error.classList.remove('is-visible');
 
@@ -2543,6 +2556,18 @@
 
     if (resolvedService) {
       contextLines.push('Project type: ' + resolvedService);
+    }
+    if (nextPrefill.city) {
+      contextLines.push('City: ' + nextPrefill.city);
+    }
+    if (nextPrefill.budget_range) {
+      contextLines.push('Planning range: ' + nextPrefill.budget_range);
+    }
+    if (contextSource === 'mesa_first_phase') {
+      contextLines.push('First-phase request: price the highest-impact Mesa scope before a whole-yard rebuild.');
+    }
+    if (contextSource === 'paradise_valley_private_review' || contextSource === 'estate_project_review') {
+      contextLines.push('Private review: coordination, finish quality, access, and construction sequencing matter.');
     }
     if (nextPrefill.selected_project_label) {
       contextLines.push('Project reference: ' + nextPrefill.selected_project_label);
