@@ -33,11 +33,11 @@
   <link rel="manifest" href="/manifest.json" />
   <link rel="canonical" href="https://thinkgreendesignbuild.com/" />
   <link rel="alternate" hreflang="en-us" href="https://thinkgreendesignbuild.com/" />
-  <link rel="preload" as="image" href="img/projects/slide1-1280.avif" type="image/avif" fetchpriority="high" />
+  <link rel="preload" as="image" href="/img/hero/covered-patio-hero-poster.jpg" type="image/jpeg" fetchpriority="high" />
   <link rel="preconnect" href="https://www.googletagmanager.com" />
   <link rel="preconnect" href="https://www.google-analytics.com" />
-  <link rel="stylesheet" href="/fonts.min.css?v=20260627e" />
-  <link rel="stylesheet" href="/styles.min.css?v=20260627e" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20260627f" />
+  <link rel="stylesheet" href="/styles.min.css?v=20260627f" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -334,9 +334,13 @@
   <main id="main-content">
 
     <!-- ============================================================
-         HERO — Crossfading carousel
+         HERO — Video background with image fallback
     ============================================================ -->
-    <section class="hero" id="hero" aria-label="Hero">
+    <section class="hero hero--video" id="hero" aria-label="Hero">
+      <video class="hero__video" autoplay muted loop playsinline preload="metadata" poster="/img/hero/covered-patio-hero-poster.jpg" aria-hidden="true">
+        <source src="/img/hero/covered-patio-hero.webm" type="video/webm" />
+        <source src="/img/hero/covered-patio-hero.mp4" type="video/mp4" />
+      </video>
       <div class="hero__slides" aria-hidden="true">
         <div class="hero__slide is-active" style="background-image:image-set(url('img/projects/slide1-1280.avif') type('image/avif'), url('img/projects/slide1.webp') type('image/webp'))"></div>
         <div class="hero__slide" style="background-image:image-set(url('img/projects/slide2-1280.avif') type('image/avif'), url('img/projects/slide2.webp') type('image/webp'))"></div>
@@ -1455,9 +1459,9 @@
     <a href="/free-consultation?source=homepage_sticky&autostart=1" class="btn btn--outline-dark">Project Review</a>
   </div>
 
-  <script src="/site-config.js?v=20260627e" defer></script>
-  <script src="/services-data.min.js?v=20260627e" defer></script>
-  <script src="/projects-data.min.js?v=20260627e" defer></script>
-  <script src="/script.min.js?v=20260627e" defer></script>
+  <script src="/site-config.js?v=20260627f" defer></script>
+  <script src="/services-data.min.js?v=20260627f" defer></script>
+  <script src="/projects-data.min.js?v=20260627f" defer></script>
+  <script src="/script.min.js?v=20260627f" defer></script>
 </body>
 </html>
