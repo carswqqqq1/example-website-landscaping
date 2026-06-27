@@ -4604,7 +4604,8 @@ body.has-cookie-banner-visible .sticky-bar {
     width: 100%;
     padding: .62rem;
     border-radius: 18px;
-    max-height: calc(100dvh - 7.6rem - env(safe-area-inset-top));
+    max-height: none;
+    overflow: visible;
   }
   .nav__overlay-intro {
     display: none;
@@ -4648,6 +4649,11 @@ body.has-cookie-banner-visible .sticky-bar {
     height: 44px;
     min-width: 44px;
     min-height: 44px;
+  }
+  .nav__overlay.is-open .nav__overlay-link,
+  .nav__overlay.is-open .nav__overlay-actions,
+  .nav__overlay.is-open .nav__overlay-contact {
+    transition-delay: 0s;
   }
   .footer__top {
     grid-template-columns: 1fr;
