@@ -4653,7 +4653,10 @@ body.has-cookie-banner-visible .sticky-bar {
   .nav__overlay.is-open .nav__overlay-link,
   .nav__overlay.is-open .nav__overlay-actions,
   .nav__overlay.is-open .nav__overlay-contact {
-    transition-delay: 0s;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    transition-delay: 0s !important;
   }
   .footer__top {
     grid-template-columns: 1fr;
