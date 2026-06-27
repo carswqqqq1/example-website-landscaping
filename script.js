@@ -1424,6 +1424,10 @@
 
   function installAnalytics() {
     var measurementId = String(ANALYTICS.ga4MeasurementId || '').trim();
+    var HEATMAP = ANALYTICS.heatmap || {};
+    var heatmapEnabled = HEATMAP.enabled !== false;
+    var heatmapBufferLimit = Math.max(25, Math.min(500, Number(HEATMAP.bufferLimit || 200)));
+    var heatmapClickSelector = String(HEATMAP.clickSelector || 'a, button, input, select, textarea, summary, [role="button"], [data-heatmap-track]');
     var trackingContext = {
       lead_source: DETECTED_LEAD_SOURCE || 'website',
       utm_source: String(URL_PARAMS.get('utm_source') || '').trim(),
@@ -1434,9 +1438,89 @@
       landing_path: String(window.location.pathname || '/')
     };
 
+    window.dataLayer = window.dataLayer || [];
+    window.heatmapEvents = window.heatmapEvents || [];
+
+    function analyticsConsentGranted() {
+      return localStorage.getItem('tg_cookie_consent') === 'accepted';
+    }
+
+    function getScrollPercent() {
+      var body = document.body;
+      var html = document.documentElement;
+      var scrollTop = window.scrollY || html.scrollTop || body.scrollTop || 0;
+      var scrollHeight = Math.max(body.scrollHeight, html.scrollHeight, body.offsetHeight, html.offsetHeight);
+      var windowHeight = window.innerHeight || html.clientHeight || 0;
+      var maxScrollable = Math.max(1, scrollHeight - windowHeight);
+      return Math.min(100, Math.max(0, Math.round((scrollTop / maxScrollable) * 100)));
+    }
+
+    function getElementLabel(element) {
+      if (!element) return '';
+      return String(
+        element.getAttribute('data-heatmap-label') ||
+        element.getAttribute('aria-label') ||
+        element.getAttribute('title') ||
+        element.textContent ||
+        element.getAttribute('name') ||
+        element.id ||
+        element.tagName ||
+        ''
+      ).replace(/\s+/g, ' ').trim().slice(0, 90);
+    }
+
+    function getElementZone(element) {
+      var zone = element && element.closest ? element.closest('[data-heatmap-zone], section, header, footer, nav, main, aside') : null;
+      if (!zone) return 'body';
+      return String(
+        zone.getAttribute('data-heatmap-zone') ||
+        zone.id ||
+        zone.getAttribute('aria-label') ||
+        zone.className ||
+        zone.tagName ||
+        'body'
+      ).replace(/\s+/g, ' ').trim().slice(0, 80);
+    }
+
+    function getHeatmapElementContext(element) {
+      var href = element && element.getAttribute ? element.getAttribute('href') : '';
+      return {
+        element_tag: element && element.tagName ? element.tagName.toLowerCase() : '',
+        element_id: element && element.id ? element.id : '',
+        element_classes: element && element.className ? String(element.className).replace(/\s+/g, ' ').trim().slice(0, 120) : '',
+        element_label: getElementLabel(element),
+        element_href: href ? String(href).slice(0, 180) : '',
+        heatmap_zone: getElementZone(element)
+      };
+    }
+
+    window.trackHeatmapEvent = function trackHeatmapEvent(name, params) {
+      if (!heatmapEnabled || !analyticsConsentGranted()) return;
+      var eventPayload = Object.assign({
+        event: name,
+        heatmap_event: name,
+        page_path: window.location.pathname || '/',
+        page_location: window.location.href,
+        viewport_width: window.innerWidth || document.documentElement.clientWidth || 0,
+        viewport_height: window.innerHeight || document.documentElement.clientHeight || 0,
+        scroll_percent: getScrollPercent(),
+        timestamp: Date.now()
+      }, trackingContext, params || {});
+
+      window.heatmapEvents.push(eventPayload);
+      if (window.heatmapEvents.length > heatmapBufferLimit) {
+        window.heatmapEvents.splice(0, window.heatmapEvents.length - heatmapBufferLimit);
+      }
+      window.dataLayer.push(eventPayload);
+    };
+
     window.trackLeadEvent = function trackLeadEvent(name, params) {
-      if (typeof window.gtag !== 'function') return;
-      window.gtag('event', name, Object.assign({}, trackingContext, params || {}));
+      if (!analyticsConsentGranted()) return;
+      var payload = Object.assign({}, trackingContext, params || {});
+      window.dataLayer.push(Object.assign({ event: name }, payload));
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', name, payload);
+      }
     };
 
     window.initSiteAnalytics = function initSiteAnalytics() {
@@ -1447,7 +1531,6 @@
       gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
       document.head.appendChild(gaScript);
 
-      window.dataLayer = window.dataLayer || [];
       window.gtag = function gtag() {
         window.dataLayer.push(arguments);
       };
@@ -1458,7 +1541,7 @@
       });
     };
 
-    if (localStorage.getItem('tg_cookie_consent') === 'accepted') {
+    if (analyticsConsentGranted()) {
       window.initSiteAnalytics();
     }
 
@@ -1480,13 +1563,7 @@
     var trackedDepths = {};
     var depthThresholds = [25, 50, 75, 90];
     function trackScrollDepth() {
-      var body = document.body;
-      var html = document.documentElement;
-      var scrollTop = window.scrollY || html.scrollTop || body.scrollTop || 0;
-      var scrollHeight = Math.max(body.scrollHeight, html.scrollHeight, body.offsetHeight, html.offsetHeight);
-      var windowHeight = window.innerHeight || html.clientHeight || 0;
-      var maxScrollable = Math.max(1, scrollHeight - windowHeight);
-      var depth = Math.min(100, Math.round((scrollTop / maxScrollable) * 100));
+      var depth = getScrollPercent();
 
       depthThresholds.forEach(function (threshold) {
         if (depth >= threshold && !trackedDepths[threshold]) {
@@ -1495,6 +1572,9 @@
             depth_percent: threshold,
             page_location: window.location.href
           });
+          window.trackHeatmapEvent('heatmap_scroll_depth', {
+            depth_percent: threshold
+          });
         }
       });
     }
@@ -1502,10 +1582,48 @@
     window.addEventListener('scroll', trackScrollDepth, { passive: true });
     trackScrollDepth();
 
+    var recentHeatmapClicks = [];
+    function pruneRecentHeatmapClicks(now) {
+      recentHeatmapClicks = recentHeatmapClicks.filter(function (click) {
+        return now - click.time < 1200;
+      });
+    }
+
     document.addEventListener('click', function (event) {
       var trigger = event.target && event.target.closest
         ? event.target.closest('a, button')
         : null;
+      var heatmapTarget = event.target && event.target.closest
+        ? event.target.closest(heatmapClickSelector)
+        : null;
+
+      if (heatmapTarget) {
+        var now = Date.now();
+        var heatmapRect = heatmapTarget.getBoundingClientRect();
+        var heatmapContext = getHeatmapElementContext(heatmapTarget);
+        var clickPayload = Object.assign({}, heatmapContext, {
+          click_x: Math.round(event.clientX),
+          click_y: Math.round(event.clientY),
+          element_x_percent: heatmapRect.width ? Math.round(((event.clientX - heatmapRect.left) / heatmapRect.width) * 100) : 0,
+          element_y_percent: heatmapRect.height ? Math.round(((event.clientY - heatmapRect.top) / heatmapRect.height) * 100) : 0,
+          is_primary_cta: /consult|project review|quote|call|contact|plan my|start/i.test(getElementLabel(heatmapTarget))
+        });
+
+        window.trackHeatmapEvent('heatmap_click', clickPayload);
+
+        recentHeatmapClicks.push({ time: now, x: event.clientX, y: event.clientY, label: clickPayload.element_label });
+        pruneRecentHeatmapClicks(now);
+        var sameAreaClicks = recentHeatmapClicks.filter(function (click) {
+          return Math.abs(click.x - event.clientX) <= 24 &&
+            Math.abs(click.y - event.clientY) <= 24 &&
+            click.label === clickPayload.element_label;
+        });
+        if (sameAreaClicks.length >= 3) {
+          window.trackHeatmapEvent('heatmap_rage_click', clickPayload);
+          recentHeatmapClicks = [];
+        }
+      }
+
       if (!trigger) return;
 
       var isCta = trigger.classList.contains('btn') ||
@@ -1540,6 +1658,22 @@
           page_location: window.location.href
         });
       }
+    });
+
+    var heatmapFormStartMap = new WeakSet();
+    document.addEventListener('focusin', function (event) {
+      var field = event.target;
+      if (!field || !/^(input|select|textarea)$/i.test(field.tagName || '')) return;
+      var form = field.closest ? field.closest('form') : null;
+      if (!form || heatmapFormStartMap.has(form)) return;
+      heatmapFormStartMap.add(form);
+      window.trackHeatmapEvent('heatmap_form_start', {
+        form_id: form.id || '',
+        form_name: form.getAttribute('name') || '',
+        field_tag: field.tagName.toLowerCase(),
+        field_name: field.getAttribute('name') || '',
+        heatmap_zone: getElementZone(form)
+      });
     });
 
     if (window.location.pathname.indexOf('thank-you') !== -1) {

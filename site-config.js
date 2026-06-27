@@ -763,7 +763,13 @@
       ctaHref: '/free-consultation?source=financing_inquiry'
     },
     analytics: {
-      ga4MeasurementId: 'G-B85D2Y2858'
+      ga4MeasurementId: 'G-B85D2Y2858',
+      heatmap: {
+        enabled: true,
+        bufferLimit: 200,
+        clickSelector: 'a, button, input, select, textarea, summary, [role="button"], [data-heatmap-track]',
+        notes: 'Privacy-safe interaction structure. Does not capture form values or personal details. Wire a vendor such as Microsoft Clarity, Hotjar, or GTM to heatmap_click, heatmap_scroll_depth, heatmap_form_start, and heatmap_rage_click.'
+      }
     }
   };
 });
