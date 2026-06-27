@@ -119,6 +119,7 @@
 }
 .pf-filter {
   padding: .48rem .94rem;
+  min-height: 44px;
   font-family: var(--font-body);
   font-size: .8125rem;
   font-weight: 500;
