@@ -4494,16 +4494,50 @@ body.has-cookie-banner-visible .sticky-bar {
   .contact__form-title {
     margin-bottom: 1.1rem;
   }
+  .home-page .portfolio__grid .portfolio__item:nth-child(n+4),
+  .home-page .services__list .service-item:nth-child(n+5),
+  .home-page .contact__details,
+  .home-page .ticket-panel,
+  .home-page .response-promise,
+  .home-page .financing-note--panel,
+  .home-page .contact__quote,
+  .home-page .contact__trust,
+  .home-page .contact__form .form-field--optional,
+  .home-page .contact__form .financing-note,
+  .home-page .contact__form .form-spam-hint {
+    display: none;
+  }
+  .home-page .contact__info {
+    padding-block: 1.2rem;
+  }
+  .home-page .contact__info-inner {
+    padding: 1.35rem 1.05rem;
+  }
+  .home-page .contact__heading {
+    font-size: clamp(1.8rem, 8vw, 2.3rem);
+  }
+  .home-page .contact__sub {
+    margin-bottom: 0;
+    font-size: .9rem;
+    line-height: 1.58;
+  }
+  .home-page .contact__form-wrap {
+    padding: 1.1rem .95rem 1.25rem;
+  }
+  .home-page .contact__form {
+    padding: 1rem;
+    gap: .82rem;
+  }
+  .home-page .ticket-progress {
+    margin-bottom: .25rem;
+  }
   .footer__top { grid-template-columns: 1fr; }
   .footer__brand { grid-column: span 1; }
   .footer__bottom { flex-direction: column; text-align: center; }
   .sticky-bar { display: flex; }
   body { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
   .scroll-top {
-    right: .9rem;
-    bottom: calc(116px + env(safe-area-inset-bottom));
-    width: 46px;
-    height: 46px;
+    display: none;
   }
   .featured,
   .about,
@@ -4909,7 +4943,11 @@ body.has-cookie-banner-visible .sticky-bar {
 .scroll-top svg { width: 18px; height: 18px; }
 /* Keep above sticky bar on mobile */
 @media (max-width: 640px) {
-  .scroll-top { bottom: calc(106px + 1rem + env(safe-area-inset-bottom)); right: 1rem; }
+  .scroll-top {
+    display: none;
+    bottom: calc(106px + 1rem + env(safe-area-inset-bottom));
+    right: 1rem;
+  }
 }
 
 /* ============================================================
