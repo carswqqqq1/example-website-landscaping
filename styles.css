@@ -381,6 +381,9 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .nav__logo {
   display: flex;
   align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   text-decoration: none;
   flex-shrink: 0;
   overflow: visible;
@@ -567,7 +570,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-  padding: calc(.8rem + env(safe-area-inset-top)) .9rem calc(1.25rem + env(safe-area-inset-bottom));
+  padding: calc(.8rem + env(safe-area-inset-top)) .9rem calc(1.7rem + env(safe-area-inset-bottom));
   gap: 0;
   opacity: 0;
   visibility: hidden;
@@ -601,6 +604,9 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   box-shadow: 0 22px 54px rgba(0, 0, 0, .16);
   padding: .9rem;
   counter-reset: mobile-nav;
+  max-height: calc(100dvh - 8rem - env(safe-area-inset-top));
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .nav__overlay.is-open nav {
   transform: translateY(0) scale(1);
@@ -649,8 +655,10 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   position: absolute;
   top: calc(1rem + env(safe-area-inset-top));
   right: 1rem;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.18);
   background: rgba(8, 16, 11, .72);
@@ -1123,6 +1131,12 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   bottom: 2rem;
   right: clamp(1.25rem, 5vw, 2.5rem);
   z-index: 3;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
   color: rgba(255,255,255,.55);
   transition: color .2s;
   animation: scrollBounce 2.2s ease-in-out infinite;
@@ -1193,6 +1207,12 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     margin-top: .24rem;
     font-size: .58rem;
     line-height: 1.2;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1320px) {
+  .hero__indicators {
+    display: none;
   }
 }
 
@@ -3252,15 +3272,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   font-weight: 600;
 }
 .hidden-field {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
+  display: none !important;
 }
 .contact__form .hidden {
   display: none !important;
@@ -3724,6 +3736,7 @@ body.has-cookie-banner-visible .sticky-bar {
   visibility: hidden;
   pointer-events: none;
   transition: opacity .26s var(--ease), visibility 0s linear .26s;
+  overscroll-behavior: contain;
 }
 .consult-drawer.is-open {
   opacity: 1;
@@ -3744,6 +3757,7 @@ body.has-cookie-banner-visible .sticky-bar {
   width: min(820px, calc(100vw - 2rem));
   max-width: 100%;
   height: min(92dvh, 860px);
+  max-height: calc(100dvh - clamp(2rem, 6vw, 4rem));
   margin: 0;
   border: 1px solid rgba(255, 255, 255, .45);
   border-radius: 18px;
@@ -3751,6 +3765,7 @@ body.has-cookie-banner-visible .sticky-bar {
   box-shadow: 0 24px 80px rgba(0, 0, 0, .28);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   opacity: 0;
   transform: translateY(20px) scale(.985);
   transition: opacity .28s var(--ease), transform .32s var(--ease);
@@ -3763,8 +3778,10 @@ body.has-cookie-banner-visible .sticky-bar {
   position: absolute;
   top: max(1rem, env(safe-area-inset-top));
   right: 1rem;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 999px;
   border: 1px solid rgba(20, 20, 20, .12);
   background: rgba(255, 255, 255, .92);
@@ -3776,8 +3793,11 @@ body.has-cookie-banner-visible .sticky-bar {
 }
 .consult-drawer__content {
   padding: calc(1.35rem + env(safe-area-inset-top)) clamp(1rem, 2.4vw, 1.6rem) calc(1.3rem + env(safe-area-inset-bottom));
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 .consult-drawer__eyebrow {
   display: inline-flex;
@@ -4580,14 +4600,14 @@ body.has-cookie-banner-visible .sticky-bar {
   }
   .nav__overlay nav {
     gap: .3rem;
-    margin-top: calc(2.2rem + env(safe-area-inset-top));
+    margin-top: calc(3rem + env(safe-area-inset-top));
     width: 100%;
     padding: .62rem;
     border-radius: 18px;
+    max-height: calc(100dvh - 7.6rem - env(safe-area-inset-top));
   }
   .nav__overlay-intro {
-    padding: .68rem .72rem;
-    border-radius: 14px;
+    display: none;
   }
   .nav__overlay-title {
     font-size: 1.28rem;
@@ -4607,7 +4627,7 @@ body.has-cookie-banner-visible .sticky-bar {
   }
   .nav__overlay-contact {
     width: 100%;
-    padding: .65rem .72rem .1rem;
+    padding: .65rem .72rem calc(.35rem + env(safe-area-inset-bottom));
     font-size: .8rem;
   }
   .nav__overlay-actions {
@@ -4624,8 +4644,10 @@ body.has-cookie-banner-visible .sticky-bar {
   .nav__overlay-close {
     top: calc(.85rem + env(safe-area-inset-top));
     right: .9rem;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
   .footer__top {
     grid-template-columns: 1fr;

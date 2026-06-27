@@ -2806,6 +2806,18 @@
   });
 
   /* ---- SMOOTH SCROLL ---- */
+  function focusHashTarget(target) {
+    if (!target) return;
+    if (!target.hasAttribute('tabindex')) {
+      target.setAttribute('tabindex', '-1');
+    }
+    try {
+      target.focus({ preventScroll: true });
+    } catch (error) {
+      target.focus();
+    }
+  }
+
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
     a.addEventListener('click', function (e) {
       var id = this.getAttribute('href');
@@ -2815,6 +2827,16 @@
       e.preventDefault();
       var offset = nav ? nav.offsetHeight + 8 : 80;
       window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+      if (window.history && window.history.pushState) {
+        window.history.pushState(null, '', id);
+      } else {
+        window.location.hash = id.slice(1);
+      }
+      if (this.classList.contains('skip-link') || id === '#main-content') {
+        window.setTimeout(function () {
+          focusHashTarget(target);
+        }, 120);
+      }
     });
   });
 
@@ -2824,6 +2846,9 @@
     if (!hashTarget) return;
     var offset = nav ? nav.offsetHeight + 8 : 80;
     window.scrollTo({ top: hashTarget.getBoundingClientRect().top + window.scrollY - offset, behavior: 'auto' });
+    if (window.location.hash === '#main-content') {
+      focusHashTarget(hashTarget);
+    }
   });
 
   if (normalizedPath.indexOf('/free-consultation') === 0) {
