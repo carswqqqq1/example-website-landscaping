@@ -12,6 +12,7 @@
   --paper-alt:  #f2ede6;
   --white:      #ffffff;
   --green:      #1b4332;
+  --green-dark: #102d22;
   --green-mid:  #2d6a4f;
   --green-light:#d8f3dc;
   --tan:        #b8935a;
@@ -278,24 +279,27 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   outline-offset: 2px;
 }
 .btn--solid {
-  background: var(--green);
+  background: var(--green-dark);
   color: var(--white);
-  border: 2px solid var(--green);
+  border: 2px solid var(--green-dark);
+  box-shadow: 0 8px 22px rgba(16,45,34,.22);
 }
 .btn--solid:hover {
-  background: var(--green-mid);
-  border-color: var(--green-mid);
+  background: var(--green);
+  border-color: var(--green-light);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 .btn--ghost {
-  background: transparent;
+  background: var(--green-dark);
   color: var(--white);
-  border: 2px solid rgba(255,255,255,.55);
+  border: 2px solid rgba(255,255,255,.82);
+  box-shadow: 0 8px 22px rgba(0,0,0,.18);
 }
 .btn--ghost:hover {
   border-color: var(--white);
-  background: rgba(255,255,255,.1);
+  background: var(--ink);
+  transform: translateY(-2px);
 }
 .btn--dark {
   background: var(--ink);
@@ -330,15 +334,15 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .btn--submit {
   width: 100%;
   justify-content: center;
-  background: var(--green);
+  background: var(--green-dark);
   color: var(--white);
-  border: 2px solid var(--green);
+  border: 2px solid var(--green-dark);
   padding: 1rem 2rem;
   font-size: .9375rem;
 }
 .btn--submit:hover {
-  background: var(--green-mid);
-  border-color: var(--green-mid);
+  background: var(--green);
+  border-color: var(--green);
 }
 
 .text-link {
@@ -477,8 +481,9 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   min-height: 44px;
   padding: .48rem .95rem;
   border-radius: var(--r-sm);
-  border: 1px solid rgba(255,255,255,.42);
-  color: rgba(255,255,255,.9);
+  border: 1px solid rgba(255,255,255,.72);
+  background: var(--green-dark);
+  color: var(--white);
   font-size: .72rem;
   font-weight: 600;
   letter-spacing: .06em;
@@ -498,11 +503,12 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .nav__call:hover {
   border-color: rgba(255,255,255,.8);
-  background: rgba(255,255,255,.12);
+  background: var(--ink);
   color: var(--white);
 }
 .nav.is-scrolled .nav__call {
   border-color: rgba(20,20,20,.18);
+  background: var(--white);
   color: var(--ink);
 }
 .nav.is-scrolled .nav__call:hover {
@@ -516,7 +522,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   box-sizing: border-box;
   min-height: 44px;
   padding: .48rem 1.25rem;
-  background: var(--green);
+  background: var(--green-dark);
   color: var(--white);
   font-size: .8125rem;
   font-weight: 600;
@@ -527,7 +533,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   transition: background .2s, transform .2s, box-shadow .2s;
 }
 .nav__cta:hover {
-  background: var(--green-mid);
+  background: var(--green);
   transform: translateY(-1px);
   box-shadow: var(--shadow-sm);
 }
@@ -820,7 +826,8 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .nav__overlay-action--solid {
   color: var(--white);
-  background: linear-gradient(180deg, var(--green) 0%, var(--green-mid) 100%);
+  background-color: var(--green-dark);
+  background-image: linear-gradient(180deg, var(--green-dark) 0%, var(--green) 100%);
   border-color: rgba(27, 67, 50, .9);
   box-shadow: 0 16px 30px rgba(27, 67, 50, .2);
 }
@@ -5144,15 +5151,15 @@ body.has-nav-overlay-open .cookie-banner {
   padding: .48rem .78rem;
   min-height: 44px;
   font-size: .78rem;
-  font-weight: 500;
-  color: var(--ink-faint);
-  background: none;
-  border: 1.5px solid var(--paper-alt);
+  font-weight: 700;
+  color: var(--ink);
+  background: #fff;
+  border: 1.5px solid #9f9486;
   border-radius: var(--r-sm, 6px);
   cursor: pointer;
-  transition: border-color .2s, color .2s;
+  transition: border-color .2s, color .2s, background .2s;
 }
-.cookie-banner__decline:hover { color: var(--ink); border-color: var(--ink-faint); }
+.cookie-banner__decline:hover { color: var(--ink); border-color: var(--ink); background: var(--paper); }
 @media (max-width: 640px) {
   .cookie-banner {
     right: .72rem;
