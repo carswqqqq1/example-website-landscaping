@@ -826,10 +826,20 @@
 
   function renderReviewCards(reviews) {
     var grid = document.getElementById('reviews-grid');
-    var reviewList = Array.isArray(reviews) && reviews.length ? reviews : SITE_CONFIG.reviews;
-    if (!grid || !Array.isArray(reviewList) || !reviewList.length) return;
+    var reviewList = Array.isArray(reviews) ? reviews.filter(function (review) {
+      return review && String(review.text || review.originalText || '').trim();
+    }) : [];
+    if (!grid) return;
 
     grid.innerHTML = '';
+
+    if (!reviewList.length) {
+      var empty = document.createElement('article');
+      empty.className = 'review-card review-card--notice';
+      empty.innerHTML = '<p class="review-card__text">Google review details load from the official review feed when available. Use the review profile link above to read current Google feedback directly.</p>';
+      grid.appendChild(empty);
+      return;
+    }
 
     reviewList.forEach(function (review) {
       var sourceUrl = String(review.sourceUrl || review.googleMapsUri || review.reviewUri || '').trim();
@@ -846,7 +856,7 @@
 
       var text = document.createElement('p');
       text.className = 'review-card__text';
-      text.textContent = review.text || 'Think Green delivered a clean, professional result and excellent communication from start to finish.';
+      text.textContent = review.text || review.originalText || '';
 
       var meta = document.createElement('p');
       meta.className = 'review-card__meta';
@@ -856,8 +866,8 @@
 
       var location = document.createElement('span');
       var metaParts = [
-        review.location || (SITE_CITY + ', ' + SITE_STATE),
-        review.projectType || 'Landscape project',
+        review.location || REVIEW_STATE.source || 'Google',
+        review.projectType || 'Google review',
         review.reviewDate || 'Recent review'
       ].filter(Boolean);
       location.textContent = metaParts.join(' · ');
@@ -1088,7 +1098,6 @@
     var targetSection = document.querySelector('.page-section--alt[id$="-consultation"]');
     if (!targetSection || targetSection.querySelector('[data-location-proof-panel]')) return;
 
-    var review = locationData.featuredReview || {};
     var trustBullets = Array.isArray(locationData.trustBullets) ? locationData.trustBullets : [];
     var proofBlock = document.createElement('div');
     proofBlock.className = 'local-proof reveal';
@@ -1096,7 +1105,7 @@
     var reviewCopy = getReviewPresentationCopy(REVIEW_STATE);
     proofBlock.innerHTML = '' +
       '<div class="local-proof__intro">' +
-      '  <p class="eyebrow">Verified Local Proof</p>' +
+      '  <p class="eyebrow">Local Proof</p>' +
       '  <h3>Why ' + locationData.city + ' homeowners use Think Green</h3>' +
       '  <p>Licensed Arizona landscape contractor support, visible Google review proof, and a quote-first process for ' + locationData.nearbyAreas + '.</p>' +
       '</div>' +
@@ -1104,8 +1113,8 @@
       '  <article class="local-proof__card local-proof__card--review">' +
       '    <p class="local-proof__label"><span data-review-state-label>' + (REVIEW_STATE.live ? '' : 'Cached snapshot: ') + '</span><span data-review-rating>' + REVIEW_STATE.rating + '</span>-star <span data-review-source>' + REVIEW_STATE.source + '</span> rating across <span data-review-count>' + REVIEW_STATE.count + '</span> reviews</p>' +
       '    <p class="reviews__proof"><span data-review-live-badge>' + reviewCopy.badge + '</span></p>' +
-      '    <blockquote>' + review.quote + '</blockquote>' +
-      '    <p class="local-proof__meta">' + review.author + ' · ' + review.projectType + ' · ' + review.reviewDate + '</p>' +
+      '    <blockquote>Open the Google review profile to read homeowner feedback directly from the source before you start a project review.</blockquote>' +
+      '    <p class="local-proof__meta"><a href="' + REVIEW_STATE.sourceUrl + '" target="_blank" rel="noopener noreferrer" data-review-feed-link>Read Google reviews</a></p>' +
       '  </article>' +
       '  <article class="local-proof__card">' +
       '    <p class="local-proof__label">What usually matters most</p>' +
@@ -2425,6 +2434,10 @@
       '      <input type="hidden" name="contact_method" id="consult-contact-method-value" value="" />' +
       '      <input type="hidden" name="timeline" id="consult-timeline-hidden" value="" />' +
       '      <input type="hidden" name="start_timeline" id="consult-start-timeline" value="" />' +
+      '      <p class="hidden-field"><label>Do not fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>' +
+      '      <input type="hidden" name="form_started_at" id="consult-form-started-at" value="" />' +
+      '      <input type="hidden" name="js_check" id="consult-js-check" value="0" />' +
+      '      <input type="hidden" name="consent_required" value="1" />' +
       '      <div class="form-field">' +
       '        <label for="consult-full-name">Name <span class="field-required">Required</span></label>' +
       '        <input type="text" id="consult-full-name" name="full_name" placeholder="Your full name" autocomplete="name" required />' +
@@ -2514,6 +2527,10 @@
       '        <textarea id="consult-message" name="message" rows="4" placeholder="Optional: share goals, HOA or access needs, phasing, style preferences, or the kind of yard you want to build."></textarea>' +
       '      </div>' +
       '      </details>' +
+      '      <label class="form-consent form-consent--drawer" for="consult-contact-consent">' +
+      '        <input type="checkbox" id="consult-contact-consent" name="contact_consent" value="yes" required />' +
+      '        <span>I agree to be contacted by Think Green about this project request by phone, text, or email. No spam, no resale.</span>' +
+      '      </label>' +
       '      <div class="consult-drawer__actions">' +
       '        <button type="submit" class="btn btn--submit" id="consult-submit">' + OFFER_SUBMIT_LABEL + '</button>' +
       '        <p class="consult-drawer__budget-note" id="consult-budget-note">Focused first phases and larger builds are reviewed by the same local team. We filter out maintenance-only, tree trimming, mow/blow, and tiny repair calls before scheduling.</p>' +
@@ -2574,6 +2591,9 @@
       contactMethodValue: drawer.querySelector('#consult-contact-method-value'),
       timelineHidden: drawer.querySelector('#consult-timeline-hidden'),
       startTimeline: drawer.querySelector('#consult-start-timeline'),
+      formStartedAt: drawer.querySelector('#consult-form-started-at'),
+      jsCheck: drawer.querySelector('#consult-js-check'),
+      consent: drawer.querySelector('#consult-contact-consent'),
       error: drawer.querySelector('#consult-drawer-error'),
       success: drawer.querySelector('#consult-drawer-success'),
       submit: drawer.querySelector('#consult-submit')
@@ -2640,12 +2660,15 @@
         consultDrawerState.fullName,
         consultDrawerState.phone,
         consultDrawerState.city,
-        consultDrawerState.service
+        consultDrawerState.service,
+        consultDrawerState.consent
       ];
       var valid = true;
 
       requiredFields.forEach(function (field) {
-        var ok = String(field.value || '').trim() !== '';
+        var ok = field.type === 'checkbox'
+          ? field.checked
+          : String(field.value || '').trim() !== '';
         field.style.borderColor = ok ? '' : '#c62828';
         if (!ok) valid = false;
       });
@@ -2837,6 +2860,8 @@
     state.contactMethodValue.value = state.contactChoice.value;
     state.timelineHidden.value = state.timeline.value;
     state.startTimeline.value = state.timeline.value;
+    state.formStartedAt.value = String(Date.now());
+    state.jsCheck.value = '1';
 
     if (resolvedService) {
       contextLines.push('Project type: ' + resolvedService);
@@ -3495,6 +3520,8 @@
   var selectedStyleInput = document.getElementById('selected_style');
   var selectedImageInput = document.getElementById('selected_image');
   var selectedProjectLabelInput = document.getElementById('selected_project_label');
+  var formStartedAtInput = document.getElementById('form-started-at');
+  var jsCheckInput = document.getElementById('js-check');
   var messageInput = document.getElementById('message');
   var ticketReference = document.getElementById('ticket-reference');
   var progressBar = document.querySelector('.ticket-progress__bar');
@@ -3570,7 +3597,9 @@
     if (!form || !progressFill || !progressText || !progressBar) return;
     var required = Array.from(form.querySelectorAll('[required]'));
     var filled = required.filter(function (field) {
-      return field.value.trim() !== '';
+      return field.type === 'checkbox'
+        ? field.checked
+        : field.value.trim() !== '';
     }).length;
 
     var percent = required.length ? Math.round((filled / required.length) * 100) : 0;
@@ -3832,6 +3861,9 @@
     var currentPageUrl = String(window.location.href || '');
     var hasTrackedFormStarted = false;
 
+    if (formStartedAtInput) formStartedAtInput.value = String(Date.now());
+    if (jsCheckInput) jsCheckInput.value = '1';
+
     function normalizeServiceSlug(value) {
       return String(value || '')
         .toLowerCase()
@@ -4032,7 +4064,9 @@
       e.preventDefault();
       var valid = true;
       form.querySelectorAll('[required]').forEach(function (f) {
-        var ok = f.value.trim() !== '';
+        var ok = f.type === 'checkbox'
+          ? f.checked
+          : String(f.value || '').trim() !== '';
         f.style.borderColor = ok ? '' : '#c62828';
         if (!ok) valid = false;
       });

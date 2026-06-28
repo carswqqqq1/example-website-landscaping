@@ -23,6 +23,7 @@ const publicFiles = [
   'free-consultation.html',
   'gilbert-landscaping.html',
   'glendale-hardscaping.html',
+  'google-reviews.json',
   'google-form-intake-generator.txt',
   'index.html',
   'landscaping-cost-scottsdale.html',
@@ -78,7 +79,7 @@ const publicFiles = [
   'xeriscape-vs-turf-arizona.html'
 ];
 
-const publicDirs = ['downloads', 'fonts', 'img', 'services'];
+const publicDirs = ['.well-known', 'downloads', 'fonts', 'img', 'services'];
 
 function copyFile(relativePath) {
   const source = path.join(root, relativePath);
@@ -110,11 +111,15 @@ publicDirs.forEach(copyDir);
 
 const headers = [
   '/*',
+  '  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload',
+  "  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://region1.analytics.google.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests",
   '  X-Frame-Options: DENY',
   '  X-XSS-Protection: 1; mode=block',
   '  X-Content-Type-Options: nosniff',
   '  Referrer-Policy: strict-origin-when-cross-origin',
-  '  Permissions-Policy: camera=(), microphone=(), geolocation=(self), payment=()',
+  '  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()',
+  '  Cross-Origin-Opener-Policy: same-origin',
+  '  Cross-Origin-Resource-Policy: same-origin',
   '',
   '/*.min.css',
   '  Cache-Control: public, max-age=604800, must-revalidate',

@@ -41,6 +41,37 @@ htmlFiles.forEach((file) => {
   }
 });
 
+const indexHtml = read('index.html');
+if (!/id="contact-consent"[^>]+name="contact_consent"[^>]+required/i.test(indexHtml)) {
+  failures.push('index.html: contact form missing required contact consent checkbox');
+}
+if (!/name="consent_required" value="1"/i.test(indexHtml)) {
+  failures.push('index.html: contact form missing consent_required safety field');
+}
+if (!/name="form_started_at"/i.test(indexHtml) || !/name="js_check"/i.test(indexHtml)) {
+  failures.push('index.html: contact form missing anti-abuse timing/javascript fields');
+}
+if (!/netlify-honeypot="bot-field"/i.test(indexHtml) || !/name="bot-field"/i.test(indexHtml)) {
+  failures.push('index.html: contact form missing honeypot field');
+}
+if (!/id="form-error"[^>]+role="alert"[^>]+aria-live="polite"/i.test(indexHtml)) {
+  failures.push('index.html: contact form error message missing alert live region');
+}
+
+const script = read('script.js');
+if (!/role="dialog" aria-modal="true" aria-labelledby="consult-drawer-title"/i.test(script)) {
+  failures.push('script.js: consultation drawer missing accessible dialog attributes');
+}
+if (!/id="consult-contact-consent"[^']+name="contact_consent"[^']+required/i.test(script)) {
+  failures.push('script.js: consultation drawer missing required contact consent checkbox');
+}
+if (!/name="bot-field"/i.test(script) || !/id="consult-form-started-at"/i.test(script) || !/id="consult-js-check"/i.test(script)) {
+  failures.push('script.js: consultation drawer missing matching anti-abuse fields');
+}
+if (!/id="consult-drawer-error"[^']+role="alert"[^']+aria-live="polite"/i.test(script)) {
+  failures.push('script.js: consultation drawer error message missing alert live region');
+}
+
 if (failures.length) {
   console.error('Accessibility baseline check failed:');
   failures.forEach((failure) => console.error(`- ${failure}`));

@@ -55,7 +55,17 @@ const bannedGenericPhrases = [
   'endless possibilities',
   'quality craftsmanship you can trust',
   'turn your dreams into reality',
-  'beauty and functionality'
+  'beauty and functionality',
+  'verified reviews',
+  'verified google reviews'
+];
+const publicRuntimeFiles = ['site-config.js', 'script.js', 'reviews.html'];
+const bannedRuntimePhrases = [
+  'fire pit and paver patio came out exactly like the render',
+  'communication was excellent from quote to final walkthrough',
+  'verified reviews',
+  'verified local proof',
+  'verified google review snapshot'
 ];
 
 if (!fs.existsSync(sitemapPath)) {
@@ -97,6 +107,17 @@ if (!fs.existsSync(sitemapPath)) {
     }
   });
 }
+
+publicRuntimeFiles.forEach((file) => {
+  const fullPath = path.join(root, file);
+  if (!fs.existsSync(fullPath)) return;
+  const source = read(file).toLowerCase();
+  bannedRuntimePhrases.forEach((phrase) => {
+    if (source.includes(phrase)) {
+      failures.push(`${file}: banned runtime/demo review phrase "${phrase}"`);
+    }
+  });
+});
 
 if (failures.length) {
   console.error('Copy quality check failed:');

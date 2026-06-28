@@ -1,0 +1,5 @@
+Contact: mailto:hello@thinkgreendesignbuild.com
+Preferred-Languages: en
+Canonical: https://example-website-landscaping.pages.dev/.well-known/security.txt
+Policy: https://example-website-landscaping.pages.dev/privacy-policy
+Expires: 2027-06-28T00:00:00Z

@@ -39,6 +39,7 @@ const AIRTABLE_WEBHOOK_URL = process.env.AIRTABLE_WEBHOOK_URL || '';
 const HUBSPOT_WEBHOOK_URL = process.env.HUBSPOT_WEBHOOK_URL || '';
 const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000);
 const RATE_LIMIT_MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS || 6);
+const MIN_SUBMISSION_MS = Number(process.env.MIN_SUBMISSION_MS || 2500);
 
 const EMAIL_DIR = path.join(process.cwd(), 'emails');
 const DEDUPE_WINDOW_MS = 15 * 60 * 1000;
@@ -281,6 +282,58 @@ function isRateLimited(ip) {
   current.count += 1;
   rateLimitStore.set(key, current);
   return current.count > RATE_LIMIT_MAX_REQUESTS;
+}
+
+function isConsentGiven(value) {
+  return /^(1|true|yes|on|agree|agreed)$/i.test(String(value || '').trim());
+}
+
+function isSuspiciouslyFastSubmission(data = {}, payload = {}, now = Date.now()) {
+  const startedRaw = data.form_started_at || payload.form_started_at || '';
+  const startedAt = Number(startedRaw);
+  if (!startedRaw || !Number.isFinite(startedAt) || startedAt <= 0) return false;
+  return now - startedAt >= 0 && now - startedAt < MIN_SUBMISSION_MS;
+}
+
+function hashForLog(value) {
+  const cleaned = normalizeWhitespace(value);
+  if (!cleaned || cleaned === 'Not provided') return '';
+  return crypto.createHash('sha256').update(cleaned.toLowerCase()).digest('hex').slice(0, 16);
+}
+
+function safeErrorForLog(value) {
+  return String(value || '')
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/[^\x20-\x7E]/g, '')
+    .slice(0, 500);
+}
+
+function buildLeadFailureLog(reason, normalized = {}, meta = {}) {
+  return {
+    timestamp: new Date().toISOString(),
+    reason: safeErrorForLog(reason),
+    ticket_id: safeText(normalized.ticket_id || meta.ticket_id, ''),
+    lead_source: safeText(normalized.lead_source, ''),
+    service: safeText(normalized.service || normalized.selected_service, ''),
+    city: safeText(normalized.city, ''),
+    phone_hash: hashForLog(normalized.phone),
+    email_hash: hashForLog(normalized.email),
+    page_path: safeText(meta.page_url, '').replace(/^https?:\/\/[^/]+/i, '') || '',
+    sheets_ok: Boolean(meta.sheets_ok),
+    crm_ok: Boolean(meta.crm_ok),
+    error: safeErrorForLog(meta.error)
+  };
+}
+
+function logLeadFailure(reason, normalized = {}, meta = {}) {
+  const record = buildLeadFailureLog(reason, normalized, meta);
+  const line = JSON.stringify(record);
+  console.warn('[thinkgreen-lead-fallback]', line);
+  try {
+    fs.appendFileSync(path.join('/tmp', 'thinkgreen-lead-failures.jsonl'), `${line}\n`);
+  } catch (error) {
+    console.warn('[thinkgreen-lead-fallback-log-error]', safeErrorForLog(error && error.message));
+  }
 }
 
 function isPlaceholderValue(value) {
@@ -1756,6 +1809,7 @@ function parseRequestBody(event) {
 }
 
 exports.handler = async (event) => {
+  let fallbackContext = {};
   try {
     const body = parseRequestBody(event);
     const payload = body.payload || body;
@@ -1778,12 +1832,51 @@ exports.handler = async (event) => {
       data['bot-field'] || data.bot_field || payload['bot-field'] || payload.bot_field || ''
     );
     if (honeypotValue) {
+      logLeadFailure('honeypot_blocked', {}, { page_url: payload.page_url || payload.url || submission.url || '' });
       return {
         statusCode: 200,
         body: JSON.stringify({
           ok: true,
           spam_blocked: true,
           lead_tags: { tags: ['spam_suspected'] }
+        })
+      };
+    }
+
+    const jsCheck = normalizeWhitespace(data.js_check || payload.js_check || '');
+    if (jsCheck && jsCheck !== '1') {
+      logLeadFailure('js_check_failed', {}, { page_url: payload.page_url || payload.url || submission.url || '' });
+      return {
+        statusCode: 422,
+        body: JSON.stringify({
+          ok: false,
+          spam_blocked: true,
+          error: 'Submission could not be verified.',
+          lead_tags: { tags: ['spam_suspected'] }
+        })
+      };
+    }
+
+    if (isSuspiciouslyFastSubmission(data, payload)) {
+      logLeadFailure('submission_too_fast', {}, { page_url: payload.page_url || payload.url || submission.url || '' });
+      return {
+        statusCode: 422,
+        body: JSON.stringify({
+          ok: false,
+          spam_blocked: true,
+          error: 'Please take a moment to review the form before submitting.',
+          lead_tags: { tags: ['spam_suspected'] }
+        })
+      };
+    }
+
+    const consentRequired = String(data.consent_required || payload.consent_required || '').trim() === '1';
+    if (consentRequired && !isConsentGiven(data.contact_consent || payload.contact_consent)) {
+      return {
+        statusCode: 422,
+        body: JSON.stringify({
+          ok: false,
+          error: 'Please confirm we can contact you about this project request.'
         })
       };
     }
@@ -1798,6 +1891,7 @@ exports.handler = async (event) => {
       sheet_url: GOOGLE_SHEET_URL,
       page_url: pageUrl
     });
+    fallbackContext = { normalized, page_url: pageUrl, ticket_id: ticketId };
 
     const incomingEmail = normalizeWhitespace(data.email || data.email_visible || '');
     const hasEmail = incomingEmail.length > 0;
@@ -1873,6 +1967,14 @@ exports.handler = async (event) => {
       created_at: createdAt,
       page_url: pageUrl
     }).catch((err) => ({ ok: false, error: err.message }));
+
+    if (!sheetsResult || !sheetsResult.ok) {
+      logLeadFailure('google_sheet_delivery_failed', normalized, {
+        page_url: pageUrl,
+        ticket_id: ticketId,
+        error: sheetsResult && sheetsResult.error
+      });
+    }
 
     if (sheetsResult && sheetsResult.ok) {
       normalized.sheet_status = safeText(sheetsResult.status, 'New');
@@ -1950,7 +2052,18 @@ exports.handler = async (event) => {
 
     const emailFailures = emailResults.filter((result) => result && result.ok === false);
     if (emailFailures.length === emailResults.length) {
-      throw new Error(emailFailures.map((result) => result.error).join(' | '));
+      const emailError = emailFailures.map((result) => result.error).join(' | ');
+      const hasBackupRoute = Boolean((sheetsResult && sheetsResult.ok) || (crmResult && crmResult.ok));
+      logLeadFailure('email_delivery_failed', normalized, {
+        page_url: pageUrl,
+        ticket_id: ticketId,
+        sheets_ok: Boolean(sheetsResult && sheetsResult.ok),
+        crm_ok: Boolean(crmResult && crmResult.ok),
+        error: emailError
+      });
+      if (!hasBackupRoute) {
+        throw new Error(emailError);
+      }
     }
 
     return {
@@ -1963,6 +2076,7 @@ exports.handler = async (event) => {
         owner_provider_preference: OWNER_EMAIL_PROVIDER,
         from_email_used: getFromEmail(resolveEmailProvider()),
         email_results: emailResults,
+        email_warning: emailFailures.length === emailResults.length,
         sheets_result: sheetsResult,
         crm_result: crmResult,
         lead_tags: leadTagData,
@@ -1977,6 +2091,11 @@ exports.handler = async (event) => {
       })
     };
   } catch (err) {
+    logLeadFailure('handler_error', fallbackContext.normalized || {}, {
+      page_url: fallbackContext.page_url,
+      ticket_id: fallbackContext.ticket_id,
+      error: err && err.message
+    });
     return {
       statusCode: 500,
       body: JSON.stringify({

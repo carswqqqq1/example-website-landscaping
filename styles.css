@@ -2316,6 +2316,14 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   color: var(--ink-light);
   text-decoration-color: var(--ink-light);
 }
+.review-card--notice {
+  grid-column: 1 / -1;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.review-card--notice .review-card__text {
+  margin-bottom: 0;
+}
 .review-page-proof {
   background: #fff;
 }
@@ -3487,6 +3495,29 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   border: 1px solid #e2d9ca;
   border-radius: 8px;
   padding: .5rem .62rem;
+}
+.form-consent {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: .62rem;
+  align-items: start;
+  margin: .15rem 0 .95rem;
+  color: var(--ink-light);
+  font-size: .79rem;
+  line-height: 1.45;
+}
+.form-consent input {
+  width: 18px;
+  height: 18px;
+  margin-top: .08rem;
+  accent-color: var(--green);
+}
+.form-consent input:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+.form-consent--drawer {
+  margin: -.08rem 0 .1rem;
 }
 .financing-note {
   margin-top: -.2rem;

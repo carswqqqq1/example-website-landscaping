@@ -36,8 +36,8 @@
   <link rel="preload" as="image" href="/img/projects/slide1-1280.avif" type="image/avif" fetchpriority="high" />
   <link rel="preconnect" href="https://www.googletagmanager.com" />
   <link rel="preconnect" href="https://www.google-analytics.com" />
-  <link rel="stylesheet" href="/fonts.min.css?v=20260627j" />
-  <link rel="stylesheet" href="/styles.min.css?v=20260627j" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20260628b" />
+  <link rel="stylesheet" href="/styles.min.css?v=20260628b" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -136,51 +136,7 @@
               {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Desert Landscaping"}},
               {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Outdoor Lighting"}}
             ]
-          },
-          "review": [
-            {
-              "@type": "Review",
-              "author": {
-                "@type": "Person",
-                "name": "Sarah M."
-              },
-              "datePublished": "2026-01-15",
-              "reviewBody": "Fire pit and paver patio came out exactly like the render. Crew cleaned up every day and stayed on schedule.",
-              "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5",
-                "bestRating": "5"
-              }
-            },
-            {
-              "@type": "Review",
-              "author": {
-                "@type": "Person",
-                "name": "David R."
-              },
-              "datePublished": "2025-12-12",
-              "reviewBody": "Communication was excellent from quote to final walkthrough. We always knew what phase was next.",
-              "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5",
-                "bestRating": "5"
-              }
-            },
-            {
-              "@type": "Review",
-              "author": {
-                "@type": "Person",
-                "name": "Amanda L."
-              },
-              "datePublished": "2025-11-09",
-              "reviewBody": "Our Phoenix yard needed a modern xeriscape plan. The 3D concept matched the finished build almost exactly.",
-              "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5",
-                "bestRating": "5"
-              }
-            }
-          ]
+          }
         },
         {
           "@type": "WebSite",
@@ -425,7 +381,7 @@
     <section class="owner-proof-strip" id="proof" aria-label="Owner proof">
       <div class="container owner-proof-strip__wrap">
         <h2 class="owner-proof-strip__headline">Everything a homeowner needs before saying yes</h2>
-        <p class="owner-proof-strip__sub">A clear estimate path, visible proof, verified credentials, and a local team that explains what happens next.</p>
+        <p class="owner-proof-strip__sub">A clear estimate path, visible proof, license and insurance records you can check, and a local team that explains what happens next.</p>
       </div>
       <div class="container owner-proof-strip__inner">
         <article class="owner-proof-strip__item reveal">
@@ -892,38 +848,7 @@
             <span data-google-reviews-date>Google review source</span>
           </p>
         </header>
-        <div class="reviews__grid" id="reviews-grid">
-          <article class="review-card reveal reveal--tilt reveal--d1">
-            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
-            <p class="review-card__text">"Our paver patio and fire pit came out exactly like the render. The crew was clean and finished the core install in three days."</p>
-            <p class="review-card__meta"><strong>Sarah M.</strong><span>North Scottsdale, AZ · Paver patio and fire pit · January 2026</span></p>
-          </article>
-          <article class="review-card reveal reveal--unfold reveal--d2">
-            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
-            <p class="review-card__text">"Communication was strong from quote to walkthrough. We got daily updates and the team hit the timeline they promised."</p>
-            <p class="review-card__meta"><strong>David R.</strong><span>Paradise Valley, AZ · Full outdoor living remodel · December 2025</span></p>
-          </article>
-          <article class="review-card reveal reveal--settle reveal--d3">
-            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
-            <p class="review-card__text">"We wanted a modern xeriscape in Arcadia. The 3D plan was accurate and the final planting layout looked exactly as expected."</p>
-            <p class="review-card__meta"><strong>Amanda L.</strong><span>Arcadia, Phoenix · Modern xeriscape design-build · November 2025</span></p>
-          </article>
-          <article class="review-card reveal reveal--tuck reveal--d4">
-            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
-            <p class="review-card__text">"Outdoor kitchen install in Tempe moved fast and stayed organized. They protected our existing surfaces and cleaned up nightly."</p>
-            <p class="review-card__meta"><strong>Chris T.</strong><span>Tempe, AZ · Outdoor kitchen installation · October 2025</span></p>
-          </article>
-          <article class="review-card reveal reveal--focus reveal--d5">
-            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
-            <p class="review-card__text">"Our Mesa front yard had drainage and curb appeal issues. They fixed grading, updated pavers, and gave us a low-maintenance finish."</p>
-            <p class="review-card__meta"><strong>Nicole P.</strong><span>Mesa, AZ · Front-yard refresh · September 2025</span></p>
-          </article>
-          <article class="review-card reveal reveal--glide-right reveal--d6">
-            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
-            <p class="review-card__text">"From first call to final punch list, everything was transparent. Scope, pricing, and schedule were all clear with no surprise add-ons."</p>
-            <p class="review-card__meta"><strong>Matt R.</strong><span>Scottsdale, AZ · Backyard remodel · August 2025</span></p>
-          </article>
-        </div>
+        <div class="reviews__grid" id="reviews-grid" aria-live="polite"></div>
       </div>
     </section>
 
@@ -1247,9 +1172,9 @@
           </div>
           <div class="financing-note financing-note--panel reveal reveal--focus">Financing options available for qualified projects.</div>
           <div class="contact__quote reveal reveal--tuck">
-            <strong>Recent homeowner feedback</strong>
-            <p>"We submitted the form at night, got a callback the next morning, and the scope discussion was clear from the start."</p>
-            <p><cite>Sarah M. · North Scottsdale · Paver patio and fire pit project</cite></p>
+            <strong>Review source</strong>
+            <p>Read current homeowner feedback directly from the Google review profile before you start a project review.</p>
+            <p><a href="https://www.google.com/maps/place/Think+Green+Design+%7C+Build+Landscape/@33.61549,-111.9165894,17z/data=!3m1!4b1!4m6!3m5!1s0x872b74777c987d53:0x8acb242f61538220!8m2!3d33.6154856!4d-111.9140145!16s%2Fg%2F1vg4k7_v?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" data-google-reviews-link>Open Google reviews</a></p>
           </div>
           <div class="contact__trust reveal reveal--unfold">
             <p><strong>What happens next:</strong> your request is reviewed by the Arizona team, routed to the right service lead, and answered with a practical callback plan.</p>
@@ -1262,7 +1187,7 @@
             <p><strong>Warranty clarity:</strong> <span data-workmanship-warranty>Workmanship warranty details are reviewed during handoff so scope, coverage, and maintenance expectations stay clear.</span></p>
             <ul class="contact__trust-list" data-trust-highlights>
               <li>Licensed, bonded, and insured for Arizona residential work</li>
-              <li>Verified Google review snapshot shown directly on the site</li>
+              <li>Google review source and date shown directly on the site</li>
               <li>Local project experience across Scottsdale, Paradise Valley, Phoenix, Mesa, and Chandler</li>
               <li>Clear scope, phasing, and budget guidance before work starts</li>
             </ul>
@@ -1311,6 +1236,9 @@
             <input type="hidden" id="selected_style" name="selected_style" value="" />
             <input type="hidden" id="selected_image" name="selected_image" value="" />
             <input type="hidden" id="selected_project_label" name="selected_project_label" value="" />
+            <input type="hidden" id="form-started-at" name="form_started_at" value="" />
+            <input type="hidden" id="js-check" name="js_check" value="0" />
+            <input type="hidden" name="consent_required" value="1" />
 
             <div class="form-field">
               <label for="full_name">Name</label>
@@ -1370,6 +1298,10 @@
               </select>
             </div>
             <p class="financing-note" id="financing-note">Financing options may be available for qualified projects.</p>
+            <label class="form-consent" for="contact-consent">
+              <input type="checkbox" id="contact-consent" name="contact_consent" value="yes" required />
+              <span>I agree to be contacted by Think Green about this project request by phone, text, or email. No spam, no resale.</span>
+            </label>
             <button type="submit" class="btn btn--submit">Send My Project Review</button>
             <p class="form-note" id="preferred-contact-help">We use your details only to follow up about this landscaping project. No spam, no data sharing.</p>
             <p class="form-spam-hint">Prefer not to type everything out? Submit the basics and we can clarify the rest on the callback.</p>
@@ -1468,9 +1400,9 @@
     <a href="/free-consultation?source=homepage_sticky&autostart=1" class="btn btn--outline-dark">Project Review</a>
   </div>
 
-  <script src="/site-config.js?v=20260627j" defer></script>
-  <script src="/services-data.min.js?v=20260627j" defer></script>
-  <script src="/projects-data.min.js?v=20260627j" defer></script>
-  <script src="/script.min.js?v=20260627j" defer></script>
+  <script src="/site-config.js?v=20260628b" defer></script>
+  <script src="/services-data.min.js?v=20260628b" defer></script>
+  <script src="/projects-data.min.js?v=20260628b" defer></script>
+  <script src="/script.min.js?v=20260628b" defer></script>
 </body>
 </html>

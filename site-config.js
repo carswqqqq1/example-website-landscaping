@@ -175,13 +175,7 @@
           'Most Scottsdale requests center on full backyard transformations, pavers, fire features, and premium lighting.',
           'Project planning usually needs HOA-aware finish coordination, clear phasing, and stronger shade strategy.',
           'Project reviews focus on layout flow, finish level, and the highest-value first phase before construction starts.'
-        ],
-        featuredReview: {
-          author: 'Sarah M.',
-          projectType: 'Paver patio and fire pit',
-          reviewDate: 'January 2026',
-          quote: 'Fire pit and paver patio came out exactly like the render. Crew cleaned up every day and stayed on schedule.'
-        }
+        ]
       },
       '/phoenix-landscaping': {
         city: 'Phoenix',
@@ -190,13 +184,7 @@
           'Phoenix homeowners usually need stronger outdoor living flow, water-wise planting, and heat-aware material planning.',
           'Design choices are shaped around daily usability, not just curb appeal photos.',
           'The first project review is used to narrow scope, city fit, and the most efficient project phase.'
-        ],
-        featuredReview: {
-          author: 'Amanda L.',
-          projectType: 'Modern xeriscape design-build',
-          reviewDate: 'November 2025',
-          quote: 'Our Phoenix yard needed a modern xeriscape plan. The 3D concept matched the finished build almost exactly and helped us make better material choices.'
-        }
+        ]
       },
       '/paradise-valley-landscaping': {
         city: 'Paradise Valley',
@@ -205,13 +193,7 @@
           'Paradise Valley projects usually demand stronger material coordination, privacy planning, and entertaining layout clarity.',
           'Luxury scopes benefit from one design-build team instead of fragmented trades and handoffs.',
           'Project reviews focus on circulation, shade, finish hierarchy, and what the property needs first.'
-        ],
-        featuredReview: {
-          author: 'David R.',
-          projectType: 'Full outdoor living remodel',
-          reviewDate: 'December 2025',
-          quote: 'Communication was excellent from quote to final walkthrough. We always knew what phase was next.'
-        }
+        ]
       },
       '/arcadia-landscaping': {
         city: 'Arcadia',
@@ -220,13 +202,7 @@
           'Arcadia work usually centers on modernizing older yards without losing character or mature-tree value.',
           'Scope planning often combines shade, entertaining flow, irrigation cleanup, and architectural hardscape detailing.',
           'The goal is a cleaner design direction before money gets spent on disconnected upgrades.'
-        ],
-        featuredReview: {
-          author: 'Rachel S.',
-          projectType: 'Shade patio and low-water planting update',
-          reviewDate: 'December 2025',
-          quote: 'We wanted the yard to feel cleaner and easier to use. The new patio layout and planting plan gave us that without losing the mature character of the property.'
-        }
+        ]
       },
       '/mesa-landscaping': {
         city: 'Mesa',
@@ -235,13 +211,7 @@
           'Mesa homeowners often want lower-maintenance backyards that still feel finished and usable for families.',
           'Popular requests combine turf strategy, hardscape cleanup, irrigation tuning, and easier circulation.',
           'Project reviews help separate must-have function upgrades from later-phase visual improvements.'
-        ],
-        featuredReview: {
-          author: 'Nicole P.',
-          projectType: 'Front-yard refresh',
-          reviewDate: 'September 2025',
-          quote: 'The crew was professional and detail-oriented. Our front yard now looks high-end without high maintenance.'
-        }
+        ]
       },
       '/chandler-landscaping': {
         city: 'Chandler',
@@ -250,13 +220,7 @@
           'Chandler projects usually focus on outdoor kitchens, patio upgrades, and cleaner entertaining zones.',
           'A strong first plan avoids mismatched appliance, patio, and shade decisions later in the build.',
           'We use project reviews to map how the yard is used today and what should be phased first.'
-        ],
-        featuredReview: {
-          author: 'Brandon K.',
-          projectType: 'Covered patio and grill island upgrade',
-          reviewDate: 'November 2025',
-          quote: 'We needed a Chandler backyard that worked better for hosting. The patio extension and grill area feel integrated now instead of pieced together.'
-        }
+        ]
       },
       '/tempe-landscaping': {
         city: 'Tempe',
@@ -265,13 +229,7 @@
           'Tempe projects usually need shade, patio usability, and lower-maintenance planning without losing entertainment value.',
           'Family use, guest flow, and long-term upkeep typically matter more than one oversized feature.',
           'Project reviews help narrow the best first zone so the yard improves quickly without wasted scope.'
-        ],
-        featuredReview: {
-          author: 'Chris T.',
-          projectType: 'Outdoor kitchen installation',
-          reviewDate: 'October 2025',
-          quote: 'Outdoor kitchen build finished faster than expected. The team was respectful and the jobsite stayed clean.'
-        }
+        ]
       },
       '/gilbert-landscaping': {
         city: 'Gilbert',
@@ -280,13 +238,7 @@
           'Gilbert requests usually blend family-friendly function, irrigation efficiency, and lower-maintenance layout improvements.',
           'Backyard lighting, turf strategy, and patio flow are often more valuable than starting with decorative features alone.',
           'The first project review helps define the strongest initial phase and the right long-term plan.'
-        ],
-        featuredReview: {
-          author: 'Erin W.',
-          projectType: 'Family backyard lighting and turf refresh',
-          reviewDate: 'October 2025',
-          quote: 'Our Gilbert yard needed better night use and less patchy grass. The lighting and turf plan made the whole space feel more finished for everyday family use.'
-        }
+        ]
       },
       '/fountain-hills-landscaping': {
         city: 'Fountain Hills',
@@ -295,13 +247,7 @@
           'Fountain Hills work usually needs stronger grade awareness, view preservation, and nighttime usability planning.',
           'Hardscape, lighting, and drought-smart planting need to be planned together to avoid a sparse or disjointed result.',
           'Project reviews focus on slope, access, and the most important living zones first.'
-        ],
-        featuredReview: {
-          author: 'Matt R.',
-          projectType: 'Backyard remodel',
-          reviewDate: 'August 2025',
-          quote: 'No surprises on scope or pricing. Great coordination and the final punch list was handled quickly.'
-        }
+        ]
       },
       '/cave-creek-landscaping': {
         city: 'Cave Creek',
@@ -310,13 +256,7 @@
           'Cave Creek homeowners usually need shade, desert planting structure, and materials that feel intentional at larger scales.',
           'The best projects coordinate hardscape, lighting, and planting early instead of treating them as separate add-ons.',
           'Project reviews help define what creates the biggest day-to-day comfort and property impact first.'
-        ],
-        featuredReview: {
-          author: 'Dana H.',
-          projectType: 'Desert patio and shade structure plan',
-          reviewDate: 'September 2025',
-          quote: 'The Cave Creek property needed more comfort without fighting the desert setting. The layout finally feels intentional, and the shade strategy made a huge difference.'
-        }
+        ]
       }
     },
     pageConversionGuides: {
@@ -604,174 +544,14 @@
       afterAlt: 'Scottsdale backyard after renovation with pavers, fire feature, lighting, and low-water planting',
       note: 'Drag the slider to compare a real project before and after completion.'
     },
-    reviews: [
-      {
-        author: 'Sarah M.',
-        location: 'North Scottsdale, AZ',
-        rating: 5,
-        projectType: 'Paver patio and fire pit',
-        reviewDate: 'January 2026',
-        text: 'Fire pit and paver patio came out exactly like the render. Crew cleaned up every day and stayed on schedule.'
-      },
-      {
-        author: 'David R.',
-        location: 'Paradise Valley, AZ',
-        rating: 5,
-        projectType: 'Full outdoor living remodel',
-        reviewDate: 'December 2025',
-        text: 'Communication was excellent from quote to final walkthrough. We always knew what phase was next.'
-      },
-      {
-        author: 'Amanda L.',
-        location: 'Arcadia, Phoenix',
-        rating: 5,
-        projectType: 'Modern xeriscape design-build',
-        reviewDate: 'November 2025',
-        text: 'Our Arcadia yard needed a modern xeriscape plan. The 3D concept matched the finished build almost exactly.'
-      },
-      {
-        author: 'Chris T.',
-        location: 'Tempe, AZ',
-        rating: 5,
-        projectType: 'Outdoor kitchen installation',
-        reviewDate: 'October 2025',
-        text: 'Outdoor kitchen build finished faster than expected. The team was respectful and the jobsite stayed clean.'
-      },
-      {
-        author: 'Nicole P.',
-        location: 'Mesa, AZ',
-        rating: 4,
-        projectType: 'Front-yard refresh',
-        reviewDate: 'September 2025',
-        text: 'The crew was professional and detail-oriented. A couple finishing items took a follow-up visit, but they handled it well and our front yard now looks high-end without high maintenance.'
-      },
-      {
-        author: 'Matt R.',
-        location: 'Scottsdale, AZ',
-        rating: 5,
-        projectType: 'Backyard remodel',
-        reviewDate: 'August 2025',
-        text: 'No surprises on scope or pricing. Great coordination and the final punch list was handled quickly.'
-      },
-      {
-        author: 'Jennifer K.',
-        location: 'North Scottsdale, AZ',
-        rating: 5,
-        projectType: 'Pergola and outdoor lounge',
-        reviewDate: 'March 2026',
-        text: 'We got three bids and Think Green was the only team that walked us through material trade-offs before quoting. The pergola looks exactly how we envisioned it and holds up in the summer heat.'
-      },
-      {
-        author: 'Brian W.',
-        location: 'Chandler, AZ',
-        rating: 5,
-        projectType: 'Full backyard hardscape',
-        reviewDate: 'February 2026',
-        text: 'Drainage was a problem our previous landscaper ignored. Think Green fixed it properly before laying any pavers. The patio has been perfect through two rain seasons.'
-      },
-      {
-        author: 'Melissa G.',
-        location: 'Paradise Valley, AZ',
-        rating: 5,
-        projectType: 'Outdoor kitchen and fire feature',
-        reviewDate: 'January 2026',
-        text: 'The design process was thorough — we did two rounds of revisions on the layout before anything was built. Final result was worth every conversation. Our backyard is now the centerpiece of every dinner party.'
-      },
-      {
-        author: 'Tom H.',
-        location: 'Cave Creek, AZ',
-        rating: 5,
-        projectType: 'Desert landscaping and lighting',
-        reviewDate: 'December 2025',
-        text: 'We wanted desert-appropriate planting that still felt intentional and not just rocks and gravel. Think Green delivered a layered design that looks incredible at night with the lighting they installed.'
-      },
-      {
-        author: 'Rachel S.',
-        location: 'Gilbert, AZ',
-        rating: 5,
-        projectType: 'Turf and paver patio',
-        reviewDate: 'November 2025',
-        text: 'Kids needed a yard they could actually use. Turf went in perfectly, no seams visible, and the patio feels like an extension of our living room. Timeline was accurate and crew was great.'
-      },
-      {
-        author: 'Kevin L.',
-        location: 'Scottsdale, AZ',
-        rating: 5,
-        projectType: 'Irrigation system overhaul',
-        reviewDate: 'October 2025',
-        text: 'Our water bill was out of control. Think Green redesigned the entire drip and spray system, zoned it properly, and we saw the difference in the first billing cycle. Highly recommend for efficiency work.'
-      },
-      {
-        author: 'Andrea M.',
-        location: 'Fountain Hills, AZ',
-        rating: 5,
-        projectType: 'Resort-style pool surrounds',
-        reviewDate: 'September 2025',
-        text: 'We have views and wanted the landscaping to frame them, not block them. The design team understood immediately. Travertine, desert plants, and a fire table — exactly what this lot needed.'
-      },
-      {
-        author: 'James P.',
-        location: 'Phoenix, AZ',
-        rating: 5,
-        projectType: 'Xeriscape conversion',
-        reviewDate: 'August 2025',
-        text: 'Converted from grass to full xeriscape. Think Green handled the HOA paperwork, the removal, and the new install in one coordinated scope. Zero headaches from our end.'
-      },
-      {
-        author: 'Stephanie B.',
-        location: 'Scottsdale, AZ',
-        rating: 5,
-        projectType: 'Backyard entertainment zone',
-        reviewDate: 'July 2025',
-        text: 'The 3D rendering they provided before breaking ground made every decision easy. We knew exactly what we were getting. The finished yard matched it detail for detail.'
-      },
-      {
-        author: 'Carlos V.',
-        location: 'Tempe, AZ',
-        rating: 5,
-        projectType: 'Front and back yard design-build',
-        reviewDate: 'June 2025',
-        text: 'Think Green handled curb appeal and the backyard in one project. Neighbors have asked for their number twice since we finished. Communication through the whole build was excellent.'
-      },
-      {
-        author: 'Patricia N.',
-        location: 'Mesa, AZ',
-        rating: 4,
-        projectType: 'Hardscape and planting refresh',
-        reviewDate: 'May 2025',
-        text: 'The project came in on budget and on schedule. There was one plant substitution mid-build due to availability but they communicated it quickly and the replacement looked just as good.'
-      },
-      {
-        author: 'Derek O.',
-        location: 'Paradise Valley, AZ',
-        rating: 5,
-        projectType: 'Full estate landscape overhaul',
-        reviewDate: 'April 2025',
-        text: 'Large project across the front, side yard, and full back. Took about six weeks total and was managed tightly. The site was always clean, updates were consistent, and the end result is exceptional.'
-      },
-      {
-        author: 'Laura C.',
-        location: 'North Scottsdale, AZ',
-        rating: 5,
-        projectType: 'Outdoor lighting design',
-        reviewDate: 'March 2025',
-        text: 'We had landscape lighting installed before but it always felt random. Think Green designed a full path-and-accent system that actually highlights what we have out there. Night photos do not do it justice.'
-      },
-      {
-        author: 'Mike F.',
-        location: 'Ahwatukee, AZ',
-        rating: 5,
-        projectType: 'Shade structure and patio pavers',
-        reviewDate: 'February 2025',
-        text: 'Had a pergola quote from two other companies that felt generic. Think Green came in with a structure that actually fit the roofline of the house. Solid craftsmanship and the follow-up warranty call was a nice touch.'
-      }
-    ],
+    reviews: [],
     googleReviews: {
       rating: '4.7',
       count: '43',
       platform: 'Google',
       profileUrl: reviewSourceUrl,
-      snapshotDate: 'Last updated April 2026'
+      snapshotDate: 'Last updated April 2026',
+      feedEndpoint: '/google-reviews.json'
     },
     trustAssets: {
       licenseVerifyUrl: 'https://roc.az.gov/contractor-search?combined=157201',
@@ -784,7 +564,7 @@
       workmanshipWarranty: 'Workmanship warranty details are reviewed during handoff so scope, coverage, and maintenance expectations stay clear.',
       trustHighlights: [
         'Licensed, bonded, and insured for Arizona residential work',
-        'Verified Google review snapshot shown directly on the site',
+        'Google review source and date shown directly on the site',
         'Local project experience across Scottsdale, Paradise Valley, Phoenix, Mesa, and Chandler'
       ]
     },
