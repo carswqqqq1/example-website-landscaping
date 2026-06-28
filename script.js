@@ -815,19 +815,21 @@
     return {
       rating: Number(review && review.rating) || 5,
       text: text,
-      author: String(author.displayName || 'Google reviewer').trim(),
-      authorUrl: String(author.uri || '').trim(),
-      authorPhoto: String(author.photoUri || author.photoURI || '').trim(),
+      ratingOnly: Boolean(review && review.ratingOnly),
+      author: String(review && review.author || author.displayName || 'Google reviewer').trim(),
+      authorUrl: String(review && review.authorUrl || author.uri || '').trim(),
+      authorPhoto: String(review && review.authorPhoto || author.photoUri || author.photoURI || '').trim(),
       location: String(review && review.location || '').trim(),
-      reviewDate: String(publishTime || 'Recent review').trim(),
-      sourceUrl: String(review && (review.googleMapsUri || review.reviewUri || '') || '').trim()
+      projectType: String(review && review.projectType || 'Google review').trim(),
+      reviewDate: String(review && review.reviewDate || publishTime || 'Recent review').trim(),
+      sourceUrl: String(review && (review.sourceUrl || review.googleMapsUri || review.reviewUri) || '').trim()
     };
   }
 
   function renderReviewCards(reviews) {
     var grid = document.getElementById('reviews-grid');
     var reviewList = Array.isArray(reviews) ? reviews.filter(function (review) {
-      return review && String(review.text || review.originalText || '').trim();
+      return review && (String(review.text || review.originalText || '').trim() || review.ratingOnly);
     }) : [];
     if (!grid) return;
 
@@ -841,10 +843,14 @@
       return;
     }
 
-    reviewList.forEach(function (review) {
+    var isReviewsPage = document.body && document.body.classList && document.body.classList.contains('reviews-page');
+    var displayList = isReviewsPage ? reviewList : reviewList.slice(0, 6);
+
+    displayList.forEach(function (review) {
       var sourceUrl = String(review.sourceUrl || review.googleMapsUri || review.reviewUri || '').trim();
       var article = document.createElement('article');
       article.className = 'review-card reveal';
+      if (review.ratingOnly) article.className += ' review-card--rating-only';
 
       var stars = document.createElement('div');
       stars.className = 'review-card__stars';
@@ -856,7 +862,7 @@
 
       var text = document.createElement('p');
       text.className = 'review-card__text';
-      text.textContent = review.text || review.originalText || '';
+      text.textContent = review.text || review.originalText || 'Rating-only Google review. No written comment was shown on the public Google profile.';
 
       var meta = document.createElement('p');
       meta.className = 'review-card__meta';

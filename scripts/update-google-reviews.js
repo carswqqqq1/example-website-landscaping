@@ -221,26 +221,45 @@ async function buildReviewFeed() {
   try {
     const fetched = await buildReviewFeed();
     const now = new Date();
+    let existing = {};
+    if (fs.existsSync(outputPath)) {
+      try {
+        existing = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+      } catch (error) {
+        existing = {};
+      }
+    }
+    const existingReviews = Array.isArray(existing.reviews) ? existing.reviews : [];
+    const fetchedReviews = Array.isArray(fetched.reviews) ? fetched.reviews : [];
+    const shouldPreserveFullSnapshot = Boolean(fetched.limited) &&
+      existingReviews.length > fetchedReviews.length;
+    const reviews = shouldPreserveFullSnapshot ? existingReviews : fetchedReviews;
     const output = {
       ok: true,
       source: 'Google',
       provider: fetched.provider,
       live: true,
       limited: Boolean(fetched.limited),
+      preservedFullSnapshot: shouldPreserveFullSnapshot,
       placeId: fetched.placeId || '',
       placeName: fetched.placeName || siteConfig.businessName || '',
       profileUrl: fetched.profileUrl || siteConfig.reviewSummary?.sourceUrl || siteConfig.googleReviews?.profileUrl || '',
       rating: fetched.rating || '',
       reviewCount: fetched.reviewCount || '',
+      writtenReviewCount: String(reviews.filter((review) => String(review.text || review.originalText || '').trim()).length),
+      ratingOnlyCount: String(reviews.filter((review) => !String(review.text || review.originalText || '').trim()).length),
       snapshotDate: formatSnapshotDate(now),
       updatedAt: now.toISOString(),
-      reviews: fetched.reviews
+      reviews
     };
 
     fs.writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
     console.log(`Updated google-reviews.json with ${output.reviews.length} Google review(s) via ${output.provider}.`);
     if (output.limited) {
       console.log('Note: Google Places may return a limited official review sample. Use Business Profile API credentials for a fuller owner review feed.');
+      if (shouldPreserveFullSnapshot) {
+        console.log('Preserved the fuller existing review snapshot instead of replacing it with the limited Places sample.');
+      }
     }
   } catch (error) {
     if (args.has('--allow-missing') && /^Missing required env var:/.test(String(error.message || ''))) {

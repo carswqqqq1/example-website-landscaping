@@ -11,7 +11,7 @@ Add these GitHub repository secrets:
 
 The scheduled workflow runs `node scripts/update-google-reviews.js` daily and commits a refreshed `google-reviews.json`.
 
-Google Places may return only a limited official review sample, plus the rating and review count.
+Google Places may return only a limited official review sample, plus the rating and review count. If a fuller review snapshot already exists, the updater preserves it instead of replacing it with the smaller Places sample.
 
 ## Fuller Owner Feed: Google Business Profile
 

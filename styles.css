@@ -2324,6 +2324,10 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .review-card--notice .review-card__text {
   margin-bottom: 0;
 }
+.review-card--rating-only .review-card__text {
+  color: var(--ink-faint);
+  font-style: italic;
+}
 .review-page-proof {
   background: #fff;
 }
