@@ -726,7 +726,7 @@
       }
       if (count) {
         return {
-          summary: count + ' verified reviews on ' + source,
+          summary: count + ' reviews on ' + source,
           badge: 'Live Google reviews',
           dateText: 'Live from Google Business Profile'
         };
@@ -832,7 +832,7 @@
     grid.innerHTML = '';
 
     reviewList.forEach(function (review) {
-      var sourceUrl = String(review.sourceUrl || review.googleMapsUri || review.reviewUri || REVIEW_STATE.sourceUrl || '').trim();
+      var sourceUrl = String(review.sourceUrl || review.googleMapsUri || review.reviewUri || '').trim();
       var article = document.createElement('article');
       article.className = 'review-card reveal';
 
@@ -2394,7 +2394,7 @@
       '      <li>We use your phone only to clarify this project request. Prefer text? Choose text below.</li>' +
       '    </ul>' +
       '    <div class="consult-drawer__trust-row" aria-label="Project review trust signals">' +
-      '      <span>43 verified reviews</span>' +
+      '      <span>43 Google reviews</span>' +
       '      <span>ROC + warranty review</span>' +
       '      <span>1-business-day follow-up</span>' +
       '    </div>' +

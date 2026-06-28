@@ -61,7 +61,7 @@ Local service businesses (landscaping, hardscaping, home services, contractors) 
 - Phone, email, and business address
 - Services list (top 5–9 services)
 - 10–20 project photos (phone photos are fine)
-- 3–10 verified reviews (first name, last initial, city, and review text)
+- 3-10 approved review excerpts (first name, last initial, city, and review text)
 - Domain access (or add us as admin — we handle DNS)
 - Notification email for new leads
 

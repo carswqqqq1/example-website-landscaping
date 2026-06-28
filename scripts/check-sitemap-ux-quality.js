@@ -46,7 +46,7 @@ if (!fs.existsSync(sitemapPath)) {
   failures.push('sitemap.xml is missing');
 } else {
   const sitemap = fs.readFileSync(sitemapPath, 'utf8');
-  const routes = [...sitemap.matchAll(/<loc>https:\/\/thinkgreendesignbuild\.com([^<]*)<\/loc>/g)]
+  const routes = [...sitemap.matchAll(/<loc>https:\/\/example-website-landscaping\.pages\.dev([^<]*)<\/loc>/g)]
     .map((match) => match[1] || '/');
   const seenH1 = new Map();
   const seenTitle = new Map();

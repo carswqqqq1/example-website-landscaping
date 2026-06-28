@@ -62,13 +62,13 @@ function hasJsonLdType(html, typeName) {
 }
 
 function canonicalFor(route) {
-  return `https://thinkgreendesignbuild.com${route === '/' ? '/' : route}`;
+  return `https://example-website-landscaping.pages.dev${route === '/' ? '/' : route}`;
 }
 
 if (!fs.existsSync(sitemapPath)) {
   failures.push('sitemap.xml is missing');
 } else {
-  const routes = [...read('sitemap.xml').matchAll(/<loc>https:\/\/thinkgreendesignbuild\.com([^<]*)<\/loc>/g)]
+  const routes = [...read('sitemap.xml').matchAll(/<loc>https:\/\/example-website-landscaping\.pages\.dev([^<]*)<\/loc>/g)]
     .map((match) => match[1] || '/');
 
   routes.forEach((route) => {

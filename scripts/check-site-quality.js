@@ -50,7 +50,7 @@ function extractSitemapRoutes() {
   }
 
   const sitemap = fs.readFileSync(sitemapPath, 'utf8');
-  return [...sitemap.matchAll(/<loc>https:\/\/thinkgreendesignbuild\.com([^<]*)<\/loc>/g)]
+  return [...sitemap.matchAll(/<loc>https:\/\/example-website-landscaping\.pages\.dev([^<]*)<\/loc>/g)]
     .map((match) => match[1] || '/');
 }
 
