@@ -1,4 +1,4 @@
-const DEFAULT_QUERY = process.env.GOOGLE_PLACES_QUERY || 'Think Green Design | Build Landscape, 7730 E. Gelding Dr. Ste 1, Scottsdale, AZ 85260';
+const DEFAULT_QUERY = process.env.GOOGLE_PLACES_TEXT_QUERY || process.env.GOOGLE_PLACES_QUERY || 'Think Green Design | Build Landscape, 7730 E. Gelding Dr. Ste 1, Scottsdale, AZ 85260';
 const DEFAULT_PROFILE_URL = process.env.GOOGLE_PLACES_PROFILE_URL || 'https://www.google.com/maps/place/Think+Green+Design+%7C+Build+Landscape/@33.61549,-111.9165894,17z/data=!3m1!4b1!4m6!3m5!1s0x872b74777c987d53:0x8acb242f61538220!8m2!3d33.6154856!4d-111.9140145!16s%2Fg%2F1vg4k7_v?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D';
 
 function json(statusCode, body) {
@@ -48,6 +48,22 @@ async function requestPlaces(url, body, fieldMask, apiKey) {
   return response.json();
 }
 
+async function getPlaceDetails(url, fieldMask, apiKey) {
+  const response = await fetch(url, {
+    headers: {
+      'X-Goog-Api-Key': apiKey,
+      'X-Goog-FieldMask': fieldMask
+    }
+  });
+
+  if (!response.ok) {
+    const text = await response.text().catch(() => '');
+    throw new Error(`Google Places request failed (${response.status}): ${text.slice(0, 240)}`);
+  }
+
+  return response.json();
+}
+
 async function resolvePlace(apiKey, placeId) {
   if (placeId) {
     return placeId;
@@ -74,7 +90,7 @@ async function resolvePlace(apiKey, placeId) {
 
 async function loadGoogleReviewFeed() {
   const apiKey = trim(process.env.GOOGLE_PLACES_API_KEY);
-  const envPlaceId = trim(process.env.GOOGLE_PLACES_PLACE_ID);
+  const envPlaceId = trim(process.env.GOOGLE_PLACE_ID || process.env.GOOGLE_PLACES_PLACE_ID);
 
   if (!apiKey) {
     return {
@@ -87,9 +103,8 @@ async function loadGoogleReviewFeed() {
   }
 
   const placeId = await resolvePlace(apiKey, envPlaceId);
-  const details = await requestPlaces(
+  const details = await getPlaceDetails(
     `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`,
-    {},
     'id,displayName,formattedAddress,rating,userRatingCount,reviews,googleMapsUri',
     apiKey
   );

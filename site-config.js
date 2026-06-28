@@ -11,6 +11,8 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   var siteBaseUrl = 'https://example-website-landscaping.pages.dev';
   var manifestPath = '/manifest.json';
+  var googlePlaceId = 'ChIJU32YfHd0K4cRIIJTYW8ky4o';
+  var reviewSnapshotDate = 'Google Maps public profile snapshot, June 27, 2026';
   var reviewSourceUrl = 'https://www.google.com/maps/place/Think+Green+Design+%7C+Build+Landscape/@33.61549,-111.9165894,17z/data=!3m1!4b1!4m6!3m5!1s0x872b74777c987d53:0x8acb242f61538220!8m2!3d33.6154856!4d-111.9140145!16s%2Fg%2F1vg4k7_v?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D';
 
   return {
@@ -483,13 +485,13 @@
       count: '43',
       source: 'Google',
       sourceUrl: reviewSourceUrl,
-      snapshotDate: 'Last updated April 2026'
+      snapshotDate: reviewSnapshotDate
     },
     reviewRating: '4.7',
     reviewCount: '43',
     reviewSource: 'Google',
     reviewSourceUrl: reviewSourceUrl,
-    reviewSnapshotDate: 'Last updated April 2026',
+    reviewSnapshotDate: reviewSnapshotDate,
     socialProfiles: [
       {
         label: 'Yelp',
@@ -546,11 +548,12 @@
     },
     reviews: [],
     googleReviews: {
+      placeId: googlePlaceId,
       rating: '4.7',
       count: '43',
       platform: 'Google',
       profileUrl: reviewSourceUrl,
-      snapshotDate: 'Last updated April 2026',
+      snapshotDate: reviewSnapshotDate,
       feedEndpoint: '/google-reviews.json'
     },
     trustAssets: {

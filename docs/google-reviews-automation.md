@@ -7,7 +7,8 @@ The reviews page reads `/google-reviews.json`. Do not hand-write review cards in
 Add these GitHub repository secrets:
 
 - `GOOGLE_PLACES_API_KEY`
-- `GOOGLE_PLACE_ID` if known, otherwise set `GOOGLE_PLACES_TEXT_QUERY`
+- `GOOGLE_PLACE_ID` if known. If omitted, the updater reuses the `placeId` stored in `site-config.js` or the existing `google-reviews.json`.
+- `GOOGLE_PLACES_TEXT_QUERY` if you want the updater to resolve a different place by business name and address
 
 The scheduled workflow runs `node scripts/update-google-reviews.js` daily and commits a refreshed `google-reviews.json`.
 

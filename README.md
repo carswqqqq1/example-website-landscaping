@@ -153,11 +153,11 @@ Optional:
 If you want the reviews page and local proof sections to pull live Google reviews, set:
 
 - `GOOGLE_PLACES_API_KEY`
-- `GOOGLE_PLACES_PLACE_ID` if you already know the place ID
-- `GOOGLE_PLACES_QUERY` if you want the function to resolve the place by business name and address
+- `GOOGLE_PLACE_ID` if you already know the place ID
+- `GOOGLE_PLACES_TEXT_QUERY` if you want the updater to resolve the place by business name and address
 - `GOOGLE_PLACES_PROFILE_URL` for the public Google Maps profile link shown on the site
 
-The site falls back to the static review cards if the Google Places key is missing, so the public pages still work during setup.
+The reviews page reads `/google-reviews.json`, which is refreshed by `.github/workflows/update-google-reviews.yml`. Google Places can return only a limited official review sample; when that happens, the updater preserves the fuller existing Google snapshot instead of overwriting it with fewer reviews.
 
 ## Local QA Checklist
 

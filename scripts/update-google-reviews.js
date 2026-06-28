@@ -6,6 +6,7 @@ const root = path.resolve(__dirname, '..');
 const outputPath = path.join(root, 'google-reviews.json');
 const siteConfig = require(path.join(root, 'site-config.js'));
 const args = new Set(process.argv.slice(2));
+let cachedExistingFeed;
 
 function required(name) {
   const value = String(process.env[name] || '').trim();
@@ -48,6 +49,21 @@ function formatSnapshotDate(date = new Date()) {
     month: 'long',
     day: 'numeric'
   }).format(date)}`;
+}
+
+function readExistingFeed() {
+  if (cachedExistingFeed !== undefined) return cachedExistingFeed;
+  if (!fs.existsSync(outputPath)) {
+    cachedExistingFeed = {};
+    return cachedExistingFeed;
+  }
+
+  try {
+    cachedExistingFeed = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+  } catch (error) {
+    cachedExistingFeed = {};
+  }
+  return cachedExistingFeed;
 }
 
 async function fetchJson(url, options = {}) {
@@ -183,7 +199,11 @@ async function fetchPlacesDetails(apiKey, placeId) {
 
 async function fetchPlacesReviews() {
   const apiKey = required('GOOGLE_PLACES_API_KEY');
-  const configuredPlaceId = optional('GOOGLE_PLACE_ID');
+  const existing = readExistingFeed();
+  const configuredPlaceId = optional('GOOGLE_PLACE_ID') ||
+    optional('GOOGLE_PLACES_PLACE_ID') ||
+    String(siteConfig.googleReviews?.placeId || '').trim() ||
+    String(existing.placeId || '').trim();
   const defaultQuery = [
     siteConfig.businessName,
     siteConfig.address?.line1,
@@ -193,7 +213,7 @@ async function fetchPlacesReviews() {
   ].filter(Boolean).join(' ');
   const place = configuredPlaceId
     ? await fetchPlacesDetails(apiKey, configuredPlaceId)
-    : await fetchPlacesByName(apiKey, optional('GOOGLE_PLACES_TEXT_QUERY', defaultQuery));
+    : await fetchPlacesByName(apiKey, optional('GOOGLE_PLACES_TEXT_QUERY', optional('GOOGLE_PLACES_QUERY', defaultQuery)));
 
   return {
     provider: 'google-places',
@@ -221,14 +241,7 @@ async function buildReviewFeed() {
   try {
     const fetched = await buildReviewFeed();
     const now = new Date();
-    let existing = {};
-    if (fs.existsSync(outputPath)) {
-      try {
-        existing = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
-      } catch (error) {
-        existing = {};
-      }
-    }
+    const existing = readExistingFeed();
     const existingReviews = Array.isArray(existing.reviews) ? existing.reviews : [];
     const fetchedReviews = Array.isArray(fetched.reviews) ? fetched.reviews : [];
     const shouldPreserveFullSnapshot = Boolean(fetched.limited) &&
