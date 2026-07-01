@@ -4,19 +4,9 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'content-type'
 };
 
-const LEAD_ENDPOINT_PATH = '/.netlify/functions/send-ticket-emails';
 const NETLIFY_LEAD_ENDPOINT = 'https://thinkgreen-az.netlify.app/.netlify/functions/send-ticket-emails';
 
 export async function onRequest({ request }) {
-  const url = new URL(request.url);
-
-  if (url.pathname !== LEAD_ENDPOINT_PATH) {
-    return new Response('Not found', {
-      status: 404,
-      headers: corsHeaders
-    });
-  }
-
   if (request.method === 'OPTIONS') {
     return new Response(null, {
       status: 204,

@@ -1,7 +1,0 @@
-{
-  "version": 1,
-  "include": [
-    "/.netlify/functions/send-ticket-emails"
-  ],
-  "exclude": []
-}

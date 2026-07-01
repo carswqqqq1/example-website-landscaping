@@ -20,6 +20,8 @@
   var PRIMARY_OFFER = SITE_CONFIG.primaryOffer || {};
   var REVIEW_FEED_ENDPOINT = String(GOOGLE_REVIEWS.feedEndpoint || '').trim();
   var URL_PARAMS = new URLSearchParams(window.location.search);
+  var NETLIFY_LEAD_ENDPOINT = '/.netlify/functions/send-ticket-emails';
+  var CLOUDFLARE_LEAD_ENDPOINT = '/api/lead';
 
   var SITE_NAME = SITE_CONFIG.businessName || 'Think Green Design | Build Landscape';
   var SITE_PHONE_RAW = String(PHONE.raw || '4809229497').replace(/\D/g, '');
@@ -50,6 +52,15 @@
   var OFFER_FORM_TITLE = String(PRIMARY_OFFER.formTitle || 'Start Your Project Review').trim();
   var OFFER_SUBMIT_LABEL = String(PRIMARY_OFFER.submitLabel || 'Send My Project Review').trim();
   var OFFER_PROMISE = String(PRIMARY_OFFER.promise || 'No pressure, no obligation, and a local team member follows up within one business day.').trim();
+
+  function getLeadSubmissionEndpoint() {
+    var host = String(window.location.hostname || '').toLowerCase();
+    if (host.indexOf('pages.dev') !== -1 || host.indexOf('example-website-landscaping') !== -1) {
+      return CLOUDFLARE_LEAD_ENDPOINT;
+    }
+    return NETLIFY_LEAD_ENDPOINT;
+  }
+
   var DEFAULT_PAGE_CONVERSION_GUIDES = {
     '/ahwatukee-landscape-design': {
       eyebrow: 'Design Quote Fit',
@@ -2725,7 +2736,7 @@
       consultDrawerState.submit.textContent = 'Submitting...';
 
       try {
-        var response = await fetch('/.netlify/functions/send-ticket-emails', {
+        var response = await fetch(getLeadSubmissionEndpoint(), {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: encodeFormData(payload)
@@ -3809,7 +3820,7 @@
         }
 
         try {
-          var response = await fetch('/.netlify/functions/send-ticket-emails', {
+          var response = await fetch(getLeadSubmissionEndpoint(), {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: encodeFormData(payload)
@@ -4203,7 +4214,7 @@
       });
 
       try {
-        var response = await fetch('/.netlify/functions/send-ticket-emails', {
+        var response = await fetch(getLeadSubmissionEndpoint(), {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: encodeFormData(payload)
