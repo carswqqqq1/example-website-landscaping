@@ -844,7 +844,11 @@
     }
 
     var isReviewsPage = document.body && document.body.classList && document.body.classList.contains('reviews-page');
-    var displayList = isReviewsPage ? reviewList : reviewList.slice(0, 6);
+    var displayList = isReviewsPage ? reviewList : reviewList.filter(function (review) {
+      var rating = Number(review.rating || 0);
+      var hasWrittenText = String(review.text || review.originalText || '').trim();
+      return rating === 5 && hasWrittenText;
+    }).slice(0, 6);
 
     displayList.forEach(function (review) {
       var sourceUrl = String(review.sourceUrl || review.googleMapsUri || review.reviewUri || '').trim();
