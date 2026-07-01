@@ -1652,6 +1652,10 @@ async function sendToGoogleSheets(normalized, meta = {}) {
   }
 
   const payload = await response.json().catch(() => ({}));
+  if (payload && payload.ok === false) {
+    throw new Error(`Google Sheets webhook error: ${safeText(payload.error, 'unknown webhook failure')}`);
+  }
+
   return {
     ok: true,
     row_id: safeText(payload.row_id, ''),
