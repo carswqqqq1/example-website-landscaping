@@ -20,8 +20,8 @@
     manifestPath: manifestPath,
     businessName: 'Think Green Design | Build Landscape',
     shortName: 'Think Green',
-    email: 'hello@thinkgreendesignbuild.com',
-    ownerEmail: 'hello@thinkgreendesignbuild.com',
+    email: 'carson.elevatemarketing@gmail.com',
+    ownerEmail: 'carson.elevatemarketing@gmail.com',
     phone: {
       raw: '4809229497',
       display: '(480) 922-9497'

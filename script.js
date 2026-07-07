@@ -27,7 +27,7 @@
   var SITE_PHONE_RAW = String(PHONE.raw || '4809229497').replace(/\D/g, '');
   var SITE_PHONE_DISPLAY = PHONE.display || '(480) 922-9497';
   var DETECTED_LEAD_SOURCE = 'website';
-  var SITE_EMAIL = SITE_CONFIG.email || 'hello@thinkgreendesignbuild.com';
+  var SITE_EMAIL = SITE_CONFIG.email || 'carson.elevatemarketing@gmail.com';
   var SITE_ADDRESS_LINE1 = ADDRESS.line1 || '7730 E. Gelding Dr. Ste 1';
   var SITE_CITY = ADDRESS.city || 'Scottsdale';
   var SITE_STATE = ADDRESS.state || 'AZ';

@@ -11,7 +11,7 @@ try {
   SITE_CONFIG = {};
 }
 
-const OWNER_EMAIL = process.env.OWNER_EMAIL || SITE_CONFIG.ownerEmail || SITE_CONFIG.email || '';
+const OWNER_EMAIL = SITE_CONFIG.ownerEmail || process.env.OWNER_EMAIL || SITE_CONFIG.email || '';
 const FROM_EMAIL = process.env.FROM_EMAIL || '';
 const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || '';
 const EMAIL_PROVIDER = String(process.env.EMAIL_PROVIDER || 'resend').toLowerCase();
