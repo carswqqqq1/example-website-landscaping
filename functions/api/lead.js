@@ -5,6 +5,9 @@ const corsHeaders = {
 };
 
 const LEAD_BACKEND_ENDPOINT = 'https://thinkgreen-az.netlify.app/.netlify/functions/send-ticket-emails';
+const OWNER_NOTIFY_EMAIL = 'carson.elevatemarketing@gmail.com';
+const FORM_SUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${OWNER_NOTIFY_EMAIL}`;
+const SITE_ORIGIN = 'https://example-website-landscaping.pages.dev';
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY_MS = 800;
 const RETRYABLE_SHEET_ERRORS = [
@@ -30,6 +33,98 @@ function parseJson(text) {
   } catch {
     return null;
   }
+}
+
+function cleanValue(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim();
+}
+
+function valueFrom(data, keys, fallback = '') {
+  for (const key of keys) {
+    const value = cleanValue(data && data[key]);
+    if (value) return value;
+  }
+  return fallback;
+}
+
+function buildOwnerBackupMessage(data, upstreamPayload) {
+  const ticketId = valueFrom(data, ['ticket_id'], valueFrom(upstreamPayload, ['ticket_id'], 'Website lead'));
+  const name = valueFrom(data, ['name', 'full_name'], [data && data.first_name, data && data.last_name].map(cleanValue).filter(Boolean).join(' '));
+  const phone = valueFrom(data, ['phone', 'phone_number']);
+  const email = valueFrom(data, ['email']);
+  const service = valueFrom(data, ['service', 'selected_service'], 'Project review');
+  const city = valueFrom(data, ['city', 'project_location']);
+  const budget = valueFrom(data, ['budget_range', 'budget']);
+  const timeline = valueFrom(data, ['start_timeline', 'timeline', 'estimated_timeline']);
+  const notes = valueFrom(data, ['notes', 'message', 'project_details']);
+  const source = valueFrom(data, ['lead_source', 'source', 'utm_source'], 'website');
+  const pageUrl = valueFrom(data, ['page_url']);
+  const rowUrl = upstreamPayload && upstreamPayload.sheets_result && upstreamPayload.sheets_result.row_url
+    ? cleanValue(upstreamPayload.sheets_result.row_url)
+    : '';
+
+  return {
+    _subject: `New Think Green lead: ${name || ticketId}`,
+    _template: 'table',
+    _captcha: 'false',
+    _replyto: email,
+    ticket_id: ticketId,
+    name,
+    phone,
+    email,
+    service,
+    city,
+    budget_range: budget,
+    start_timeline: timeline,
+    lead_source: source,
+    notes,
+    lead_dashboard: rowUrl,
+    page_url: pageUrl,
+    backup_notice: 'Sent by Cloudflare Pages backup owner notification.'
+  };
+}
+
+async function sendOwnerBackupNotification(data, upstreamPayload) {
+  if (!OWNER_NOTIFY_EMAIL) {
+    return { skipped: true, reason: 'missing_owner_notify_email' };
+  }
+
+  const response = await fetch(FORM_SUBMIT_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      origin: SITE_ORIGIN,
+      referer: `${SITE_ORIGIN}/free-consultation`
+    },
+    body: JSON.stringify(buildOwnerBackupMessage(data || {}, upstreamPayload || {}))
+  });
+
+  const body = await response.text();
+  const payload = parseJson(body);
+  if (!response.ok) {
+    return {
+      ok: false,
+      status: response.status,
+      error: body.slice(0, 500)
+    };
+  }
+
+  if (payload && String(payload.success).toLowerCase() === 'false') {
+    const message = cleanValue(payload.message);
+    return {
+      ok: false,
+      status: response.status,
+      reason: /activation/i.test(message) ? 'activation_required' : 'formsubmit_rejected',
+      message
+    };
+  }
+
+  return {
+    ok: true,
+    status: response.status,
+    response: payload || body.slice(0, 500)
+  };
 }
 
 function hasRetryableSheetError(payload) {
@@ -65,6 +160,8 @@ export async function onRequest({ request }) {
   if (contentType) headers.set('content-type', contentType);
   headers.set('accept', 'application/json');
   const requestBody = await request.arrayBuffer();
+  const requestText = new TextDecoder().decode(requestBody.slice(0));
+  const requestPayload = parseJson(requestText) || {};
 
   let lastBody = '';
   let lastStatus = 502;
@@ -89,6 +186,17 @@ export async function onRequest({ request }) {
           status: 502,
           headers: responseHeaders()
         });
+      }
+
+      if (upstream.ok) {
+        const ownerBackupResult = await sendOwnerBackupNotification(requestPayload, payload || {});
+        if (payload && typeof payload === 'object') {
+          payload.owner_backup_result = ownerBackupResult;
+          return new Response(JSON.stringify(payload), {
+            status: upstream.status,
+            headers: responseHeaders()
+          });
+        }
       }
 
       return new Response(body, {
