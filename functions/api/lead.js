@@ -84,9 +84,46 @@ function buildOwnerBackupMessage(data, upstreamPayload) {
   };
 }
 
-async function sendOwnerBackupNotification(data, upstreamPayload) {
+async function sendOwnerBackupNotification(data, upstreamPayload, env = {}) {
   if (!OWNER_NOTIFY_EMAIL) {
     return { skipped: true, reason: 'missing_owner_notify_email' };
+  }
+
+  const ownerBackupWebhookUrl = cleanValue(env.OWNER_BACKUP_WEBHOOK_URL);
+  const ownerBackupWebhookSecret = cleanValue(env.OWNER_BACKUP_WEBHOOK_SECRET);
+
+  if (ownerBackupWebhookUrl) {
+    const webhookPayload = buildOwnerBackupMessage(data || {}, upstreamPayload || {});
+    const response = await fetch(ownerBackupWebhookUrl, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        secret: ownerBackupWebhookSecret,
+        to: OWNER_NOTIFY_EMAIL,
+        lead: webhookPayload
+      })
+    });
+
+    const body = await response.text();
+    const payload = parseJson(body);
+    if (!response.ok || (payload && payload.ok === false)) {
+      return {
+        ok: false,
+        provider: 'owner_webhook',
+        status: response.status,
+        error: payload && payload.error ? cleanValue(payload.error) : body.slice(0, 500)
+      };
+    }
+
+    return {
+      ok: true,
+      provider: 'owner_webhook',
+      status: response.status,
+      response: payload || body.slice(0, 500)
+    };
   }
 
   const response = await fetch(FORM_SUBMIT_ENDPOINT, {
@@ -140,7 +177,7 @@ function shouldRetryResponse(status, text, payload) {
   return /error code:\\s*50[024]/i.test(text);
 }
 
-export async function onRequest({ request }) {
+export async function onRequest({ request, env }) {
   if (request.method === 'OPTIONS') {
     return new Response(null, {
       status: 204,
@@ -189,7 +226,7 @@ export async function onRequest({ request }) {
       }
 
       if (upstream.ok) {
-        const ownerBackupResult = await sendOwnerBackupNotification(requestPayload, payload || {});
+        const ownerBackupResult = await sendOwnerBackupNotification(requestPayload, payload || {}, env || {});
         if (payload && typeof payload === 'object') {
           payload.owner_backup_result = ownerBackupResult;
           return new Response(JSON.stringify(payload), {
