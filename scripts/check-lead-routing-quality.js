@@ -41,7 +41,7 @@ function assertIncludes(file, text, label) {
 }
 
 const script = read('script.js');
-const functionSource = read(path.join('netlify', 'functions', 'send-ticket-emails.js'));
+const functionSource = read(path.join('lib', 'landscape-lead-handler.mjs'));
 const requiredHiddenFields = [
   'name="lead_source"',
   'name="utm_source"',
@@ -57,27 +57,27 @@ const requiredHiddenFields = [
   'name="selected_project_label"'
 ];
 const requiredFunctionFields = [
-  "'lead_source'",
-  "'page_url'",
-  "'referrer'",
-  "'landing_path'",
-  "'utm_source'",
-  "'utm_medium'",
-  "'utm_campaign'",
-  "'utm_content'"
+  'lead_source:',
+  'page_url:',
+  'referrer:',
+  'landing_path:',
+  'utm_source:',
+  'utm_medium:',
+  'utm_campaign:',
+  'utm_content:'
 ];
 
 requiredHiddenFields.forEach((field) => assertIncludes('script.js', script, field));
-requiredFunctionFields.forEach((field) => assertIncludes('netlify/functions/send-ticket-emails.js', functionSource, field));
+requiredFunctionFields.forEach((field) => assertIncludes('lib/landscape-lead-handler.mjs', functionSource, field));
 
 [
   'normalized.referrer',
   'normalized.landing_path',
   'normalized.page_url',
-  'ownerSheetValue(row.referrer)',
-  'ownerSheetValue(row.landing_path)',
-  'ownerSheetValue(row.utm_content)'
-].forEach((field) => assertIncludes('netlify/functions/send-ticket-emails.js', functionSource, field));
+  'sheetValue(normalized.referrer)',
+  'sheetValue(normalized.landing_path)',
+  'sheetValue(normalized.utm_content)'
+].forEach((field) => assertIncludes('lib/landscape-lead-handler.mjs', functionSource, field));
 
 const sitemapPath = path.join(root, 'sitemap.xml');
 if (!fs.existsSync(sitemapPath)) {

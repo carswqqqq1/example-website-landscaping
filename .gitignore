@@ -21,9 +21,6 @@ next-env.d.ts
 # OS
 .DS_Store
 
-# Local Netlify folder
-.netlify
-
 # Local Cloudflare Wrangler state
 .wrangler/
 

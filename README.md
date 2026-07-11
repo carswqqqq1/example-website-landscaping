@@ -1,12 +1,12 @@
 # Think Green Landscaping Template
 
-This branch contains the reusable static landscaping template that powers the live Think Green demo: HTML, CSS, vanilla JS, Netlify Functions, branded emails, and the Google Sheets lead workflow.
+This branch contains the reusable static landscaping template that powers the live Think Green demo: HTML, CSS, vanilla JS, Cloudflare Pages Functions, branded emails, and the Google Sheets lead workflow.
 
 ## Source Of Truth
 
 - GitHub repo: `https://github.com/carswqqqq1/example-website-landscaping`
 - Branch: `master`
-- Live demo: `https://example-website-landscaping.netlify.app`
+- Live demo: `https://example-website-landscaping.pages.dev`
 
 If production and branch ever drift, fix that before making visual or funnel edits. The branch should stay the source of truth for this template.
 
@@ -27,7 +27,7 @@ Core template files:
 - `site-config.js`
 - `services-data.js`
 - `projects-data.js`
-- `netlify/functions/send-ticket-emails.js`
+- `functions/api/lead.js`
 - `emails/thinkgreen-client-email.html`
 - `emails/thinkgreen-owner-email.html`
 
@@ -107,7 +107,7 @@ The homepage form submits through:
 
 - same-origin `/api/lead` on Cloudflare Pages, including custom domains
 
-The Pages Function validates the request, enforces the shared proxy secret, and makes one non-retried call to the Netlify lead function. The Netlify function remains the sole owner of Sheet and email delivery so one healthy submission cannot create two owner notifications. Netlify-hosted previews keep the same `/api/lead` URL through a server-side gateway that injects the secret without exposing it to the browser.
+The Pages Function validates the request, writes the lead to Google Sheets with exact-ticket idempotency, sends the owner notification and client confirmation through Resend, and optionally fans the accepted lead out to configured CRM webhooks. The browser always uses the same `/api/lead` path on preview and custom domains.
 
 Prefill sources:
 
@@ -119,7 +119,7 @@ Prefill sources:
 
 Handled by:
 
-- `netlify/functions/send-ticket-emails.js`
+- `functions/api/lead.js`
 
 This function:
 
@@ -132,29 +132,24 @@ This function:
 
 ### Environment Variables
 
-Set these in Netlify:
+Set these in the Cloudflare Pages project's **Settings → Variables and Secrets** before deploying the Function:
 
-- `LEAD_PROXY_SECRET` (the same long random value configured in Cloudflare Pages)
+- `OWNER_EMAIL`
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL` (must use a sender/domain verified by Resend)
 - `GOOGLE_SHEETS_WEBHOOK_URL` (required for locked, exact-ticket lead capture)
 - `GOOGLE_SHEETS_WEBHOOK_SECRET`
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_USER`
-- `SMTP_PASS`
-- `FROM_EMAIL`
-- `OWNER_EMAIL`
-- `GOOGLE_SHEET_URL`
-- `CRM_WEBHOOK_URL` if used
+- `SITE_URL` (recommended canonical production URL; the Function can fall back to the request origin)
 
 Optional:
 
-- `RESEND_API_KEY`
-- `RESEND_FROM_EMAIL`
-
-Set these in Cloudflare Pages:
-
-- `LEAD_BACKEND_ENDPOINT` = the full Netlify function URL
-- `LEAD_PROXY_SECRET` = the same encrypted value used by Netlify
+- `FROM_EMAIL` as a compatibility alias for `RESEND_FROM_EMAIL`
+- `GOOGLE_SHEET_URL`
+- `CRM_WEBHOOK_URL`
+- `CRM_WEBHOOK_SECRET`
+- `SLACK_WEBHOOK_URL`
+- `AIRTABLE_WEBHOOK_URL`
+- `HUBSPOT_WEBHOOK_URL`
 
 ### Google Reviews Feed
 
@@ -184,17 +179,17 @@ Before shipping a cloned site:
 
 ## Deploy
 
-Use Netlify CLI from the template folder. For the Think Green site, deploy explicitly to the correct site ID:
+Build and deploy the Pages project from the template folder:
 
 ```bash
-npx netlify deploy --prod --dir . --site=afa9fd9e-aa69-4368-a08f-d93aa497b0a8
+npm run deploy:cloudflare
 ```
 
 ## Release Checks
 
 ```bash
 npm run generate:llms
-npm run build:assets
+npm run build:cloudflare
 npm run check:js
 npm run check:a11y
 npm run check:site
@@ -211,8 +206,8 @@ node scripts/generate-client-package.js path/to/client-config.json
 
 This writes a launch package to `client-builds/<client-slug>/` with:
 - merged config preview
-- suggested branch and Netlify site name
-- Netlify env template
+- suggested branch and Cloudflare Pages project name
+- Cloudflare environment template
 - launch checklist
 
 ## Owner Intake Data In GitHub

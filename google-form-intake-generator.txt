@@ -319,9 +319,9 @@ function createLandscaperClientIntakeForm() {
     .setTitle('Reply-To Email for Client Confirmation')
     .setRequired(true);
 
-  form.addMultipleChoiceItem()
-    .setTitle('Preferred Email Delivery Method')
-    .setChoiceValues(['SMTP (Gmail/Workspace app password)', 'Resend', 'Both with fallback'])
+  form.addTextItem()
+    .setTitle('Verified Resend Sender Email')
+    .setHelpText('Example: quotes@clientdomain.com. Do not paste API keys into this form.')
     .setRequired(true);
 
   form.addTextItem()
@@ -470,7 +470,7 @@ LEAD PIPELINE
 - Owner notification email: [OWNER_EMAIL]
 - Secondary notification email: [SECONDARY_OWNER_EMAIL]
 - Reply-to email: [REPLY_TO_EMAIL]
-- Delivery method: [SMTP_OR_RESEND]
+- Resend sender email: [RESEND_SENDER_EMAIL]
 - Google Sheet URL: [SHEET_URL]
 - Duplicate detection: [YES_NO]
 - CRM webhook: [CRM_WEBHOOK]
@@ -489,7 +489,7 @@ REQUIRED OUTPUT
 4) Keep form + email + sheet pipeline working.
 5) Ensure portfolio and service pages reflect this business specifically.
 6) Run mobile + desktop QA.
-7) Deploy to Netlify production and provide final URLs.
+7) Deploy to Cloudflare Pages production and provide final URLs.
 8) Send one test form submission after deploy.
 """
 
@@ -545,7 +545,7 @@ MASTER LIST: WHAT THE CLIENT MUST PROVIDE (COMPLETE)
 7) Lead Handling
 - Owner alert email(s)
 - Client confirmation reply-to email
-- Preferred send method (SMTP/Resend)
+- Verified Resend sender email/domain
 - Lead dashboard sheet URL
 - Duplicate policy preference
 - CRM/webhook endpoint (optional)

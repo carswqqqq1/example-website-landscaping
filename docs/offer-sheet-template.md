@@ -17,9 +17,9 @@ Local service businesses (landscaping, hardscaping, home services, contractors) 
 - Services hub + individual service pages
 - Local SEO setup (meta tags, schema markup, sitemap, robots.txt)
 - Analytics event tracking (`call_click`, `form_submit`, `consultation_open`)
-- Netlify hosting setup + custom domain configuration
+- Cloudflare Pages hosting setup + custom domain configuration
 - Google Sheets lead log (every form submission auto-logged)
-- Password-protected staging link for client review before launch
+- Staging preview link for client review before launch
 
 ### Phase 2 — Launch & Handoff (Days 3–5)
 - Final revisions based on client feedback
@@ -29,8 +29,8 @@ Local service businesses (landscaping, hardscaping, home services, contractors) 
 - Handoff doc with login credentials and next steps
 
 ### Ongoing — Monthly Upkeep ($250/month)
-- Hosting on Netlify (CDN, SSL, 99.9% uptime)
-- Form processing + email delivery (Resend or SMTP)
+- Hosting on Cloudflare Pages (CDN + SSL)
+- Form processing + email delivery through Resend
 - Google Sheets lead log maintenance
 - Minor content updates (text, photos, hours, service list changes)
 - Monthly speed + uptime check

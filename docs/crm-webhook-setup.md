@@ -1,6 +1,6 @@
 # CRM Webhook Fan-Out Setup
 
-The Netlify function `netlify/functions/send-ticket-emails.js` can now fan out leads to multiple webhook targets.
+The Cloudflare Pages Function at `functions/api/lead.js` can fan accepted leads out to multiple webhook targets.
 
 ## Optional Environment Variables
 

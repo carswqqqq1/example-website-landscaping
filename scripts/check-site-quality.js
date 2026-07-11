@@ -297,8 +297,8 @@ if (fs.existsSync(siteConfigPath)) {
     warnings.push('site-config.js: contains Think Green demo email — update for client before launch');
   }
 
-  if (/thinkgreen-az\.netlify\.app/i.test(siteConfig)) {
-    warnings.push('site-config.js: contains Think Green demo URL — update for client before launch');
+  if (/\.netlify\.app/i.test(siteConfig)) {
+    failures.push('site-config.js: retired hosting URL found; use the Cloudflare Pages or custom domain URL');
   }
 }
 

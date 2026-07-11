@@ -75,12 +75,15 @@ try {
     'thinkgreendesignbuild.com',
     '4809229497',
     '(480) 922-9497',
-    'hello@thinkgreendesignbuild.com'
+    'hello@thinkgreendesignbuild.com',
+    'Netlify',
+    'netlify',
+    'NETLIFY_'
   ];
   const findings = previewFiles.flatMap((filePath) => assertNoResidue(filePath, forbidden));
 
   if (findings.length) {
-    console.error('Client package still contains demo brand/contact residue:');
+    console.error('Client package still contains demo brand/contact or retired hosting residue:');
     findings.slice(0, 25).forEach((finding) => {
       console.error(`- ${finding.file}: ${finding.term}`);
     });
@@ -97,7 +100,7 @@ try {
     'competitor-positioning-checklist.md',
     'launch-checklist.md',
     'merged-site-config-preview.json',
-    'netlify-env-template.txt',
+    'cloudflare-env-template.txt',
     'service-conversion-plan.md',
     'service-content-overrides-starter.json'
   ];
@@ -117,8 +120,18 @@ try {
     'What job size should the client accept, decline, or refer out?'
   ]);
   const summaryFindings = assertIncludes(path.join(buildDir, 'client-summary.md'), [
+    'Suggested Cloudflare Pages Project',
+    'wrangler pages deploy',
     'apply-service-content-overrides.js',
     'service-content-overrides-starter.json'
+  ]);
+  const envFindings = assertIncludes(path.join(buildDir, 'cloudflare-env-template.txt'), [
+    'SITE_URL=',
+    'OWNER_EMAIL=',
+    'RESEND_API_KEY=',
+    'RESEND_FROM_EMAIL=',
+    'GOOGLE_SHEETS_WEBHOOK_URL=',
+    'GOOGLE_SHEETS_WEBHOOK_SECRET='
   ]);
   const starterFindings = assertIncludes(path.join(buildDir, 'service-content-overrides-starter.json'), [
     'serviceContentOverrides',
@@ -138,9 +151,9 @@ try {
     'Local Market Position'
   ]);
 
-  if (conversionPlanFindings.length || summaryFindings.length || starterFindings.length || competitorFindings.length) {
-    console.error('Client package service conversion files are incomplete:');
-    conversionPlanFindings.concat(summaryFindings, starterFindings, competitorFindings).forEach((finding) => {
+  if (conversionPlanFindings.length || summaryFindings.length || envFindings.length || starterFindings.length || competitorFindings.length) {
+    console.error('Client package launch files are incomplete:');
+    conversionPlanFindings.concat(summaryFindings, envFindings, starterFindings, competitorFindings).forEach((finding) => {
       console.error(`- ${finding.file}: missing "${finding.term}"`);
     });
     process.exit(1);

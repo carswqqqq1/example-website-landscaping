@@ -25,7 +25,7 @@ Collected before any work begins. Covers the intake process, branch creation, cl
 Collected when the staging site is approved and ready to go live. Covers final revisions, production deployment, DNS configuration, post-launch QA, and the handoff walkthrough.
 
 ### $250/month — Monthly Upkeep
-Recurring. Covers Netlify hosting (CDN + SSL), form processing and email delivery, Google Sheets lead log, minor content updates (text, photos, hours, service changes), monthly speed and uptime checks, and priority support for any site issues within one business day. Includes an annual SEO refresh.
+Recurring. Covers Cloudflare Pages hosting (CDN + SSL), form processing and email delivery, Google Sheets lead log, minor content updates (text, photos, hours, service changes), monthly speed and uptime checks, and priority support for any site issues within one business day. Includes an annual SEO refresh.
 
 ---
 

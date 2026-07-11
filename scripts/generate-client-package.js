@@ -220,7 +220,7 @@ const services = loadServicesData();
 const slug = slugify(mergedConfig.shortName || mergedConfig.businessName || 'client-site');
 const buildDir = path.join(outputRoot, slug);
 const branchName = `codex/${slug}-site`;
-const netlifySite = `${slug}-site`;
+const cloudflareProject = `${slug}-site`;
 const serviceOverrideCommand = `node scripts/apply-service-content-overrides.js client-builds/${slug}/service-content-overrides-starter.json`;
 
 // Pull agency meta if present (not merged into site config)
@@ -243,8 +243,8 @@ Generated on ${today} from ${absoluteInputPath}
 ## Suggested Branch
 - ${branchName}
 
-## Suggested Netlify Site
-- ${netlifySite}
+## Suggested Cloudflare Pages Project
+- ${cloudflareProject}
 
 ## Client Snapshot
 - Business name: ${mergedConfig.businessName}
@@ -285,22 +285,29 @@ Generated on ${today} from ${absoluteInputPath}
 4. Confirm the offer, financing language, service list, and city-specific quote guide match the client.
 5. Fill out \`service-conversion-plan.md\`, update \`service-content-overrides-starter.json\`, then run \`${serviceOverrideCommand}\`.
 6. Use \`competitor-positioning-checklist.md\` to confirm portfolio depth, process model, team proof, calculator ranges, financing, and local trust positioning.
-7. Run \`npm run build:assets\`.
+7. Run \`npm run build:cloudflare\`.
 8. Run all release checks, including \`npm run check:client-package\`.
 9. Collect completion payment before pointing DNS.
-10. Link or create Netlify site \`${netlifySite}\`.
-11. Deploy and do the manual accessibility checklist before final launch.
+10. Link or create Cloudflare Pages project \`${cloudflareProject}\`.
+11. Deploy with \`npx wrangler pages deploy dist --project-name=${cloudflareProject} --branch=master\`, then do the manual accessibility checklist before final launch.
 12. Set up monthly auto-invoice for $${monthlyAmt}/month.
 `;
 
-const envTemplate = `NETLIFY_AUTH_TOKEN=
-EMAIL_TO=${mergedConfig.ownerEmail}
-EMAIL_FROM=${mergedConfig.email}
-SMTP_HOST=
-SMTP_PORT=
-SMTP_USER=
-SMTP_PASS=
+const envTemplate = `# Cloudflare Pages runtime variables and encrypted secrets
+SITE_URL=https://${cloudflareProject}.pages.dev
+OWNER_EMAIL=${mergedConfig.ownerEmail}
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=${mergedConfig.businessName} <${mergedConfig.email}>
 GOOGLE_SHEETS_WEBHOOK_URL=
+GOOGLE_SHEETS_WEBHOOK_SECRET=
+GOOGLE_SHEET_URL=
+
+# Optional webhook fan-out
+CRM_WEBHOOK_URL=
+CRM_WEBHOOK_SECRET=
+SLACK_WEBHOOK_URL=
+AIRTABLE_WEBHOOK_URL=
+HUBSPOT_WEBHOOK_URL=
 `;
 
 const checklist = `# ${mergedConfig.shortName} Release Checklist
@@ -324,7 +331,7 @@ const checklist = `# ${mergedConfig.shortName} Release Checklist
 - [ ] Sweep for any remaining demo/template brand residue
 
 ## Build & QA
-- [ ] Build minified assets: \`npm run build:assets\`
+- [ ] Build Cloudflare Pages output: \`npm run build:cloudflare\`
 - [ ] \`npm run check:js\`
 - [ ] \`npm run check:a11y\`
 - [ ] \`npm run check:site\`
@@ -337,7 +344,8 @@ const checklist = `# ${mergedConfig.shortName} Release Checklist
 
 ## Launch
 - [ ] Collect completion payment ($${completionAmt})
-- [ ] Deploy to Netlify production
+- [ ] Confirm \`SITE_URL\` matches the actual Pages or custom production domain
+- [ ] Deploy: \`npx wrangler pages deploy dist --project-name=${cloudflareProject} --branch=master\`
 - [ ] Point DNS to new site
 - [ ] Verify all production routes return 200
 - [ ] Verify lead form submits to Google Sheet
@@ -387,7 +395,7 @@ This launch checklist is based on current Arizona landscaping competitors that e
 `;
 
 writeFile(path.join(buildDir, 'client-summary.md'), summary);
-writeFile(path.join(buildDir, 'netlify-env-template.txt'), envTemplate);
+writeFile(path.join(buildDir, 'cloudflare-env-template.txt'), envTemplate);
 writeFile(path.join(buildDir, 'launch-checklist.md'), checklist);
 writeFile(path.join(buildDir, 'competitor-positioning-checklist.md'), competitorChecklist);
 writeFile(path.join(buildDir, 'merged-site-config-preview.json'), `${JSON.stringify(mergedConfig, null, 2)}\n`);
@@ -396,5 +404,5 @@ writeFile(path.join(buildDir, 'service-content-overrides-starter.json'), buildSe
 
 console.log(`Generated client package in ${buildDir}`);
 console.log(`  Branch:       ${branchName}`);
-console.log(`  Netlify site: ${netlifySite}`);
+console.log(`  Cloudflare:   ${cloudflareProject}`);
 console.log(`  Pricing:      $${initialAmt} initial / $${completionAmt} completion / $${monthlyAmt}/month`);

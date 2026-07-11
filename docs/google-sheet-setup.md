@@ -18,13 +18,15 @@ This uses the webhook script in `docs/google-sheets-webhook.gs`.
 4. Who has access: `Anyone`.
 5. Deploy and copy the Web app URL.
 
-## 3) Set Netlify environment variables
+## 3) Set Cloudflare Pages variables and secrets
 
-Set these vars for site `thinkgreen-az`:
+In **Workers & Pages → example-website-landscaping → Settings → Variables and Secrets**, set these values for Production (and Preview when preview form testing is required):
 
-- `GOOGLE_SHEETS_WEBHOOK_URL` = your web app URL
-- `GOOGLE_SHEETS_WEBHOOK_SECRET` = same secret from script
+- `GOOGLE_SHEETS_WEBHOOK_URL` = your web app URL (store as an encrypted secret)
+- `GOOGLE_SHEETS_WEBHOOK_SECRET` = same secret from the script (store as an encrypted secret)
 - `GOOGLE_SHEET_URL` = full URL of the target sheet (used in owner email fallback button)
+
+Save the values before deploying the Pages Function that uses them.
 
 ## 4) Verify
 

@@ -12,7 +12,7 @@ Rules:
 - Do not fabricate trust signals, ratings, review counts, licenses, warranties, project budgets, or service areas.
 - If a field is missing or marked UNKNOWN, use softened safe copy instead of fake specifics.
 - If a trust field is marked UNVERIFIED, do not present it as a precise public claim.
-- Keep the lead pipeline, Netlify setup, analytics, forms, and owner/client email flow working.
+- Keep the lead pipeline, Cloudflare Pages setup, analytics, forms, and owner/client email flow working.
 - Update the site from head to toe: copy, branding, metadata, trust blocks, service pages, schema, portfolio labels, local pages, contact details, email templates, and config.
 - Keep all changes production-ready and resale-clean.
 
@@ -57,7 +57,7 @@ Requirements:
 - full brand + business identity swap
 - trust-safe copy only
 - client-specific services, service areas, portfolio, reviews, and metadata
-- keep forms, emails, analytics, and Netlify pipeline working
+- keep forms, emails, analytics, and the Cloudflare Pages pipeline working
 - use softened wording anywhere data is missing or unverified
 - at the end, list files changed, what was customized, what still needs client verification, and whether the site is launch-ready
 

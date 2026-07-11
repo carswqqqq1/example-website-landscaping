@@ -1,5 +1,5 @@
 {
-  "siteBaseUrl": "https://example-client-site.netlify.app",
+  "siteBaseUrl": "https://example-client-site.pages.dev",
   "manifestPath": "/manifest.json",
   "businessName": "Client Landscaping Company",
   "shortName": "Client Name",
@@ -145,7 +145,7 @@
     "count": "120",
     "profileUrl": "https://example.com/reviews",
     "snapshotDate": "Cached Google snapshot as of March 8, 2026",
-    "feedEndpoint": "/.netlify/functions/google-reviews"
+    "feedEndpoint": "/google-reviews.json"
   },
   "socialProfiles": [
     {
@@ -242,7 +242,7 @@
     "_note": "Internal agency records only. Not read by site-config.js or any build script.",
     "agencyProjectId": "",
     "clientSlug": "",
-    "netlifySiteId": "",
+    "cloudflarePagesProject": "",
     "githubBranch": "",
     "initialPaymentDate": "",
     "initialPaymentAmount": 375,

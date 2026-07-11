@@ -8,7 +8,7 @@
  * 4) Deploy > New deployment > Web app
  *    - Execute as: Me
  *    - Who has access: Anyone
- * 5) Copy the Web app URL to Netlify env var GOOGLE_SHEETS_WEBHOOK_URL.
+ * 5) Add the Web app URL to Cloudflare Pages as GOOGLE_SHEETS_WEBHOOK_URL.
  */
 const SHEET_NAME = 'Owner Lead Dashboard';
 const SPREADSHEET_TITLE = 'Think Green Lead Dashboard';
@@ -42,9 +42,12 @@ const HEADERS = [
   'submitted_local',
   'last_touched',
   'page_url',
+  'referrer',
+  'landing_path',
   'utm_source',
   'utm_medium',
-  'utm_campaign'
+  'utm_campaign',
+  'utm_content'
 ];
 
 function setup() {
@@ -133,9 +136,12 @@ function doPost(e) {
       submitted_local: sanitizeField_(row.submitted_local),
       last_touched: formatPhoenixDate_(now),
       page_url: sanitizeField_(row.page_url),
+      referrer: sanitizeField_(row.referrer),
+      landing_path: sanitizeField_(row.landing_path),
       utm_source: sanitizeField_(row.utm_source),
       utm_medium: sanitizeField_(row.utm_medium),
-      utm_campaign: sanitizeField_(row.utm_campaign)
+      utm_campaign: sanitizeField_(row.utm_campaign),
+      utm_content: sanitizeField_(row.utm_content)
     };
 
     meta.sheet.appendRow(HEADERS.map(function (key) { return values[key]; }));

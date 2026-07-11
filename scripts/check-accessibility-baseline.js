@@ -51,7 +51,7 @@ if (!/name="consent_required" value="1"/i.test(indexHtml)) {
 if (!/name="form_started_at"/i.test(indexHtml) || !/name="js_check"/i.test(indexHtml)) {
   failures.push('index.html: contact form missing anti-abuse timing/javascript fields');
 }
-if (!/netlify-honeypot="bot-field"/i.test(indexHtml) || !/name="bot-field"/i.test(indexHtml)) {
+if (!/name="bot-field"/i.test(indexHtml)) {
   failures.push('index.html: contact form missing honeypot field');
 }
 if (!/id="form-error"[^>]+role="alert"[^>]+aria-live="polite"/i.test(indexHtml)) {

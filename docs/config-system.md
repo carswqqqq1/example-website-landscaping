@@ -62,17 +62,17 @@ This protects SEO tags, schema blocks, sitemap URLs, manifest content, footer co
 2. Start from `docs/client-config-template.json`.
 3. Generate a launch package with `node scripts/generate-client-package.js path/to/client-config.json`.
 4. Apply it with `node scripts/apply-client-config.js path/to/client-config.json` or edit `site-config.js` directly.
-5. Set Netlify env vars for email routing.
+5. Set the Cloudflare Pages variables and encrypted secrets for email and lead routing.
 6. Run `npm run check:client-package` to make sure generated client materials do not contain demo brand/contact residue.
-7. Deploy.
+7. Deploy the `dist` directory to the client's dedicated Cloudflare Pages project.
 
 ## Generated Launch Package
 
 `scripts/generate-client-package.js` creates:
 - a merged config preview
-- a branch + Netlify site naming suggestion
+- a branch + Cloudflare Pages project naming suggestion
 - a launch checklist
-- a Netlify env template
+- a Cloudflare environment template
 
 Default output directory:
 
@@ -85,7 +85,7 @@ client-builds/<client-slug>/
 Run these before launch:
 
 ```bash
-npm run build:assets
+npm run build:cloudflare
 npm run check:js
 npm run check:a11y
 npm run check:site

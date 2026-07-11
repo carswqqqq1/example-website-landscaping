@@ -25,7 +25,7 @@ See `docs/pricing-and-contracts.md` for full payment terms.
    git checkout master
    git checkout -b codex/<client-slug>-site
    ```
-2. Link or create a dedicated Netlify site for that client.
+2. Link or create a dedicated Cloudflare Pages project for that client.
 3. Set the client-specific environment variables before any live form testing.
 
 ---
@@ -38,7 +38,7 @@ If you have a completed client config JSON, run this first:
 node scripts/generate-client-package.js path/to/client-config.json
 ```
 
-This outputs a branch/site naming suggestion, merged config preview, Netlify env template, and a full launch checklist (with payment milestones) in `client-builds/<client-slug>/`.
+This outputs a branch/project naming suggestion, merged config preview, Cloudflare environment template, and a full launch checklist (with payment milestones) in `client-builds/<client-slug>/`.
 
 Then apply the config:
 
@@ -101,10 +101,11 @@ After updating config, review these files for any remaining demo brand residue:
 Confirm all of the following are set to the client's values (not demo values):
 
 - `OWNER_EMAIL`
-- `FROM_EMAIL`
 - `RESEND_FROM_EMAIL`
-- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`
+- `RESEND_API_KEY`
+- `SITE_URL`
 - `GOOGLE_SHEETS_WEBHOOK_URL`
+- `GOOGLE_SHEETS_WEBHOOK_SECRET`
 - `CRM_WEBHOOK_URL` (if applicable)
 
 No personal or test email values should remain in `.env.example` or production settings.
@@ -114,7 +115,7 @@ No personal or test email values should remain in `.env.example` or production s
 ## 7. Rebuild + QA
 
 ```bash
-npm run build:assets
+npm run build:cloudflare
 npm run check:js
 npm run check:a11y
 npm run check:speed
@@ -139,7 +140,11 @@ Then manually verify:
 
 Once the staging site is approved by the client and payment is collected:
 
-1. Deploy to Netlify production.
+1. Build and deploy to the client's Cloudflare Pages production project:
+   ```bash
+   npm run build:cloudflare
+   npx wrangler pages deploy dist --project-name=<client-project> --branch=master
+   ```
 2. Point DNS to the new site.
 3. Verify production routes and lead flow one final time.
 
@@ -150,7 +155,7 @@ Once the staging site is approved by the client and payment is collected:
 Before handoff:
 
 - GitHub branch is current and matches production
-- Netlify production matches the pushed commit
+- Cloudflare Pages production matches the pushed commit
 - No client-unverified trust claims remain
 - No old business name, phone, email, or city residue remains
 - No personal or test email values remain

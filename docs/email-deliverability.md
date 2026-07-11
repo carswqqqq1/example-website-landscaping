@@ -1,4 +1,4 @@
-# Email Deliverability Checklist (Netlify + Resend/SMTP)
+# Email Deliverability Checklist (Cloudflare Pages + Resend)
 
 Use this before sending client-facing confirmation emails at scale.
 
@@ -37,9 +37,8 @@ After validation and stable sending volume:
 - Check spam placement and adjust DNS/sender reputation before scaling.
 
 ## 7) Environment variables to verify
-- `EMAIL_PROVIDER`
-- `OWNER_EMAIL_PROVIDER`
+- `OWNER_EMAIL`
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
-- `FROM_EMAIL` (SMTP fallback)
-- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`
+- `FROM_EMAIL` only when using it as the supported sender alias
+- `SITE_URL` for the canonical production URL used in email links
