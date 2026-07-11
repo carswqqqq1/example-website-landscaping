@@ -11,7 +11,22 @@ try {
   SITE_CONFIG = {};
 }
 
-const OWNER_EMAIL = SITE_CONFIG.ownerEmail || process.env.OWNER_EMAIL || SITE_CONFIG.email || '';
+function resolveSiteUrl(...candidates) {
+  for (const candidate of candidates) {
+    const raw = String(candidate || '').trim();
+    if (!raw) continue;
+    try {
+      const parsed = new URL(raw);
+      if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+        return parsed.href.replace(/\/+$/, '');
+      }
+    } catch (error) {}
+  }
+  return '';
+}
+
+const SITE_URL = resolveSiteUrl(process.env.SITE_URL, SITE_CONFIG.siteBaseUrl);
+const OWNER_EMAIL = process.env.OWNER_EMAIL || SITE_CONFIG.ownerEmail || SITE_CONFIG.email || '';
 const FROM_EMAIL = process.env.FROM_EMAIL || '';
 const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || '';
 const EMAIL_PROVIDER = String(process.env.EMAIL_PROVIDER || 'resend').toLowerCase();
@@ -40,10 +55,11 @@ const HUBSPOT_WEBHOOK_URL = process.env.HUBSPOT_WEBHOOK_URL || '';
 const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000);
 const RATE_LIMIT_MAX_REQUESTS = Number(process.env.RATE_LIMIT_MAX_REQUESTS || 6);
 const MIN_SUBMISSION_MS = Number(process.env.MIN_SUBMISSION_MS || 2500);
+const MAX_SUBMISSION_AGE_MS = Number(process.env.MAX_SUBMISSION_AGE_MS || 7 * 24 * 60 * 60 * 1000);
+const MAX_BODY_BYTES = 64 * 1024;
+const LEAD_PROXY_SECRET = process.env.LEAD_PROXY_SECRET || '';
 
 const EMAIL_DIR = path.join(process.cwd(), 'emails');
-const DEDUPE_WINDOW_MS = 15 * 60 * 1000;
-const processedKeys = new Map();
 const rateLimitStore = new Map();
 const dashboardFormatStore = new Map();
 const DASHBOARD_FORMAT_TTL_MS = 6 * 60 * 60 * 1000;
@@ -80,6 +96,30 @@ const DIRECT_SHEET_HEADERS = [
   'utm_content'
 ];
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+const LEAD_FIELD_LIMITS = {
+  ticket_id: 128,
+  form_type: 32,
+  full_name: 120,
+  first_name: 80,
+  last_name: 80,
+  email: 254,
+  email_visible: 254,
+  phone: 32,
+  city: 80,
+  service: 120,
+  selected_service: 120,
+  message: 3000,
+  vision: 3000,
+  project_address: 240,
+  property_address: 240,
+  page_url: 1000,
+  referrer: 1000,
+  landing_path: 500,
+  owner_summary: 3000,
+  owner_contact_card: 3000,
+  owner_project_snapshot: 5000,
+  owner_tracking: 5000
+};
 const DISPOSABLE_EMAIL_DOMAINS = new Set([
   'mailinator.com',
   'tempmail.com',
@@ -93,33 +133,6 @@ const DISPOSABLE_EMAIL_DOMAINS = new Set([
 ]);
 
 let smtpTransporter;
-
-function cleanupProcessedKeys(now = Date.now()) {
-  for (const [key, timestamp] of processedKeys.entries()) {
-    if (now - timestamp > DEDUPE_WINDOW_MS) {
-      processedKeys.delete(key);
-    }
-  }
-}
-
-function buildDedupeKeys(submission, normalized) {
-  const keys = [];
-
-  if (submission && submission.id) keys.push(`submission:${submission.id}`);
-  if (submission && submission.number) keys.push(`submission-number:${submission.number}`);
-
-  keys.push(`ticket:${normalized.ticket_id}:client:${normalized.email.toLowerCase()}`);
-  return keys;
-}
-
-function shouldSkipDuplicate(keys) {
-  const now = Date.now();
-  cleanupProcessedKeys(now);
-
-  if (keys.some((key) => processedKeys.has(key))) return true;
-  keys.forEach((key) => processedKeys.set(key, now));
-  return false;
-}
 
 function readTemplate(filename) {
   const fullPath = path.join(EMAIL_DIR, filename);
@@ -262,12 +275,28 @@ function cleanupRateLimitStore(now = Date.now()) {
   }
 }
 
-function getClientIp(event, payload = {}) {
+function getHeaderValue(event, name) {
   const headers = event && event.headers ? event.headers : {};
+  const target = String(name || '').toLowerCase();
+  for (const [key, value] of Object.entries(headers)) {
+    if (String(key).toLowerCase() === target) return String(value || '');
+  }
+  return '';
+}
+
+function safeSecretEqual(provided, expected) {
+  const providedHash = crypto.createHash('sha256').update(String(provided || '')).digest();
+  const expectedHash = crypto.createHash('sha256').update(String(expected || '')).digest();
+  return crypto.timingSafeEqual(providedHash, expectedHash);
+}
+
+function getClientIp(event, trustProxyHeader = false) {
+  const headers = event && event.headers ? event.headers : {};
+  const trustedClientIp = trustProxyHeader ? getHeaderValue(event, 'x-lead-client-ip') : '';
   const forwarded = headers['x-forwarded-for'] || headers['X-Forwarded-For'] || '';
   const firstForwarded = String(forwarded).split(',').map((part) => part.trim()).filter(Boolean)[0];
   const nfIp = headers['x-nf-client-connection-ip'] || headers['X-Nf-Client-Connection-Ip'];
-  return firstForwarded || nfIp || payload.ip || payload.client_ip || 'unknown';
+  return trustedClientIp || firstForwarded || nfIp || 'unknown';
 }
 
 function isRateLimited(ip) {
@@ -291,8 +320,82 @@ function isConsentGiven(value) {
 function isSuspiciouslyFastSubmission(data = {}, payload = {}, now = Date.now()) {
   const startedRaw = data.form_started_at || payload.form_started_at || '';
   const startedAt = Number(startedRaw);
-  if (!startedRaw || !Number.isFinite(startedAt) || startedAt <= 0) return false;
-  return now - startedAt >= 0 && now - startedAt < MIN_SUBMISSION_MS;
+  if (!startedRaw || !Number.isFinite(startedAt) || startedAt <= 0) return true;
+  const elapsed = now - startedAt;
+  return elapsed < MIN_SUBMISSION_MS || elapsed > MAX_SUBMISSION_AGE_MS;
+}
+
+function isValidLeadTicketId(value) {
+  return /^[A-Za-z0-9][A-Za-z0-9_-]{7,127}$/.test(normalizeWhitespace(value));
+}
+
+function validateLeadFieldLengths(data = {}) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
+  return Object.entries(data).every(([key, value]) => {
+    if (value !== null && typeof value === 'object') return false;
+    const text = String(value === undefined || value === null ? '' : value);
+    return text.length <= (LEAD_FIELD_LIMITS[key] || 5000);
+  });
+}
+
+function validateLeadSubmission(data = {}, payload = {}) {
+  if (!validateLeadFieldLengths(data)) {
+    return { ok: false, error: 'One or more fields are invalid or too long.' };
+  }
+
+  const formType = normalizeWhitespace(data.form_type || payload.form_type || 'project_request');
+  const ticketId = normalizeWhitespace(data.ticket_id || payload.ticket_id || '');
+  const fullName = normalizeWhitespace(data.full_name || data.name || '');
+  const service = normalizeWhitespace(data.service || data.selected_service || '');
+  const email = normalizeWhitespace(data.email || data.email_visible || '');
+  const phone = normalizeWhitespace(data.phone || data.phone_number || '');
+  const city = normalizeWhitespace(data.city || data.project_city || '');
+
+  if (formType !== 'project_request' && formType !== 'resource_gate') {
+    return { ok: false, error: 'Please review the form and try again.' };
+  }
+  if (!isValidLeadTicketId(ticketId)) {
+    return { ok: false, error: 'Please refresh the page and try again.' };
+  }
+  if (fullName.length < 2 || fullName.length > LEAD_FIELD_LIMITS.full_name) {
+    return { ok: false, error: 'Please enter your name.' };
+  }
+  if (service.length < 2 || service.length > LEAD_FIELD_LIMITS.service) {
+    return { ok: false, error: 'Please choose a project type.' };
+  }
+  if (normalizeWhitespace(data.js_check || payload.js_check || '') !== '1') {
+    return { ok: false, error: 'Submission could not be verified.' };
+  }
+  if (isSuspiciouslyFastSubmission(data, payload)) {
+    return { ok: false, error: 'Please take a moment to review the form before submitting.' };
+  }
+  if (!isConsentGiven(data.contact_consent || payload.contact_consent)) {
+    return { ok: false, error: 'Please confirm we can contact you about this request.' };
+  }
+  if (email && !isValidEmailAddress(email)) {
+    return { ok: false, error: 'Please provide a valid email address.' };
+  }
+
+  if (formType === 'resource_gate') {
+    if (!isValidEmailAddress(email)) {
+      return { ok: false, error: 'Please provide a valid email address.' };
+    }
+    if (service !== 'Project Planning Checklist') {
+      return { ok: false, error: 'Please review the form and try again.' };
+    }
+    if (phone && !isValidPhone(phone)) {
+      return { ok: false, error: 'Please provide a valid phone number.' };
+    }
+  } else {
+    if (!isValidPhone(phone)) {
+      return { ok: false, error: 'Please provide a valid phone number.' };
+    }
+    if (city.length < 2 || city.length > LEAD_FIELD_LIMITS.city) {
+      return { ok: false, error: 'Please enter your city.' };
+    }
+  }
+
+  return { ok: true, formType, ticketId };
 }
 
 function hashForLog(value) {
@@ -886,7 +989,7 @@ function buildOwnerTables(data) {
 
 async function sendViaSmtp({ to, subject, html, replyTo }) {
   if (!hasSmtpCredentials()) {
-    return { skipped: true, reason: 'missing_smtp_credentials', to };
+    return { ok: false, skipped: true, reason: 'missing_smtp_credentials', to };
   }
 
   const transporter = getSmtpTransporter();
@@ -899,28 +1002,33 @@ async function sendViaSmtp({ to, subject, html, replyTo }) {
     text,
     replyTo
   });
+  const accepted = Array.isArray(info.accepted) ? info.accepted : [];
+  const rejected = Array.isArray(info.rejected) ? info.rejected : [];
 
   return {
+    ok: accepted.length > 0 && rejected.length === 0,
     provider: 'smtp',
     to,
     messageId: info.messageId,
-    accepted: info.accepted,
-    rejected: info.rejected
+    accepted,
+    rejected
   };
 }
 
-async function sendViaResend({ to, subject, html, replyTo }) {
+async function sendViaResend({ to, subject, html, replyTo, idempotencyKey }) {
   if (!RESEND_API_KEY) {
-    return { skipped: true, reason: 'missing_resend_api_key', to };
+    return { ok: false, skipped: true, reason: 'missing_resend_api_key', to };
   }
 
   const text = buildPlainTextFromHtml(html);
+  const headers = {
+    Authorization: `Bearer ${RESEND_API_KEY}`,
+    'Content-Type': 'application/json'
+  };
+  if (idempotencyKey) headers['Idempotency-Key'] = idempotencyKey;
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
+    headers,
     body: JSON.stringify({
       from: getFromEmail('resend'),
       to,
@@ -937,10 +1045,13 @@ async function sendViaResend({ to, subject, html, replyTo }) {
   }
 
   const payload = await response.json();
-  return { provider: 'resend', to, ...payload };
+  return { ok: true, provider: 'resend', to, ...payload };
 }
 
 async function sendEmail(args) {
+  if (!isValidEmailAddress(args.to)) {
+    return { ok: false, skipped: true, reason: 'invalid_recipient' };
+  }
   const provider = resolveEmailProvider(args.preferredProvider);
 
   if (provider === 'resend') {
@@ -976,10 +1087,21 @@ async function sendEmail(args) {
   }
 
   return {
+    ok: false,
     skipped: true,
     reason: 'missing_email_credentials',
     to: args.to
   };
+}
+
+function buildEmailIdempotencyKey(ticketId, audience) {
+  const ticket = normalizeWhitespace(ticketId).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 128);
+  const role = normalizeWhitespace(audience).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 24) || 'recipient';
+  return `lead_${role}_${ticket}`.slice(0, 256);
+}
+
+function deliverySucceeded(result) {
+  return Boolean(result && result.ok === true && result.skipped !== true);
 }
 
 function resolveGoogleSheetId() {
@@ -1420,11 +1542,11 @@ async function ensureGoogleSheetDashboardFormatting(
   dashboardFormatStore.set(key, now);
 }
 
-async function detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, email, phone) {
+async function inspectGoogleSheetForLead(accessToken, spreadsheetId, tabName, ticketId, email, phone) {
   const hasEmail = isValidEmailAddress(email);
   const normalizedPhone = normalizePhone(phone);
   const hasPhone = normalizedPhone.length > 0;
-  if (!hasEmail && !hasPhone) return false;
+  const normalizedTicketId = normalizeWhitespace(ticketId);
 
   const lastColumn = columnIndexToA1(DIRECT_SHEET_HEADERS.length);
   const encodedRange = encodeURIComponent(`${tabName}!A2:${lastColumn}`);
@@ -1435,11 +1557,28 @@ async function detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, e
     }
   );
 
-  if (!response.ok) return false;
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Google Sheets idempotency read error: ${response.status} ${text}`);
+  }
   const payload = await response.json();
   const rows = payload.values || [];
   const now = Date.now();
   const targetEmail = String(email || '').trim().toLowerCase();
+  const ticketColumn = DIRECT_SHEET_HEADERS.indexOf('ticket_id');
+
+  if (normalizedTicketId && ticketColumn >= 0) {
+    for (let index = rows.length - 1; index >= 0; index -= 1) {
+      if (normalizeWhitespace(rows[index][ticketColumn] || '') === normalizedTicketId) {
+        return {
+          ticketMatch: true,
+          duplicateContact: true,
+          rowNumber: index + 2,
+          status: safeText(rows[index][1], 'New')
+        };
+      }
+    }
+  }
 
   for (let index = rows.length - 1; index >= 0; index -= 1) {
     const row = rows[index];
@@ -1450,17 +1589,17 @@ async function detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, e
     const rowPhone = normalizePhone(row[3] || '');
     const rowEmail = String(row[4] || '').trim().toLowerCase();
     if ((hasEmail && rowEmail && rowEmail === targetEmail) || (hasPhone && rowPhone && rowPhone === normalizedPhone)) {
-      return true;
+      return { ticketMatch: false, duplicateContact: true, rowNumber: 0, status: 'Duplicate' };
     }
   }
 
-  return false;
+  return { ticketMatch: false, duplicateContact: false, rowNumber: 0, status: '' };
 }
 
 async function appendGoogleSheetRow(accessToken, spreadsheetId, tabName, rowValues) {
   const appendRange = encodeURIComponent(`${tabName}!A1`);
   const response = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${appendRange}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${appendRange}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
     {
       method: 'POST',
       headers: {
@@ -1492,10 +1631,10 @@ async function appendGoogleSheetRow(accessToken, spreadsheetId, tabName, rowValu
 async function sendToGoogleSheetsDirect(row) {
   const spreadsheetId = resolveGoogleSheetId();
   if (!spreadsheetId) {
-    return { skipped: true, reason: 'missing_google_sheet_id' };
+    return { ok: false, skipped: true, reason: 'missing_google_sheet_id' };
   }
   if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_OAUTH_REFRESH_TOKEN) {
-    return { skipped: true, reason: 'missing_google_oauth_credentials' };
+    return { ok: false, skipped: true, reason: 'missing_google_oauth_credentials' };
   }
 
   const accessToken = await getGoogleAccessToken();
@@ -1511,7 +1650,28 @@ async function sendToGoogleSheetsDirect(row) {
     Number(sheetMeta.columnCount || 30)
   );
 
-  const isDuplicate = await detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, row.email, row.phone);
+  const spreadsheetUrl = safeText(sheetMeta.spreadsheetUrl, buildGoogleSheetUrl(spreadsheetId));
+  const lastColumn = columnIndexToA1(DIRECT_SHEET_HEADERS.length);
+  const existingLead = await inspectGoogleSheetForLead(
+    accessToken,
+    spreadsheetId,
+    tabName,
+    row.ticket_id,
+    row.email,
+    row.phone
+  );
+  if (existingLead.ticketMatch) {
+    return {
+      ok: true,
+      idempotent_replay: true,
+      row_id: String(existingLead.rowNumber),
+      row_url: `${spreadsheetUrl}#gid=${Number(sheetMeta.sheetId || 0)}&range=${encodeURIComponent(`A${existingLead.rowNumber}:${lastColumn}${existingLead.rowNumber}`)}`,
+      status: existingLead.status,
+      spreadsheet_url: spreadsheetUrl
+    };
+  }
+
+  const isDuplicate = existingLead.duplicateContact;
   const tags = new Set(
     String(row.lead_tags || '')
       .split(',')
@@ -1558,8 +1718,6 @@ async function sendToGoogleSheetsDirect(row) {
   ];
 
   const appendResult = await appendGoogleSheetRow(accessToken, spreadsheetId, tabName, rowValues);
-  const spreadsheetUrl = safeText(sheetMeta.spreadsheetUrl, buildGoogleSheetUrl(spreadsheetId));
-  const lastColumn = columnIndexToA1(DIRECT_SHEET_HEADERS.length);
   const rowUrl = appendResult.rowNumber
     ? `${spreadsheetUrl}#gid=${Number(sheetMeta.sheetId || 0)}&range=${encodeURIComponent(`A${appendResult.rowNumber}:${lastColumn}${appendResult.rowNumber}`)}`
     : spreadsheetUrl;
@@ -1626,7 +1784,11 @@ async function sendToGoogleSheets(normalized, meta = {}) {
   };
 
   if (!GOOGLE_SHEETS_WEBHOOK_URL) {
-    return sendToGoogleSheetsDirect(row);
+    return {
+      ok: false,
+      skipped: true,
+      reason: 'google_sheets_webhook_required_for_atomic_idempotency'
+    };
   }
 
   const headers = {
@@ -1658,6 +1820,7 @@ async function sendToGoogleSheets(normalized, meta = {}) {
 
   return {
     ok: true,
+    idempotent_replay: payload.idempotent_replay === true,
     row_id: safeText(payload.row_id, ''),
     row_url: safeText(payload.row_url || payload.sheet_row_url, ''),
     status: safeText(payload.status, 'New'),
@@ -1665,47 +1828,36 @@ async function sendToGoogleSheets(normalized, meta = {}) {
   };
 }
 
-function wait(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function postJsonWithRetry(url, body, options = {}) {
+async function postJsonOnce(url, body, options = {}) {
   const endpoint = String(url || '').trim();
-  if (!endpoint) return { skipped: true, reason: 'missing_url' };
+  if (!endpoint) return { ok: false, skipped: true, reason: 'missing_url' };
 
-  const retries = Number(options.retries || 2);
   const label = options.label || 'webhook';
   const headers = {
     'Content-Type': 'application/json',
     ...(options.headers || {})
   };
 
-  let lastError = null;
-  for (let attempt = 0; attempt <= retries; attempt += 1) {
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(body)
-      });
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body)
+    });
 
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(`${label} webhook error: ${response.status} ${text}`);
-      }
-
-      return { ok: true, endpoint: label, attempt };
-    } catch (err) {
-      lastError = err;
-      if (attempt < retries) await wait(350 * (attempt + 1));
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`${label} webhook error: ${response.status} ${text}`);
     }
-  }
 
-  return {
-    ok: false,
-    endpoint: label,
-    error: String(lastError && lastError.message ? lastError.message : lastError)
-  };
+    return { ok: true, endpoint: label };
+  } catch (err) {
+    return {
+      ok: false,
+      endpoint: label,
+      error: String(err && err.message ? err.message : err)
+    };
+  }
 }
 
 async function fanOutCrmWebhooks(normalized, meta = {}) {
@@ -1783,12 +1935,16 @@ async function fanOutCrmWebhooks(normalized, meta = {}) {
     return { skipped: true, reason: 'no_crm_webhooks_configured' };
   }
 
-  const results = await Promise.all(activeTargets.map((target) => postJsonWithRetry(
+  const idempotencyKey = buildEmailIdempotencyKey(normalized.ticket_id, 'crm');
+  const results = await Promise.all(activeTargets.map((target) => postJsonOnce(
     target.url,
     payload,
     {
       label: target.label,
-      headers: target.headers
+      headers: {
+        ...(target.headers || {}),
+        'x-idempotency-key': idempotencyKey
+      }
     }
   )));
 
@@ -1803,7 +1959,7 @@ function parseRequestBody(event) {
   try {
     return JSON.parse(rawBody || '{}');
   } catch {
-    const parsed = {};
+    const parsed = Object.create(null);
     const params = new URLSearchParams(rawBody || '');
     for (const [key, value] of params.entries()) {
       parsed[key] = value;
@@ -1812,24 +1968,58 @@ function parseRequestBody(event) {
   }
 }
 
+function netlifyResponse(statusCode, body, extraHeaders = {}) {
+  return {
+    statusCode,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+      ...extraHeaders
+    },
+    body: JSON.stringify(body)
+  };
+}
+
 exports.handler = async (event) => {
   let fallbackContext = {};
   try {
+    if (String(event && event.httpMethod || '').toUpperCase() !== 'POST') {
+      return netlifyResponse(405, { ok: false, error: 'Method not allowed.' }, { Allow: 'POST' });
+    }
+
+    const encodedBody = String(event && event.body || '');
+    const bodyBytes = Buffer.byteLength(encodedBody, event && event.isBase64Encoded ? 'base64' : 'utf8');
+    if (bodyBytes > MAX_BODY_BYTES) {
+      return netlifyResponse(413, { ok: false, error: 'Request is too large.' });
+    }
+
+    const contentType = normalizeWhitespace(getHeaderValue(event, 'content-type')).split(';')[0].toLowerCase();
+    if (contentType !== 'application/json' && contentType !== 'application/x-www-form-urlencoded') {
+      return netlifyResponse(415, { ok: false, error: 'Unsupported request format.' });
+    }
+
+    const providedProxySecret = getHeaderValue(event, 'x-lead-proxy-secret');
+    if (!LEAD_PROXY_SECRET) {
+      console.error('[thinkgreen-lead-config]', JSON.stringify({ message: 'LEAD_PROXY_SECRET is required' }));
+      return netlifyResponse(503, { ok: false, error: 'Lead routing is temporarily unavailable.' });
+    }
+    const proxyAuthenticated = safeSecretEqual(providedProxySecret, LEAD_PROXY_SECRET);
+    if (!proxyAuthenticated) {
+      return netlifyResponse(401, { ok: false, error: 'Unauthorized.' });
+    }
+
     const body = parseRequestBody(event);
     const payload = body.payload || body;
     const submission = payload.submission || payload;
     const data = submission.data || payload.data || submission || payload || {};
-    const clientIp = getClientIp(event, payload);
+    const clientIp = getClientIp(event, proxyAuthenticated);
 
     if (isRateLimited(clientIp)) {
-      return {
-        statusCode: 429,
-        body: JSON.stringify({
-          ok: false,
-          rate_limited: true,
-          error: 'Too many submissions. Please wait a few minutes and try again.'
-        })
-      };
+      return netlifyResponse(429, {
+        ok: false,
+        error: 'Too many submissions. Please wait a few minutes and try again.'
+      });
     }
 
     const honeypotValue = normalizeWhitespace(
@@ -1837,52 +2027,20 @@ exports.handler = async (event) => {
     );
     if (honeypotValue) {
       logLeadFailure('honeypot_blocked', {}, { page_url: payload.page_url || payload.url || submission.url || '' });
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          ok: true,
-          spam_blocked: true,
-          lead_tags: { tags: ['spam_suspected'] }
-        })
-      };
+      return netlifyResponse(200, {
+        ok: true,
+        status: 'accepted',
+        ticket_id: normalizeWhitespace(data.ticket_id || payload.ticket_id || '')
+      });
     }
 
-    const jsCheck = normalizeWhitespace(data.js_check || payload.js_check || '');
-    if (jsCheck && jsCheck !== '1') {
-      logLeadFailure('js_check_failed', {}, { page_url: payload.page_url || payload.url || submission.url || '' });
-      return {
-        statusCode: 422,
-        body: JSON.stringify({
-          ok: false,
-          spam_blocked: true,
-          error: 'Submission could not be verified.',
-          lead_tags: { tags: ['spam_suspected'] }
-        })
-      };
-    }
-
-    if (isSuspiciouslyFastSubmission(data, payload)) {
-      logLeadFailure('submission_too_fast', {}, { page_url: payload.page_url || payload.url || submission.url || '' });
-      return {
-        statusCode: 422,
-        body: JSON.stringify({
-          ok: false,
-          spam_blocked: true,
-          error: 'Please take a moment to review the form before submitting.',
-          lead_tags: { tags: ['spam_suspected'] }
-        })
-      };
-    }
-
-    const consentRequired = String(data.consent_required || payload.consent_required || '').trim() === '1';
-    if (consentRequired && !isConsentGiven(data.contact_consent || payload.contact_consent)) {
-      return {
-        statusCode: 422,
-        body: JSON.stringify({
-          ok: false,
-          error: 'Please confirm we can contact you about this project request.'
-        })
-      };
+    const validation = validateLeadSubmission(data, payload);
+    if (!validation.ok) {
+      logLeadFailure('lead_validation_failed', {}, {
+        page_url: payload.page_url || payload.url || submission.url || '',
+        error: validation.error
+      });
+      return netlifyResponse(422, { ok: false, error: validation.error });
     }
 
     const createdAt = submission.created_at || payload.created_at || new Date().toISOString();
@@ -1900,51 +2058,15 @@ exports.handler = async (event) => {
     const incomingEmail = normalizeWhitespace(data.email || data.email_visible || '');
     const hasEmail = incomingEmail.length > 0;
     if (hasEmail && !isValidEmailAddress(incomingEmail)) {
-      return {
-        statusCode: 422,
-        body: JSON.stringify({
-          ok: false,
-          spam_blocked: true,
-          error: 'Please provide a valid email address.',
-          lead_tags: { tags: ['spam_suspected'] }
-        })
-      };
+      return netlifyResponse(422, { ok: false, error: 'Please provide a valid email address.' });
     }
     if (hasEmail && isDisposableEmail(incomingEmail)) {
-      return {
-        statusCode: 422,
-        body: JSON.stringify({
-          ok: false,
-          spam_blocked: true,
-          error: 'Disposable email addresses are not accepted.',
-          lead_tags: { tags: ['spam_suspected'] }
-        })
-      };
+      return netlifyResponse(422, { ok: false, error: 'Disposable email addresses are not accepted.' });
     }
 
     const normalizedPhone = normalizePhone(normalized.phone);
     if (normalizedPhone && !isValidPhone(normalized.phone)) {
-      return {
-        statusCode: 422,
-        body: JSON.stringify({
-          ok: false,
-          spam_blocked: true,
-          error: 'Please provide a valid phone number.',
-          lead_tags: { tags: ['spam_suspected'] }
-        })
-      };
-    }
-
-    const dedupeKeys = buildDedupeKeys(submission, normalized);
-    if (shouldSkipDuplicate(dedupeKeys)) {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          ok: true,
-          ticket_id: ticketId,
-          duplicate_skipped: true
-        })
-      };
+      return netlifyResponse(422, { ok: false, error: 'Please provide a valid phone number.' });
     }
 
     const leadScore = determineLeadScore(normalized);
@@ -1978,9 +2100,15 @@ exports.handler = async (event) => {
         ticket_id: ticketId,
         error: sheetsResult && sheetsResult.error
       });
+      return netlifyResponse(503, {
+        ok: false,
+        status: 'unavailable',
+        ticket_id: normalized.ticket_id,
+        error: 'Lead routing is temporarily unavailable. Please call us directly.'
+      });
     }
 
-    if (sheetsResult && sheetsResult.ok) {
+    if (deliverySucceeded(sheetsResult)) {
       normalized.sheet_status = safeText(sheetsResult.status, 'New');
       normalized.sheet_row_id = safeText(sheetsResult.row_id, '');
       normalized.sheet_row_url = safeText(sheetsResult.row_url, '');
@@ -2002,7 +2130,21 @@ exports.handler = async (event) => {
       normalized.sheet_row_url = safeText(normalized.sheet_url, '');
     }
 
+    if (sheetsResult && sheetsResult.idempotent_replay === true) {
+      console.log(JSON.stringify({
+        message: 'lead replay resolved from durable ticket record',
+        ticket_id: ticketId,
+        sheet_row_id: normalized.sheet_row_id
+      }));
+      return netlifyResponse(200, {
+        ok: true,
+        status: 'accepted',
+        ticket_id: normalized.ticket_id
+      });
+    }
+
     const context = {
+      SITE_URL,
       submission: {
         data: normalized
       },
@@ -2026,7 +2168,8 @@ exports.handler = async (event) => {
         subject: ownerSubject,
         html: ownerHtml,
         replyTo: isValidEmailAddress(normalized.email) ? normalized.email : undefined,
-        preferredProvider: OWNER_EMAIL_PROVIDER
+        preferredProvider: OWNER_EMAIL_PROVIDER,
+        idempotencyKey: buildEmailIdempotencyKey(ticketId, 'owner')
       })
     ];
 
@@ -2036,7 +2179,8 @@ exports.handler = async (event) => {
           to: normalized.email,
           subject: clientSubject,
           html: clientHtml,
-          replyTo: OWNER_EMAIL
+          replyTo: OWNER_EMAIL,
+          idempotencyKey: buildEmailIdempotencyKey(ticketId, 'client')
         })
       );
     }
@@ -2054,58 +2198,65 @@ exports.handler = async (event) => {
       }).catch((err) => ({ ok: false, error: err.message }))
     ]);
 
-    const emailFailures = emailResults.filter((result) => result && result.ok === false);
-    if (emailFailures.length === emailResults.length) {
-      const emailError = emailFailures.map((result) => result.error).join(' | ');
-      const hasBackupRoute = Boolean((sheetsResult && sheetsResult.ok) || (crmResult && crmResult.ok));
+    const ownerResult = emailResults[0] || { ok: false, skipped: true, reason: 'missing_owner_result' };
+    const clientEmailExpected = Boolean(normalized.email && isValidEmailAddress(normalized.email));
+    const clientResult = clientEmailExpected
+      ? (emailResults[1] || { ok: false, skipped: true, reason: 'missing_client_result' })
+      : null;
+    const ownerEmailOk = deliverySucceeded(ownerResult);
+    const clientEmailOk = !clientEmailExpected || deliverySucceeded(clientResult);
+    const sheetOk = deliverySucceeded(sheetsResult);
+    const crmOk = deliverySucceeded(crmResult);
+    const emailFailures = emailResults.filter((result) => !deliverySucceeded(result));
+
+    if (!ownerEmailOk) {
+      const emailError = emailFailures
+        .map((result) => result && (result.error || result.reason))
+        .filter(Boolean)
+        .join(' | ');
       logLeadFailure('email_delivery_failed', normalized, {
         page_url: pageUrl,
         ticket_id: ticketId,
-        sheets_ok: Boolean(sheetsResult && sheetsResult.ok),
-        crm_ok: Boolean(crmResult && crmResult.ok),
+        sheets_ok: sheetOk,
+        crm_ok: crmOk,
         error: emailError
       });
-      if (!hasBackupRoute) {
-        throw new Error(emailError);
-      }
     }
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        ok: true,
+    const ownerVisibleRouteOk = ownerEmailOk || sheetOk || crmOk;
+    if (!ownerVisibleRouteOk) {
+      logLeadFailure('lead_delivery_unavailable', normalized, {
+        page_url: pageUrl,
+        ticket_id: ticketId,
+        sheets_ok: sheetOk,
+        crm_ok: crmOk,
+        error: 'No owner-visible delivery route succeeded.'
+      });
+      return netlifyResponse(503, {
+        ok: false,
+        status: 'unavailable',
         ticket_id: normalized.ticket_id,
-        provider: emailResults.find((result) => result && result.provider)?.provider || resolveEmailProvider(),
-        provider_config: configuredProvider(),
-        owner_provider_preference: OWNER_EMAIL_PROVIDER,
-        from_email_used: getFromEmail(resolveEmailProvider()),
-        email_results: emailResults,
-        email_warning: emailFailures.length === emailResults.length,
-        sheets_result: sheetsResult,
-        crm_result: crmResult,
-        lead_tags: leadTagData,
-        sheet_row_url: normalized.sheet_row_url,
-        sheet_status: normalized.sheet_status,
-        normalized_budget_range: normalized.budget_range,
-        consultation_tier: normalized.consultation_tier,
-        lead_quality: normalized.lead_quality,
-        estimated_project_value: normalized.estimated_project_value,
-        start_timeline: normalized.start_timeline,
-        contact_method: normalized.contact_method
-      })
-    };
+        error: 'Lead routing is temporarily unavailable. Please call us directly.'
+      });
+    }
+
+    const fullyAccepted = ownerEmailOk && sheetOk && clientEmailOk;
+    return netlifyResponse(fullyAccepted ? 200 : 202, {
+      ok: true,
+      status: fullyAccepted ? 'accepted' : 'accepted_with_warning',
+      ticket_id: normalized.ticket_id
+    });
   } catch (err) {
     logLeadFailure('handler_error', fallbackContext.normalized || {}, {
       page_url: fallbackContext.page_url,
       ticket_id: fallbackContext.ticket_id,
       error: err && err.message
     });
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        ok: false,
-        error: err.message
-      })
-    };
+    return netlifyResponse(503, {
+      ok: false,
+      status: 'unavailable',
+      ticket_id: fallbackContext.ticket_id || '',
+      error: 'Lead routing is temporarily unavailable. Please call us directly.'
+    });
   }
 };

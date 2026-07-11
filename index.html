@@ -307,11 +307,11 @@
     ============================================================ -->
     <section class="hero" id="hero" aria-label="Hero">
       <div class="hero__slides" aria-hidden="true">
-        <div class="hero__slide is-active" style="background-image:image-set(url('img/projects/slide1-1280.avif') type('image/avif'), url('img/projects/slide1.webp') type('image/webp'))"></div>
-        <div class="hero__slide" style="background-image:image-set(url('img/projects/slide2-1280.avif') type('image/avif'), url('img/projects/slide2.webp') type('image/webp'))"></div>
-        <div class="hero__slide" style="background-image:image-set(url('img/projects/slide3-1280.avif') type('image/avif'), url('img/projects/slide3.webp') type('image/webp'))"></div>
-        <div class="hero__slide" style="background-image:image-set(url('img/projects/slide4-1280.avif') type('image/avif'), url('img/projects/slide4.webp') type('image/webp'))"></div>
-        <div class="hero__slide" style="background-image:image-set(url('img/projects/slide5-1280.avif') type('image/avif'), url('img/projects/slide5.webp') type('image/webp'))"></div>
+        <div class="hero__slide is-active" data-hero-image-avif="img/projects/slide1-1280.avif" data-hero-image-webp="img/projects/slide1.webp" style="background-image:image-set(url('img/projects/slide1-1280.avif') type('image/avif'), url('img/projects/slide1.webp') type('image/webp'))"></div>
+        <div class="hero__slide" data-hero-image-avif="img/projects/slide2-1280.avif" data-hero-image-webp="img/projects/slide2.webp"></div>
+        <div class="hero__slide" data-hero-image-avif="img/projects/slide3-1280.avif" data-hero-image-webp="img/projects/slide3.webp"></div>
+        <div class="hero__slide" data-hero-image-avif="img/projects/slide4-1280.avif" data-hero-image-webp="img/projects/slide4.webp"></div>
+        <div class="hero__slide" data-hero-image-avif="img/projects/slide5-1280.avif" data-hero-image-webp="img/projects/slide5.webp"></div>
       </div>
       <div class="hero__overlay"></div>
 
@@ -1203,6 +1203,7 @@
             </div>
 
             <input type="hidden" name="form-name" value="project-ticket" />
+            <input type="hidden" name="form_type" value="project_request" />
             <p class="hidden-field">
               <label>Don’t fill this out if you’re human: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
             </p>

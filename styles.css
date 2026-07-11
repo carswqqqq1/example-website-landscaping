@@ -2296,6 +2296,36 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   line-height: 1.72;
   color: var(--ink);
 }
+.reviews-page .review-card__text.is-collapsed {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+.review-card__toggle {
+  min-height: 44px;
+  margin-top: .3rem;
+  padding: .38rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--green);
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(27, 67, 50, .35);
+  text-underline-offset: .2em;
+  cursor: pointer;
+}
+.review-card__toggle:hover {
+  color: var(--green-mid);
+  text-decoration-color: currentColor;
+}
+.review-card__toggle:focus-visible,
+.reviews-page__more:focus-visible {
+  outline: 3px solid rgba(27, 67, 50, .28);
+  outline-offset: 3px;
+}
 .review-card__meta {
   margin-top: .82rem;
   display: grid;
@@ -2375,6 +2405,45 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .reviews-page__grid {
   margin-top: 1.35rem;
+}
+.reviews-page__pagination {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .65rem;
+  text-align: center;
+}
+.reviews-page__status {
+  margin: 0;
+  color: var(--ink-faint);
+  font-size: .8rem;
+  letter-spacing: .04em;
+}
+.reviews-page__more {
+  min-height: 48px;
+  min-width: min(100%, 230px);
+  padding: .72rem 1rem;
+  border: 1.5px solid var(--green);
+  border-radius: var(--r-sm, 6px);
+  background: var(--green);
+  color: #fff;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.reviews-page__more:hover:not(:disabled) {
+  background: var(--green-dark, #14532d);
+  border-color: var(--green-dark, #14532d);
+}
+.reviews-page__more:disabled {
+  border-color: #c8c0b5;
+  background: #f4efe8;
+  color: var(--ink-faint);
+  cursor: default;
 }
 .review-page-proof__clusters {
   margin-top: 1.15rem;
@@ -5163,8 +5232,8 @@ body.has-nav-overlay-open .cookie-banner {
 @media (max-width: 640px) {
   .cookie-banner {
     right: .72rem;
-    top: calc(70px + env(safe-area-inset-top));
-    bottom: auto;
+    top: auto;
+    bottom: calc(.72rem + env(safe-area-inset-bottom));
     left: .72rem;
     width: auto;
     flex-direction: row;

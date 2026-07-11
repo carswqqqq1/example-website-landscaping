@@ -20,8 +20,7 @@
   var PRIMARY_OFFER = SITE_CONFIG.primaryOffer || {};
   var REVIEW_FEED_ENDPOINT = String(GOOGLE_REVIEWS.feedEndpoint || '').trim();
   var URL_PARAMS = new URLSearchParams(window.location.search);
-  var NETLIFY_LEAD_ENDPOINT = '/.netlify/functions/send-ticket-emails';
-  var CLOUDFLARE_LEAD_ENDPOINT = '/api/lead';
+  var LEAD_SUBMISSION_ENDPOINT = String(SITE_CONFIG.leadEndpoint || '').trim() || '/api/lead';
 
   var SITE_NAME = SITE_CONFIG.businessName || 'Think Green Design | Build Landscape';
   var SITE_PHONE_RAW = String(PHONE.raw || '4809229497').replace(/\D/g, '');
@@ -54,11 +53,7 @@
   var OFFER_PROMISE = String(PRIMARY_OFFER.promise || 'No pressure, no obligation, and a local team member follows up within one business day.').trim();
 
   function getLeadSubmissionEndpoint() {
-    var host = String(window.location.hostname || '').toLowerCase();
-    if (host.indexOf('pages.dev') !== -1 || host.indexOf('example-website-landscaping') !== -1) {
-      return CLOUDFLARE_LEAD_ENDPOINT;
-    }
-    return NETLIFY_LEAD_ENDPOINT;
+    return LEAD_SUBMISSION_ENDPOINT;
   }
 
   var DEFAULT_PAGE_CONVERSION_GUIDES = {
@@ -844,6 +839,8 @@
     }) : [];
     if (!grid) return;
 
+    var existingPagination = grid.parentNode && grid.parentNode.querySelector('[data-reviews-pagination]');
+    if (existingPagination) existingPagination.remove();
     grid.innerHTML = '';
 
     if (!reviewList.length) {
@@ -861,10 +858,10 @@
       return rating === 5 && hasWrittenText;
     }).slice(0, 6);
 
-    displayList.forEach(function (review) {
+    function createReviewCard(review, index) {
       var sourceUrl = String(review.sourceUrl || review.googleMapsUri || review.reviewUri || '').trim();
       var article = document.createElement('article');
-      article.className = 'review-card reveal';
+      article.className = 'review-card reveal is-visible';
       if (review.ratingOnly) article.className += ' review-card--rating-only';
 
       var stars = document.createElement('div');
@@ -877,13 +874,16 @@
 
       var text = document.createElement('p');
       text.className = 'review-card__text';
-      text.textContent = review.text || review.originalText || 'Rating-only Google review. No written comment was shown on the public Google profile.';
+      var reviewText = review.text || review.originalText || 'Rating-only Google review. No written comment was shown on the public Google profile.';
+      text.textContent = reviewText;
+      if (isReviewsPage) text.id = 'review-text-' + index;
 
       var meta = document.createElement('p');
       meta.className = 'review-card__meta';
 
       var author = document.createElement('strong');
-      author.textContent = review.author || 'Homeowner Review';
+      var authorName = review.author || 'Homeowner Review';
+      author.textContent = authorName;
 
       var location = document.createElement('span');
       var metaParts = [
@@ -908,9 +908,84 @@
 
       article.appendChild(stars);
       article.appendChild(text);
+
+      if (isReviewsPage && !review.ratingOnly && reviewText.length > 420) {
+        text.classList.add('is-collapsed');
+
+        var textToggle = document.createElement('button');
+        textToggle.type = 'button';
+        textToggle.className = 'review-card__toggle';
+        textToggle.textContent = 'Read full review';
+        textToggle.setAttribute('aria-expanded', 'false');
+        textToggle.setAttribute('aria-controls', text.id);
+        textToggle.setAttribute('aria-label', 'Read full review by ' + authorName);
+        textToggle.addEventListener('click', function () {
+          var isExpanded = textToggle.getAttribute('aria-expanded') === 'true';
+          var nextExpanded = !isExpanded;
+          textToggle.setAttribute('aria-expanded', String(nextExpanded));
+          textToggle.setAttribute('aria-label', (nextExpanded ? 'Show less of' : 'Read full') + ' review by ' + authorName);
+          textToggle.textContent = nextExpanded ? 'Show less' : 'Read full review';
+          text.classList.toggle('is-collapsed', !nextExpanded);
+        });
+        article.appendChild(textToggle);
+      }
+
       article.appendChild(meta);
-      grid.appendChild(article);
-    });
+      return article;
+    }
+
+    if (!isReviewsPage) {
+      displayList.forEach(function (review, index) {
+        grid.appendChild(createReviewCard(review, index));
+      });
+      return;
+    }
+
+    var reviewsPerBatch = 6;
+    var renderedReviewCount = 0;
+    var pagination = document.createElement('div');
+    pagination.className = 'reviews-page__pagination';
+    pagination.setAttribute('data-reviews-pagination', '');
+
+    var paginationStatus = document.createElement('p');
+    paginationStatus.className = 'reviews-page__status';
+    paginationStatus.id = 'reviews-page-status';
+    paginationStatus.setAttribute('role', 'status');
+    paginationStatus.setAttribute('aria-live', 'polite');
+
+    var showMore = document.createElement('button');
+    showMore.type = 'button';
+    showMore.className = 'reviews-page__more';
+    showMore.setAttribute('aria-controls', grid.id);
+    showMore.setAttribute('aria-describedby', paginationStatus.id);
+
+    function updatePagination() {
+      var remaining = displayList.length - renderedReviewCount;
+      paginationStatus.textContent = 'Showing ' + renderedReviewCount + ' of ' + displayList.length + ' reviews.';
+      if (remaining > 0) {
+        var nextCount = Math.min(reviewsPerBatch, remaining);
+        showMore.disabled = false;
+        showMore.textContent = 'Show next ' + nextCount + ' reviews';
+      } else {
+        showMore.disabled = true;
+        showMore.textContent = 'All reviews shown';
+      }
+    }
+
+    function appendNextReviewBatch() {
+      var nextEnd = Math.min(renderedReviewCount + reviewsPerBatch, displayList.length);
+      for (var index = renderedReviewCount; index < nextEnd; index += 1) {
+        grid.appendChild(createReviewCard(displayList[index], index));
+      }
+      renderedReviewCount = nextEnd;
+      updatePagination();
+    }
+
+    showMore.addEventListener('click', appendNextReviewBatch);
+    pagination.appendChild(paginationStatus);
+    pagination.appendChild(showMore);
+    grid.insertAdjacentElement('afterend', pagination);
+    appendNextReviewBatch();
   }
 
   function applyGoogleReviewSnapshot() {
@@ -2433,6 +2508,7 @@
       '      <p id="consult-drawer-context-body"></p>' +
       '    </div>' +
       '    <form class="consult-drawer__form" id="consult-drawer-form" novalidate>' +
+      '      <input type="hidden" name="form_type" value="project_request" />' +
       '      <input type="hidden" name="ticket_id" id="consult-ticket-id" value="" />' +
       '      <input type="hidden" name="submitted_local" id="consult-submitted-local" value="" />' +
       '      <input type="hidden" name="first_name" id="consult-first-name" value="" />' +
@@ -2700,7 +2776,7 @@
         return;
       }
 
-      var ticketId = createTicketId();
+      var ticketId = getOrCreateTicketId(consultDrawerState.ticketId);
       var submittedDate = new Date();
       var submittedLocalTime = formatPhoenixDateTime(submittedDate);
       var nameParts = splitName(consultDrawerState.fullName.value);
@@ -2742,7 +2818,7 @@
           body: encodeFormData(payload)
         });
 
-        if (!response.ok) throw new Error('Submission failed');
+        await requireAcceptedLeadResponse(response);
 
         consultDrawerState.form.hidden = true;
         consultDrawerState.success.classList.add('is-visible');
@@ -3059,40 +3135,85 @@
   var current = 0;
   var heroTimer;
   var heroLeaveTimer;
+  var heroPreloadTimer;
+  var heroRequestId = 0;
+
+  function heroBackgroundValue(avifPath, webpPath) {
+    if (avifPath && webpPath) {
+      return 'image-set(url("' + avifPath + '") type("image/avif"), url("' + webpPath + '") type("image/webp"))';
+    }
+    return 'url("' + (avifPath || webpPath) + '")';
+  }
 
   function preloadHeroSlide(index) {
-    if (!slides.length) return;
+    if (!slides.length) return Promise.resolve(null);
     var slide = slides[(index + slides.length) % slides.length];
-    if (!slide || slide.dataset.preloaded === 'true') return;
+    if (!slide) return Promise.resolve(null);
+    if (slide.dataset.preloaded === 'true') return Promise.resolve(slide);
+    if (slide._heroLoadPromise) return slide._heroLoadPromise;
 
-    var bg = slide.style.backgroundImage || window.getComputedStyle(slide).backgroundImage || '';
-    var matches = bg.match(/url\((['"]?)(.*?)\1\)/g) || [];
-    matches.forEach(function (entry) {
-      var raw = entry.replace(/^url\((['"]?)/, '').replace(/(['"]?)\)$/, '');
-      if (!raw) return;
-      var img = new Image();
-      img.decoding = 'async';
-      img.src = raw;
+    if (slide.style.backgroundImage) {
+      slide.dataset.preloaded = 'true';
+      return Promise.resolve(slide);
+    }
+
+    var avifPath = String(slide.dataset.heroImageAvif || '').trim();
+    var webpPath = String(slide.dataset.heroImageWebp || '').trim();
+    var primaryPath = avifPath || webpPath;
+    if (!primaryPath) return Promise.resolve(null);
+
+    slide._heroLoadPromise = new Promise(function (resolve) {
+      var image = new Image();
+      var triedWebp = false;
+      image.decoding = 'async';
+      image.onload = function () {
+        slide.style.backgroundImage = heroBackgroundValue(avifPath, webpPath);
+        slide.dataset.preloaded = 'true';
+        resolve(slide);
+      };
+      image.onerror = function () {
+        if (!triedWebp && webpPath && primaryPath !== webpPath) {
+          triedWebp = true;
+          image.src = webpPath;
+          return;
+        }
+        slide.dataset.preloadFailed = 'true';
+        resolve(null);
+      };
+      image.src = primaryPath;
     });
-    slide.dataset.preloaded = 'true';
+    return slide._heroLoadPromise;
+  }
+
+  function scheduleHeroPreload(index, delay) {
+    clearTimeout(heroPreloadTimer);
+    heroPreloadTimer = setTimeout(function () {
+      preloadHeroSlide(index);
+    }, delay);
   }
 
   function goToSlide(n) {
     if (!slides.length || !dots.length) return;
-    var previous = slides[current];
-    clearTimeout(heroLeaveTimer);
-    previous.classList.add('is-leaving');
-    previous.classList.remove('is-active');
-    dots[current].classList.remove('is-active');
+    var target = (n + slides.length) % slides.length;
+    var requestId = ++heroRequestId;
+    preloadHeroSlide(target).then(function (readySlide) {
+      if (!readySlide || requestId !== heroRequestId || target === current) return;
 
-    current = (n + slides.length) % slides.length;
-    preloadHeroSlide(current + 1);
-    slides[current].classList.add('is-active');
-    dots[current].classList.add('is-active');
+      var previous = slides[current];
+      clearTimeout(heroLeaveTimer);
+      previous.classList.add('is-leaving');
+      previous.classList.remove('is-active');
+      dots[current].classList.remove('is-active');
 
-    heroLeaveTimer = setTimeout(function () {
-      previous.classList.remove('is-leaving');
-    }, 1900);
+      current = target;
+      readySlide.classList.add('is-active');
+      dots[current].classList.add('is-active');
+      scheduleHeroPreload(current + 1, 2200);
+
+      heroLeaveTimer = setTimeout(function () {
+        previous.classList.remove('is-leaving');
+      }, 1900);
+    });
   }
 
   function nextSlide() {
@@ -3112,7 +3233,9 @@
   });
 
   if (slides.length > 1) {
-    preloadHeroSlide(1);
+    preloadHeroSlide(0);
+    var initialHeroPreloadDelay = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 3500 : 2000;
+    scheduleHeroPreload(1, initialHeroPreloadDelay);
     startCarousel();
   }
 
@@ -3557,8 +3680,40 @@
 
   function createTicketId() {
     var stamp = Date.now().toString(36).toUpperCase();
-    var rand = Math.random().toString(36).slice(2, 6).toUpperCase();
+    var randomSource = '';
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+      randomSource = window.crypto.randomUUID().replace(/-/g, '').slice(0, 8);
+    } else if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+      var randomBytes = new Uint8Array(6);
+      window.crypto.getRandomValues(randomBytes);
+      randomSource = Array.prototype.map.call(randomBytes, function (value) {
+        return value.toString(16).padStart(2, '0');
+      }).join('');
+    } else {
+      randomSource = String(Date.now()) + String(window.performance && window.performance.now ? window.performance.now() : '');
+    }
+    var rand = randomSource.replace(/[^a-z0-9]/gi, '').slice(0, 8).toUpperCase();
     return 'TG-' + stamp + '-' + rand;
+  }
+
+  function getOrCreateTicketId(input) {
+    var existing = String(input && input.value || '').trim();
+    if (existing) return existing;
+    var ticketId = createTicketId();
+    if (input) input.value = ticketId;
+    return ticketId;
+  }
+
+  async function requireAcceptedLeadResponse(response) {
+    var responseBody = {};
+    try {
+      responseBody = await response.json();
+    } catch (jsonError) {}
+
+    if (!response.ok || !responseBody || responseBody.ok !== true) {
+      throw new Error(responseBody && responseBody.error ? responseBody.error : 'Submission failed');
+    }
+    return responseBody;
   }
 
   function formatPhoenixDateTime(date) {
@@ -3781,17 +3936,31 @@
       var downloadTarget = downloadTargetId ? document.getElementById(downloadTargetId) : null;
       var error = gateForm.querySelector('[data-resource-gate-error]');
       var submit = gateForm.querySelector('[type="submit"]');
+      var requiredName = gateForm.querySelector('input[name="full_name"]');
       var requiredEmail = gateForm.querySelector('input[name="email_visible"]');
+      var requiredConsent = gateForm.querySelector('input[name="contact_consent"]');
       var hiddenTicket = gateForm.querySelector('input[name="ticket_id"]');
       var hiddenSubmitted = gateForm.querySelector('input[name="submitted_local"]');
       var hiddenPageUrl = gateForm.querySelector('input[name="page_url"]');
       var hiddenReferrer = gateForm.querySelector('input[name="referrer"]');
       var hiddenLandingPath = gateForm.querySelector('input[name="landing_path"]');
       var hiddenLeadSource = gateForm.querySelector('input[name="lead_source"]');
+      var hiddenFormStartedAt = gateForm.querySelector('input[name="form_started_at"]');
+      var hiddenJsCheck = gateForm.querySelector('input[name="js_check"]');
+
+      if (hiddenFormStartedAt) hiddenFormStartedAt.value = String(Date.now());
+      if (hiddenJsCheck) hiddenJsCheck.value = '1';
 
       gateForm.addEventListener('submit', async function (event) {
         event.preventDefault();
         if (error) error.textContent = '';
+
+        var nameValue = String(requiredName && requiredName.value || '').trim();
+        if (!nameValue) {
+          if (error) error.textContent = 'Enter your name to unlock the checklist download.';
+          if (requiredName) requiredName.focus();
+          return;
+        }
 
         var emailValue = String(requiredEmail && requiredEmail.value || '').trim();
         if (!emailValue) {
@@ -3800,8 +3969,13 @@
           return;
         }
 
-        var ticketId = createTicketId();
-        if (hiddenTicket) hiddenTicket.value = ticketId;
+        if (!requiredConsent || !requiredConsent.checked) {
+          if (error) error.textContent = 'Confirm that we can send the checklist and follow up about this request.';
+          if (requiredConsent) requiredConsent.focus();
+          return;
+        }
+
+        var ticketId = getOrCreateTicketId(hiddenTicket);
         if (hiddenSubmitted) hiddenSubmitted.value = formatPhoenixDateTime(new Date());
         if (hiddenPageUrl) hiddenPageUrl.value = String(window.location.href || '');
         if (hiddenReferrer) hiddenReferrer.value = String(document.referrer || 'direct');
@@ -3826,13 +4000,7 @@
             body: encodeFormData(payload)
           });
 
-          if (!response.ok) {
-            var responseBody = {};
-            try {
-              responseBody = await response.json();
-            } catch (jsonError) {}
-            throw new Error(responseBody.error || 'Submission failed');
-          }
+          await requireAcceptedLeadResponse(response);
 
           gateForm.setAttribute('hidden', 'hidden');
           if (downloadTarget) {
@@ -4105,7 +4273,7 @@
         errorMessage.style.display = 'none';
       }
 
-      var ticketId = createTicketId();
+      var ticketId = getOrCreateTicketId(ticketInput);
       var submittedDate = new Date();
       var submittedLocalTime = formatPhoenixDateTime(submittedDate);
       var nameParts = splitName(valueOrFallback(fullNameInput, ''));
@@ -4220,7 +4388,7 @@
           body: encodeFormData(payload)
         });
 
-        if (!response.ok) throw new Error('Submission failed');
+        await requireAcceptedLeadResponse(response);
         if (typeof window.trackLeadEvent === 'function') {
           var submitPayload = {
             ticket_id: ticketId,

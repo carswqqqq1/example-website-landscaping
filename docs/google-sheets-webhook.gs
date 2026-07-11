@@ -63,6 +63,8 @@ function doGet() {
 }
 
 function doPost(e) {
+  const lock = LockService.getScriptLock();
+  let lockAcquired = false;
   try {
     const body = JSON.parse((e && e.postData && e.postData.contents) || '{}');
     const secret = String(body.secret || '').trim();
@@ -72,11 +74,31 @@ function doPost(e) {
     }
 
     const row = body.row || {};
+    lockAcquired = lock.tryLock(10000);
+    if (!lockAcquired) {
+      return json_({ ok: false, error: 'lead write is busy; retry later' });
+    }
+
     const meta = getOrCreateSheet_();
     applyOwnerDashboardLayout_(meta.sheet);
     const now = new Date();
     const normalizedEmail = normalizeEmail_(row.email || '');
     const normalizedPhone = normalizePhone_(row.phone || '');
+    const ticketId = sanitizeField_(row.ticket_id);
+    const existingRowId = findTicketRow_(meta.sheet, ticketId);
+    if (existingRowId) {
+      const statusColumn = HEADERS.indexOf('status') + 1;
+      return json_({
+        ok: true,
+        idempotent_replay: true,
+        row_id: existingRowId,
+        row_url: buildRowUrl_(meta.spreadsheet, meta.sheet, existingRowId),
+        status: String(meta.sheet.getRange(existingRowId, statusColumn).getValue() || 'New'),
+        spreadsheet_id: meta.spreadsheet.getId(),
+        spreadsheet_url: meta.spreadsheet.getUrl(),
+        sheet_name: SHEET_NAME
+      });
+    }
 
     const duplicate = findRecentDuplicate_(meta.sheet, normalizedEmail, normalizedPhone, now);
     const status = duplicate ? 'Duplicate' : (String(row.status || '').trim() || 'New');
@@ -132,6 +154,8 @@ function doPost(e) {
     });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
+  } finally {
+    if (lockAcquired && lock.hasLock()) lock.releaseLock();
   }
 }
 
@@ -185,6 +209,21 @@ function findRecentDuplicate_(sheet, email, phone, now) {
   return false;
 }
 
+function findTicketRow_(sheet, ticketId) {
+  if (!ticketId) return 0;
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return 0;
+  const ticketColumn = HEADERS.indexOf('ticket_id') + 1;
+  if (ticketColumn < 1) return 0;
+
+  const match = sheet
+    .getRange(2, ticketColumn, lastRow - 1, 1)
+    .createTextFinder(ticketId)
+    .matchEntireCell(true)
+    .findNext();
+  return match ? match.getRow() : 0;
+}
+
 function normalizeEmail_(value) {
   return String(value || '').trim().toLowerCase();
 }
@@ -219,6 +258,7 @@ function sanitizeField_(value) {
   ) {
     return '';
   }
+  if (/^[=+\-@]/.test(text)) return "'" + text;
   return text;
 }
 

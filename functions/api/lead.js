@@ -1,42 +1,72 @@
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'content-type'
+const DEFAULT_LEAD_BACKEND_ENDPOINT = 'https://thinkgreen-az.netlify.app/.netlify/functions/send-ticket-emails';
+const MAX_BODY_BYTES = 64 * 1024;
+const MIN_SUBMISSION_MS = 2500;
+const MAX_SUBMISSION_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+
+const FIELD_LIMITS = {
+  ticket_id: 128,
+  form_type: 32,
+  full_name: 120,
+  first_name: 80,
+  last_name: 80,
+  email: 254,
+  email_visible: 254,
+  phone: 32,
+  city: 80,
+  service: 120,
+  selected_service: 120,
+  message: 3000,
+  vision: 3000,
+  project_address: 240,
+  property_address: 240,
+  budget_range: 120,
+  start_timeline: 120,
+  estimated_timeline: 120,
+  lead_source: 120,
+  page_url: 1000,
+  referrer: 1000,
+  landing_path: 500,
+  utm_source: 200,
+  utm_medium: 200,
+  utm_campaign: 200,
+  utm_content: 300,
+  selected_style: 200,
+  selected_image: 1000,
+  selected_project_label: 300,
+  owner_summary: 3000,
+  owner_contact_card: 3000,
+  owner_project_snapshot: 5000,
+  owner_tracking: 5000
 };
 
-const LEAD_BACKEND_ENDPOINT = 'https://thinkgreen-az.netlify.app/.netlify/functions/send-ticket-emails';
-const OWNER_NOTIFY_EMAIL = 'carson.elevatemarketing@gmail.com';
-const FORM_SUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${OWNER_NOTIFY_EMAIL}`;
-const SITE_ORIGIN = 'https://example-website-landscaping.pages.dev';
-const MAX_ATTEMPTS = 3;
-const RETRY_DELAY_MS = 800;
-const RETRYABLE_SHEET_ERRORS = [
-  'Google Sheets webhook error',
-  'Service invoked too many times',
-  'Exceeded maximum execution time',
-  'The script completed but did not return anything'
-];
-
-function wait(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function responseHeaders(contentType = 'application/json') {
-  const headers = new Headers(corsHeaders);
-  headers.set('content-type', contentType);
-  return headers;
-}
-
-function parseJson(text) {
-  try {
-    return JSON.parse(text);
-  } catch {
-    return null;
+class LeadRequestError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
   }
 }
 
+function responseHeaders(extra = {}) {
+  return {
+    'content-type': 'application/json; charset=utf-8',
+    'cache-control': 'no-store',
+    'x-content-type-options': 'nosniff',
+    ...extra
+  };
+}
+
+function jsonResponse(body, status = 200, extraHeaders = {}) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: responseHeaders(extraHeaders)
+  });
+}
+
 function cleanValue(value) {
-  return String(value || '').replace(/\s+/g, ' ').trim();
+  return String(value === undefined || value === null ? '' : value)
+    .replace(/[\u0000-\u001f\u007f]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function valueFrom(data, keys, fallback = '') {
@@ -47,211 +77,248 @@ function valueFrom(data, keys, fallback = '') {
   return fallback;
 }
 
-function buildOwnerBackupMessage(data, upstreamPayload) {
-  const ticketId = valueFrom(data, ['ticket_id'], valueFrom(upstreamPayload, ['ticket_id'], 'Website lead'));
-  const name = valueFrom(data, ['name', 'full_name'], [data && data.first_name, data && data.last_name].map(cleanValue).filter(Boolean).join(' '));
-  const phone = valueFrom(data, ['phone', 'phone_number']);
-  const email = valueFrom(data, ['email']);
-  const service = valueFrom(data, ['service', 'selected_service'], 'Project review');
-  const city = valueFrom(data, ['city', 'project_location']);
-  const budget = valueFrom(data, ['budget_range', 'budget']);
-  const timeline = valueFrom(data, ['start_timeline', 'timeline', 'estimated_timeline']);
-  const notes = valueFrom(data, ['notes', 'message', 'project_details']);
-  const source = valueFrom(data, ['lead_source', 'source', 'utm_source'], 'website');
-  const pageUrl = valueFrom(data, ['page_url']);
-  const rowUrl = upstreamPayload && upstreamPayload.sheets_result && upstreamPayload.sheets_result.row_url
-    ? cleanValue(upstreamPayload.sheets_result.row_url)
-    : '';
-
-  return {
-    _subject: `New Think Green lead: ${name || ticketId}`,
-    _template: 'table',
-    _captcha: 'false',
-    _replyto: email,
-    ticket_id: ticketId,
-    name,
-    phone,
-    email,
-    service,
-    city,
-    budget_range: budget,
-    start_timeline: timeline,
-    lead_source: source,
-    notes,
-    lead_dashboard: rowUrl,
-    page_url: pageUrl,
-    backup_notice: 'Sent by Cloudflare Pages backup owner notification.'
-  };
+function isConsentGiven(value) {
+  return /^(1|true|yes|on|agree|agreed)$/i.test(cleanValue(value));
 }
 
-async function sendOwnerBackupNotification(data, upstreamPayload, env = {}) {
-  if (!OWNER_NOTIFY_EMAIL) {
-    return { skipped: true, reason: 'missing_owner_notify_email' };
+function isValidEmail(value) {
+  const email = cleanValue(value);
+  return email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPhone(value) {
+  const digits = cleanValue(value).replace(/\D/g, '');
+  return digits.length >= 10 && digits.length <= 15;
+}
+
+function isValidTicketId(value) {
+  return /^[A-Za-z0-9][A-Za-z0-9_-]{7,127}$/.test(cleanValue(value));
+}
+
+function validateScalarPayload(data) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    throw new LeadRequestError(422, 'Please review the form and try again.');
   }
 
-  const ownerBackupWebhookUrl = cleanValue(env.OWNER_BACKUP_WEBHOOK_URL);
-  const ownerBackupWebhookSecret = cleanValue(env.OWNER_BACKUP_WEBHOOK_SECRET);
-
-  if (ownerBackupWebhookUrl) {
-    const webhookPayload = buildOwnerBackupMessage(data || {}, upstreamPayload || {});
-    const response = await fetch(ownerBackupWebhookUrl, {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        secret: ownerBackupWebhookSecret,
-        to: OWNER_NOTIFY_EMAIL,
-        lead: webhookPayload
-      })
-    });
-
-    const body = await response.text();
-    const payload = parseJson(body);
-    if (!response.ok || (payload && payload.ok === false)) {
-      return {
-        ok: false,
-        provider: 'owner_webhook',
-        status: response.status,
-        error: payload && payload.error ? cleanValue(payload.error) : body.slice(0, 500)
-      };
+  for (const [key, value] of Object.entries(data)) {
+    if (value !== null && typeof value === 'object') {
+      throw new LeadRequestError(422, 'Please review the form and try again.');
     }
-
-    return {
-      ok: true,
-      provider: 'owner_webhook',
-      status: response.status,
-      response: payload || body.slice(0, 500)
-    };
+    const text = String(value === undefined || value === null ? '' : value);
+    const limit = FIELD_LIMITS[key] || 5000;
+    if (text.length > limit) {
+      throw new LeadRequestError(422, 'One or more fields are too long.');
+    }
   }
-
-  const response = await fetch(FORM_SUBMIT_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'content-type': 'application/json',
-      origin: SITE_ORIGIN,
-      referer: `${SITE_ORIGIN}/free-consultation`
-    },
-    body: JSON.stringify(buildOwnerBackupMessage(data || {}, upstreamPayload || {}))
-  });
-
-  const body = await response.text();
-  const payload = parseJson(body);
-  if (!response.ok) {
-    return {
-      ok: false,
-      status: response.status,
-      error: body.slice(0, 500)
-    };
-  }
-
-  if (payload && String(payload.success).toLowerCase() === 'false') {
-    const message = cleanValue(payload.message);
-    return {
-      ok: false,
-      status: response.status,
-      reason: /activation/i.test(message) ? 'activation_required' : 'formsubmit_rejected',
-      message
-    };
-  }
-
-  return {
-    ok: true,
-    status: response.status,
-    response: payload || body.slice(0, 500)
-  };
 }
 
-function hasRetryableSheetError(payload) {
-  const error = String(payload && payload.sheets_result && payload.sheets_result.error ? payload.sheets_result.error : '');
-  return RETRYABLE_SHEET_ERRORS.some((pattern) => error.includes(pattern));
+function validateLeadPayload(data, now = Date.now()) {
+  validateScalarPayload(data);
+
+  const ticketId = valueFrom(data, ['ticket_id']);
+  const fullName = valueFrom(data, ['full_name', 'name']);
+  const service = valueFrom(data, ['service', 'selected_service']);
+  const email = valueFrom(data, ['email', 'email_visible']);
+  const phone = valueFrom(data, ['phone', 'phone_number']);
+  const city = valueFrom(data, ['city', 'project_city']);
+  const formType = valueFrom(data, ['form_type'], 'project_request');
+  const formStartedAt = Number(valueFrom(data, ['form_started_at']));
+  const elapsed = now - formStartedAt;
+
+  if (formType !== 'project_request' && formType !== 'resource_gate') {
+    throw new LeadRequestError(422, 'Please review the form and try again.');
+  }
+  if (!isValidTicketId(ticketId)) {
+    throw new LeadRequestError(422, 'Please refresh the page and try again.');
+  }
+  if (fullName.length < 2 || fullName.length > FIELD_LIMITS.full_name) {
+    throw new LeadRequestError(422, 'Please enter your name.');
+  }
+  if (service.length < 2 || service.length > FIELD_LIMITS.service) {
+    throw new LeadRequestError(422, 'Please choose a project type.');
+  }
+  if (cleanValue(data.js_check) !== '1') {
+    throw new LeadRequestError(422, 'Submission could not be verified.');
+  }
+  if (!Number.isFinite(formStartedAt) || elapsed < MIN_SUBMISSION_MS || elapsed > MAX_SUBMISSION_AGE_MS) {
+    throw new LeadRequestError(422, 'Please take a moment to review the form before submitting.');
+  }
+  if (!isConsentGiven(data.contact_consent)) {
+    throw new LeadRequestError(422, 'Please confirm we can contact you about this request.');
+  }
+  if (email && !isValidEmail(email)) {
+    throw new LeadRequestError(422, 'Please enter a valid email address.');
+  }
+
+  if (formType === 'resource_gate') {
+    if (!isValidEmail(email)) {
+      throw new LeadRequestError(422, 'Please enter a valid email address.');
+    }
+    if (service !== 'Project Planning Checklist') {
+      throw new LeadRequestError(422, 'Please review the form and try again.');
+    }
+    if (phone && !isValidPhone(phone)) {
+      throw new LeadRequestError(422, 'Please enter a valid phone number.');
+    }
+  } else {
+    if (!isValidPhone(phone)) {
+      throw new LeadRequestError(422, 'Please enter a valid phone number.');
+    }
+    if (city.length < 2 || city.length > FIELD_LIMITS.city) {
+      throw new LeadRequestError(422, 'Please enter your city.');
+    }
+  }
+
+  return { ticketId, formType };
 }
 
-function shouldRetryResponse(status, text, payload) {
-  if (status === 408 || status === 429 || status >= 500) return true;
-  if (payload && payload.sheets_result && payload.sheets_result.ok === false) {
-    return hasRetryableSheetError(payload);
+async function readBoundedBody(request) {
+  const declaredLength = Number(request.headers.get('content-length') || 0);
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+    throw new LeadRequestError(413, 'Request is too large.');
   }
-  return /error code:\\s*50[024]/i.test(text);
+  if (!request.body) return '';
+
+  const reader = request.body.getReader();
+  const chunks = [];
+  let total = 0;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > MAX_BODY_BYTES) {
+      await reader.cancel();
+      throw new LeadRequestError(413, 'Request is too large.');
+    }
+    chunks.push(value);
+  }
+
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(bytes);
+}
+
+function parseRequestBody(text, contentType) {
+  if (contentType === 'application/json') {
+    try {
+      return JSON.parse(text || '{}');
+    } catch (error) {
+      throw new LeadRequestError(400, 'Request body is not valid JSON.');
+    }
+  }
+
+  if (contentType === 'application/x-www-form-urlencoded') {
+    const payload = Object.create(null);
+    const params = new URLSearchParams(text || '');
+    for (const [key, value] of params.entries()) payload[key] = value;
+    return payload;
+  }
+
+  throw new LeadRequestError(415, 'Unsupported request format.');
+}
+
+function resolveBackendEndpoint(env) {
+  const raw = cleanValue(env && env.LEAD_BACKEND_ENDPOINT) || DEFAULT_LEAD_BACKEND_ENDPOINT;
+  try {
+    const parsed = new URL(raw);
+    if (parsed.protocol !== 'https:') return '';
+    return parsed.href;
+  } catch (error) {
+    return '';
+  }
+}
+
+function sanitizeAcceptedStatus(value) {
+  const status = cleanValue(value);
+  if (status === 'accepted' || status === 'accepted_with_warning') return status;
+  return '';
 }
 
 export async function onRequest({ request, env }) {
-  if (request.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 204,
-      headers: corsHeaders
-    });
-  }
-
   if (request.method !== 'POST') {
-    return new Response('Method Not Allowed', {
-      status: 405,
-      headers: corsHeaders
-    });
+    return jsonResponse({ ok: false, error: 'Method not allowed.' }, 405, { allow: 'POST' });
   }
 
-  const headers = new Headers();
-  const contentType = request.headers.get('content-type');
-  if (contentType) headers.set('content-type', contentType);
-  headers.set('accept', 'application/json');
-  const requestBody = await request.arrayBuffer();
-  const requestText = new TextDecoder().decode(requestBody.slice(0));
-  const requestPayload = parseJson(requestText) || {};
+  const requestUrl = new URL(request.url);
+  const origin = cleanValue(request.headers.get('origin'));
+  if (!origin || origin !== requestUrl.origin) {
+    return jsonResponse({ ok: false, error: 'Request origin is not allowed.' }, 403);
+  }
 
-  let lastBody = '';
-  let lastStatus = 502;
+  const contentType = cleanValue(request.headers.get('content-type')).split(';')[0].toLowerCase();
+  if (contentType !== 'application/json' && contentType !== 'application/x-www-form-urlencoded') {
+    return jsonResponse({ ok: false, error: 'Unsupported request format.' }, 415);
+  }
 
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
-    const upstream = await fetch(LEAD_BACKEND_ENDPOINT, {
-      method: 'POST',
-      headers,
-      body: requestBody.slice(0)
-    });
-    const body = await upstream.text();
-    const payload = parseJson(body);
-    lastBody = body;
-    lastStatus = upstream.status;
+  try {
+    const text = await readBoundedBody(request);
+    const data = parseRequestBody(text, contentType);
 
-    if (!shouldRetryResponse(upstream.status, body, payload) || attempt === MAX_ATTEMPTS) {
-      if (upstream.ok && payload && payload.sheets_result && payload.sheets_result.ok === false) {
-        return new Response(JSON.stringify({
-          ok: false,
-          error: 'Lead received, but the lead dashboard did not update. Please call us directly.'
-        }), {
-          status: 502,
-          headers: responseHeaders()
-        });
-      }
-
-      if (upstream.ok) {
-        const ownerBackupResult = await sendOwnerBackupNotification(requestPayload, payload || {}, env || {});
-        if (payload && typeof payload === 'object') {
-          payload.owner_backup_result = ownerBackupResult;
-          return new Response(JSON.stringify(payload), {
-            status: upstream.status,
-            headers: responseHeaders()
-          });
-        }
-      }
-
-      return new Response(body, {
-        status: upstream.status,
-        headers: responseHeaders(upstream.headers.get('content-type') || 'application/json')
-      });
+    if (cleanValue(data['bot-field'] || data.bot_field)) {
+      return jsonResponse({ ok: true, status: 'accepted', ticket_id: valueFrom(data, ['ticket_id']) }, 200);
     }
 
-    await wait(RETRY_DELAY_MS * attempt);
-  }
+    const { ticketId } = validateLeadPayload(data);
+    const backendEndpoint = resolveBackendEndpoint(env || {});
+    const proxySecret = cleanValue(env && env.LEAD_PROXY_SECRET);
+    if (!backendEndpoint || !proxySecret) {
+      console.error(JSON.stringify({ message: 'lead gateway is not configured', has_backend: Boolean(backendEndpoint), has_secret: Boolean(proxySecret) }));
+      return jsonResponse({ ok: false, error: 'Lead routing is temporarily unavailable. Please call us directly.' }, 503);
+    }
 
-  return new Response(JSON.stringify({
-    ok: false,
-    error: 'Lead routing is temporarily unavailable. Please call us directly.',
-    status: lastStatus,
-    details: lastBody ? 'Upstream response was not usable.' : 'No upstream response.'
-  }), {
-    status: 502,
-    headers: responseHeaders()
-  });
+    const upstreamHeaders = new Headers({
+      accept: 'application/json',
+      'content-type': 'application/json',
+      'x-lead-proxy-secret': proxySecret
+    });
+    const clientIp = cleanValue(request.headers.get('cf-connecting-ip'));
+    if (clientIp && clientIp.length <= 64) upstreamHeaders.set('x-lead-client-ip', clientIp);
+
+    let upstream;
+    try {
+      upstream = await fetch(backendEndpoint, {
+        method: 'POST',
+        headers: upstreamHeaders,
+        body: JSON.stringify(data)
+      });
+    } catch (error) {
+      console.error(JSON.stringify({ message: 'lead upstream request failed', ticket_id: ticketId, error: cleanValue(error && error.message) }));
+      return jsonResponse({ ok: false, error: 'Lead routing is temporarily unavailable. Please call us directly.' }, 503);
+    }
+
+    const payload = await upstream.json().catch(() => null);
+    if (upstream.ok && payload && payload.ok === true) {
+      const status = sanitizeAcceptedStatus(payload.status);
+      if (!status) {
+        console.error(JSON.stringify({ message: 'lead upstream returned an invalid success status', ticket_id: ticketId, status: upstream.status }));
+        return jsonResponse({ ok: false, error: 'Lead routing is temporarily unavailable. Please call us directly.' }, 503);
+      }
+      return jsonResponse({
+        ok: true,
+        status,
+        ticket_id: valueFrom(payload, ['ticket_id'], ticketId)
+      }, status === 'accepted_with_warning' ? 202 : 200);
+    }
+
+    if (upstream.status === 422) {
+      return jsonResponse({ ok: false, error: 'Please review the form and try again.' }, 422);
+    }
+    if (upstream.status === 429) {
+      return jsonResponse({ ok: false, error: 'Too many submissions. Please wait a few minutes and try again.' }, 429);
+    }
+
+    console.error(JSON.stringify({ message: 'lead upstream rejected request', ticket_id: ticketId, status: upstream.status }));
+    return jsonResponse({ ok: false, error: 'Lead routing is temporarily unavailable. Please call us directly.' }, 503);
+  } catch (error) {
+    if (error instanceof LeadRequestError) {
+      return jsonResponse({ ok: false, error: error.message }, error.status);
+    }
+    console.error(JSON.stringify({ message: 'lead gateway error', error: cleanValue(error && error.message) }));
+    return jsonResponse({ ok: false, error: 'Lead routing is temporarily unavailable. Please call us directly.' }, 503);
+  }
 }

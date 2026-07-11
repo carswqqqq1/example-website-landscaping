@@ -149,4 +149,11 @@ const headers = [
 
 fs.writeFileSync(path.join(dist, '_headers'), headers);
 
+const redirects = [
+  '/favicon.ico /img/favicon-32.png 200',
+  ''
+].join('\n');
+
+fs.writeFileSync(path.join(dist, '_redirects'), redirects);
+
 console.log(`Cloudflare Pages build ready: ${path.relative(root, dist)}`);

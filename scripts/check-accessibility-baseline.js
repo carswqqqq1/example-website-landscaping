@@ -72,6 +72,17 @@ if (!/id="consult-drawer-error"[^']+role="alert"[^']+aria-live="polite"/i.test(s
   failures.push('script.js: consultation drawer error message missing alert live region');
 }
 
+const reviewsHtml = read('reviews.html');
+if (!/id="reviews-page-instructions"/i.test(reviewsHtml) || !/id="reviews-grid"[^>]+aria-describedby="reviews-page-instructions"/i.test(reviewsHtml)) {
+  failures.push('reviews.html: review grid missing visible instructions and aria-describedby relationship');
+}
+if (!/textToggle\.setAttribute\('aria-expanded', 'false'\)/i.test(script) || !/textToggle\.setAttribute\('aria-controls', text\.id\)/i.test(script)) {
+  failures.push('script.js: long-review disclosure controls missing aria-expanded or aria-controls');
+}
+if (!/paginationStatus\.setAttribute\('role', 'status'\)/i.test(script) || !/showMore\.setAttribute\('aria-controls', grid\.id\)/i.test(script)) {
+  failures.push('script.js: review pagination missing accessible status or controlled-grid relationship');
+}
+
 if (failures.length) {
   console.error('Accessibility baseline check failed:');
   failures.forEach((failure) => console.error(`- ${failure}`));

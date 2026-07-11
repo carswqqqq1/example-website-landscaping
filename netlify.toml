@@ -77,6 +77,17 @@
     X-Robots-Tag = "noindex, follow"
 
 [[redirects]]
+  from = "/favicon.ico"
+  to = "/img/favicon-32.png"
+  status = 200
+
+[[redirects]]
+  from = "/api/lead"
+  to = "/.netlify/functions/lead-gateway"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/index.html"
   to = "/"
   status = 301

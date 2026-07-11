@@ -140,7 +140,8 @@
             <h3>Unlock the PDF Checklist</h3>
             <p>Enter your name and email to unlock the PDF. Phone is optional if you want us to follow up with scheduling help.</p>
           </div>
-          <form class="resource-gate__form" data-resource-gate-form data-resource-name="project_planning_checklist" data-download-target="checklist-download-panel" novalidate>
+          <form class="resource-gate__form" method="post" action="/api/lead" data-resource-gate-form data-resource-name="project_planning_checklist" data-download-target="checklist-download-panel" novalidate>
+            <input type="hidden" name="form_type" value="resource_gate" />
             <input type="hidden" name="ticket_id" value="" />
             <input type="hidden" name="submitted_local" value="" />
             <input type="hidden" name="service" value="Project Planning Checklist" />
@@ -150,6 +151,10 @@
             <input type="hidden" name="page_url" value="" />
             <input type="hidden" name="referrer" value="" />
             <input type="hidden" name="message" value="Requested the landscape project planning checklist PDF." />
+            <p class="hidden-field"><label>Do not fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+            <input type="hidden" name="form_started_at" value="" />
+            <input type="hidden" name="js_check" value="0" />
+            <input type="hidden" name="consent_required" value="1" />
             <div class="resource-gate__grid">
               <div class="form-field">
                 <label for="checklist-full-name">Name</label>
@@ -170,6 +175,10 @@
                 <input type="text" id="checklist-city" name="city" placeholder="Scottsdale" autocomplete="address-level2" />
               </div>
             </div>
+            <label class="form-consent" for="checklist-contact-consent">
+              <input type="checkbox" id="checklist-contact-consent" name="contact_consent" value="yes" required />
+              <span>I agree to receive the checklist and project-related follow-up. No spam, no resale.</span>
+            </label>
             <div class="resource-gate__actions">
               <button class="btn btn--solid" type="submit">Unlock Checklist Download</button>
               <p class="resource-gate__note">We use this only to send the checklist and follow up about your project if requested.</p>

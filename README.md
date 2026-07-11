@@ -105,7 +105,9 @@ If you keep exact review, address, or ROC/license details, they must be intentio
 
 The homepage form submits through:
 
-- `/.netlify/functions/send-ticket-emails`
+- same-origin `/api/lead` on Cloudflare Pages, including custom domains
+
+The Pages Function validates the request, enforces the shared proxy secret, and makes one non-retried call to the Netlify lead function. The Netlify function remains the sole owner of Sheet and email delivery so one healthy submission cannot create two owner notifications. Netlify-hosted previews keep the same `/api/lead` URL through a server-side gateway that injects the secret without exposing it to the browser.
 
 Prefill sources:
 
@@ -132,14 +134,15 @@ This function:
 
 Set these in Netlify:
 
+- `LEAD_PROXY_SECRET` (the same long random value configured in Cloudflare Pages)
+- `GOOGLE_SHEETS_WEBHOOK_URL` (required for locked, exact-ticket lead capture)
+- `GOOGLE_SHEETS_WEBHOOK_SECRET`
 - `SMTP_HOST`
 - `SMTP_PORT`
 - `SMTP_USER`
 - `SMTP_PASS`
-- `SMTP_FROM_EMAIL`
+- `FROM_EMAIL`
 - `OWNER_EMAIL`
-- `GOOGLE_SHEETS_WEBHOOK_URL`
-- `GOOGLE_SHEETS_WEBHOOK_SECRET` if used
 - `GOOGLE_SHEET_URL`
 - `CRM_WEBHOOK_URL` if used
 
@@ -147,6 +150,11 @@ Optional:
 
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
+
+Set these in Cloudflare Pages:
+
+- `LEAD_BACKEND_ENDPOINT` = the full Netlify function URL
+- `LEAD_PROXY_SECRET` = the same encrypted value used by Netlify
 
 ### Google Reviews Feed
 
