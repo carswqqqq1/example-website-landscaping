@@ -24,6 +24,9 @@ next-env.d.ts
 # Local Cloudflare Wrangler state
 .wrangler/
 
+# Retired platform build cache (never publish)
+.netlify/
+
 # Local Codex/browser artifacts
 .codex-tmp/
 test-results/
