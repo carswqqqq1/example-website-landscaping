@@ -296,6 +296,7 @@ Generated on ${today} from ${absoluteInputPath}
 const envTemplate = `# Cloudflare Pages runtime variables and encrypted secrets
 SITE_URL=https://${cloudflareProject}.pages.dev
 OWNER_EMAIL=${mergedConfig.ownerEmail}
+TURNSTILE_SECRET_KEY=
 RESEND_API_KEY=
 RESEND_FROM_EMAIL=${mergedConfig.businessName} <${mergedConfig.email}>
 GOOGLE_SHEETS_WEBHOOK_URL=
@@ -317,6 +318,7 @@ const checklist = `# ${mergedConfig.shortName} Release Checklist
 - [ ] Client config JSON complete
 - [ ] Apply client config: \`node scripts/apply-client-config.js <config>\`
 - [ ] Replace logo assets if needed
+- [ ] Create a Cloudflare Turnstile widget for the production and preview hostnames, then set \`turnstile.siteKey\` in the client config
 
 ## Content & Trust
 - [ ] Confirm license, bond, and insurance proof
@@ -339,6 +341,7 @@ const checklist = `# ${mergedConfig.shortName} Release Checklist
 - [ ] \`npm run check:client-package\`
 - [ ] Run manual accessibility/device audit
 - [ ] Test contact form (client email + owner email both arrive)
+- [ ] Test Turnstile on the homepage form, consultation drawer, and every resource gate
 - [ ] Test sticky mobile CTA and consultation drawer
 - [ ] Verify portfolio lightbox and FAQ toggles
 

@@ -3,5 +3,10 @@
   "name": "example-website-landscaping",
   "pages_build_output_dir": "./dist",
   "compatibility_date": "2026-07-11",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "OWNER_EMAIL": "carson.elevatemarketing@gmail.com",
+    "SITE_URL": "https://example-website-landscaping.pages.dev",
+    "GOOGLE_SHEET_URL": "https://docs.google.com/spreadsheets/d/1J3Y_jdl5YhVZpD3Vj8fIBGlp5NajWrw5u2kYt55b_rA/edit"
+  }
 }

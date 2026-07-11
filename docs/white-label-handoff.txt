@@ -101,6 +101,7 @@ After updating config, review these files for any remaining demo brand residue:
 Confirm all of the following are set to the client's values (not demo values):
 
 - `OWNER_EMAIL`
+- `TURNSTILE_SECRET_KEY`
 - `RESEND_FROM_EMAIL`
 - `RESEND_API_KEY`
 - `SITE_URL`
@@ -109,6 +110,8 @@ Confirm all of the following are set to the client's values (not demo values):
 - `CRM_WEBHOOK_URL` (if applicable)
 
 No personal or test email values should remain in `.env.example` or production settings.
+
+Create a Turnstile widget for the client's production and preview hostnames, put its public site key in `site-config.js` under `turnstile.siteKey`, and store its secret key only in Cloudflare Pages as `TURNSTILE_SECRET_KEY`.
 
 ---
 
@@ -125,12 +128,13 @@ npm run check:site
 Then manually verify:
 
 1. Homepage form submits and both emails arrive (client confirmation + owner notification).
-2. Sticky mobile CTA works on phone.
-3. Consultation drawer opens and closes.
-4. Portfolio lightbox works.
-5. FAQ toggles work.
-6. All primary routes return `200`.
-7. Google Sheets lead log receives the test submission.
+2. Turnstile completes and resets safely on the homepage form, consultation drawer, and resource gates.
+3. Sticky mobile CTA works on phone.
+4. Consultation drawer opens and closes.
+5. Portfolio lightbox works.
+6. FAQ toggles work.
+7. All primary routes return `200`.
+8. Google Sheets lead log receives the test submission.
 
 ---
 

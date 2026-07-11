@@ -21,6 +21,11 @@
   var REVIEW_FEED_ENDPOINT = String(GOOGLE_REVIEWS.feedEndpoint || '').trim();
   var URL_PARAMS = new URLSearchParams(window.location.search);
   var LEAD_SUBMISSION_ENDPOINT = String(SITE_CONFIG.leadEndpoint || '').trim() || '/api/lead';
+  var TURNSTILE_CONFIG = SITE_CONFIG.turnstile || {};
+  var TURNSTILE_SITE_KEY = String(TURNSTILE_CONFIG.siteKey || '0x4AAAAAADz87LUSWTNh1x7k').trim();
+  var TURNSTILE_API_URL = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+  var turnstileApiPromise = null;
+  var turnstileWidgets = new WeakMap();
 
   var SITE_NAME = SITE_CONFIG.businessName || 'Think Green Design | Build Landscape';
   var SITE_PHONE_RAW = String(PHONE.raw || '4809229497').replace(/\D/g, '');
@@ -54,6 +59,159 @@
 
   function getLeadSubmissionEndpoint() {
     return LEAD_SUBMISSION_ENDPOINT;
+  }
+
+  function setTurnstileStatus(form, message, isError) {
+    var status = form && form.querySelector('[data-turnstile-status]');
+    if (!status) return;
+    status.textContent = String(message || '');
+    status.classList.toggle('is-error', Boolean(isError && message));
+  }
+
+  function loadTurnstileApi() {
+    if (window.turnstile && typeof window.turnstile.render === 'function') {
+      return Promise.resolve(window.turnstile);
+    }
+    if (turnstileApiPromise) return turnstileApiPromise;
+
+    turnstileApiPromise = new Promise(function (resolve, reject) {
+      var script = document.querySelector('script[data-turnstile-api]');
+      var timeoutId = window.setTimeout(function () {
+        reject(new Error('Turnstile API timed out'));
+      }, 15000);
+
+      function finish() {
+        window.clearTimeout(timeoutId);
+        if (window.turnstile && typeof window.turnstile.render === 'function') {
+          resolve(window.turnstile);
+        } else {
+          reject(new Error('Turnstile API unavailable'));
+        }
+      }
+
+      function fail() {
+        window.clearTimeout(timeoutId);
+        reject(new Error('Turnstile API failed to load'));
+      }
+
+      if (script) {
+        script.addEventListener('load', finish, { once: true });
+        script.addEventListener('error', fail, { once: true });
+        return;
+      }
+
+      script = document.createElement('script');
+      script.src = TURNSTILE_API_URL;
+      script.async = true;
+      script.defer = true;
+      script.dataset.turnstileApi = 'true';
+      script.addEventListener('load', finish, { once: true });
+      script.addEventListener('error', fail, { once: true });
+      document.head.appendChild(script);
+    });
+
+    return turnstileApiPromise;
+  }
+
+  function setupTurnstileForm(form, action) {
+    if (!form) return Promise.resolve(null);
+    var existingState = turnstileWidgets.get(form);
+    if (existingState) return existingState.loadPromise;
+
+    var container = form.querySelector('[data-turnstile-container]');
+    if (!container) {
+      container = document.createElement('div');
+      container.className = 'turnstile-field';
+      container.setAttribute('data-turnstile-container', '');
+      var submit = form.querySelector('[type="submit"]');
+      if (submit && submit.parentNode) submit.parentNode.insertBefore(container, submit);
+      else form.appendChild(container);
+    }
+
+    var state = {
+      action: String(action || ''),
+      loadError: false,
+      loadPromise: null,
+      ready: false,
+      token: '',
+      widgetId: null
+    };
+    turnstileWidgets.set(form, state);
+    container.setAttribute('data-turnstile-action', state.action);
+    setTurnstileStatus(form, 'Loading security check…', false);
+
+    state.loadPromise = loadTurnstileApi()
+      .then(function (api) {
+        if (!document.contains(form)) return null;
+        state.widgetId = api.render(container, {
+          sitekey: TURNSTILE_SITE_KEY,
+          action: state.action,
+          size: window.matchMedia && window.matchMedia('(max-width: 360px)').matches ? 'compact' : 'flexible',
+          theme: 'auto',
+          'response-field': false,
+          callback: function (token) {
+            state.token = String(token || '');
+            setTurnstileStatus(form, '', false);
+          },
+          'error-callback': function () {
+            state.token = '';
+            setTurnstileStatus(form, 'The security check could not be completed. Please try again.', true);
+          },
+          'expired-callback': function () {
+            state.token = '';
+            setTurnstileStatus(form, 'The security check expired. Please complete it again.', true);
+          },
+          'timeout-callback': function () {
+            state.token = '';
+            setTurnstileStatus(form, 'The security check timed out. Please complete it again.', true);
+          }
+        });
+        if (state.widgetId === null || state.widgetId === undefined) {
+          throw new Error('Turnstile widget failed to render');
+        }
+        state.ready = true;
+        setTurnstileStatus(form, '', false);
+        return state.widgetId;
+      })
+      .catch(function () {
+        state.loadError = true;
+        state.token = '';
+        setTurnstileStatus(form, 'The security check could not load. Please refresh the page or call us.', true);
+        return null;
+      });
+
+    return state.loadPromise;
+  }
+
+  function getTurnstileToken(form) {
+    var state = form && turnstileWidgets.get(form);
+    return state ? String(state.token || '') : '';
+  }
+
+  function getTurnstileRequiredMessage(form) {
+    var state = form && turnstileWidgets.get(form);
+    if (!state || (!state.ready && !state.loadError)) return 'The security check is still loading. Please wait a moment and try again.';
+    if (state.loadError) return 'The security check could not load. Please refresh the page or call us.';
+    return 'Please complete the security check before submitting.';
+  }
+
+  function safeResetTurnstile(form) {
+    var state = form && turnstileWidgets.get(form);
+    if (!state) return;
+    state.token = '';
+    setTurnstileStatus(form, '', false);
+    if (
+      state.widgetId === null ||
+      state.widgetId === undefined ||
+      !window.turnstile ||
+      typeof window.turnstile.reset !== 'function'
+    ) return;
+    try {
+      window.turnstile.reset(state.widgetId);
+    } catch (error) {
+      state.loadError = true;
+      setTurnstileStatus(form, 'The security check could not reset. Please refresh the page or call us.', true);
+    }
   }
 
   var DEFAULT_PAGE_CONVERSION_GUIDES = {
@@ -2628,6 +2786,8 @@
       '        <input type="checkbox" id="consult-contact-consent" name="contact_consent" value="yes" required />' +
       '        <span>I agree to be contacted by Think Green about this project request by phone, text, or email. No spam, no resale.</span>' +
       '      </label>' +
+      '      <div class="turnstile-field" data-turnstile-container></div>' +
+      '      <p class="turnstile-status" data-turnstile-status role="status" aria-live="polite"></p>' +
       '      <div class="consult-drawer__actions">' +
       '        <button type="submit" class="btn btn--submit" id="consult-submit">' + OFFER_SUBMIT_LABEL + '</button>' +
       '        <p class="consult-drawer__budget-note" id="consult-budget-note">Focused first phases and larger builds are reviewed by the same local team. We filter out maintenance-only, tree trimming, mow/blow, and tiny repair calls before scheduling.</p>' +
@@ -2695,6 +2855,8 @@
       success: drawer.querySelector('#consult-drawer-success'),
       submit: drawer.querySelector('#consult-submit')
     };
+
+    setupTurnstileForm(consultDrawerState.form, 'project_request');
 
     consultDrawerState.focusTrap = createFocusTrap(consultDrawerState.panel, function () {
       closeConsultDrawer();
@@ -2776,6 +2938,15 @@
         return;
       }
 
+      var turnstileToken = getTurnstileToken(consultDrawerState.form);
+      if (!turnstileToken) {
+        var turnstileMessage = getTurnstileRequiredMessage(consultDrawerState.form);
+        setTurnstileStatus(consultDrawerState.form, turnstileMessage, true);
+        consultDrawerState.error.textContent = turnstileMessage;
+        consultDrawerState.error.classList.add('is-visible');
+        return;
+      }
+
       var ticketId = getOrCreateTicketId(consultDrawerState.ticketId);
       var submittedDate = new Date();
       var submittedLocalTime = formatPhoenixDateTime(submittedDate);
@@ -2806,6 +2977,7 @@
       new FormData(consultDrawerState.form).forEach(function (value, key) {
         payload[key] = String(value);
       });
+      payload['cf-turnstile-response'] = turnstileToken;
 
       var defaultButtonText = consultDrawerState.submit.textContent;
       consultDrawerState.submit.disabled = true;
@@ -2849,8 +3021,12 @@
       } catch (error) {
         consultDrawerState.submit.disabled = false;
         consultDrawerState.submit.textContent = defaultButtonText;
-        consultDrawerState.error.textContent = 'We could not submit your request right now. Please call us at ' + SITE_PHONE_DISPLAY + '.';
+        consultDrawerState.error.textContent = error && error.message
+          ? error.message
+          : 'We could not submit your request right now. Please call us at ' + SITE_PHONE_DISPLAY + '.';
         consultDrawerState.error.classList.add('is-visible');
+      } finally {
+        safeResetTurnstile(consultDrawerState.form);
       }
     });
 
@@ -2920,6 +3096,7 @@
     }
 
     state.form.reset();
+    safeResetTurnstile(state.form);
     state.form.hidden = false;
     state.success.classList.remove('is-visible');
     state.submit.disabled = false;
@@ -3020,6 +3197,7 @@
     var focusTarget = shouldRestoreFocus ? getConsultDrawerFallbackFocus() : null;
     consultDrawerState.drawer.classList.remove('is-open');
     consultDrawerState.drawer.setAttribute('aria-hidden', 'true');
+    safeResetTurnstile(consultDrawerState.form);
     document.body.classList.remove('has-consult-drawer-open');
     document.body.style.overflow = overlay && overlay.classList.contains('is-open') ? 'hidden' : '';
     setBackgroundInertForConsult(false);
@@ -3948,6 +4126,7 @@
       var hiddenFormStartedAt = gateForm.querySelector('input[name="form_started_at"]');
       var hiddenJsCheck = gateForm.querySelector('input[name="js_check"]');
 
+      setupTurnstileForm(gateForm, 'resource_gate');
       if (hiddenFormStartedAt) hiddenFormStartedAt.value = String(Date.now());
       if (hiddenJsCheck) hiddenJsCheck.value = '1';
 
@@ -3975,6 +4154,14 @@
           return;
         }
 
+        var turnstileToken = getTurnstileToken(gateForm);
+        if (!turnstileToken) {
+          var turnstileMessage = getTurnstileRequiredMessage(gateForm);
+          setTurnstileStatus(gateForm, turnstileMessage, true);
+          if (error) error.textContent = turnstileMessage;
+          return;
+        }
+
         var ticketId = getOrCreateTicketId(hiddenTicket);
         if (hiddenSubmitted) hiddenSubmitted.value = formatPhoenixDateTime(new Date());
         if (hiddenPageUrl) hiddenPageUrl.value = String(window.location.href || '');
@@ -3986,6 +4173,7 @@
         new FormData(gateForm).forEach(function (value, key) {
           payload[key] = String(value);
         });
+        payload['cf-turnstile-response'] = turnstileToken;
 
         var defaultText = submit ? submit.textContent : '';
         if (submit) {
@@ -4025,6 +4213,8 @@
               ? gateError.message
               : 'We could not unlock the checklist right now. Please try again or call us.';
           }
+        } finally {
+          safeResetTurnstile(gateForm);
         }
       });
     });
@@ -4033,6 +4223,7 @@
   bindResourceGateForms();
 
   if (form) {
+    setupTurnstileForm(form, 'project_request');
     var params = URL_PARAMS;
     var utmSource = params.get('utm_source') || '';
     var utmMedium = params.get('utm_medium') || '';
@@ -4268,6 +4459,17 @@
         return;
       }
 
+      var turnstileToken = getTurnstileToken(form);
+      if (!turnstileToken) {
+        var turnstileMessage = getTurnstileRequiredMessage(form);
+        setTurnstileStatus(form, turnstileMessage, true);
+        if (errorMessage) {
+          errorMessage.textContent = turnstileMessage;
+          errorMessage.style.display = 'block';
+        }
+        return;
+      }
+
       if (errorMessage) {
         errorMessage.textContent = '';
         errorMessage.style.display = 'none';
@@ -4380,6 +4582,7 @@
       new FormData(form).forEach(function (value, key) {
         payload[key] = String(value);
       });
+      payload['cf-turnstile-response'] = turnstileToken;
 
       try {
         var response = await fetch(getLeadSubmissionEndpoint(), {
@@ -4422,11 +4625,15 @@
         window.location.href = '/thank-you?' + thankYouParams.toString();
       } catch (error) {
         if (errorMessage) {
-          errorMessage.textContent = 'We could not submit your request right now. Please call us at ' + SITE_PHONE_DISPLAY + '.';
+          errorMessage.textContent = error && error.message
+            ? error.message
+            : 'We could not submit your request right now. Please call us at ' + SITE_PHONE_DISPLAY + '.';
           errorMessage.style.display = 'block';
         }
         btn.disabled = false;
         btn.textContent = defaultBtnText;
+      } finally {
+        safeResetTurnstile(form);
       }
     });
 

@@ -128,6 +128,7 @@ try {
   const envFindings = assertIncludes(path.join(buildDir, 'cloudflare-env-template.txt'), [
     'SITE_URL=',
     'OWNER_EMAIL=',
+    'TURNSTILE_SECRET_KEY=',
     'RESEND_API_KEY=',
     'RESEND_FROM_EMAIL=',
     'GOOGLE_SHEETS_WEBHOOK_URL=',

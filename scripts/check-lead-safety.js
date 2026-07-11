@@ -7,6 +7,8 @@ const { pathToFileURL } = require("url");
 const root = process.cwd();
 const ownerTemplate = fs.readFileSync(path.join(root, "emails", "thinkgreen-owner-email.html"), "utf8");
 const clientTemplate = fs.readFileSync(path.join(root, "emails", "thinkgreen-client-email.html"), "utf8");
+const TURNSTILE_SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+const TURNSTILE_TEST_TOKEN = "turnstile-test-token";
 
 function read(file) {
   return fs.readFileSync(path.join(root, file), "utf8");
@@ -26,6 +28,7 @@ function validLeadPayload(overrides = {}) {
     contact_consent: "yes",
     consent_required: "1",
     js_check: "1",
+    "cf-turnstile-response": TURNSTILE_TEST_TOKEN,
     form_started_at: String(Date.now() - 5000),
     lead_source: "automated_safety_test",
     page_url: "https://qa.example.com/free-consultation",
@@ -46,6 +49,7 @@ function requestFor(payload = validLeadPayload(), options = {}) {
     headers: {
       origin: options.requestOrigin || origin,
       "content-type": contentType,
+      "cf-connecting-ip": "198.51.100.42",
       ...(options.headers || {})
     },
     body: method === "GET" || method === "OPTIONS" ? undefined : body
@@ -56,6 +60,7 @@ function productionEnv(overrides = {}) {
   return {
     SITE_URL: "https://qa.example.com///",
     OWNER_EMAIL: "owner@example.com",
+    TURNSTILE_SECRET_KEY: "turnstile-secret",
     RESEND_API_KEY: "re_test_only",
     RESEND_FROM_EMAIL: "Think Green <sender@example.com>",
     GOOGLE_SHEETS_WEBHOOK_URL: "https://script.example/lead",
@@ -69,12 +74,35 @@ async function responseBody(response) {
   return JSON.parse(await response.text());
 }
 
+function withTurnstile(nextFetch, resultOverrides = {}) {
+  return async (url, options = {}) => {
+    if (String(url) === TURNSTILE_SITEVERIFY_URL) {
+      assert.strictEqual(options.method, "POST", "Turnstile Siteverify must use POST");
+      assert(options.body instanceof FormData, "Turnstile Siteverify must use FormData");
+      const fields = Object.fromEntries(options.body.entries());
+      assert.strictEqual(fields.secret, "turnstile-secret");
+      assert.strictEqual(fields.response, TURNSTILE_TEST_TOKEN);
+      assert.strictEqual(fields.remoteip, "198.51.100.42");
+      return new Response(JSON.stringify({
+        success: true,
+        hostname: "qa.example.com",
+        action: "project_request",
+        "error-codes": [],
+        ...resultOverrides
+      }), { status: 200 });
+    }
+    return nextFetch(url, options);
+  };
+}
+
 function assertStaticRoutingAndSafety() {
   const browserScript = read("script.js");
   const entry = read("functions/api/lead.js");
   const handler = read("lib/landscape-lead-handler.mjs");
   const webhook = read("docs/google-sheets-webhook.gs");
   const checklist = read("project-planning-checklist.html");
+  const homepage = read("index.html");
+  const siteConfig = read("site-config.js");
   const envExample = read(".env.example");
   const packageJson = read("package.json");
 
@@ -83,6 +111,16 @@ function assertStaticRoutingAndSafety() {
   assert.strictEqual((browserScript.match(/getOrCreateTicketId\(/g) || []).length >= 4, true, "all form paths must preserve a ticket ID across retries");
   assert.strictEqual((browserScript.match(/await requireAcceptedLeadResponse\(response\);/g) || []).length, 3, "all form paths must require a semantic accepted response");
   assert(browserScript.includes("window.crypto.randomUUID"), "browser ticket IDs should use Web Crypto");
+  assert(browserScript.includes("api.js?render=explicit"), "Turnstile must use explicit rendering");
+  assert(browserScript.includes("var turnstileWidgets = new WeakMap()"), "Turnstile widget IDs must be stored per form");
+  assert(browserScript.includes("widgetId: null") && browserScript.includes("function safeResetTurnstile"), "Turnstile resets must use stored widget IDs safely");
+  assert.strictEqual((browserScript.match(/payload\['cf-turnstile-response'\] = turnstileToken;/g) || []).length, 3, "all three lead form paths must submit a Turnstile token");
+  assert(browserScript.includes("setupTurnstileForm(consultDrawerState.form, 'project_request')"), "consultation drawer must render a project_request Turnstile widget");
+  assert(browserScript.includes("setupTurnstileForm(gateForm, 'resource_gate')"), "resource gates must render resource_gate Turnstile widgets");
+  assert(browserScript.includes("setupTurnstileForm(form, 'project_request')"), "homepage form must render a project_request Turnstile widget");
+  assert(siteConfig.includes("siteKey: '0x4AAAAAADz87LUSWTNh1x7k'"), "site config must contain the supplied public Turnstile site key");
+  assert(/id="contact-form"[\s\S]*data-turnstile-container[\s\S]*data-turnstile-status/.test(homepage), "homepage form must include a Turnstile container and live status");
+  assert(/data-resource-gate-form[\s\S]*data-turnstile-container[\s\S]*data-turnstile-status/.test(checklist), "resource gate must include a Turnstile container and live status");
 
   assert(/name="form_started_at"/.test(checklist), "resource gate must include timing verification");
   assert(/name="js_check"/.test(checklist), "resource gate must include JavaScript verification");
@@ -96,8 +134,14 @@ function assertStaticRoutingAndSafety() {
   assert(handler.includes("sheetsResult.idempotent_replay === true"), "durable ticket replays must stop before email and CRM side effects");
   assert(handler.includes("postJsonOnce") && !handler.includes("postJsonWithRetry"), "CRM fan-out must be at most once per claimed ticket");
   assert(handler.includes("MAX_BODY_BYTES = 64 * 1024"), "handler must cap request bodies");
+  assert(handler.includes('configValue(env, "TURNSTILE_SECRET_KEY")'), "handler must load the Turnstile secret from the runtime environment");
+  assert(handler.includes("result.hostname !== expectedHostname || result.action !== expectedAction"), "handler must require exact Turnstile hostname and action matches");
+  assert(handler.includes("payload.ok !== true"), "Google Sheets must explicitly confirm storage with boolean ok=true");
+  assert(envExample.includes("TURNSTILE_SECRET_KEY="), "environment template must include the Turnstile runtime secret");
   assert(!/netlify|LEAD_BACKEND_ENDPOINT|LEAD_PROXY_SECRET|SMTP_/i.test(envExample), "environment template must describe only the Cloudflare runtime");
   assert(!/deploy:netlify|nodemailer/i.test(packageJson), "package scripts and dependencies must be Cloudflare-only");
+  const packageData = JSON.parse(packageJson);
+  assert(packageData.scripts["deploy:cloudflare"].startsWith("npm run check:all &&"), "Cloudflare deploy must be gated by check:all");
 
   assert(webhook.includes("LockService.getScriptLock()"), "Apps Script must lock ticket lookup and append");
   assert(webhook.includes("findTicketRow_"), "Apps Script must reuse an existing exact ticket row");
@@ -109,6 +153,8 @@ function assertStaticRoutingAndSafety() {
   const cloudflareBuild = read("scripts/build-cloudflare-pages.js");
   assert(cloudflareBuild.includes("'/favicon.ico /img/favicon-32.png 200'"), "Cloudflare build must route /favicon.ico to the PNG favicon");
   assert(/'\/img\/\*'[\s\S]{0,180}'  Cross-Origin-Resource-Policy: cross-origin'/i.test(cloudflareBuild), "Cloudflare images must remain embeddable in email clients");
+  assert(/script-src[^\n]+https:\/\/challenges\.cloudflare\.com/.test(cloudflareBuild), "Cloudflare CSP must allow the Turnstile script");
+  assert(/frame-src https:\/\/challenges\.cloudflare\.com/.test(cloudflareBuild), "Cloudflare CSP must allow the Turnstile frame");
 }
 
 async function assertAcceptedAndEmailRendering(handleLeadRequest) {
@@ -118,7 +164,7 @@ async function assertAcceptedAndEmailRendering(handleLeadRequest) {
     env: productionEnv(),
     ownerTemplate,
     clientTemplate,
-    fetchImpl: async (url, options = {}) => {
+    fetchImpl: withTurnstile(async (url, options = {}) => {
       if (String(url) === "https://script.example/lead") {
         calls.push({ type: "sheet", options });
         return new Response(JSON.stringify({
@@ -136,7 +182,7 @@ async function assertAcceptedAndEmailRendering(handleLeadRequest) {
         idempotencyKey: new Headers(options.headers).get("idempotency-key")
       });
       return new Response(JSON.stringify({ id: `email-${calls.length}` }), { status: 200 });
-    }
+    })
   });
   assert.strictEqual(response.status, 200);
   assert.deepStrictEqual(await responseBody(response), { ok: true, status: "accepted", ticket_id: "TG-SAFETY-TEST-001" });
@@ -163,46 +209,47 @@ async function assertRequestFailures(handleLeadRequest) {
     fetchCalls += 1;
     throw new Error("no external request expected");
   };
+  const turnstileFetch = withTurnstile(noFetch);
   let response = await handleLeadRequest({
     request: requestFor(validLeadPayload(), { requestOrigin: "https://attacker.example" }),
-    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: noFetch
+    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: turnstileFetch
   });
   assert.strictEqual(response.status, 403);
 
   response = await handleLeadRequest({
     request: requestFor(validLeadPayload({ contact_consent: "" })),
-    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: noFetch
+    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: turnstileFetch
   });
   assert.strictEqual(response.status, 422);
 
   response = await handleLeadRequest({
     request: requestFor(validLeadPayload({ message: "x".repeat(70 * 1024) })),
-    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: noFetch
+    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: turnstileFetch
   });
   assert.strictEqual(response.status, 413);
 
   response = await handleLeadRequest({
     request: requestFor({}, { method: "GET" }),
-    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: noFetch
+    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: turnstileFetch
   });
   assert.strictEqual(response.status, 405);
   assert.strictEqual(response.headers.get("allow"), "POST");
 
   response = await handleLeadRequest({
     request: requestFor(validLeadPayload(), { contentType: "text/plain" }),
-    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: noFetch
+    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: turnstileFetch
   });
   assert.strictEqual(response.status, 415);
 
   response = await handleLeadRequest({
     request: requestFor(validLeadPayload({ email: "person@mailinator.com", email_visible: "person@mailinator.com" })),
-    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: noFetch
+    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: turnstileFetch
   });
   assert.strictEqual(response.status, 422);
 
   response = await handleLeadRequest({
     request: requestFor(validLeadPayload({ "bot-field": "spam" })),
-    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: noFetch
+    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: turnstileFetch
   });
   assert.strictEqual(response.status, 200);
   assert.deepStrictEqual(await responseBody(response), { ok: true, status: "accepted", ticket_id: "TG-SAFETY-TEST-001" });
@@ -210,10 +257,74 @@ async function assertRequestFailures(handleLeadRequest) {
   response = await handleLeadRequest({
     request: requestFor(),
     env: productionEnv({ GOOGLE_SHEETS_WEBHOOK_URL: "", GOOGLE_SHEETS_WEBHOOK_SECRET: "" }),
-    ownerTemplate, clientTemplate, fetchImpl: noFetch
+    ownerTemplate, clientTemplate, fetchImpl: turnstileFetch
   });
   assert.strictEqual(response.status, 503, "missing durable Sheet route must fail closed");
   assert.strictEqual(fetchCalls, 0, "rejected requests must not cause side effects");
+}
+
+async function assertTurnstileFailures(handleLeadRequest) {
+  let externalCalls = 0;
+  const noExternalFetch = async () => {
+    externalCalls += 1;
+    throw new Error("no external request expected");
+  };
+
+  let response = await handleLeadRequest({
+    request: requestFor(validLeadPayload({ "cf-turnstile-response": "" })),
+    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: noExternalFetch
+  });
+  assert.strictEqual(response.status, 422, "missing Turnstile token must be rejected");
+
+  response = await handleLeadRequest({
+    request: requestFor(validLeadPayload({ "cf-turnstile-response": "x".repeat(2049) })),
+    env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl: noExternalFetch
+  });
+  assert.strictEqual(response.status, 422, "oversized Turnstile token must be rejected");
+
+  response = await handleLeadRequest({
+    request: requestFor(),
+    env: productionEnv({ TURNSTILE_SECRET_KEY: "" }),
+    ownerTemplate, clientTemplate, fetchImpl: noExternalFetch
+  });
+  assert.strictEqual(response.status, 503, "missing Turnstile secret must fail closed");
+  assert.strictEqual(externalCalls, 0, "missing Turnstile inputs must fail before external requests");
+
+  async function runVerificationFailure(result, expectedStatus) {
+    let siteverifyCalls = 0;
+    let downstreamCalls = 0;
+    const fetchImpl = async (url) => {
+      if (String(url) === TURNSTILE_SITEVERIFY_URL) {
+        siteverifyCalls += 1;
+        return new Response(JSON.stringify(result), { status: 200 });
+      }
+      downstreamCalls += 1;
+      throw new Error("lead side effects must not run after Turnstile rejection");
+    };
+    const failed = await handleLeadRequest({
+      request: requestFor(), env: productionEnv(), ownerTemplate, clientTemplate, fetchImpl
+    });
+    assert.strictEqual(failed.status, expectedStatus);
+    assert.strictEqual(siteverifyCalls, 1);
+    assert.strictEqual(downstreamCalls, 0, "Turnstile rejection must happen before Sheets, email, or CRM calls");
+  }
+
+  await runVerificationFailure({ success: true, hostname: "attacker.example", action: "project_request" }, 403);
+  await runVerificationFailure({ success: true, hostname: "qa.example.com", action: "resource_gate" }, 403);
+  await runVerificationFailure({ success: false, "error-codes": ["invalid-input-response"] }, 403);
+  await runVerificationFailure({ success: false, "error-codes": ["invalid-input-secret"] }, 503);
+
+  let downstreamCalls = 0;
+  response = await handleLeadRequest({
+    request: requestFor(), env: productionEnv(), ownerTemplate, clientTemplate,
+    fetchImpl: async (url) => {
+      if (String(url) === TURNSTILE_SITEVERIFY_URL) return new Response("not-json", { status: 200 });
+      downstreamCalls += 1;
+      throw new Error("lead side effects must not run after invalid Turnstile JSON");
+    }
+  });
+  assert.strictEqual(response.status, 503);
+  assert.strictEqual(downstreamCalls, 0);
 }
 
 async function assertPartialAndFailureSemantics(handleLeadRequest) {
@@ -221,13 +332,13 @@ async function assertPartialAndFailureSemantics(handleLeadRequest) {
   let response = await handleLeadRequest({
     request: requestFor(),
     env: productionEnv(), ownerTemplate, clientTemplate,
-    fetchImpl: async (url) => {
+    fetchImpl: withTurnstile(async (url) => {
       if (String(url) === "https://script.example/lead") {
         return new Response(JSON.stringify({ ok: true, row_id: "20", row_url: "https://docs.example/20", status: "New" }), { status: 200 });
       }
       resendCalls += 1;
       return new Response(JSON.stringify({ error: "simulated email failure" }), { status: 503 });
-    }
+    })
   });
   assert.strictEqual(response.status, 202, "durable capture with an email failure should be accepted with warning");
   assert.deepStrictEqual(await responseBody(response), { ok: true, status: "accepted_with_warning", ticket_id: "TG-SAFETY-TEST-001" });
@@ -238,18 +349,36 @@ async function assertPartialAndFailureSemantics(handleLeadRequest) {
   response = await handleLeadRequest({
     request: requestFor(),
     env: productionEnv(), ownerTemplate, clientTemplate,
-    fetchImpl: async (url) => {
+    fetchImpl: withTurnstile(async (url) => {
       if (String(url) === "https://script.example/lead") {
         sheetCalls += 1;
         return new Response(JSON.stringify({ ok: false, error: "simulated" }), { status: 200 });
       }
       resendCalls += 1;
       throw new Error("email must not run before durable capture");
-    }
+    })
   });
   assert.strictEqual(response.status, 503);
   assert.strictEqual(sheetCalls, 1);
   assert.strictEqual(resendCalls, 0, "email side effects must not run without a durable ticket claim");
+
+  sheetCalls = 0;
+  resendCalls = 0;
+  response = await handleLeadRequest({
+    request: requestFor(),
+    env: productionEnv(), ownerTemplate, clientTemplate,
+    fetchImpl: withTurnstile(async (url) => {
+      if (String(url) === "https://script.example/lead") {
+        sheetCalls += 1;
+        return new Response(JSON.stringify({ row_id: "missing-ok" }), { status: 200 });
+      }
+      resendCalls += 1;
+      throw new Error("email must not run when the Sheet webhook omits ok=true");
+    })
+  });
+  assert.strictEqual(response.status, 503, "Sheet webhook must explicitly return boolean ok=true");
+  assert.strictEqual(sheetCalls, 1);
+  assert.strictEqual(resendCalls, 0, "missing Sheet ok=true must block later side effects");
 }
 
 async function assertDurableDuplicateBehavior(handleLeadRequest) {
@@ -257,7 +386,7 @@ async function assertDurableDuplicateBehavior(handleLeadRequest) {
   let emailCalls = 0;
   let crmCalls = 0;
   const env = productionEnv({ CRM_WEBHOOK_URL: "https://crm.example/lead", CRM_WEBHOOK_SECRET: "crm-secret" });
-  const fetchImpl = async (url, options = {}) => {
+  const fetchImpl = withTurnstile(async (url, options = {}) => {
     if (String(url) === "https://script.example/lead") {
       sheetCalls += 1;
       return new Response(JSON.stringify({
@@ -280,7 +409,7 @@ async function assertDurableDuplicateBehavior(handleLeadRequest) {
       return new Response(JSON.stringify({ ok: true }), { status: 200 });
     }
     throw new Error(`unexpected request: ${url}`);
-  };
+  });
   const first = await handleLeadRequest({ request: requestFor(), env, ownerTemplate, clientTemplate, fetchImpl });
   const second = await handleLeadRequest({ request: requestFor(), env, ownerTemplate, clientTemplate, fetchImpl });
   assert.strictEqual(first.status, 200);
@@ -303,13 +432,13 @@ async function assertResourceGate(handleLeadRequest) {
   });
   const response = await handleLeadRequest({
     request: requestFor(payload), env: productionEnv(), ownerTemplate, clientTemplate,
-    fetchImpl: async (url) => {
+    fetchImpl: withTurnstile(async (url) => {
       if (String(url) === "https://script.example/lead") {
         return new Response(JSON.stringify({ ok: true, row_id: "31", status: "New" }), { status: 200 });
       }
       emailCalls += 1;
       return new Response(JSON.stringify({ id: `resource-email-${emailCalls}` }), { status: 200 });
-    }
+    }, { action: "resource_gate" })
   });
   assert.strictEqual(response.status, 200);
   assert.strictEqual(emailCalls, 2, "resource gate should send owner and client emails");
@@ -326,6 +455,7 @@ async function main() {
     assertStaticRoutingAndSafety();
     await assertAcceptedAndEmailRendering(handleLeadRequest);
     await assertRequestFailures(handleLeadRequest);
+    await assertTurnstileFailures(handleLeadRequest);
     await assertPartialAndFailureSemantics(handleLeadRequest);
     await assertDurableDuplicateBehavior(handleLeadRequest);
     await assertResourceGate(handleLeadRequest);

@@ -107,7 +107,7 @@ The homepage form submits through:
 
 - same-origin `/api/lead` on Cloudflare Pages, including custom domains
 
-The Pages Function validates the request, writes the lead to Google Sheets with exact-ticket idempotency, sends the owner notification and client confirmation through Resend, and optionally fans the accepted lead out to configured CRM webhooks. The browser always uses the same `/api/lead` path on preview and custom domains.
+The Pages Function validates the request, verifies Cloudflare Turnstile against the exact request hostname and form action, writes the lead to Google Sheets with exact-ticket idempotency, sends the owner notification and client confirmation through Resend, and optionally fans the accepted lead out to configured CRM webhooks. The browser always uses the same `/api/lead` path on preview and custom domains.
 
 Prefill sources:
 
@@ -135,6 +135,7 @@ This function:
 Set these in the Cloudflare Pages project's **Settings → Variables and Secrets** before deploying the Function:
 
 - `OWNER_EMAIL`
+- `TURNSTILE_SECRET_KEY` (encrypted secret paired with `turnstile.siteKey` in `site-config.js`)
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL` (must use a sender/domain verified by Resend)
 - `GOOGLE_SHEETS_WEBHOOK_URL` (required for locked, exact-ticket lead capture)
@@ -170,6 +171,7 @@ Before shipping a cloned site:
 2. Confirm hero text is readable on desktop and mobile.
 3. Submit the homepage form through the live website path.
 4. Verify:
+   - Turnstile completes before the request is accepted
    - row appears in Google Sheets
    - owner email sends
    - client email sends
@@ -179,7 +181,7 @@ Before shipping a cloned site:
 
 ## Deploy
 
-Build and deploy the Pages project from the template folder:
+Build and deploy the Pages project from the template folder. The deploy command runs `check:all` before it builds or publishes:
 
 ```bash
 npm run deploy:cloudflare

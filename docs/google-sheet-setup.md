@@ -42,9 +42,12 @@ Expected behavior:
    - `status = Duplicate`
    - `lead_tags` includes `duplicate`
 3. Webhook response includes:
+   - `ok = true` as a boolean (missing, string, or false values are rejected)
    - `row_id`
    - `row_url`
    - `status`
+
+The Pages Function treats storage as successful only when the webhook returns an HTTP success response with JSON containing the boolean `ok: true`. It does not send email or CRM side effects when that confirmation is missing.
 
 Lead attribution fields to confirm in the owner sheet:
 

@@ -577,6 +577,9 @@
       ctaLabel: 'Ask About Financing',
       ctaHref: '/free-consultation?source=financing_inquiry'
     },
+    turnstile: {
+      siteKey: '0x4AAAAAADz87LUSWTNh1x7k'
+    },
     analytics: {
       ga4MeasurementId: 'G-B85D2Y2858',
       heatmap: {

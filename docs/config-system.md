@@ -21,6 +21,7 @@ Update these fields for each new client:
 - `trustSignals`
 - `trustAssets`
 - `financing`
+- `turnstile.siteKey` (public key for the client's allowed production and preview hostnames)
 - `locationPages`
 - `pageConversionGuides`
 - `contactFormServices`
@@ -62,7 +63,7 @@ This protects SEO tags, schema blocks, sitemap URLs, manifest content, footer co
 2. Start from `docs/client-config-template.json`.
 3. Generate a launch package with `node scripts/generate-client-package.js path/to/client-config.json`.
 4. Apply it with `node scripts/apply-client-config.js path/to/client-config.json` or edit `site-config.js` directly.
-5. Set the Cloudflare Pages variables and encrypted secrets for email and lead routing.
+5. Set the Cloudflare Pages variables and encrypted secrets for Turnstile, email, and lead routing.
 6. Run `npm run check:client-package` to make sure generated client materials do not contain demo brand/contact residue.
 7. Deploy the `dist` directory to the client's dedicated Cloudflare Pages project.
 
