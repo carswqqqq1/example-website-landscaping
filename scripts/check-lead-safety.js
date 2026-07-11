@@ -172,10 +172,12 @@ function assertStaticRoutingAndSafety() {
   const netlifyConfig = read('netlify.toml');
   assert(/from\s*=\s*"\/favicon\.ico"[\s\S]{0,160}to\s*=\s*"\/img\/favicon-32\.png"[\s\S]{0,80}status\s*=\s*200/i.test(netlifyConfig), 'Netlify must route /favicon.ico to the PNG favicon');
   assert(/from\s*=\s*"\/api\/lead"[\s\S]{0,160}to\s*=\s*"\/\.netlify\/functions\/lead-gateway"[\s\S]{0,80}status\s*=\s*200/i.test(netlifyConfig), 'Netlify must preserve the same-origin /api/lead contract through its server-side gateway');
+  assert(/for\s*=\s*"\/img\/\*"[\s\S]{0,180}Cross-Origin-Resource-Policy\s*=\s*"cross-origin"/i.test(netlifyConfig), 'Netlify image assets must remain embeddable in email clients');
   const netlifyGateway = read('netlify/functions/lead-gateway.js');
   assert(netlifyGateway.includes("'x-lead-proxy-secret': LEAD_PROXY_SECRET"), 'Netlify gateway must inject the server-side shared secret');
   const cloudflareBuild = read('scripts/build-cloudflare-pages.js');
   assert(cloudflareBuild.includes("'/favicon.ico /img/favicon-32.png 200'"), 'Cloudflare build must route /favicon.ico to the PNG favicon');
+  assert(/'\/img\/\*'[\s\S]{0,180}'  Cross-Origin-Resource-Policy: cross-origin'/i.test(cloudflareBuild), 'Cloudflare image assets must override the global same-origin resource policy for email rendering');
 }
 
 async function assertGatewayBehavior() {

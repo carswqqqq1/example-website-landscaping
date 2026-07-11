@@ -144,6 +144,7 @@ const headers = [
   '',
   '/img/*',
   '  Cache-Control: public, max-age=604800',
+  '  Cross-Origin-Resource-Policy: cross-origin',
   ''
 ].join('\n');
 
