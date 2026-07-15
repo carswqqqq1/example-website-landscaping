@@ -1076,7 +1076,7 @@
       var rating = Number(review.rating || 0);
       var hasWrittenText = String(review.text || review.originalText || '').trim();
       return rating === 5 && hasWrittenText;
-    }).slice(0, 3);
+    }).slice(0, 6);
 
     function createReviewCard(review, index) {
       var sourceUrl = String(review.sourceUrl || review.googleMapsUri || review.reviewUri || '').trim();
@@ -1095,13 +1095,7 @@
       var text = document.createElement('p');
       text.className = 'review-card__text';
       var reviewText = review.text || review.originalText || 'Rating-only Google review. No written comment was shown on the public Google profile.';
-      if (!isReviewsPage && reviewText.length > 420) {
-        var reviewSummary = reviewText.slice(0, 417);
-        var finalSpace = reviewSummary.lastIndexOf(' ');
-        text.textContent = reviewSummary.slice(0, finalSpace > 320 ? finalSpace : 417).trim() + '...';
-      } else {
-        text.textContent = reviewText;
-      }
+      text.textContent = reviewText;
       if (isReviewsPage) text.id = 'review-text-' + index;
 
       var meta = document.createElement('p');
@@ -4815,52 +4809,5 @@
     if (e.clientY > 0) return;
     if (Date.now() - pageEnteredAt < minTimeMs) return;
     show();
-  });
-})();
-
-/* ============================================================
-   Progressive media and responsive comparison enhancements
-   ============================================================ */
-(function () {
-  'use strict';
-
-  var motionPreference = window.matchMedia
-    ? window.matchMedia('(prefers-reduced-motion: reduce)')
-    : null;
-  var ambientVideo = document.querySelector('[data-ambient-video]');
-
-  function syncAmbientVideo() {
-    if (!ambientVideo || !motionPreference) return;
-    if (motionPreference.matches) {
-      ambientVideo.pause();
-      ambientVideo.removeAttribute('autoplay');
-      return;
-    }
-
-    ambientVideo.setAttribute('autoplay', '');
-    var playAttempt = ambientVideo.play();
-    if (playAttempt && typeof playAttempt.catch === 'function') {
-      playAttempt.catch(function () {
-        /* The poster remains visible when browser autoplay policy blocks video. */
-      });
-    }
-  }
-
-  syncAmbientVideo();
-  if (motionPreference && typeof motionPreference.addEventListener === 'function') {
-    motionPreference.addEventListener('change', syncAmbientVideo);
-  }
-
-  document.querySelectorAll('.comparison-table').forEach(function (table) {
-    var headings = Array.prototype.map.call(
-      table.querySelectorAll('thead th'),
-      function (heading) { return String(heading.textContent || '').trim(); }
-    );
-
-    table.querySelectorAll('tbody tr').forEach(function (row) {
-      row.querySelectorAll('td').forEach(function (cell, index) {
-        if (headings[index]) cell.setAttribute('data-label', headings[index]);
-      });
-    });
   });
 })();
