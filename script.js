@@ -3360,7 +3360,6 @@
   /* ---- HERO CAROUSEL ---- */
   var slides = document.querySelectorAll('.hero__slide');
   var dots = document.querySelectorAll('.hero__dot');
-  var heroToggle = document.querySelector('[data-hero-toggle]');
   var heroSection = document.querySelector('.hero');
   var current = 0;
   var heroTimer;
@@ -3370,7 +3369,7 @@
   var heroMotionPreference = window.matchMedia
     ? window.matchMedia('(prefers-reduced-motion: reduce)')
     : null;
-  var heroPausedByUser = Boolean(heroMotionPreference && heroMotionPreference.matches);
+  var heroPausedForMotion = Boolean(heroMotionPreference && heroMotionPreference.matches);
 
   if (heroSection) {
     window.requestAnimationFrame(function () {
@@ -3383,11 +3382,6 @@
   function stopCarousel() {
     clearInterval(heroTimer);
     heroTimer = null;
-  }
-
-  function updateHeroToggle() {
-    if (!heroToggle) return;
-    heroToggle.textContent = heroPausedByUser ? 'Play' : 'Pause';
   }
 
   function heroBackgroundValue(avifPath, webpPath) {
@@ -3476,39 +3470,28 @@
 
   function startCarousel() {
     stopCarousel();
-    if (heroPausedByUser || document.hidden) return;
+    if (heroPausedForMotion || document.hidden) return;
     heroTimer = setInterval(nextSlide, 5500);
   }
 
   dots.forEach(function (dot) {
     dot.addEventListener('click', function () {
       goToSlide(parseInt(this.dataset.slide, 10));
-      if (!heroPausedByUser) startCarousel();
+      if (!heroPausedForMotion) startCarousel();
     });
   });
 
-  if (heroToggle) {
-    updateHeroToggle();
-    heroToggle.addEventListener('click', function () {
-      heroPausedByUser = !heroPausedByUser;
-      updateHeroToggle();
-      if (heroPausedByUser) stopCarousel();
-      else startCarousel();
-    });
-  }
-
   if (heroMotionPreference && typeof heroMotionPreference.addEventListener === 'function') {
     heroMotionPreference.addEventListener('change', function (event) {
-      heroPausedByUser = event.matches;
-      updateHeroToggle();
-      if (heroPausedByUser) stopCarousel();
+      heroPausedForMotion = event.matches;
+      if (heroPausedForMotion) stopCarousel();
       else startCarousel();
     });
   }
 
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) stopCarousel();
-    else if (!heroPausedByUser && slides.length > 1) startCarousel();
+    else if (!heroPausedForMotion && slides.length > 1) startCarousel();
   });
 
   if (slides.length > 1) {
@@ -3521,9 +3504,9 @@
   /* Pause carousel on hover or keyboard focus (accessibility) */
   if (heroSection) {
     heroSection.addEventListener('mouseenter', stopCarousel);
-    heroSection.addEventListener('mouseleave', function () { if (slides.length > 1 && !heroPausedByUser) startCarousel(); });
+    heroSection.addEventListener('mouseleave', function () { if (slides.length > 1 && !heroPausedForMotion) startCarousel(); });
     heroSection.addEventListener('focusin', stopCarousel);
-    heroSection.addEventListener('focusout', function () { if (slides.length > 1 && !heroPausedByUser) startCarousel(); });
+    heroSection.addEventListener('focusout', function () { if (slides.length > 1 && !heroPausedForMotion) startCarousel(); });
   }
 
   /* ---- BEFORE / AFTER SLIDER ---- */
