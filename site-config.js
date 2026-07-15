@@ -475,7 +475,7 @@
     },
     businessYears: '15+ years of Arizona residential landscape experience',
     brand: {
-      logoPath: 'img/logo.png',
+      logoPath: 'img/logo-160.png',
       primary: '#1b4332',
       primaryMid: '#2d6a4f',
       paper: '#faf7f3'

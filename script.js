@@ -770,7 +770,6 @@
               addressLink.target = '_blank';
               addressLink.rel = 'noopener noreferrer';
               addressLink.textContent = addressText;
-              addressLink.setAttribute('aria-label', 'Open office location in Google Maps');
               addressLine.appendChild(addressLink);
             } else {
               addressLine.textContent = addressText;
@@ -3361,11 +3360,35 @@
   /* ---- HERO CAROUSEL ---- */
   var slides = document.querySelectorAll('.hero__slide');
   var dots = document.querySelectorAll('.hero__dot');
+  var heroToggle = document.querySelector('[data-hero-toggle]');
+  var heroSection = document.querySelector('.hero');
   var current = 0;
   var heroTimer;
   var heroLeaveTimer;
   var heroPreloadTimer;
   var heroRequestId = 0;
+  var heroMotionPreference = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)')
+    : null;
+  var heroPausedByUser = Boolean(heroMotionPreference && heroMotionPreference.matches);
+
+  if (heroSection) {
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        heroSection.classList.add('is-carousel-ready');
+      });
+    });
+  }
+
+  function stopCarousel() {
+    clearInterval(heroTimer);
+    heroTimer = null;
+  }
+
+  function updateHeroToggle() {
+    if (!heroToggle) return;
+    heroToggle.textContent = heroPausedByUser ? 'Play' : 'Pause';
+  }
 
   function heroBackgroundValue(avifPath, webpPath) {
     if (avifPath && webpPath) {
@@ -3433,10 +3456,12 @@
       previous.classList.add('is-leaving');
       previous.classList.remove('is-active');
       dots[current].classList.remove('is-active');
+      dots[current].removeAttribute('aria-current');
 
       current = target;
       readySlide.classList.add('is-active');
       dots[current].classList.add('is-active');
+      dots[current].setAttribute('aria-current', 'true');
       scheduleHeroPreload(current + 1, 2200);
 
       heroLeaveTimer = setTimeout(function () {
@@ -3450,15 +3475,40 @@
   }
 
   function startCarousel() {
-    clearInterval(heroTimer);
+    stopCarousel();
+    if (heroPausedByUser || document.hidden) return;
     heroTimer = setInterval(nextSlide, 5500);
   }
 
   dots.forEach(function (dot) {
     dot.addEventListener('click', function () {
       goToSlide(parseInt(this.dataset.slide, 10));
-      startCarousel();
+      if (!heroPausedByUser) startCarousel();
     });
+  });
+
+  if (heroToggle) {
+    updateHeroToggle();
+    heroToggle.addEventListener('click', function () {
+      heroPausedByUser = !heroPausedByUser;
+      updateHeroToggle();
+      if (heroPausedByUser) stopCarousel();
+      else startCarousel();
+    });
+  }
+
+  if (heroMotionPreference && typeof heroMotionPreference.addEventListener === 'function') {
+    heroMotionPreference.addEventListener('change', function (event) {
+      heroPausedByUser = event.matches;
+      updateHeroToggle();
+      if (heroPausedByUser) stopCarousel();
+      else startCarousel();
+    });
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stopCarousel();
+    else if (!heroPausedByUser && slides.length > 1) startCarousel();
   });
 
   if (slides.length > 1) {
@@ -3469,12 +3519,11 @@
   }
 
   /* Pause carousel on hover or keyboard focus (accessibility) */
-  var heroSection = document.querySelector('.hero');
   if (heroSection) {
-    heroSection.addEventListener('mouseenter', function () { clearInterval(heroTimer); });
-    heroSection.addEventListener('mouseleave', function () { if (slides.length > 1) startCarousel(); });
-    heroSection.addEventListener('focusin',    function () { clearInterval(heroTimer); });
-    heroSection.addEventListener('focusout',   function () { if (slides.length > 1) startCarousel(); });
+    heroSection.addEventListener('mouseenter', stopCarousel);
+    heroSection.addEventListener('mouseleave', function () { if (slides.length > 1 && !heroPausedByUser) startCarousel(); });
+    heroSection.addEventListener('focusin', stopCarousel);
+    heroSection.addEventListener('focusout', function () { if (slides.length > 1 && !heroPausedByUser) startCarousel(); });
   }
 
   /* ---- BEFORE / AFTER SLIDER ---- */
@@ -4761,7 +4810,7 @@
 
     var popupConfig = window.SITE_CONFIG || {};
     var popupBrand = popupConfig.brand || {};
-    var popupLogoPath = String(popupBrand.logoPath || 'img/logo.png').trim();
+    var popupLogoPath = String(popupBrand.logoPath || 'img/logo-160.png').trim();
     var popupLogo = popupLogoPath.charAt(0) === '/' ? popupLogoPath : '/' + popupLogoPath.replace(/^\.?\//, '');
     var popupConsultHref = '/free-consultation?source=exit_popup&autostart=1';
     var popup = document.createElement('div');
