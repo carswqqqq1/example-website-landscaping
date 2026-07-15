@@ -7,7 +7,7 @@
 :root {
   --ink:        #141414;
   --ink-light:  #444444;
-  --ink-faint:  #888888;
+  --ink-faint:  #666666;
   --paper:      #faf7f3;
   --paper-alt:  #f2ede6;
   --white:      #ffffff;
@@ -16,6 +16,7 @@
   --green-mid:  #2d6a4f;
   --green-light:#d8f3dc;
   --tan:        #b8935a;
+  --tan-text:   #89652f;
   --tan-light:  #f0e3cc;
 
   --font-head:  'Cormorant Garamond', Georgia, serif;
@@ -110,7 +111,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   font-weight: 600;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--tan);
+  color: var(--tan-text);
   margin-bottom: .875rem;
 }
 .eyebrow--light { color: rgba(255,255,255,.55); }
@@ -907,10 +908,12 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   filter: brightness(1.02);
   opacity: 0;
   transform: scale(1.018) translate3d(0, 0, 0);
+  will-change: opacity, transform;
+}
+.hero.is-carousel-ready .hero__slide {
   transition:
     opacity 1.85s cubic-bezier(.22, .72, .18, 1),
     transform 7.4s cubic-bezier(.16, 1, .3, 1);
-  will-change: opacity, transform;
 }
 .hero__slide.is-leaving {
   z-index: 1;
@@ -1141,7 +1144,28 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   transform: translateX(-50%);
   z-index: 3;
   display: flex;
+  align-items: center;
   gap: .5rem;
+}
+.hero__toggle {
+  min-width: 62px;
+  height: 44px;
+  padding-inline: .72rem;
+  border: 1px solid rgba(255,255,255,.48);
+  border-radius: 999px;
+  background: rgba(8,15,11,.54);
+  color: var(--white);
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+.hero__toggle:hover,
+.hero__toggle:focus-visible {
+  background: rgba(8,15,11,.78);
+  border-color: rgba(255,255,255,.82);
 }
 .hero__dot {
   width: 44px;
@@ -1757,7 +1781,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   font-family: var(--font-head);
   font-size: 1rem;
   font-weight: 400;
-  color: var(--tan);
+  color: var(--tan-text);
   padding-top: .2rem;
   line-height: 1.3;
 }
@@ -3912,7 +3936,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .footer__bottom p {
   font-size: .75rem;
-  color: rgba(255,255,255,.4);
+  color: rgba(255,255,255,.66);
 }
 
 /* ============================================================
@@ -4435,7 +4459,7 @@ body.has-cookie-banner-visible .sticky-bar {
   }
   .hero__content {
     padding-top: 84px;
-    padding-bottom: 1.5rem;
+    padding-bottom: 4.5rem;
     margin-inline: auto;
     padding-inline: clamp(.95rem, 4.2vw, 1.3rem);
   }
@@ -5017,8 +5041,30 @@ body.has-cookie-banner-visible .sticky-bar {
   }
   .hero__eyebrow { font-size: .6rem; letter-spacing: .14em; }
   .hero__stats {
-    grid-template-columns: 1fr;
-    max-width: 360px;
+    display: none;
+  }
+  .hero__indicators {
+    display: flex;
+    bottom: .75rem;
+    gap: .15rem;
+  }
+  .hero__toggle {
+    min-width: 56px;
+    padding-inline: .58rem;
+  }
+  .hero__dot,
+  .hero__dot.is-active {
+    width: 40px;
+    min-width: 40px;
+  }
+  .hero__dot::before {
+    width: 22px;
+  }
+  .hero__dot.is-active::before {
+    width: 34px;
+  }
+  .hero__scroll {
+    display: none;
   }
   .featured__header .section-title,
   .portfolio__header .section-title,
@@ -5281,13 +5327,9 @@ body.has-nav-overlay-open .cookie-banner {
     gap: .55rem;
   }
   .cookie-banner p {
-    font-size: .7rem;
-    line-height: 1.28;
+    font-size: .72rem;
+    line-height: 1.38;
     min-width: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
   .cookie-banner__actions {
     display: flex;
@@ -5586,8 +5628,8 @@ body.has-nav-overlay-open .cookie-banner {
 /* ---- Mobile: reduce heavy animation weight ---- */
 @media (max-width: 768px) {
   /* Keep mobile hero media light: crossfade only, no drift. */
-  .hero__slide,
-  .hero__slide.is-active {
+  .hero.is-carousel-ready .hero__slide,
+  .hero.is-carousel-ready .hero__slide.is-active {
     transform: none;
     transition: opacity 1.15s cubic-bezier(.22, .72, .18, 1);
     will-change: opacity;
