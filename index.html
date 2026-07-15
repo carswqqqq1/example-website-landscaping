@@ -33,11 +33,11 @@
   <link rel="manifest" href="/manifest.json" />
   <link rel="canonical" href="https://example-website-landscaping.pages.dev/" />
   <link rel="alternate" hreflang="en-us" href="https://example-website-landscaping.pages.dev/" />
-  <link rel="preload" as="image" href="/img/hero/covered-patio-hero-poster.jpg" type="image/jpeg" fetchpriority="high" />
+  <link rel="preload" as="image" href="/img/projects/slide1-1280.avif" type="image/avif" fetchpriority="high" />
   <link rel="preconnect" href="https://www.googletagmanager.com" />
   <link rel="preconnect" href="https://www.google-analytics.com" />
-  <link rel="stylesheet" href="/fonts.min.css?v=20260715vf" />
-  <link rel="stylesheet" href="/styles.min.css?v=20260715vf" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20260711cf" />
+  <link rel="stylesheet" href="/styles.min.css?v=20260711cf" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -256,7 +256,7 @@
   ============================================================ -->
   <header class="nav" id="nav">
     <div class="nav__inner">
-      <a href="/" class="nav__logo" aria-label="Think Green Design Build Landscape - home">
+      <a href="/" class="nav__logo" aria-label="Think Green Design Build Landscape — home">
         <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img" data-site-logo width="118" height="108" />
       </a>
 
@@ -302,109 +302,170 @@
 
   <main id="main-content">
 
-    <section class="industry-hero" id="hero" aria-labelledby="hero-heading">
-      <div class="industry-hero__media" aria-hidden="true">
-        <video class="industry-hero__video" data-ambient-video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="img/hero/covered-patio-hero-poster.jpg" tabindex="-1">
-          <source src="img/hero/covered-patio-hero.mp4" type="video/mp4" />
-          <source src="img/hero/covered-patio-hero.webm" type="video/webm" />
-        </video>
+    <!-- ============================================================
+         HERO — Image slideshow
+    ============================================================ -->
+    <section class="hero" id="hero" aria-label="Hero">
+      <div class="hero__slides" aria-hidden="true">
+        <div class="hero__slide is-active" data-hero-image-avif="img/projects/slide1-1280.avif" data-hero-image-webp="img/projects/slide1.webp" style="background-image:image-set(url('img/projects/slide1-1280.avif') type('image/avif'), url('img/projects/slide1.webp') type('image/webp'))"></div>
+        <div class="hero__slide" data-hero-image-avif="img/projects/slide2-1280.avif" data-hero-image-webp="img/projects/slide2.webp"></div>
+        <div class="hero__slide" data-hero-image-avif="img/projects/slide3-1280.avif" data-hero-image-webp="img/projects/slide3.webp"></div>
+        <div class="hero__slide" data-hero-image-avif="img/projects/slide4-1280.avif" data-hero-image-webp="img/projects/slide4.webp"></div>
+        <div class="hero__slide" data-hero-image-avif="img/projects/slide5-1280.avif" data-hero-image-webp="img/projects/slide5.webp"></div>
       </div>
-      <div class="industry-hero__veil" aria-hidden="true"></div>
-      <button class="industry-hero__play" type="button" data-ambient-video-play hidden aria-label="Play background project video">
-        <span aria-hidden="true">▶</span>
-        Play project video
-      </button>
-      <div class="container industry-hero__layout">
-        <div class="industry-hero__copy reveal reveal--left">
-          <h1 id="hero-heading"><span>Live Better Outside</span><span>in Scottsdale</span></h1>
-          <p>Custom landscapes, patios, kitchens, shade and complete yard renovations across Scottsdale and the Valley.</p>
-          <div class="industry-hero__actions">
+      <div class="hero__overlay"></div>
+
+      <div class="hero__content">
+        <div class="hero__panel">
+          <h1 class="hero__heading">Scottsdale Outdoor Living Design-Build, Planned Before You Commit</h1>
+          <p class="hero__sub">Start with a practical first phase, a full-yard plan, or a phased build. We help you scope the right first move before you commit across Scottsdale, Phoenix, Paradise Valley, Mesa, Chandler, Gilbert, and Tempe.</p>
+          <div class="hero__actions">
             <a href="/free-consultation?source=homepage_hero&autostart=1" class="btn btn--solid">Start Project Review</a>
             <a href="tel:4809229497" class="btn btn--ghost" data-site-phone-link>Call (480) 922-9497</a>
           </div>
+          <p class="hero__reassurance">Fast local follow-up. Licensed, bonded, and insured. No pressure, no spam, and no vague contractor runaround.</p>
+          <div class="hero__fit-note" aria-label="Project scope guidance">
+            <p><strong>Best fit:</strong> residential projects starting around $10k, including Mesa/Gilbert $10k-$25k first phases, hardscape, turf, outdoor living, irrigation upgrades, and larger phased builds.</p>
+            <p><strong>Not a fit:</strong> weekly maintenance, tree trimming only, emergency repairs, mow/blow service, or tiny one-off fixes.</p>
+          </div>
+          <div class="hero__stats" aria-label="Business highlights">
+            <a href="/reviews" class="hero-stat hero-stat--link reveal reveal--scale reveal--d1" aria-label="Read Think Green reviews">
+              <span class="hero-stat__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3.7l2.5 5.1 5.6.8-4.1 4 1 5.6-5-2.6-5 2.6 1-5.6-4.1-4 5.6-.8z"/></svg>
+              </span>
+              <strong>43 Google Reviews</strong>
+              <p>4.7 stars from homeowner feedback</p>
+              <span class="hero-stat__cta">Read Reviews</span>
+            </a>
+            <a href="/about" class="hero-stat hero-stat--link reveal reveal--scale reveal--d2" aria-label="View Think Green licensing and trust details">
+              <span class="hero-stat__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l8 4v6c0 5-3.2 7.8-8 9-4.8-1.2-8-4-8-9V7l8-4z"></path><path d="M9 12l2 2 4-4"></path></svg>
+              </span>
+              <strong>Licensed &middot; Bonded &middot; Insured</strong>
+              <p>Arizona records available to verify</p>
+              <span class="hero-stat__cta">See Trust Details</span>
+            </a>
+            <a href="/free-consultation?source=homepage_highlights&autostart=1" class="hero-stat hero-stat--link reveal reveal--scale reveal--d3" aria-label="Start a project review">
+              <span class="hero-stat__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+              </span>
+              <strong>Fast Follow-Up</strong>
+              <p>Local team reviews every request</p>
+              <span class="hero-stat__cta">Start Project Review</span>
+            </a>
+            <a href="#featured-project" class="hero-stat hero-stat--link reveal reveal--scale reveal--d4" aria-label="Review project proof and planning ranges">
+              <span class="hero-stat__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="M8 16l3-4 3 2 4-7"></path></svg>
+              </span>
+              <strong>Clear Scope Before Build</strong>
+              <p>Review services, process, and ranges</p>
+              <span class="hero-stat__cta">See Project Proof</span>
+            </a>
+          </div>
         </div>
-        <aside class="industry-hero__brief reveal reveal--glide-right" aria-label="Project fit and response details">
-          <p class="industry-hero__brief-label">A clear first conversation</p>
-          <dl>
-            <div>
-              <dt>Best fit</dt>
-              <dd>Thoughtful renovations, outdoor living and full-yard design-build.</dd>
-            </div>
-            <div>
-              <dt>Response</dt>
-              <dd>Every request is reviewed by the local team within one business day.</dd>
-            </div>
-          </dl>
-          <a href="#project-investment" class="industry-hero__brief-link">See planning ranges</a>
-        </aside>
+      </div>
+
+      <div class="hero__indicators" aria-label="Slide indicators">
+        <button class="hero__dot is-active" data-slide="0" aria-label="Slide 1"></button>
+        <button class="hero__dot" data-slide="1" aria-label="Slide 2"></button>
+        <button class="hero__dot" data-slide="2" aria-label="Slide 3"></button>
+        <button class="hero__dot" data-slide="3" aria-label="Slide 4"></button>
+        <button class="hero__dot" data-slide="4" aria-label="Slide 5"></button>
+      </div>
+
+      <a href="#proof" class="hero__scroll" aria-label="Scroll down">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+    </section>
+
+    <section class="owner-proof-strip" id="proof" aria-label="Owner proof">
+      <div class="container owner-proof-strip__wrap">
+        <h2 class="owner-proof-strip__headline">Everything a homeowner needs before saying yes</h2>
+        <p class="owner-proof-strip__sub">A clear estimate path, visible proof, license and insurance records you can check, and a local team that explains what happens next.</p>
+      </div>
+      <div class="container owner-proof-strip__inner">
+        <article class="owner-proof-strip__item reveal">
+          <span class="owner-proof-strip__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v6c0 5-3.2 7.8-8 9-4.8-1.2-8-4-8-9V7l8-4z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          </span>
+          <p>Licensed, bonded &amp; insured</p>
+        </article>
+        <article class="owner-proof-strip__item reveal">
+          <span class="owner-proof-strip__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h10"></path><path d="M17 17l2 2 3-3"></path></svg>
+          </span>
+          <p>One accountable design-build team</p>
+        </article>
+        <article class="owner-proof-strip__item reveal">
+          <span class="owner-proof-strip__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19h16"></path><path d="M7 19V9"></path><path d="M12 19V5"></path><path d="M17 19v-7"></path></svg>
+          </span>
+          <p>Clear scope before construction starts</p>
+        </article>
+        <article class="owner-proof-strip__item reveal">
+          <span class="owner-proof-strip__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7h14"></path><path d="M5 12h9"></path><path d="M5 17h14"></path><path d="M17 10l2 2 3-3"></path></svg>
+          </span>
+          <p>Estimate requests reviewed within one business day</p>
+        </article>
       </div>
     </section>
 
-    <section class="industry-proof" id="proof" aria-label="Verified company proof">
-      <div class="container industry-proof__rail">
-        <a href="/reviews" class="industry-proof__item reveal">
-          <strong>4.7 stars</strong>
-          <span>43 Google reviews</span>
-        </a>
-        <a href="https://www.bbb.org/us/az/scottsdale/profile/landscape-contractors/think-green-design-build-and-landscape-1126-15005253" class="industry-proof__item reveal" target="_blank" rel="noopener noreferrer">
-          <strong>BBB A+</strong>
-          <span>Accredited since 2007</span>
-        </a>
-        <a href="/about" class="industry-proof__item reveal">
-          <strong>Since 2000</strong>
-          <span>Family-owned Valley team</span>
-        </a>
-        <a href="https://roc.az.gov/contractor-search?combined=157201" class="industry-proof__item reveal" target="_blank" rel="noopener noreferrer">
-          <strong>ROC licensed</strong>
-          <span>Bonded and insured</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="estimate-route industry-paths" aria-labelledby="project-path-heading">
+    <section class="estimate-route" aria-label="Choose your estimate path">
       <div class="container estimate-route__inner">
         <div class="estimate-route__intro reveal reveal--glide-left">
-          <p class="eyebrow">Find Your Starting Point</p>
-          <h2 id="project-path-heading">What should your outdoor space make possible?</h2>
-          <p>Choose the outcome that feels closest. We will start your request with the right context and talk through the rest.</p>
+          <p class="eyebrow">Start With the Right Path</p>
+          <h2>Not every yard needs the same estimate conversation.</h2>
+          <p>Pick the closest project type and the request drawer opens with the useful context already started.</p>
         </div>
         <div class="estimate-route__grid">
-          <a href="#contact" class="estimate-route__card estimate-route__card--signature reveal reveal--settle" data-form-prefill-trigger data-prefill-service="Landscape Design & Build" data-prefill-source="estimate_path_design" data-prefill-message="Interested in a complete yard redesign with one coordinated design-build team.">
-            <span class="estimate-route__label">Transform</span>
-            <strong>Reimagine the whole yard</strong>
-            <p>Connect patios, planting, lighting, shade and gathering areas in one cohesive plan.</p>
-            <span class="estimate-route__cta">Plan the whole yard</span>
+          <a href="/free-consultation?city=Mesa&source=mesa_first_phase&autostart=1&budget_range=%2410%2C000%20-%20%2425%2C000&project_goal=Focused%20first%20phase" class="estimate-route__card reveal reveal--settle">
+            <span class="estimate-route__label">East Valley</span>
+            <strong>Practical first phase</strong>
+            <p>Best for Mesa, Chandler, Gilbert, or Tempe homeowners starting with the highest-impact $10k-$25k scope before a whole-yard rebuild.</p>
+            <span class="estimate-route__cta">Price first phase</span>
           </a>
-          <a href="#contact" class="estimate-route__card reveal reveal--tuck" data-form-prefill-trigger data-prefill-service="Fire Feature / Outdoor Kitchen" data-prefill-source="estimate_path_entertaining" data-prefill-message="Interested in creating a better outdoor space for cooking, hosting, and relaxing.">
-            <span class="estimate-route__label">Gather</span>
-            <strong>Cook, host and stay outside longer</strong>
-            <p>Build an outdoor room around shade, seating, kitchens, fire and evening lighting.</p>
-            <span class="estimate-route__cta">Design an outdoor room</span>
+          <a href="#contact" class="estimate-route__card reveal reveal--settle" data-form-prefill-trigger data-prefill-service="Landscape Design & Build" data-prefill-source="estimate_path_design" data-prefill-message="Interested in a full landscape design-build estimate. Please help me understand the right first step.">
+            <span class="estimate-route__label">Full Yard</span>
+            <strong>Design-build review</strong>
+            <p>Best for patios, planting, turf, lighting, and a connected backyard plan.</p>
+            <span class="estimate-route__cta">Start this estimate</span>
           </a>
-          <a href="#contact" class="estimate-route__card reveal reveal--focus" data-form-prefill-trigger data-prefill-service="Hardscaping" data-prefill-source="estimate_path_hardscape" data-prefill-message="Interested in improving curb appeal, circulation, patios, pavers, or other hardscape.">
-            <span class="estimate-route__label">Refine</span>
-            <strong>Improve curb appeal and flow</strong>
-            <p>Upgrade entries, walkways, patios, walls and grade transitions with durable materials.</p>
-            <span class="estimate-route__cta">Review hardscape options</span>
+          <a href="#contact" class="estimate-route__card reveal reveal--tuck" data-form-prefill-trigger data-prefill-service="Hardscaping" data-prefill-source="estimate_path_hardscape" data-prefill-message="Interested in a patio, paver, retaining wall, or hardscape estimate. Please contact me about next steps.">
+            <span class="estimate-route__label">Hardscape</span>
+            <strong>Patio or paver quote</strong>
+            <p>Use this for pavers, walkways, seat walls, drainage-aware grade work, and outdoor rooms.</p>
+            <span class="estimate-route__cta">Price hardscape work</span>
           </a>
-          <a href="#contact" class="estimate-route__card reveal reveal--unfold" data-form-prefill-trigger data-prefill-service="Desert / Drought-Tolerant Design" data-prefill-source="estimate_path_desert" data-prefill-message="Interested in a water-smart, lower-maintenance landscape that still feels lush and finished.">
-            <span class="estimate-route__label">Simplify</span>
-            <strong>Use less water without losing beauty</strong>
-            <p>Refresh planting, irrigation, turf and materials for a calmer, climate-ready landscape.</p>
-            <span class="estimate-route__cta">Plan a desert-smart refresh</span>
+          <a href="#contact" class="estimate-route__card reveal reveal--focus" data-form-prefill-trigger data-prefill-service="Artificial Turf" data-prefill-source="estimate_path_turf" data-prefill-message="Interested in artificial turf for pets, play, putting, or low-maintenance curb appeal. Please contact me about options.">
+            <span class="estimate-route__label">Turf</span>
+            <strong>Low-maintenance lawn plan</strong>
+            <p>Good for pets, putting greens, play zones, front-yard curb appeal, and water savings.</p>
+            <span class="estimate-route__cta">Plan turf options</span>
+          </a>
+          <a href="/free-consultation?source=estate_project_review&autostart=1&budget_range=%24150%2C000%2B&project_goal=Private%20estate%20project%20review" class="estimate-route__card reveal reveal--focus">
+            <span class="estimate-route__label">Estate</span>
+            <strong>Private outdoor living review</strong>
+            <p>For $75k-$200k+ projects involving pool-adjacent living, kitchens, fireplaces, lighting, shade, drainage, planting, access, HOA needs, and trade coordination.</p>
+            <span class="estimate-route__cta">Request private design-build review</span>
+          </a>
+          <a href="tel:4809229497" class="estimate-route__card estimate-route__card--call reveal reveal--unfold" data-site-phone-link>
+            <span class="estimate-route__label">Talk Now</span>
+            <strong>Call (480) 922-9497</strong>
+            <p>For urgent timing, unclear scope, or a project you would rather talk through first.</p>
+            <span class="estimate-route__cta">Call the local team</span>
           </a>
         </div>
-        <p class="estimate-route__call reveal">Not sure where you fit? <a href="tel:4809229497" data-site-phone-link>Call (480) 922-9497</a> and talk it through with the local team.</p>
       </div>
     </section>
 
     <!-- ============================================================
-         STATEMENT - Editorial philosophy panel
+         STATEMENT — Editorial philosophy panel
     ============================================================ -->
     <!-- ============================================================
-         FEATURED PROJECTS - Alternating full-bleed strips
+         FEATURED PROJECTS — Alternating full-bleed strips
     ============================================================ -->
-    <section class="featured" id="featured" hidden aria-hidden="true">
+    <section class="featured" id="featured">
       <header class="featured__header container reveal reveal--left">
         <p class="eyebrow">Services Homeowners Request Most</p>
         <h2 class="section-title">Landscaping Estimates for the Projects That Change How Your Yard Works</h2>
@@ -448,16 +509,16 @@
     </section>
 
     <!-- ============================================================
-         PORTFOLIO - Editorial photo grid
+         PORTFOLIO — Editorial photo grid
     ============================================================ -->
     <section class="portfolio" id="portfolio">
       <div class="container">
         <header class="portfolio__header reveal reveal--left">
-          <p class="eyebrow">Selected Work</p>
-          <h2 class="section-title">See What Thoughtful Planning Changes</h2>
-          <p class="portfolio__sub">Real Arizona projects shaped around better flow, easier care and more time outside.</p>
+          <p class="eyebrow">Our Portfolio</p>
+          <h2 class="section-title">Real Before/After Work</h2>
+          <p class="portfolio__sub">A quick look at the kind of finish, materials, and layout improvement homeowners actually hire us for.</p>
         </header>
-        <article class="before-after reveal reveal--mask-up" aria-label="Before and after landscape slider" hidden>
+        <article class="before-after reveal reveal--mask-up" aria-label="Before and after landscape slider">
           <div class="before-after__frame" data-before-after>
             <img src="img/projects/after-29-1280.avif" alt="Completed Scottsdale backyard with pavers, turf, and fire feature after Think Green renovation" class="before-after__image" data-before-after-after-image loading="lazy" decoding="async" width="880" height="670" />
             <div class="before-after__overlay" data-before-after-overlay>
@@ -475,7 +536,7 @@
         <figure class="portfolio__item portfolio__item--tall reveal reveal--drift reveal--d1">
           <img src="img/projects/firepit-1280.avif" alt="Luxury resort-style backyard with fire feature in Scottsdale" loading="lazy" decoding="async" width="1600" height="900" />
           <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Complete Backyard</span>
+            <span class="portfolio__tag">Backyard Transformation</span>
             <span>Scottsdale, AZ</span>
           </figcaption>
         </figure>
@@ -510,7 +571,7 @@
         <figure class="portfolio__item reveal reveal--mask-up reveal--d3">
           <img src="img/projects/slide10-1280.avif" alt="Drought-tolerant landscaping upgrade in Scottsdale" loading="lazy" decoding="async" width="1630" height="860" />
           <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Outdoor Living</span>
+            <span class="portfolio__tag">Backyard Transformation</span>
             <span>Scottsdale, AZ</span>
           </figcaption>
         </figure>
@@ -521,14 +582,15 @@
     </section>
 
     <!-- ============================================================
-         SERVICES - Editorial numbered list
+         SERVICES — Editorial numbered list
     ============================================================ -->
     <section class="services" id="services">
       <div class="container">
         <div class="services__grid">
           <div class="services__header reveal reveal--left">
-            <h2 class="section-title">One Team for Every Layer of the Landscape</h2>
-            <p class="services__intro">Design decisions, materials, drainage, lighting, planting and construction stay connected from the beginning.</p>
+            <p class="eyebrow">What We Do</p>
+            <h2 class="section-title">Clear Service Paths, Not a Generic Contractor Menu</h2>
+            <p class="services__intro">Choose the project type that matches your yard. We route your estimate request to the right path so you understand scope, timing, and next steps faster.</p>
             <a href="/free-consultation?source=homepage_services&autostart=1" class="btn btn--dark">Start Project Review</a>
           </div>
 
@@ -537,7 +599,7 @@
               <span class="service-item__num">01</span>
               <div class="service-item__body">
                 <h3><a href="/services/landscape-design">Landscape Design &amp; Build</a></h3>
-                <p>Full-service planning for complete yard projects, phased construction, and high-end backyard upgrades.</p>
+                <p>Full-service planning for complete yard transformations, phased construction, and high-end backyard upgrades.</p>
               </div>
             </li>
             <li class="service-item reveal reveal--drift reveal--d2">
@@ -572,7 +634,7 @@
               <span class="service-item__num">06</span>
               <div class="service-item__body">
                 <h3><a href="/services/irrigation">Smart Irrigation Systems</a></h3>
-                <p>Precision drip and spray irrigation designed for long-term plant health and water efficiency in Arizona's climate.</p>
+                <p>Precision drip and spray irrigation designed for long-term plant health and water efficiency — optimized for Arizona's climate and future regulations.</p>
               </div>
             </li>
             <li class="service-item reveal reveal--right reveal--d7">
@@ -588,7 +650,7 @@
     </section>
 
     <!-- ============================================================
-         ABOUT - Founder narrative
+         ABOUT — Founder narrative
     ============================================================ -->
     <section class="about" id="about">
       <div class="about__inner container">
@@ -598,52 +660,70 @@
             <img src="img/projects/water-feature.jpg" alt="Think Green custom water feature project in Scottsdale" loading="lazy" decoding="async" width="1333" height="2000" />
           </picture>
           <div class="about__badge">
-            <span>Serving the Valley</span>
-            <strong>Since 2000</strong>
+            <span>Locally</span>
+            <strong>Focused</strong>
           </div>
         </figure>
         <div class="about__content reveal reveal--right reveal--d2">
-          <p class="eyebrow">The Think Green Difference</p>
-          <h2 class="section-title">One Local Team, Accountable From First Sketch to Final Walkthrough</h2>
-          <p class="about__lead">Think Green is a family-owned Scottsdale landscape design-build company serving Valley homeowners since 2000.</p>
-          <p>The same coordinated team carries your goals through design, material planning and construction. You know what is happening, who to contact and what comes next.</p>
+          <p class="eyebrow">About Think Green</p>
+          <h2 class="section-title">Family-Owned. Valley-Rooted. Built Around Clear Communication.</h2>
+          <p class="about__lead">Family-owned Think Green is a Scottsdale design-build landscape company for homeowners who want a backyard that feels finished, functions daily, and comes with one local team from first walkthrough to final handoff.</p>
+          <p>Clients hire us because the process stays organized from the first walkthrough to final handoff. You get one team handling design direction, material coordination, construction planning, and day-to-day communication without the usual contractor handoff issues.</p>
           <ul class="about__creds">
-            <li>Arizona licensed, bonded and insured</li>
-            <li>One point of accountability from design through construction</li>
-            <li>Scope and expectations reviewed before the build begins</li>
-            <li>Materials and systems selected for Arizona conditions</li>
+            <li>
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0L9.8 5.5H16l-5 3.6 1.9 5.9L8 11.4 3.1 15l1.9-5.9-5-3.6h6.2z"/></svg>
+              Arizona licensed, bonded, and insured with records available for homeowner review
+            </li>
+            <li>
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0L9.8 5.5H16l-5 3.6 1.9 5.9L8 11.4 3.1 15l1.9-5.9-5-3.6h6.2z"/></svg>
+              Single point of accountability from design through construction
+            </li>
+            <li>
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0L9.8 5.5H16l-5 3.6 1.9 5.9L8 11.4 3.1 15l1.9-5.9-5-3.6h6.2z"/></svg>
+              Quote-first planning so scope and expectations are clear
+            </li>
+            <li>
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0L9.8 5.5H16l-5 3.6 1.9 5.9L8 11.4 3.1 15l1.9-5.9-5-3.6h6.2z"/></svg>
+              Build-ready recommendations tailored to Arizona conditions
+            </li>
           </ul>
-          <a href="/about" class="text-link text-link--dark">Meet Think Green &rarr;</a>
+          <a href="/free-consultation?source=homepage_about&autostart=1" class="text-link text-link--dark">Start Project Review &rarr;</a>
         </div>
       </div>
     </section>
 
     <!-- ============================================================
-         PROCESS - Timeline
+         PROCESS — Timeline
     ============================================================ -->
     <section class="process" id="process">
       <div class="container">
         <header class="process__header reveal reveal--fade">
-          <h2 class="section-title">A Clear Path From Ideas to Installation</h2>
-          <p>Three connected phases keep the vision, scope and build aligned.</p>
+          <p class="eyebrow">How It Works</p>
+          <h2 class="section-title">From First Walkthrough to Finished Yard</h2>
         </header>
         <div class="process__steps">
           <div class="process__step reveal reveal--pin reveal--d1">
             <div class="process__step-num">01</div>
-            <h3>Listen and Define</h3>
-            <p>We learn how you want to live outside, review the property and identify the right project scope.</p>
+            <h3>Initial Project Review</h3>
+            <p>Typically 60-90 minutes on-site. We visit your property, listen to your vision, understand your lifestyle and priorities, and outline what is realistic for your space.</p>
           </div>
           <div class="process__connector" aria-hidden="true"></div>
           <div class="process__step reveal reveal--lift reveal--d3">
             <div class="process__step-num">02</div>
-            <h3>Design and Price</h3>
-            <p>Your layout, major selections and construction scope are brought together before work begins. 3D renderings are available when the project calls for them.</p>
+            <h3>Design &amp; 3D Rendering</h3>
+            <p>Most concept planning is mapped within 1-2 weeks depending on scope. Our designers produce a detailed landscape plan, including 3D renderings when the project calls for them.</p>
           </div>
           <div class="process__connector" aria-hidden="true"></div>
           <div class="process__step reveal reveal--pin reveal--d5">
             <div class="process__step-num">03</div>
-            <h3>Build and Hand Off</h3>
-            <p>The team coordinates construction, communicates progress and closes with a walkthrough, care guidance and written warranty details.</p>
+            <h3>Expert Construction</h3>
+            <p>Build timing depends on scope, but we give a clear schedule before work starts. Our team executes the project with precision and handles trade coordination without the usual handoff issues.</p>
+          </div>
+          <div class="process__connector" aria-hidden="true"></div>
+          <div class="process__step reveal reveal--lift reveal--d7">
+            <div class="process__step-num">04</div>
+            <h3>Walkthrough &amp; Warranty</h3>
+            <p>Final walkthrough happens before closeout so details can be reviewed together. We address finishing items, explain care expectations, and document the workmanship warranty.</p>
           </div>
         </div>
       </div>
@@ -652,8 +732,9 @@
     <section class="featured-project" id="featured-project">
       <div class="container">
         <header class="featured-project__header reveal">
-          <h2 class="section-title">From Underused Yard to Everyday Outdoor Room</h2>
-          <p class="featured-project__sub">A real Scottsdale redesign with clearer circulation, easier maintenance and a gathering space made for year-round use.</p>
+          <p class="eyebrow">Featured Project</p>
+          <h2 class="section-title">A Featured Project That Shows the Standard</h2>
+          <p class="featured-project__sub">A Scottsdale yard redesigned for lower maintenance, better circulation, and a more usable entertaining layout.</p>
         </header>
         <div class="featured-project__grid">
           <article class="featured-project__media reveal reveal--focus">
@@ -680,12 +761,12 @@
                 <strong>Pavers patio, turf, fire feature, lighting</strong>
               </div>
               <div>
-                <span class="featured-project__label">Design Goal</span>
-                <strong>Better flow and lower upkeep</strong>
+                <span class="featured-project__label">Timeline</span>
+                <strong>2–4 weeks</strong>
               </div>
               <div>
-                <span class="featured-project__label">Result</span>
-                <strong>One connected outdoor room</strong>
+                <span class="featured-project__label">Estimated Investment</span>
+                <strong>$25k–$40k</strong>
               </div>
             </div>
             <p class="featured-project__outcome">The redesign turned an underused yard into a structured patio layout with better circulation, lower maintenance, and a gathering zone the homeowners can use most of the year.</p>
@@ -701,7 +782,7 @@
               data-prefill-message="Interested in a project similar to the Featured Project."
             >Request a Similar Project</a>
           </article>
-          <article class="faq-item reveal reveal--mask-up reveal--d6" hidden>
+          <article class="faq-item reveal reveal--mask-up reveal--d6">
             <button class="faq__question" type="button" aria-expanded="false">
               <span>Do you serve Paradise Valley, Cave Creek, and nearby cities?</span>
               <span class="faq__icon" aria-hidden="true">+</span>
@@ -710,7 +791,7 @@
               <p>Yes. We serve Scottsdale, Paradise Valley, Phoenix, Cave Creek, Fountain Hills, Tempe, Mesa, Chandler, and nearby Valley communities.</p>
             </div>
           </article>
-          <article class="faq-item reveal reveal--right reveal--d7" hidden>
+          <article class="faq-item reveal reveal--right reveal--d7">
             <button class="faq__question" type="button" aria-expanded="false">
               <span>What is the typical timeline from request to project completion?</span>
               <span class="faq__icon" aria-hidden="true">+</span>
@@ -719,7 +800,7 @@
               <p>Most residential projects are scheduled within 4 to 8 weeks of deposit. Final timing depends on scope, material lead times, and site conditions.</p>
             </div>
           </article>
-          <article class="faq-item reveal reveal--mask-up reveal--d8" hidden>
+          <article class="faq-item reveal reveal--mask-up reveal--d8">
             <button class="faq__question" type="button" aria-expanded="false">
               <span>Do you offer 3D design renderings before construction begins?</span>
               <span class="faq__icon" aria-hidden="true">+</span>
@@ -728,7 +809,7 @@
               <p>Yes. For most design-build projects we provide 3D concept renderings so you can review the layout and major selections before construction starts.</p>
             </div>
           </article>
-          <article class="faq-item reveal reveal--right reveal--d9" hidden>
+          <article class="faq-item reveal reveal--right reveal--d9">
             <button class="faq__question" type="button" aria-expanded="false">
               <span>Can you work with an existing irrigation system?</span>
               <span class="faq__icon" aria-hidden="true">+</span>
@@ -737,7 +818,7 @@
               <p>Yes. We assess existing irrigation during the site walkthrough and recommend upgrades, repairs, or replacement based on coverage and efficiency.</p>
             </div>
           </article>
-          <article class="faq-item reveal reveal--right reveal--d10" hidden>
+          <article class="faq-item reveal reveal--right reveal--d10">
             <button class="faq__question" type="button" aria-expanded="false">
               <span>What sets Think Green apart from other Scottsdale landscapers?</span>
               <span class="faq__icon" aria-hidden="true">+</span>
@@ -754,9 +835,12 @@
       <div class="container">
         <header class="reviews__header reveal reveal--left">
           <p class="eyebrow">Homeowner Feedback</p>
-          <h2 class="section-title">The Experience Matters as Much as the Finish</h2>
-          <p class="reviews__sub">Verified feedback from homeowners across Scottsdale, Paradise Valley and Phoenix.</p>
+          <h2 class="section-title">What Homeowners Say</h2>
+          <p class="reviews__sub">Recent homeowner feedback from projects across Scottsdale, Paradise Valley, and Phoenix.</p>
           <p class="reviews__badge">
+            <span class="reviews__badge-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3.7l2.5 5.1 5.6.8-4.1 4 1 5.6-5-2.6-5 2.6 1-5.6-4.1-4 5.6-.8z"/></svg>
+            </span>
             <span data-google-reviews-summary>Google review snapshot loads below</span>
           </p>
           <p class="reviews__proof">
@@ -774,8 +858,9 @@
     <section class="areas" id="areas">
       <div class="container">
         <header class="areas__header reveal reveal--left">
-          <h2 class="section-title">Local to Scottsdale. Built for the Valley.</h2>
-          <p class="areas__sub">Residential landscape design-build for communities across the Phoenix Valley.</p>
+          <p class="eyebrow">Service Areas</p>
+          <h2 class="section-title">Proudly Serving Homes Across the Phoenix Valley</h2>
+          <p class="areas__sub">Scottsdale, Paradise Valley, Phoenix, Fountain Hills, Cave Creek, Gilbert, Tempe, Mesa, and Chandler homeowners call us when they want design-build coordination without guesswork.</p>
         </header>
         <ul class="areas__list reveal" aria-label="Service areas">
           <li><a href="/scottsdale-landscaping">Scottsdale</a></li>
@@ -792,7 +877,7 @@
       </div>
     </section>
 
-    <section class="trust-assets" id="trust-assets" hidden aria-hidden="true">
+    <section class="trust-assets" id="trust-assets">
       <div class="container">
         <header class="trust-assets__header reveal reveal--fade">
           <p class="eyebrow">Licensing &amp; Compliance</p>
@@ -819,7 +904,7 @@
       </div>
     </section>
 
-    <section class="search-intent" id="local-intent" hidden aria-hidden="true">
+    <section class="search-intent" id="local-intent">
       <div class="container">
         <header class="search-intent__header reveal reveal--left">
           <p class="eyebrow">Local Expertise</p>
@@ -851,7 +936,7 @@
     <!-- ============================================================
          PROJECT MATCH
     ============================================================ -->
-    <section class="project-fit" id="project-fit" hidden aria-hidden="true">
+    <section class="project-fit" id="project-fit">
       <div class="container">
         <header class="project-fit__header reveal reveal--fade">
           <p class="eyebrow">Project Match</p>
@@ -862,7 +947,7 @@
           <article class="fit-card reveal reveal--lift reveal--d1">
             <p class="fit-card__label">Most Requested</p>
             <h3>Full Landscape Design &amp; Build</h3>
-            <p>Best for complete yard renovations, phased construction, and master planning.</p>
+            <p>Best for complete yard transformations, phased construction, and master planning.</p>
             <button type="button" class="fit-card__action" data-service-choice="Landscape Design &amp; Build">Check This Scope</button>
           </article>
           <article class="fit-card reveal reveal--lift reveal--d2">
@@ -881,7 +966,7 @@
       </div>
     </section>
 
-    <section class="recent-projects" id="recent-projects" hidden aria-hidden="true">
+    <section class="recent-projects" id="recent-projects">
       <div class="container">
         <header class="recent-projects__header reveal reveal--left">
           <p class="eyebrow">Recent Projects</p>
@@ -895,7 +980,7 @@
       </div>
     </section>
 
-    <section class="lead-tier" id="budget-range" hidden aria-hidden="true">
+    <section class="lead-tier" id="budget-range">
       <div class="container">
         <header class="lead-tier__header reveal reveal--fade">
           <p class="eyebrow">Budget Range</p>
@@ -903,8 +988,8 @@
           <p class="lead-tier__sub">Choose the rough scope that fits your goals so the request starts with the right context.</p>
         </header>
         <div class="lead-tier__actions reveal">
-          <button type="button" class="lead-tier__btn" data-lead-tier="$10k-$25k Refresh">$10k-$25k Refresh</button>
-          <button type="button" class="lead-tier__btn" data-lead-tier="$25k-$60k Build">$25k-$60k Build</button>
+          <button type="button" class="lead-tier__btn" data-lead-tier="$10k–$25k Refresh">$10k&ndash;$25k Refresh</button>
+          <button type="button" class="lead-tier__btn" data-lead-tier="$25k–$60k Transformation">$25k&ndash;$60k Transformation</button>
           <button type="button" class="lead-tier__btn" data-lead-tier="$60k+ Luxury Build">$60k+ Luxury Build</button>
           <button type="button" class="lead-tier__btn" data-lead-tier="$150k+ Estate Backyard Build">$150k+ Estate Backyard Build</button>
         </div>
@@ -914,28 +999,29 @@
     <section class="cost-expectations" id="project-investment">
       <div class="container">
         <header class="cost-expectations__header reveal">
-          <h2 class="section-title">Start With an Honest Planning Range</h2>
-          <p class="cost-expectations__sub">Use these as early budgeting guides. Your actual investment depends on the property, materials, utilities and final scope.</p>
+          <p class="eyebrow">Typical Project Investment</p>
+          <h2 class="section-title">Planning Ranges</h2>
+          <p class="cost-expectations__sub">These ranges are a starting point only. Final pricing depends on layout complexity, materials, utilities, and site conditions.</p>
         </header>
         <div class="cost-expectations__grid">
           <article class="cost-card reveal reveal--settle">
             <span class="cost-card__label">Turf Install</span>
-            <strong>$5k - $15k</strong>
+            <strong>$5k &ndash; $15k</strong>
             <p>Best for pet runs, putting greens, and low-maintenance lawn replacements.</p>
           </article>
           <article class="cost-card reveal reveal--focus">
             <span class="cost-card__label">Patio / Hardscape</span>
-            <strong>$10k - $40k</strong>
+            <strong>$10k &ndash; $40k</strong>
             <p>Pavers, pathways, retaining walls, seat walls, and drainage-aware grade corrections.</p>
           </article>
           <article class="cost-card reveal reveal--tuck">
             <span class="cost-card__label">Outdoor Kitchen</span>
-            <strong>$20k - $60k</strong>
+            <strong>$20k &ndash; $60k</strong>
             <p>Custom entertaining layouts with utility coordination, prep zones, and durable finishes.</p>
           </article>
           <article class="cost-card reveal reveal--unfold">
             <span class="cost-card__label">Full Yard Transformation</span>
-            <strong>$30k - $100k+</strong>
+            <strong>$30k &ndash; $100k+</strong>
             <p>Complete backyard planning, hardscape, planting, shade, lighting, and gathering zones.</p>
           </article>
           <article class="cost-card reveal reveal--focus">
@@ -981,7 +1067,7 @@
               <span class="faq__icon" aria-hidden="true">+</span>
             </button>
             <div class="faq__answer">
-              <p>Our homepage planning ranges run from focused turf and hardscape work through full-yard and estate builds. The project review narrows the range around your property and priorities.</p>
+              <p>Scope and investment depend on layout complexity, materials, and site conditions. During the project review, we outline options so you can choose the right fit.</p>
             </div>
           </article>
           <article class="faq-item reveal reveal--mask-up reveal--d4">
@@ -999,14 +1085,14 @@
               <span class="faq__icon" aria-hidden="true">+</span>
             </button>
             <div class="faq__answer">
-              <p>Applicable workmanship and material coverage depends on the approved scope. The details are provided in writing and reviewed with you before closeout.</p>
+              <p>Yes. We provide workmanship and material warranty coverage, and we review warranty details with you at project handoff for complete clarity.</p>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="why-choose" id="why-choose-us" hidden aria-hidden="true">
+    <section class="why-choose" id="why-choose-us">
       <div class="container">
         <header class="why-choose__header reveal">
           <p class="eyebrow">Why Homeowners Choose Us</p>
@@ -1035,7 +1121,7 @@
     </section>
 
     <!-- ============================================================
-         CONTACT
+         CONTACT — Split dark / light panel
     ============================================================ -->
     <section class="contact" id="contact">
       <div class="contact__grid">
@@ -1043,8 +1129,9 @@
         <!-- Left: dark info panel -->
         <div class="contact__info">
           <div class="contact__info-inner">
-            <h2 class="contact__heading">Tell Us What You Want Your Yard to Become</h2>
-            <p class="contact__sub">Share the basics now. A local team member will review the fit and call with a useful next step.</p>
+            <p class="eyebrow eyebrow--light">Start Here</p>
+            <h2 class="contact__heading">Start a Landscaping Project Review.</h2>
+            <p class="contact__sub">Call if you want to talk now, or send the short request form. We review the project type, city, timing, and best callback plan before we call back.</p>
 
             <ul class="contact__details">
               <li>
@@ -1061,12 +1148,12 @@
               </li>
               <li>
                 <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
-                <span>Monday-Friday: 8:00 AM - 4:00 PM</span>
+                <span>Mon–Fri: 8:00 AM – 4:00 PM</span>
               </li>
             </ul>
 
             <div class="ticket-panel">
-              <p class="ticket-panel__title">Helpful details for your request</p>
+              <p class="ticket-panel__title">What to have ready for your estimate request</p>
               <ul class="ticket-panel__list">
                 <li>Project type and city</li>
                 <li>Best callback number</li>
@@ -1084,12 +1171,12 @@
             <p data-response-promise-copy>Phone number is the only required contact method. Add email only if you want a written confirmation or project notes sent back.</p>
           </div>
           <div class="financing-note financing-note--panel reveal reveal--focus">Financing options available for qualified projects.</div>
-          <div class="contact__quote reveal reveal--tuck" hidden>
+          <div class="contact__quote reveal reveal--tuck">
             <strong>Review source</strong>
             <p>Read current homeowner feedback directly from the Google review profile before you start a project review.</p>
             <p><a href="https://www.google.com/maps/place/Think+Green+Design+%7C+Build+Landscape/@33.61549,-111.9165894,17z/data=!3m1!4b1!4m6!3m5!1s0x872b74777c987d53:0x8acb242f61538220!8m2!3d33.6154856!4d-111.9140145!16s%2Fg%2F1vg4k7_v?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" data-google-reviews-link>Open Google reviews</a></p>
           </div>
-          <div class="contact__trust reveal reveal--unfold" hidden>
+          <div class="contact__trust reveal reveal--unfold">
             <p><strong>What happens next:</strong> your request is reviewed by the Arizona team, routed to the right service lead, and answered with a practical callback plan.</p>
             <ol class="contact__steps" aria-label="What happens after you submit">
               <li>We review your project type, city, and timing.</li>
@@ -1296,7 +1383,7 @@
           <p><a href="tel:4809229497" data-site-phone-link data-site-phone-display>(480) 922-9497</a></p>
           <p><a href="mailto:carson.elevatemarketing@gmail.com" data-site-email-link data-site-email-display>carson.elevatemarketing@gmail.com</a></p>
           <p><span data-site-address-line1>7730 E. Gelding Dr. Ste 1</span><br><span data-site-city>Scottsdale</span>, <span data-site-state>AZ</span> <span data-site-zip>85260</span></p>
-          <p>Mon-Fri: 8:00 AM - 4:00 PM · Sat: By appointment · Sun: Closed</p>
+          <p>Mon–Fri: 8:00 AM – 4:00 PM · Sat: By appointment · Sun: Closed</p>
         </address>
       </div>
     </div>
@@ -1316,9 +1403,9 @@
     <a href="/free-consultation?source=homepage_sticky&autostart=1" class="btn btn--outline-dark">Project Review</a>
   </div>
 
-  <script src="/site-config.js?v=20260715vf" defer></script>
-  <script src="/services-data.min.js?v=20260715vf" defer></script>
-  <script src="/projects-data.min.js?v=20260715vf" defer></script>
-  <script src="/script.min.js?v=20260715vf" defer></script>
+  <script src="/site-config.js?v=20260711cf" defer></script>
+  <script src="/services-data.min.js?v=20260711cf" defer></script>
+  <script src="/projects-data.min.js?v=20260711cf" defer></script>
+  <script src="/script.min.js?v=20260711cf" defer></script>
 </body>
 </html>
