@@ -223,7 +223,7 @@
   items.forEach(function (item) {
     item.setAttribute('tabindex', '0');
     item.setAttribute('role', 'button');
-    item.setAttribute('aria-label', 'Open project preview');
+    item.setAttribute('aria-label', 'Open project preview: ' + extractProjectLabel(item));
 
     item.addEventListener('click', function () {
       openLightboxByItem(item);

@@ -27,11 +27,10 @@
       font-size: 4rem;
       line-height: 1;
       margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: leafDrop .8s var(--ease-out) .2s both;
+      opacity: 1;
     }
     @keyframes leafDrop {
-      from { opacity: 0; transform: translateY(-40px) rotate(-15deg); }
+      from { opacity: 1; transform: translateY(-40px) rotate(-15deg); }
       to   { opacity: 1; transform: none; }
     }
     .e404__code {
@@ -41,8 +40,7 @@
       line-height: 1;
       color: var(--green);
       letter-spacing: -.04em;
-      opacity: 0;
-      animation: fadeUp .7s var(--ease-out) .4s both;
+      opacity: 1;
     }
     .e404__title {
       font-family: var(--font-head);
@@ -50,8 +48,7 @@
       font-weight: 400;
       color: var(--ink);
       margin-block: .5rem 1rem;
-      opacity: 0;
-      animation: fadeUp .7s var(--ease-out) .55s both;
+      opacity: 1;
     }
     .e404__sub {
       font-size: 1rem;
@@ -59,16 +56,14 @@
       max-width: 420px;
       line-height: 1.75;
       margin-bottom: 2.25rem;
-      opacity: 0;
-      animation: fadeUp .7s var(--ease-out) .68s both;
+      opacity: 1;
     }
     .e404__actions {
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
       justify-content: center;
-      opacity: 0;
-      animation: fadeUp .7s var(--ease-out) .8s both;
+      opacity: 1;
     }
     .e404__links {
       margin-top: 2.5rem;
@@ -76,8 +71,7 @@
       flex-wrap: wrap;
       gap: .5rem 1.5rem;
       justify-content: center;
-      opacity: 0;
-      animation: fadeUp .7s var(--ease-out) .9s both;
+      opacity: 1;
     }
     .e404__links a {
       font-size: .875rem;
@@ -87,8 +81,16 @@
     }
     .e404__links a:hover { opacity: .7; }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 1; transform: translateY(20px); }
       to   { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .e404__leaf { opacity: 0; animation: leafDrop .8s var(--ease-out) .2s both; }
+      .e404__code { opacity: 0; animation: fadeUp .7s var(--ease-out) .4s both; }
+      .e404__title { opacity: 0; animation: fadeUp .7s var(--ease-out) .55s both; }
+      .e404__sub { opacity: 0; animation: fadeUp .7s var(--ease-out) .68s both; }
+      .e404__actions { opacity: 0; animation: fadeUp .7s var(--ease-out) .8s both; }
+      .e404__links { opacity: 0; animation: fadeUp .7s var(--ease-out) .9s both; }
     }
     @media (prefers-reduced-motion: reduce) {
       .e404__leaf, .e404__code, .e404__title, .e404__sub, .e404__actions, .e404__links {

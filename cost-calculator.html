@@ -181,6 +181,7 @@
               <p class="eyebrow">Starter Range</p>
               <h2 class="section-title" id="calc-range">$0 - $0</h2>
               <p id="calc-summary">Choose a project type and the calculator will estimate a starter planning range.</p>
+              <p class="sr-only" id="calc-announcement" role="status" aria-live="polite"></p>
               <div class="financing-note financing-note--panel" id="calc-note">Starter planning range only. Projects below our normal build minimum may be referred or phased, and full-yard scopes may differ after site review.</div>
               <ul class="checklist" id="calc-drivers">
                 <li>Project scope and finish level</li>
@@ -321,6 +322,7 @@
       var updateButton = document.getElementById('calc-update');
       var rangeField = document.getElementById('calc-range');
       var summaryField = document.getElementById('calc-summary');
+      var announcementField = document.getElementById('calc-announcement');
       var driversField = document.getElementById('calc-drivers');
       var reviewLinks = Array.prototype.slice.call(document.querySelectorAll('[data-calc-review-link]'));
 
@@ -413,17 +415,19 @@
         sizeDisplay.textContent = size.toLocaleString('en-US') + ' sq ft';
         rangeField.textContent = formatRange(low, high);
 
-        var summaryParts = [
-          service.label + ' in Scottsdale and nearby Valley cities',
-          'based on ' + size.toLocaleString('en-US') + ' square feet',
-          finish === 'premium' ? 'with a premium finish level' : (finish === 'simple' ? 'with a simpler refresh scope' : 'with a standard finish level')
-        ];
+        var areaDrivenServices = ['landscape-design', 'hardscaping', 'artificial-turf', 'irrigation', 'desert-landscaping'];
+        var usesAreaAsPrimaryDriver = areaDrivenServices.indexOf(serviceKey) >= 0;
+        var summaryParts = [service.label + ' in Scottsdale and nearby Valley cities'];
+        summaryParts.push(usesAreaAsPrimaryDriver
+          ? 'based on approximately ' + size.toLocaleString('en-US') + ' square feet'
+          : 'using site scale as one planning input, not a per-square-foot price');
+        summaryParts.push(finish === 'premium' ? 'with a premium finish level' : (finish === 'simple' ? 'with a simpler refresh scope' : 'with a standard finish level'));
 
         summaryField.textContent = summaryParts.join(', ');
 
         driversField.innerHTML = [
           'Project type: ' + service.label,
-          'Yard size: ' + size.toLocaleString('en-US') + ' square feet',
+          (usesAreaAsPrimaryDriver ? 'Approximate project area: ' : 'Site scale (not a unit-price calculation): ') + size.toLocaleString('en-US') + ' square feet',
           'Finish level: ' + (finish === 'premium' ? 'Premium custom build' : finish === 'simple' ? 'Simple refresh' : 'Standard upgrade'),
           'Major features: ' + features,
           'Timeline: ' + (timeline === 'asap' ? 'ASAP' : timeline === 'this-season' ? 'This season' : 'Flexible')
@@ -432,6 +436,7 @@
         }).join('');
 
         updateReviewLink(service, low, high, timeline, features);
+        if (announcementField) announcementField.textContent = 'Updated planning range: ' + formatRange(low, high) + ' for ' + service.label + '.';
       }
 
       sizeField.addEventListener('input', renderEstimate);
