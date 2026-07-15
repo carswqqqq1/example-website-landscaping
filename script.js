@@ -4828,26 +4828,6 @@
     ? window.matchMedia('(prefers-reduced-motion: reduce)')
     : null;
   var ambientVideo = document.querySelector('[data-ambient-video]');
-  var ambientVideoPlay = document.querySelector('[data-ambient-video-play]');
-
-  function showAmbientVideoPlay() {
-    if (!ambientVideoPlay || (motionPreference && motionPreference.matches)) return;
-    ambientVideoPlay.hidden = false;
-  }
-
-  function hideAmbientVideoPlay() {
-    if (ambientVideoPlay) ambientVideoPlay.hidden = true;
-  }
-
-  function tryAmbientVideo() {
-    if (!ambientVideo) return;
-    ambientVideo.muted = true;
-    ambientVideo.defaultMuted = true;
-    var playAttempt = ambientVideo.play();
-    if (playAttempt && typeof playAttempt.then === 'function') {
-      playAttempt.then(hideAmbientVideoPlay).catch(showAmbientVideoPlay);
-    }
-  }
 
   function syncAmbientVideo() {
     if (!ambientVideo || !motionPreference) return;
@@ -4858,17 +4838,12 @@
     }
 
     ambientVideo.setAttribute('autoplay', '');
-    tryAmbientVideo();
-  }
-
-  if (ambientVideo) {
-    ambientVideo.addEventListener('playing', hideAmbientVideoPlay);
-    ambientVideo.addEventListener('error', showAmbientVideoPlay);
-  }
-  if (ambientVideoPlay) {
-    ambientVideoPlay.addEventListener('click', function () {
-      tryAmbientVideo();
-    });
+    var playAttempt = ambientVideo.play();
+    if (playAttempt && typeof playAttempt.catch === 'function') {
+      playAttempt.catch(function () {
+        /* The poster remains visible when browser autoplay policy blocks video. */
+      });
+    }
   }
 
   syncAmbientVideo();

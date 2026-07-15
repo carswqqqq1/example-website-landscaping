@@ -5807,41 +5807,6 @@ body.has-nav-overlay-open .cookie-banner {
   object-fit: cover;
   object-position: 50% 53%;
   filter: saturate(.86) contrast(1.04);
-  pointer-events: none;
-}
-
-.industry-hero__video::-webkit-media-controls-start-playback-button {
-  display: none !important;
-  -webkit-appearance: none;
-}
-
-.industry-hero__play {
-  position: absolute;
-  z-index: 2;
-  top: clamp(5.75rem, 12vh, 8rem);
-  right: clamp(1.15rem, 3vw, 3rem);
-  display: inline-flex;
-  align-items: center;
-  gap: .65rem;
-  min-height: 44px;
-  padding: .72rem 1rem;
-  border: 1px solid rgba(255, 255, 255, .72);
-  border-radius: 999px;
-  background: rgba(4, 22, 17, .78);
-  color: var(--white);
-  font: 700 .72rem/1 var(--font-sans);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.industry-hero__play[hidden] {
-  display: none;
-}
-
-.industry-hero__play span {
-  font-size: .8rem;
 }
 
 .industry-hero__veil {
@@ -6751,11 +6716,6 @@ body.has-nav-overlay-open .cookie-banner {
     object-position: 62% 50%;
   }
 
-  .industry-hero__play {
-    top: 5.4rem;
-    right: 1rem;
-  }
-
   .industry-hero__veil {
     background:
       linear-gradient(0deg, rgba(4, 22, 17, .92) 0%, rgba(4, 22, 17, .64) 68%, rgba(4, 22, 17, .3) 100%);
@@ -6951,9 +6911,5 @@ body.has-nav-overlay-open .cookie-banner {
 
   .industry-hero__media {
     background: url('img/hero/covered-patio-hero-poster.jpg') center / cover no-repeat;
-  }
-
-  .industry-hero__play {
-    display: none;
   }
 }
