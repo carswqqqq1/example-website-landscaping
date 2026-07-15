@@ -1147,26 +1147,6 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   align-items: center;
   gap: .5rem;
 }
-.hero__toggle {
-  min-width: 62px;
-  height: 44px;
-  padding-inline: .72rem;
-  border: 1px solid rgba(255,255,255,.48);
-  border-radius: 999px;
-  background: rgba(8,15,11,.54);
-  color: var(--white);
-  font-size: .65rem;
-  font-weight: 800;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
-}
-.hero__toggle:hover,
-.hero__toggle:focus-visible {
-  background: rgba(8,15,11,.78);
-  border-color: rgba(255,255,255,.82);
-}
 .hero__dot {
   width: 44px;
   min-width: 44px;
@@ -5047,10 +5027,6 @@ body.has-cookie-banner-visible .sticky-bar {
     display: flex;
     bottom: .75rem;
     gap: .15rem;
-  }
-  .hero__toggle {
-    min-width: 56px;
-    padding-inline: .58rem;
   }
   .hero__dot,
   .hero__dot.is-active {
