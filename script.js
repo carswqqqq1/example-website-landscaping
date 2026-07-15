@@ -61,6 +61,68 @@
     return LEAD_SUBMISSION_ENDPOINT;
   }
 
+  function setFieldValidationState(field, isValid) {
+    if (!field) return;
+    var fieldId = String(field.id || '').trim();
+    var errorId = fieldId ? fieldId + '-error' : '';
+    var fieldWrap = field.closest ? field.closest('.form-field, .form-consent') : null;
+    var error = errorId ? document.getElementById(errorId) : null;
+
+    if (!error && fieldId) {
+      error = document.createElement('p');
+      error.id = errorId;
+      error.className = 'field-error';
+      error.setAttribute('role', 'status');
+      error.setAttribute('aria-live', 'polite');
+      if (fieldWrap && fieldWrap.parentNode) {
+        fieldWrap.insertAdjacentElement('afterend', error);
+      } else if (field.parentNode) {
+        field.insertAdjacentElement('afterend', error);
+      }
+    }
+
+    field.setAttribute('aria-invalid', isValid ? 'false' : 'true');
+    field.style.borderColor = isValid ? '' : '#a82a22';
+    if (fieldWrap) fieldWrap.classList.toggle('has-error', !isValid);
+    if (error) {
+      error.textContent = isValid ? '' : 'This field is required.';
+      error.hidden = isValid;
+      if (!isValid && fieldId) {
+        var describedBy = String(field.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+        if (describedBy.indexOf(errorId) < 0) describedBy.push(errorId);
+        field.setAttribute('aria-describedby', describedBy.join(' '));
+      }
+    }
+  }
+
+  function validateRequiredFields(fields, summary, summaryMessage) {
+    var firstInvalid = null;
+    (fields || []).forEach(function (field) {
+      if (!field || field.disabled) return;
+      var isValid = field.type === 'checkbox'
+        ? field.checked
+        : String(field.value || '').trim() !== '';
+      setFieldValidationState(field, isValid);
+      if (!isValid && !firstInvalid) firstInvalid = field;
+    });
+
+    if (firstInvalid) {
+      if (summary) {
+        summary.textContent = summaryMessage || 'Please complete the required fields and try again.';
+        summary.hidden = false;
+      }
+      window.setTimeout(function () {
+        firstInvalid.focus();
+      }, 0);
+      return false;
+    }
+    if (summary) {
+      summary.textContent = '';
+      summary.hidden = true;
+    }
+    return true;
+  }
+
   function setTurnstileStatus(form, message, isError) {
     var status = form && form.querySelector('[data-turnstile-status]');
     if (!status) return;
@@ -2784,7 +2846,7 @@
       '      </details>' +
       '      <label class="form-consent form-consent--drawer" for="consult-contact-consent">' +
       '        <input type="checkbox" id="consult-contact-consent" name="contact_consent" value="yes" required />' +
-      '        <span>I agree to be contacted by Think Green about this project request by phone, text, or email. No spam, no resale.</span>' +
+      '        <span>I agree to be contacted by Think Green about this project request by phone, text, or email. No spam, no resale. See our <a href="/privacy-policy">Privacy Policy</a>.</span>' +
       '      </label>' +
       '      <div class="turnstile-field" data-turnstile-container></div>' +
       '      <p class="turnstile-status" data-turnstile-status role="status" aria-live="polite"></p>' +
@@ -2922,18 +2984,7 @@
         consultDrawerState.service,
         consultDrawerState.consent
       ];
-      var valid = true;
-
-      requiredFields.forEach(function (field) {
-        var ok = field.type === 'checkbox'
-          ? field.checked
-          : String(field.value || '').trim() !== '';
-        field.style.borderColor = ok ? '' : '#c62828';
-        if (!ok) valid = false;
-      });
-
-      if (!valid) {
-        consultDrawerState.error.textContent = 'Please complete the required fields before submitting your project request.';
+      if (!validateRequiredFields(requiredFields, consultDrawerState.error, 'Please complete the required fields before submitting your project request.')) {
         consultDrawerState.error.classList.add('is-visible');
         return;
       }
@@ -4133,24 +4184,7 @@
       gateForm.addEventListener('submit', async function (event) {
         event.preventDefault();
         if (error) error.textContent = '';
-
-        var nameValue = String(requiredName && requiredName.value || '').trim();
-        if (!nameValue) {
-          if (error) error.textContent = 'Enter your name to unlock the checklist download.';
-          if (requiredName) requiredName.focus();
-          return;
-        }
-
-        var emailValue = String(requiredEmail && requiredEmail.value || '').trim();
-        if (!emailValue) {
-          if (error) error.textContent = 'Enter an email to unlock the checklist download.';
-          if (requiredEmail) requiredEmail.focus();
-          return;
-        }
-
-        if (!requiredConsent || !requiredConsent.checked) {
-          if (error) error.textContent = 'Confirm that we can send the checklist and follow up about this request.';
-          if (requiredConsent) requiredConsent.focus();
+        if (!validateRequiredFields([requiredName, requiredEmail, requiredConsent], error, 'Enter your name, email, and consent to unlock the checklist download.')) {
           return;
         }
 
@@ -4442,20 +4476,8 @@
 
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
-      var valid = true;
-      form.querySelectorAll('[required]').forEach(function (f) {
-        var ok = f.type === 'checkbox'
-          ? f.checked
-          : String(f.value || '').trim() !== '';
-        f.style.borderColor = ok ? '' : '#c62828';
-        if (!ok) valid = false;
-      });
-
-      if (!valid) {
-        if (errorMessage) {
-          errorMessage.textContent = 'Please complete all required fields before submitting your project request.';
-          errorMessage.style.display = 'block';
-        }
+      if (!validateRequiredFields(Array.from(form.querySelectorAll('[required]')), errorMessage, 'Please complete all required fields before submitting your project request.')) {
+        if (errorMessage) errorMessage.style.display = 'block';
         return;
       }
 
@@ -4639,10 +4661,13 @@
 
     form.querySelectorAll('input, select, textarea').forEach(function (f) {
       f.addEventListener('input', function () {
-        this.style.borderColor = '';
+        setFieldValidationState(this, true);
         updateFormProgress();
       });
-      f.addEventListener('change', updateFormProgress);
+      f.addEventListener('change', function () {
+        setFieldValidationState(this, true);
+        updateFormProgress();
+      });
     });
     updateFormProgress();
   }
