@@ -3,11 +3,15 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="color-scheme" content="light only"/>
+<meta name="supported-color-schemes" content="light only"/>
+<meta name="x-apple-disable-message-reformatting"/>
 <meta name="robots" content="noindex, nofollow"/>
 <title>Think Green - Project Request Received</title>
 <style>
+:root{color-scheme:light only;supported-color-schemes:light only;}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#e8e3d9;font-family:'Jost',sans-serif;color:#1d1d1d;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;}
+body{background:#e8e3d9;font-family:'Jost','Helvetica Neue',Helvetica,Arial,sans-serif;color:#1d1d1d;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;}
 .email-wrap{max-width:600px;margin:0 auto;background:#f5f1ea;}
 .preheader{display:none !important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all;line-height:1px;font-size:1px;}
 a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font-size:inherit !important;font-family:inherit !important;font-weight:inherit !important;line-height:inherit !important;}
@@ -19,13 +23,13 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .logo-img{display:block;border:0;outline:none;text-decoration:none;margin:0 auto;}
 .brand-sub{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:#d2e6d5;font-weight:500;margin:0 0 8px;}
 .header-tag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#8dc39a;font-weight:500;margin-bottom:7px;}
-.header-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;font-weight:600;color:#f8f5ef;line-height:1.05;margin:0 auto 10px;max-width:420px;}
+.header-title{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:34px;font-weight:600;color:#f8f5ef;line-height:1.05;margin:0 auto 10px;max-width:420px;}
 .header-sub{font-size:13px;color:#c5ddd0;letter-spacing:0.04em;line-height:1.55;}
 .accent{height:4px;background:linear-gradient(90deg,#2f6f3f 0%,#69a879 50%,#2f6f3f 100%);}
 
 .section{padding:22px 24px;background:#ffffff;}
 .intro{padding-bottom:22px;}
-.salutation{font-family:'Cormorant Garamond',serif;font-size:44px;font-style:italic;color:#1b4728;line-height:0.92;margin-bottom:14px;}
+.salutation{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:44px;font-style:italic;color:#1b4728;line-height:0.92;margin-bottom:14px;}
 .intro p{font-size:16px;line-height:1.72;color:#4f4f4f;}
 
 .confirm-strip{background:#f5f0e8;border-top:1px solid #e0d9cd;border-bottom:1px solid #e0d9cd;padding:12px 24px;}
@@ -41,7 +45,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .step-row:last-child td{border-bottom:none;}
 .step-index{width:46px;padding-right:8px;}
 .step-num{display:inline-block;width:30px;height:30px;line-height:30px;text-align:center;border-radius:8px;background:#1b4728;color:#f8f5ef;font-size:12px;font-weight:700;}
-.step-title{display:block;font-size:22px;font-family:'Cormorant Garamond',Georgia,serif;color:#161616;line-height:1.1;margin-bottom:4px;}
+.step-title{display:block;font-size:22px;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;color:#161616;line-height:1.1;margin-bottom:4px;}
 .step-copy{font-size:14px;color:#5f5f5f;line-height:1.65;}
 
 .summary-wrap{background:#f5f0e8;border-top:1px solid #e0d9cd;border-bottom:1px solid #e0d9cd;}
@@ -57,7 +61,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 
 .vision{background:#1b4728;color:#d8edd9;padding:18px 24px;}
 .vision-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#7ab88a;font-weight:600;margin-bottom:12px;}
-.vision-quote{font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-style:italic;line-height:1.18;color:#f1f6f1;border-left:3px solid #4f9360;padding-left:16px;word-break:break-word;overflow-wrap:anywhere;}
+.vision-quote{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:28px;font-style:italic;line-height:1.18;color:#f1f6f1;border-left:3px solid #4f9360;padding-left:16px;word-break:break-word;overflow-wrap:anywhere;}
 
 .cta{padding:20px 24px;background:#ffffff;text-align:center;}
 .cta-msg{font-size:14px;color:#585858;line-height:1.75;margin-bottom:18px;}
@@ -147,7 +151,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
         <td class="step-index"><span class="step-num">2</span></td>
         <td>
           <span class="step-title">We Reach Out</span>
-          <div class="step-copy">A team member contacts you via <em>{{submission.data.preferred_contact}}</em> within 1-2 business days.</div>
+          <div class="step-copy">A team member contacts you {{contact_via_phrase}} within 1-2 business days.</div>
         </td>
       </tr>
       <tr class="step-row">
@@ -178,7 +182,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
   <div class="cta">
     <p class="cta-msg">While we review your request, you can explore recent project work for layout and material inspiration.</p>
     <a href="{{SITE_URL}}/portfolio" class="cta-btn">Explore Our Work</a>
-    <p class="cta-phone">Need to reach us now? Call <a href="tel:4809229497">(480) 922-9497</a></p>
+    <p class="cta-phone">Need to reach us now? Call <a href="tel:+14809229497">(480) 922-9497</a></p>
   </div>
 
   <div class="footer">

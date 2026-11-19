@@ -523,8 +523,36 @@ function buildFullName(firstName, lastName) {
 }
 
 function buildProjectLocation(projectAddress, city) {
-  const parts = [safeText(projectAddress, ''), safeText(city, '')].filter((part) => !isPlaceholderValue(part));
+  const address = safeText(projectAddress, '');
+  const cityText = safeText(city, '');
+  const parts = [address, cityText].filter((part) => !isPlaceholderValue(part));
+  // Skip the city when the street address already contains it.
+  if (parts.length === 2 && address.toLowerCase().includes(cityText.toLowerCase())) return address;
   return parts.length ? parts.join(', ') : '';
+}
+
+function formatPhoneDisplay(value) {
+  const raw = String(value || '').trim();
+  let digits = raw.replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('1')) digits = digits.slice(1);
+  if (digits.length !== 10) return raw;
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
+function toTelHref(value) {
+  let digits = String(value || '').replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('1')) digits = digits.slice(1);
+  return digits.length === 10 ? `+1${digits}` : normalizePhone(value);
+}
+
+function buildEmailDisplayContext(data) {
+  const method = normalizeOptionalField(data.contact_method, '');
+  const phone = normalizeOptionalField(data.phone, '');
+  return {
+    contact_via_phrase: method ? `by ${method.toLowerCase()}` : 'by phone or email',
+    phone_display: phone ? formatPhoneDisplay(phone) : '',
+    phone_tel: phone ? toTelHref(phone) : ''
+  };
 }
 
 function cleanBudgetLabel(value) {
@@ -916,7 +944,7 @@ function buildDataRow(label, value, options = {}) {
     return `<tr><th>${escapedLabel}</th><td><a class="summary-link" href="mailto:${escapeAttribute(normalizedValue)}">${escapedValue}</a></td></tr>`;
   }
   if (options.link === 'phone' && isValidPhone(normalizedValue)) {
-    return `<tr><th>${escapedLabel}</th><td><a class="summary-link" href="tel:${escapeAttribute(normalizePhone(normalizedValue))}">${escapedValue}</a></td></tr>`;
+    return `<tr><th>${escapedLabel}</th><td><a class="summary-link" href="tel:${escapeAttribute(toTelHref(normalizedValue))}">${escapeHtml(formatPhoneDisplay(normalizedValue))}</a></td></tr>`;
   }
   return `<tr><th>${escapedLabel}</th><td>${escapedValue}</td></tr>`;
 }
@@ -2163,7 +2191,8 @@ exports.handler = async (event) => {
       },
       ...normalized,
       ...buildClientSummaryTables(normalized),
-      ...buildOwnerTables(normalized)
+      ...buildOwnerTables(normalized),
+      ...buildEmailDisplayContext(normalized)
     };
 
     const ownerTemplate = readTemplate('thinkgreen-owner-email.html');
