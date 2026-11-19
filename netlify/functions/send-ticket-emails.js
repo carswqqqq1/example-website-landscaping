@@ -632,6 +632,11 @@ function isGmailAddress(fromValue) {
 }
 
 function getFromEmail(provider = 'auto') {
+  const senderName = process.env.FROM_NAME || SITE_CONFIG.shortName || '';
+  return serviceTypes.withSenderName(getConfiguredFromEmail(provider), senderName);
+}
+
+function getConfiguredFromEmail(provider = 'auto') {
   if (provider === 'resend') {
     if (RESEND_FROM_EMAIL) return RESEND_FROM_EMAIL;
     if (FROM_EMAIL && !isGmailAddress(FROM_EMAIL)) return FROM_EMAIL;

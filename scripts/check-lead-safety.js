@@ -462,7 +462,7 @@ async function captureEmails(handleLeadRequest, payload) {
   const siteConfig = require(path.join(root, "site-config.js"));
   const response = await handleLeadRequest({
     request: requestFor(payload),
-    env: productionEnv(),
+    env: productionEnv({ RESEND_FROM_EMAIL: "Old Client Name <sender@example.com>" }),
     ownerTemplate,
     clientTemplate,
     siteConfig,
@@ -497,6 +497,7 @@ async function assertServiceTypeBranching(handleLeadRequest) {
   const mOwner = maintenance.emails.find((email) => email.to === "owner@example.com");
   const mClient = maintenance.emails.find((email) => email.to === "client@example.com");
   assert(mOwner && mClient, "maintenance lead must email owner and client");
+  assert.strictEqual(mOwner.from, "Mesa Wren <sender@example.com>", "sender display name must follow the site brand");
   assert(mOwner.subject.startsWith("[MAINTENANCE] "), `maintenance owner subject must carry the type tag: ${mOwner.subject}`);
   assert(mOwner.html.includes("[MAINTENANCE]"), "maintenance owner header must carry the type tag");
   assert(mOwner.html.includes("Biweekly") && mOwner.html.includes("Medium"), "maintenance owner email must show frequency and yard size");
