@@ -7,7 +7,7 @@
 <meta name="supported-color-schemes" content="light only"/>
 <meta name="x-apple-disable-message-reformatting"/>
 <meta name="robots" content="noindex, nofollow"/>
-<title>Think Green - Project Request Received</title>
+<title>{{BRAND_SHORT}} - {{client_header_tag}}</title>
 <style>
 :root{color-scheme:light only;supported-color-schemes:light only;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -100,7 +100,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 </style>
 </head>
 <body>
-<div class="preheader" style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;color:transparent;">Your Think Green project request has been received. We will contact you within 1-2 business days.</div>
+<div class="preheader" style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;color:transparent;">{{client_preheader}}</div>
 <div class="email-wrap">
 
   <div class="header">
@@ -108,21 +108,21 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
       <table class="logo-table" role="presentation" align="center">
         <tr>
           <td class="logo-cell" align="center" valign="middle">
-            <img class="logo-img" src="{{EMAIL_LOGO_URL}}" alt="Think Green Design | Build Landscape" width="96" height="96" style="display:block;width:96px;height:96px;max-width:96px;border:0;outline:none;text-decoration:none;margin:0 auto;"/>
+            <img class="logo-img" src="{{EMAIL_LOGO_URL}}" alt="{{BRAND_NAME}}" width="96" height="96" style="display:block;width:96px;height:96px;max-width:96px;border:0;outline:none;text-decoration:none;margin:0 auto;"/>
           </td>
         </tr>
       </table>
     </div>
-    <div class="header-tag">Project Request Received</div>
-    <p class="brand-sub">Think Green Landscape - Scottsdale, Arizona</p>
-    <h1 class="header-title">Your Project Request Is In Review.</h1>
+    <div class="header-tag">{{client_header_tag}}</div>
+    <p class="brand-sub">{{BRAND_SHORT}} - {{BRAND_CITY_LINE}}</p>
+    <h1 class="header-title">{{client_header_title}}</h1>
     <p class="header-sub">Submitted {{submission.data.submitted_local}}</p>
   </div>
   <div class="accent"></div>
 
   <div class="section intro">
     <div class="salutation">Hi {{submission.data.first_name}},</div>
-    <p>Thank you for reaching out to Think Green Landscape. Your project request has been received and is now being reviewed. We will contact you using your preferred method within <strong>1-2 business days</strong> to discuss next steps and schedule your project review.</p>
+    <p>{{client_intro_html}}</p>
   </div>
 
   <div class="confirm-strip">
@@ -131,7 +131,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
         <td class="confirm-icon"><span class="confirm-dot">&#10003;</span></td>
         <td class="confirm-copy">
           <strong>Your request has been received</strong>
-          <span>Our team will review your details and follow up with the next step.</span>
+          <span>{{client_confirm_copy}}</span>
         </td>
       </tr>
     </table>
@@ -140,27 +140,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
   <div class="section">
     <div class="section-head">What Happens Next</div>
     <table class="steps-table" role="presentation">
-      <tr class="step-row">
-        <td class="step-index"><span class="step-num">1</span></td>
-        <td>
-          <span class="step-title">Team Review</span>
-          <div class="step-copy">We review your request details and confirm service fit, timeline, and project goals.</div>
-        </td>
-      </tr>
-      <tr class="step-row">
-        <td class="step-index"><span class="step-num">2</span></td>
-        <td>
-          <span class="step-title">We Reach Out</span>
-          <div class="step-copy">A team member contacts you {{contact_via_phrase}} within 1-2 business days.</div>
-        </td>
-      </tr>
-      <tr class="step-row">
-        <td class="step-index"><span class="step-num">3</span></td>
-        <td>
-          <span class="step-title">Project Review Scheduled</span>
-          <div class="step-copy">We plan your on-site walkthrough and map the best next move for your landscape.</div>
-        </td>
-      </tr>
+      {{client_steps_html}}
     </table>
   </div>
 
@@ -180,23 +160,24 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
   {{client_vision_html}}
 
   <div class="cta">
-    <p class="cta-msg">While we review your request, you can explore recent project work for layout and material inspiration.</p>
-    <a href="{{SITE_URL}}/portfolio" class="cta-btn">Explore Our Work</a>
-    <p class="cta-phone">Need to reach us now? Call <a href="tel:+14809229497">(480) 922-9497</a></p>
+    <p class="cta-msg">{{client_cta_msg}}</p>
+    <a href="{{SITE_URL}}{{client_cta_path}}" class="cta-btn">{{client_cta_label}}</a>
+    <p class="cta-phone">Need to reach us now? Call <a href="tel:{{BRAND_PHONE_TEL}}">{{BRAND_PHONE_DISPLAY}}</a></p>
   </div>
 
   <div class="footer">
     <table class="footer-logo-table" role="presentation" align="center">
       <tr>
         <td class="footer-logo-cell" align="center" valign="middle">
-          <img class="footer-logo" src="{{EMAIL_LOGO_URL}}" alt="Think Green Design | Build Landscape" width="64" height="64" style="display:block;width:64px;height:64px;max-width:64px;border:0;outline:none;text-decoration:none;margin:0 auto;"/>
+          <img class="footer-logo" src="{{EMAIL_LOGO_URL}}" alt="{{BRAND_NAME}}" width="64" height="64" style="display:block;width:64px;height:64px;max-width:64px;border:0;outline:none;text-decoration:none;margin:0 auto;"/>
         </td>
       </tr>
     </table>
     <div class="footer-divider"></div>
     <p>
-      Think Green Landscape - Scottsdale, AZ
-      <span class="footer-small">You are receiving this because you submitted a project request.</span>
+      {{BRAND_SHORT}} - {{BRAND_CITY_LINE}}
+      <span class="footer-small">{{client_footer_reason}}</span>
+      <span class="footer-small">{{BRAND_SAMPLE_LABEL}}</span>
     </p>
   </div>
   <div class="safe-pad" aria-hidden="true"></div>

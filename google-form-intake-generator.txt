@@ -1,4 +1,4 @@
-THINK GREEN TEMPLATE DUPLICATION INTAKE
+MESA WREN TEMPLATE DUPLICATION INTAKE
 =======================================
 
 Use this file in Google Apps Script to auto-create a complete intake Google Form for new clients.
@@ -312,7 +312,7 @@ function createLandscaperClientIntakeForm() {
 
   form.addTextItem()
     .setTitle('Client Confirmation Sender Name')
-    .setHelpText('Example: Think Green Landscape')
+    .setHelpText('Example: Mesa Wren Landscape')
     .setRequired(true);
 
   form.addTextItem()

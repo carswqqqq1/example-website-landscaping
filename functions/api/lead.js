@@ -1,5 +1,5 @@
-import ownerTemplate from "../../emails/thinkgreen-owner-email.html";
-import clientTemplate from "../../emails/thinkgreen-client-email.html";
+import ownerTemplate from "../../emails/lead-owner-email.html";
+import clientTemplate from "../../emails/lead-client-email.html";
 import { handleLeadRequest } from "../../lib/landscape-lead-handler.mjs";
 import siteConfig from "../../site-config.js";
 
@@ -9,6 +9,7 @@ export function onRequest(context) {
     env: context.env,
     ownerTemplate,
     clientTemplate,
-    defaultEmailLogoUrl: siteConfig && siteConfig.emailLogoUrl
+    defaultEmailLogoUrl: siteConfig && siteConfig.emailLogoUrl,
+    siteConfig
   });
 }

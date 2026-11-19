@@ -8,7 +8,7 @@
       navLabel: 'Landscape Design',
       title: 'Landscape Design & Build',
       formValue: 'Landscape Design & Build',
-      metaTitle: 'Landscape Design in Scottsdale & Phoenix | Think Green',
+      metaTitle: 'Landscape Design in Scottsdale & Phoenix | Mesa Wren',
       metaDescription: 'Custom landscape design and build in Scottsdale and Phoenix with 3D planning, material coordination, and turnkey construction from one team.',
       heroHeadline: 'Landscape Design & Build in Scottsdale and Phoenix',
       heroSubtext: 'From concept sketches to final walkthrough, we design and build cohesive outdoor spaces that elevate curb appeal and day-to-day living.',
@@ -43,7 +43,7 @@
         'Detailed plan, selections, and scheduling',
         'Build execution and final walkthrough'
       ],
-      serviceAreaText: 'Think Green provides landscape design and design-build construction for homeowners in Scottsdale, Paradise Valley, Phoenix, and nearby communities across the Valley.',
+      serviceAreaText: 'Mesa Wren provides landscape design and design-build construction for homeowners in Scottsdale, Paradise Valley, Phoenix, and nearby communities across the Valley.',
       featuredProject: {
         title: 'North Scottsdale Master Plan',
         location: 'North Scottsdale, AZ',
@@ -105,7 +105,7 @@
         },
         {
           src: 'img/projects/after-29.jpg',
-          alt: 'Completed landscape transformation by Think Green in Gilbert Arizona',
+          alt: 'Completed landscape transformation by Mesa Wren in Gilbert Arizona',
           width: 880,
           height: 670,
           chip: 'Transformation',
@@ -262,7 +262,7 @@
       navLabel: 'Outdoor Kitchens',
       title: 'Outdoor Kitchens',
       formValue: 'Fire Feature / Outdoor Kitchen',
-      metaTitle: 'Outdoor Kitchens in Scottsdale & Phoenix | Think Green',
+      metaTitle: 'Outdoor Kitchens in Scottsdale & Phoenix | Mesa Wren',
       metaDescription: 'Custom outdoor kitchens in Scottsdale and Phoenix with grilling stations, counters, utility planning, and durable finishes built for Arizona outdoor living.',
       heroHeadline: 'Outdoor Kitchens in Scottsdale and Phoenix',
       heroSubtext: 'Create an outdoor kitchen that is beautiful, functional, and built for real entertaining in Arizona conditions.',
@@ -296,7 +296,7 @@
         'Utility coordination and build scheduling',
         'Installation, detail finish, and final walkthrough'
       ],
-      serviceAreaText: 'Think Green designs and builds outdoor kitchens for Scottsdale, Paradise Valley, Phoenix, and nearby Valley homes focused on entertaining and year-round use.',
+      serviceAreaText: 'Mesa Wren designs and builds outdoor kitchens for Scottsdale, Paradise Valley, Phoenix, and nearby Valley homes focused on entertaining and year-round use.',
       featuredProject: {
         title: 'Phoenix Entertaining Kitchen',
         location: 'Phoenix, AZ',
@@ -389,7 +389,7 @@
       navLabel: 'Outdoor Lighting',
       title: 'Outdoor Lighting',
       formValue: 'Outdoor Lighting',
-      metaTitle: 'Outdoor Lighting in Scottsdale & Phoenix | Think Green',
+      metaTitle: 'Outdoor Lighting in Scottsdale & Phoenix | Mesa Wren',
       metaDescription: 'Outdoor lighting design and installation in Scottsdale and Phoenix for pathway safety, curb appeal, highlighting, and evening outdoor living.',
       heroHeadline: 'Outdoor Lighting in Scottsdale and Phoenix',
       heroSubtext: 'Layered landscape lighting improves safety, curb appeal, and evening usability without making the yard feel overlit or generic.',
@@ -423,7 +423,7 @@
         'Low-voltage installation and wiring coordination',
         'Nighttime aiming, testing, and final walkthrough'
       ],
-      serviceAreaText: 'Think Green designs and installs outdoor lighting across Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities for curb appeal, safety, and outdoor living use.',
+      serviceAreaText: 'Mesa Wren designs and installs outdoor lighting across Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities for curb appeal, safety, and outdoor living use.',
       featuredProject: {
         title: 'Paradise Valley Evening Lighting Plan',
         location: 'Paradise Valley, AZ',
@@ -499,7 +499,7 @@
       navLabel: 'Pergola & Shade',
       title: 'Pergola & Shade Structures',
       formValue: 'Pergola / Shade Structure',
-      metaTitle: 'Pergolas and Shade Structures in Scottsdale & Phoenix | Think Green',
+      metaTitle: 'Pergolas and Shade Structures in Scottsdale & Phoenix | Mesa Wren',
       metaDescription: 'Pergolas and shade structures in Scottsdale and Phoenix for outdoor kitchens, patios, pool zones, and backyard lounge areas that stay usable through Arizona heat.',
       heroHeadline: 'Pergolas and Shade Structures in Scottsdale and Phoenix',
       heroSubtext: 'Shade structures help patios, kitchens, and lounge zones work harder through Arizona heat while giving the yard stronger architectural definition.',
@@ -533,7 +533,7 @@
         'Integration with hardscape, utilities, and surrounding features',
         'Construction coordination and final walkthrough'
       ],
-      serviceAreaText: 'Think Green plans pergolas and shade structures across Scottsdale, Paradise Valley, Phoenix, Chandler, Mesa, and nearby Valley communities.',
+      serviceAreaText: 'Mesa Wren plans pergolas and shade structures across Scottsdale, Paradise Valley, Phoenix, Chandler, Mesa, and nearby Valley communities.',
       featuredProject: {
         title: 'Tempe Pergola Lounge Upgrade',
         location: 'Tempe, AZ',
@@ -697,7 +697,7 @@
         },
         {
           src: 'img/projects/fireplace-vertical.jpg',
-          alt: 'Vertical outdoor fireplace detail by Think Green',
+          alt: 'Vertical outdoor fireplace detail by Mesa Wren',
           width: 620,
           height: 700,
           chip: 'Detailing',
@@ -769,7 +769,7 @@
         'Layout confirmation with phasing or build planning',
         'Installation coordination and final walkthrough'
       ],
-      serviceAreaText: 'Think Green designs desert landscaping and xeriscape-focused projects for Scottsdale, Paradise Valley, Phoenix, Fountain Hills, and nearby Valley communities.',
+      serviceAreaText: 'Mesa Wren designs desert landscaping and xeriscape-focused projects for Scottsdale, Paradise Valley, Phoenix, Fountain Hills, and nearby Valley communities.',
       featuredProject: {
         title: 'Fountain Hills Xeriscape Refresh',
         location: 'Fountain Hills, AZ',
@@ -861,7 +861,7 @@
       navLabel: 'Artificial Turf',
       title: 'Artificial Turf',
       formValue: 'Artificial Turf',
-      metaTitle: 'Artificial Turf Installation in Scottsdale & Phoenix | Think Green',
+      metaTitle: 'Artificial Turf Installation in Scottsdale & Phoenix | Mesa Wren',
       metaDescription: 'Artificial turf installation in Scottsdale and Phoenix for clean curb appeal, lower water use, and low-maintenance outdoor living that looks finished year-round.',
       heroHeadline: 'Artificial Turf Installation in Scottsdale and Phoenix',
       heroSubtext: 'Upgrade to premium turf systems with natural appearance, clean edges, and drainage-aware installation for Arizona homes.',
@@ -896,7 +896,7 @@
         'Arcadia backyard upgrade: low-maintenance turf layout designed to stay usable through summer heat.',
         'Phoenix front-yard refresh: premium turf paired with drought-tolerant planting for curb appeal.'
       ],
-      serviceAreaText: 'Think Green installs artificial turf across Scottsdale, Paradise Valley, Phoenix, and nearby Valley neighborhoods for both front-yard and backyard projects.',
+      serviceAreaText: 'Mesa Wren installs artificial turf across Scottsdale, Paradise Valley, Phoenix, and nearby Valley neighborhoods for both front-yard and backyard projects.',
       featuredProject: {
         title: 'Mesa Turf and Border Refresh',
         location: 'Mesa, AZ',
@@ -992,7 +992,7 @@
       navLabel: 'Irrigation',
       title: 'Irrigation Systems',
       formValue: 'Irrigation',
-      metaTitle: 'Irrigation Systems in Scottsdale & Phoenix | Think Green',
+      metaTitle: 'Irrigation Systems in Scottsdale & Phoenix | Mesa Wren',
       metaDescription: 'Smart irrigation design and upgrades in Scottsdale and Phoenix, including drip systems, zone planning, controller optimization, and water-efficient retrofits.',
       heroHeadline: 'Irrigation Systems in Scottsdale and Phoenix',
       heroSubtext: 'Keep your landscape healthy with efficient irrigation planning, modern controls, and climate-aware water management built for Arizona.',
@@ -1026,7 +1026,7 @@
         'Install or retrofit with controller setup',
         'Testing, calibration, and owner walkthrough'
       ],
-      serviceAreaText: 'Think Green designs and upgrades irrigation systems across Scottsdale, Paradise Valley, Phoenix, and neighboring Valley communities.',
+      serviceAreaText: 'Mesa Wren designs and upgrades irrigation systems across Scottsdale, Paradise Valley, Phoenix, and neighboring Valley communities.',
       featuredProject: {
         title: 'Chandler Irrigation Retrofit',
         location: 'Chandler, AZ',

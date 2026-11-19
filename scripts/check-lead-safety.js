@@ -5,8 +5,8 @@ const path = require("path");
 const { pathToFileURL } = require("url");
 
 const root = process.cwd();
-const ownerTemplate = fs.readFileSync(path.join(root, "emails", "thinkgreen-owner-email.html"), "utf8");
-const clientTemplate = fs.readFileSync(path.join(root, "emails", "thinkgreen-client-email.html"), "utf8");
+const ownerTemplate = fs.readFileSync(path.join(root, "emails", "lead-owner-email.html"), "utf8");
+const clientTemplate = fs.readFileSync(path.join(root, "emails", "lead-client-email.html"), "utf8");
 const TURNSTILE_SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 const TURNSTILE_TEST_TOKEN = "turnstile-test-token";
 
@@ -62,7 +62,7 @@ function productionEnv(overrides = {}) {
     OWNER_EMAIL: "owner@example.com",
     TURNSTILE_SECRET_KEY: "turnstile-secret",
     RESEND_API_KEY: "re_test_only",
-    RESEND_FROM_EMAIL: "Think Green <sender@example.com>",
+    RESEND_FROM_EMAIL: "Mesa Wren <sender@example.com>",
     GOOGLE_SHEETS_WEBHOOK_URL: "https://script.example/lead",
     GOOGLE_SHEETS_WEBHOOK_SECRET: "sheet-secret",
     GOOGLE_SHEET_URL: "https://docs.example/sheet",
@@ -127,7 +127,7 @@ function assertStaticRoutingAndSafety() {
   assert(/name="contact_consent"[^>]+required/.test(checklist), "resource gate must require consent");
 
   assert(entry.includes("landscape-lead-handler.mjs"), "Pages Function must use the native Cloudflare handler");
-  assert(entry.includes("thinkgreen-owner-email.html") && entry.includes("thinkgreen-client-email.html"), "Pages Function must bundle the branded templates as text modules");
+  assert(entry.includes("lead-owner-email.html") && entry.includes("lead-client-email.html"), "Pages Function must bundle the branded templates as text modules");
   assert(!/netlify|LEAD_BACKEND_ENDPOINT|LEAD_PROXY_SECRET/i.test(entry), "Pages Function must not proxy to another hosting platform");
   assert(!/\brequire\s*\(|\bprocess\.env\b|\bBuffer\b|node:|nodemailer|appendFileSync|readFileSync/.test(handler), "runtime handler must use Web APIs only");
   assert(handler.includes('headers["Idempotency-Key"] = idempotencyKey'), "Resend requests must carry ticket-scoped idempotency keys");
@@ -457,6 +457,77 @@ async function assertResourceGate(handleLeadRequest) {
   assert.strictEqual(emailCalls, 2, "resource gate should send owner and client emails");
 }
 
+async function captureEmails(handleLeadRequest, payload) {
+  const emails = [];
+  const siteConfig = require(path.join(root, "site-config.js"));
+  const response = await handleLeadRequest({
+    request: requestFor(payload),
+    env: productionEnv(),
+    ownerTemplate,
+    clientTemplate,
+    siteConfig,
+    fetchImpl: withTurnstile(async (url, options = {}) => {
+      if (String(url) === "https://api.resend.com/emails") {
+        emails.push(JSON.parse(String(options.body || "{}")));
+        return new Response(JSON.stringify({ id: `email-${emails.length}` }), { status: 200 });
+      }
+      return new Response(JSON.stringify({
+        ok: true,
+        row_id: "21",
+        row_url: "https://docs.example/row/21",
+        status: "New",
+        spreadsheet_url: "https://docs.example/sheet"
+      }), { status: 200 });
+    })
+  });
+  return { response, emails };
+}
+
+async function assertServiceTypeBranching(handleLeadRequest) {
+  const base = { service: "", selected_service: "", message: "" };
+  const maintenance = await captureEmails(handleLeadRequest, validLeadPayload({
+    ...base,
+    service_type: "maintenance",
+    service_address: "100 Sample Way",
+    yard_size: "Medium",
+    service_frequency: "Biweekly",
+    preferred_start_date: "2026-12-01"
+  }));
+  assert(maintenance.response.status === 200 || maintenance.response.status === 202, `maintenance lead must be accepted (got ${maintenance.response.status})`);
+  const mOwner = maintenance.emails.find((email) => email.to === "owner@example.com");
+  const mClient = maintenance.emails.find((email) => email.to === "client@example.com");
+  assert(mOwner && mClient, "maintenance lead must email owner and client");
+  assert(mOwner.subject.startsWith("[MAINTENANCE] "), `maintenance owner subject must carry the type tag: ${mOwner.subject}`);
+  assert(mOwner.html.includes("[MAINTENANCE]"), "maintenance owner header must carry the type tag");
+  assert(mOwner.html.includes("Biweekly") && mOwner.html.includes("Medium"), "maintenance owner email must show frequency and yard size");
+  assert(!/Budget|Client Vision/.test(mOwner.html), "maintenance owner email must not show budget or vision");
+  assert(/quote request/i.test(mClient.subject) && mClient.html.includes("24 hours"), "maintenance client email must be a quote request with 24-hour callback");
+
+  const oneTime = await captureEmails(handleLeadRequest, validLeadPayload({
+    ...base,
+    ticket_id: "TG-SAFETY-TEST-002",
+    service_type: "one_time",
+    service_address: "200 Sample Way",
+    job_description: "Broken drip line in the backyard",
+    job_timing: "Within 2 weeks"
+  }));
+  assert(oneTime.response.status === 200 || oneTime.response.status === 202, `one-time lead must be accepted (got ${oneTime.response.status})`);
+  const oOwner = oneTime.emails.find((email) => email.to === "owner@example.com");
+  assert(oOwner && oOwner.subject.startsWith("[ONE-TIME] "), "one-time owner subject must carry the type tag");
+  assert(oOwner.html.includes("Broken drip line in the backyard"), "one-time owner email must show the job description");
+
+  const project = await captureEmails(handleLeadRequest, validLeadPayload({ ticket_id: "TG-SAFETY-TEST-003", service_type: "project" }));
+  const pOwner = project.emails.find((email) => email.to === "owner@example.com");
+  const pClient = project.emails.find((email) => email.to === "client@example.com");
+  assert(pOwner && pOwner.subject.startsWith("[PROJECT] "), "project owner subject must carry the type tag");
+  assert(/project request/i.test(pClient.subject), "project client email keeps the project copy");
+
+  const invalid = await captureEmails(handleLeadRequest, validLeadPayload({ ticket_id: "TG-SAFETY-TEST-004", service_type: "landscaping-please" }));
+  assert.strictEqual(invalid.response.status, 422, "unknown service type must be rejected");
+  const missingFrequency = await captureEmails(handleLeadRequest, validLeadPayload({ ...base, ticket_id: "TG-SAFETY-TEST-005", service_type: "maintenance" }));
+  assert.strictEqual(missingFrequency.response.status, 422, "maintenance without frequency must be rejected");
+}
+
 async function main() {
   const moduleUrl = `${pathToFileURL(path.join(root, "lib", "landscape-lead-handler.mjs")).href}?test=${Date.now()}`;
   const { handleLeadRequest } = await import(moduleUrl);
@@ -472,6 +543,7 @@ async function main() {
     await assertPartialAndFailureSemantics(handleLeadRequest);
     await assertDurableDuplicateBehavior(handleLeadRequest);
     await assertResourceGate(handleLeadRequest);
+    await assertServiceTypeBranching(handleLeadRequest);
   } finally {
     console.error = originalError;
     console.log = originalLog;

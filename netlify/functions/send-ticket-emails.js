@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const serviceTypes = require('../../lib/lead-service-types.js');
 
 let SITE_CONFIG = {};
 
@@ -103,6 +104,7 @@ const DIRECT_SHEET_HEADERS = [
 ];
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 const LEAD_FIELD_LIMITS = {
+  ...serviceTypes.FIELD_LIMITS,
   ticket_id: 128,
   form_type: 32,
   full_name: 120,
@@ -348,6 +350,10 @@ function validateLeadSubmission(data = {}, payload = {}) {
   if (!validateLeadFieldLengths(data)) {
     return { ok: false, error: 'One or more fields are invalid or too long.' };
   }
+  if (!serviceTypes.normalizeServiceType(data.service_type)) {
+    return { ok: false, error: 'Please choose what you need.' };
+  }
+  serviceTypes.applyServiceTypeDefaults(data);
 
   const formType = normalizeWhitespace(data.form_type || payload.form_type || 'project_request');
   const ticketId = normalizeWhitespace(data.ticket_id || payload.ticket_id || '');
@@ -359,6 +365,10 @@ function validateLeadSubmission(data = {}, payload = {}) {
 
   if (formType !== 'project_request' && formType !== 'resource_gate') {
     return { ok: false, error: 'Please review the form and try again.' };
+  }
+  const serviceTypeError = serviceTypes.validateServiceTypeFields(data, formType);
+  if (serviceTypeError) {
+    return { ok: false, error: serviceTypeError };
   }
   if (!isValidLeadTicketId(ticketId)) {
     return { ok: false, error: 'Please refresh the page and try again.' };
@@ -437,11 +447,11 @@ function buildLeadFailureLog(reason, normalized = {}, meta = {}) {
 function logLeadFailure(reason, normalized = {}, meta = {}) {
   const record = buildLeadFailureLog(reason, normalized, meta);
   const line = JSON.stringify(record);
-  console.warn('[thinkgreen-lead-fallback]', line);
+  console.warn('[lead-fallback]', line);
   try {
-    fs.appendFileSync(path.join('/tmp', 'thinkgreen-lead-failures.jsonl'), `${line}\n`);
+    fs.appendFileSync(path.join('/tmp', 'lead-failures.jsonl'), `${line}\n`);
   } catch (error) {
-    console.warn('[thinkgreen-lead-fallback-log-error]', safeErrorForLog(error && error.message));
+    console.warn('[lead-fallback-log-error]', safeErrorForLog(error && error.message));
   }
 }
 
@@ -584,6 +594,7 @@ function buildPlainTextFromHtml(html) {
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/gi, ' ')
+    .replace(/&#(\d+);/g, (match, code) => String.fromCharCode(Number(code)))
     .replace(/&amp;/gi, '&')
     .replace(/&quot;/gi, '"')
     .replace(/&#39;/gi, '\'')
@@ -624,12 +635,12 @@ function getFromEmail(provider = 'auto') {
   if (provider === 'resend') {
     if (RESEND_FROM_EMAIL) return RESEND_FROM_EMAIL;
     if (FROM_EMAIL && !isGmailAddress(FROM_EMAIL)) return FROM_EMAIL;
-    return 'Think Green <onboarding@resend.dev>';
+    return 'Mesa Wren <onboarding@resend.dev>';
   }
 
   if (FROM_EMAIL) return FROM_EMAIL;
-  if (SMTP_USER) return `Think Green <${SMTP_USER}>`;
-  return 'Think Green <no-reply@thinkgreen-az.com>';
+  if (SMTP_USER) return `Mesa Wren <${SMTP_USER}>`;
+  return 'Mesa Wren <no-reply@mesawren.example>';
 }
 
 function configuredProvider() {
@@ -703,7 +714,14 @@ function buildNormalizedData(rawData = {}, meta = {}) {
 
   normalized.email = normalizeOptionalField(rawData.email || rawData.email_visible, '');
   normalized.phone = normalizeOptionalField(rawData.phone, '');
-  normalized.project_address = normalizeOptionalField(rawData.project_address || rawData.property_address || rawData.address, '');
+  normalized.project_address = normalizeOptionalField(rawData.project_address || rawData.service_address || rawData.property_address || rawData.address, '');
+  normalized.service_type = serviceTypes.normalizeServiceType(rawData.service_type) || 'project';
+  normalized.service_type_label = serviceTypes.typeInfo(normalized.service_type).label;
+  normalized.yard_size = normalizeOptionalField(rawData.yard_size, '');
+  normalized.service_frequency = normalizeOptionalField(rawData.service_frequency, '');
+  normalized.preferred_start_date = normalizeOptionalField(rawData.preferred_start_date, '');
+  normalized.job_description = normalizeOptionalField(rawData.job_description, '');
+  normalized.job_timing = normalizeOptionalField(rawData.job_timing, '');
   normalized.city = normalizeOptionalField(rawData.city || rawData.project_city, '');
   normalized.project_location = buildProjectLocation(normalized.project_address, normalized.city);
   normalized.service = normalizeOptionalField(rawData.service || rawData.project_type || rawData.selected_service, 'Landscape Design & Build');
@@ -1836,7 +1854,7 @@ async function sendToGoogleSheets(normalized, meta = {}) {
     method: 'POST',
     headers,
     body: JSON.stringify({
-      source: 'thinkgreen-ticket',
+      source: 'lead-ticket',
       secret: GOOGLE_SHEETS_WEBHOOK_SECRET || '',
       row
     })
@@ -1896,7 +1914,7 @@ async function postJsonOnce(url, body, options = {}) {
 
 async function fanOutCrmWebhooks(normalized, meta = {}) {
   const payload = {
-    source: 'thinkgreen-ticket',
+    source: 'lead-ticket',
     ticket_id: normalized.ticket_id,
     submitted_local: normalized.submitted_local,
     submitted_at_iso: meta.created_at || new Date().toISOString(),
@@ -2035,7 +2053,7 @@ exports.handler = async (event) => {
 
     const providedProxySecret = getHeaderValue(event, 'x-lead-proxy-secret');
     if (!LEAD_PROXY_SECRET) {
-      console.error('[thinkgreen-lead-config]', JSON.stringify({ message: 'LEAD_PROXY_SECRET is required' }));
+      console.error('[lead-config]', JSON.stringify({ message: 'LEAD_PROXY_SECRET is required' }));
       return netlifyResponse(503, { ok: false, error: 'Lead routing is temporarily unavailable.' });
     }
     const proxyAuthenticated = safeSecretEqual(providedProxySecret, LEAD_PROXY_SECRET);
@@ -2183,6 +2201,15 @@ exports.handler = async (event) => {
       });
     }
 
+    const displayContext = buildEmailDisplayContext(normalized);
+    const typeContext = serviceTypes.buildEmailContext(normalized, SITE_CONFIG, {
+      escapeHtml,
+      buildDataRow,
+      contactVia: displayContext.contact_via_phrase
+    });
+    const { override: typeOverride = {}, normalizedPatch = {}, ...typeTokens } = typeContext;
+    const typeTables = typeOverride;
+    Object.assign(normalized, normalizedPatch);
     const context = {
       SITE_URL,
       EMAIL_LOGO_URL,
@@ -2192,17 +2219,19 @@ exports.handler = async (event) => {
       ...normalized,
       ...buildClientSummaryTables(normalized),
       ...buildOwnerTables(normalized),
-      ...buildEmailDisplayContext(normalized)
+      ...displayContext,
+      ...typeTokens,
+      ...typeTables
     };
 
-    const ownerTemplate = readTemplate('thinkgreen-owner-email.html');
-    const clientTemplate = readTemplate('thinkgreen-client-email.html');
+    const ownerTemplate = readTemplate('lead-owner-email.html');
+    const clientTemplate = readTemplate('lead-client-email.html');
 
     const ownerHtml = fillTemplate(ownerTemplate, context);
     const clientHtml = fillTemplate(clientTemplate, context);
 
-    const ownerSubject = `New Think Green inquiry from ${normalized.full_name}`;
-    const clientSubject = `Think Green received your project request`;
+    const ownerSubject = typeTokens.owner_subject;
+    const clientSubject = typeTokens.client_subject;
 
     const emailTasks = [
       sendEmail({

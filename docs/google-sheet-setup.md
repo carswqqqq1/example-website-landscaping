@@ -30,7 +30,7 @@ Save the values before deploying the Pages Function that uses them.
 
 ## 4) Verify
 
-Submit the contact form once. The script auto-creates a spreadsheet named `Think Green Lead Dashboard` and writes rows to the `Owner Lead Dashboard` tab.
+Submit the contact form once. The script auto-creates a spreadsheet named `Mesa Wren Lead Dashboard` and writes rows to the `Owner Lead Dashboard` tab.
 
 Expected behavior:
 

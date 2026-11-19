@@ -1,5 +1,5 @@
 {
-  "name": "think-green-netlify-functions",
+  "name": "landscape-netlify-functions",
   "private": true,
   "description": "Runtime deps for the Netlify lead functions only. Cloudflare Pages does not use this.",
   "dependencies": {

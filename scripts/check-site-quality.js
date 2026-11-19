@@ -60,7 +60,7 @@ function hasRealQuotePath(html) {
 }
 
 function hasOnlyOnPageQuotePath(html) {
-  return /(?:Start Project Review|Get Quote)[\s\S]{0,120}href="#/i.test(html) ||
+  return /(?:Start Project Review|Get a Free Quote|Get Quote)[\s\S]{0,120}href="#/i.test(html) ||
     /href="#[^"]*(?:consultation|quote|contact)[^"]*"/i.test(html);
 }
 
@@ -78,7 +78,7 @@ function extractQuoteCtas(html) {
 }
 
 function isGenericQuoteText(text) {
-  return /^(?:Contact|Quote|Project Review|Get Quote|Start Project Review|Request My Project Review)$/i.test(text);
+  return /^(?:Contact|Quote|Project Review|Get Quote|Start Project Review|Get a Free Quote|Request My Project Review)$/i.test(text);
 }
 
 function getAttr(tag, attr) {
@@ -171,7 +171,7 @@ htmlFiles.forEach((file) => {
     failures.push(`${file}: unversioned CSS or JS asset reference`);
   }
 
-  if (/Start Project Review|Get Quote/i.test(html) && !hasRealQuotePath(html)) {
+  if (/Start Project Review|Get a Free Quote|Get Quote/i.test(html) && !hasRealQuotePath(html)) {
     failures.push(`${file}: quote CTA does not link to the real quote path`);
   }
 
@@ -294,7 +294,7 @@ if (fs.existsSync(siteConfigPath)) {
   const siteConfig = fs.readFileSync(siteConfigPath, 'utf8');
 
   if (/thinkgreen@thinkgreenaz\.com/i.test(siteConfig)) {
-    warnings.push('site-config.js: contains Think Green demo email — update for client before launch');
+    warnings.push('site-config.js: contains Mesa Wren demo email — update for client before launch');
   }
 
   if (/\.netlify\.app/i.test(siteConfig)) {
