@@ -29,6 +29,7 @@ Required:
 
 Optional:
 
+- `FROM_NAME` (optional sender display name, defaults to `site-config.js` `shortName`; the address still comes from `FROM_EMAIL` or `SMTP_USER`)
 - `FROM_EMAIL` (defaults to `Mesa Wren <SMTP_USER>`), `SMTP_HOST` (default `smtp.gmail.com`), `SMTP_PORT` (465), `SMTP_SECURE`
 - `EMAIL_PROVIDER` / `OWNER_EMAIL_PROVIDER` (`smtp` or `resend`, owner defaults to `smtp`, falls back to whichever has credentials)
 - `RESEND_API_KEY`, `RESEND_FROM_EMAIL` if you prefer Resend
