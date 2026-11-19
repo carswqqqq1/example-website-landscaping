@@ -107,7 +107,7 @@ function listItems(items) {
 function buildServiceConversionPlan(services, config) {
   const offerLabel = config.primaryOffer && config.primaryOffer.label
     ? config.primaryOffer.label
-    : 'Start Project Review';
+    : 'Get a Free Quote';
 
   return `# ${config.businessName} Service Conversion Plan
 
@@ -253,7 +253,7 @@ Generated on ${today} from ${absoluteInputPath}
 - Email: ${mergedConfig.email}
 - Address: ${mergedConfig.address.line1}, ${mergedConfig.address.city}, ${mergedConfig.address.state} ${mergedConfig.address.zip}
 - Service areas: ${mergedConfig.serviceAreas.join(', ')}
-- Primary offer: ${primaryOffer.label || 'Start Project Review'}
+- Primary offer: ${primaryOffer.label || 'Get a Free Quote'}
 - Offer promise: ${primaryOffer.promise || 'No pressure follow-up within one business day.'}
 - Financing: ${financing.enabled === false ? 'Disabled' : `${financing.label || 'Financing'} — ${financing.copy || 'Review with client before launch.'}`}
 - Trust position: ${[

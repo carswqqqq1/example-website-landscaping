@@ -68,13 +68,13 @@ try {
     return ['.json', '.md', '.txt'].includes(path.extname(filePath));
   });
   const forbidden = [
-    'Think Green Design | Build Landscape',
-    'Think Green',
+    'Mesa Wren Landscape Co.',
+    'Mesa Wren',
     'Think+Green',
     'Think%20Green',
     'thinkgreendesignbuild.com',
-    '4809229497',
-    '(480) 922-9497',
+    '4805550142',
+    '(480) 555-0142',
     'hello@thinkgreendesignbuild.com',
     'Netlify',
     'netlify',

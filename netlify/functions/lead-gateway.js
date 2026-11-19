@@ -68,7 +68,7 @@ exports.handler = async (event) => {
   try {
     return await dispatchLead({ ...event, headers });
   } catch (error) {
-    console.error('[thinkgreen-netlify-lead-gateway]', JSON.stringify({ message: String(error && error.message || error) }));
+    console.error('[netlify-lead-gateway]', JSON.stringify({ message: String(error && error.message || error) }));
     return response(503, { ok: false, error: 'Lead routing is temporarily unavailable.' });
   }
 };

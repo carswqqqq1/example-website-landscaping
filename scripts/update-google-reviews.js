@@ -163,7 +163,7 @@ async function fetchBusinessProfileReviews() {
   return {
     provider: 'google-business-profile',
     limited: false,
-    placeName: siteConfig.businessName || 'Think Green Design | Build Landscape',
+    placeName: siteConfig.businessName || 'Mesa Wren Landscape Co.',
     profileUrl: siteConfig.reviewSummary?.sourceUrl || siteConfig.googleReviews?.profileUrl || '',
     rating: String(siteConfig.reviewSummary?.rating || siteConfig.googleReviews?.rating || ''),
     reviewCount: String(reviews.length || siteConfig.reviewSummary?.count || siteConfig.googleReviews?.count || ''),
@@ -219,7 +219,7 @@ async function fetchPlacesReviews() {
     provider: 'google-places',
     limited: true,
     placeId: String(place.id || '').trim(),
-    placeName: textValue(place.displayName) || siteConfig.businessName || 'Think Green Design | Build Landscape',
+    placeName: textValue(place.displayName) || siteConfig.businessName || 'Mesa Wren Landscape Co.',
     profileUrl: String(place.googleMapsUri || siteConfig.reviewSummary?.sourceUrl || siteConfig.googleReviews?.profileUrl || '').trim(),
     rating: place.rating ? String(place.rating) : String(siteConfig.reviewSummary?.rating || siteConfig.googleReviews?.rating || ''),
     reviewCount: place.userRatingCount ? String(place.userRatingCount) : String(siteConfig.reviewSummary?.count || siteConfig.googleReviews?.count || ''),

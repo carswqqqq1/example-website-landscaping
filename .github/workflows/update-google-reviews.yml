@@ -1,15 +1,17 @@
 name: Update Google reviews
 
+# Disabled: this demo uses a fictional brand (Mesa Wren Landscape Co.) with labeled sample
+# testimonials in google-reviews.json. Re-enable only after connecting the real client's
+# Google Business Profile and setting the GOOGLE_* secrets for that client.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '17 10 * * *'
 
 permissions:
   contents: write
 
 jobs:
   update-google-reviews:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository

@@ -149,7 +149,7 @@
     lightboxImg.alt = image.alt || 'Project image preview';
     lightboxType.textContent = item.dataset.type || 'Landscape Project';
     lightboxLocation.textContent = item.dataset.location || 'Scottsdale / Phoenix Area';
-    lightboxDetail.textContent = item.dataset.detail || 'Design-build landscape project by Think Green.';
+    lightboxDetail.textContent = item.dataset.detail || 'Design-build landscape project by Mesa Wren.';
     updateRequestLinks(item);
   }
 

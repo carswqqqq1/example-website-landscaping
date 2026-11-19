@@ -88,7 +88,7 @@ After updating config, review these files for any remaining demo brand residue:
 - Local/city pages
 - `resources.html` and article pages
 - `reviews.html`, `process.html`, `free-consultation.html`
-- `emails/thinkgreen-client-email.html` and `emails/thinkgreen-owner-email.html`
+- `emails/lead-client-email.html` and `emails/lead-owner-email.html`
 - `.env.example`
 - `README.md`
 - `llms.txt` and `llms-full.txt`

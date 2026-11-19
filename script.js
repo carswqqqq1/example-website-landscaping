@@ -27,15 +27,15 @@
   var turnstileApiPromise = null;
   var turnstileWidgets = new WeakMap();
 
-  var SITE_NAME = SITE_CONFIG.businessName || 'Think Green Design | Build Landscape';
-  var SITE_PHONE_RAW = String(PHONE.raw || '4809229497').replace(/\D/g, '');
-  var SITE_PHONE_DISPLAY = PHONE.display || '(480) 922-9497';
+  var SITE_NAME = SITE_CONFIG.businessName || 'Mesa Wren Landscape Co.';
+  var SITE_PHONE_RAW = String(PHONE.raw || '4805550142').replace(/\D/g, '');
+  var SITE_PHONE_DISPLAY = PHONE.display || '(480) 555-0142';
   var DETECTED_LEAD_SOURCE = 'website';
-  var SITE_EMAIL = SITE_CONFIG.email || 'carson.elevatemarketing@gmail.com';
-  var SITE_ADDRESS_LINE1 = ADDRESS.line1 || '7730 E. Gelding Dr. Ste 1';
+  var SITE_EMAIL = SITE_CONFIG.email || 'hello@mesawren.example';
+  var SITE_ADDRESS_LINE1 = ADDRESS.line1 || '';
   var SITE_CITY = ADDRESS.city || 'Scottsdale';
   var SITE_STATE = ADDRESS.state || 'AZ';
-  var SITE_ZIP = ADDRESS.zip || '85260';
+  var SITE_ZIP = ADDRESS.zip || '';
   var REVIEW_RATING = String(REVIEW_SUMMARY.rating || SITE_CONFIG.reviewRating || GOOGLE_REVIEWS.rating || '').trim();
   var REVIEW_COUNT = String(REVIEW_SUMMARY.count || SITE_CONFIG.reviewCount || GOOGLE_REVIEWS.count || '').trim();
   var REVIEW_SOURCE = String(REVIEW_SUMMARY.source || SITE_CONFIG.reviewSource || GOOGLE_REVIEWS.platform || 'Google').trim();
@@ -51,10 +51,10 @@
     snapshotDate: REVIEW_SNAPSHOT_DATE,
     live: false
   };
-  var OFFER_LABEL = String(PRIMARY_OFFER.label || 'Start Project Review').trim();
+  var OFFER_LABEL = String(PRIMARY_OFFER.label || 'Get a Free Quote').trim();
   var OFFER_SHORT_LABEL = String(PRIMARY_OFFER.shortLabel || 'Project Review').trim();
-  var OFFER_FORM_TITLE = String(PRIMARY_OFFER.formTitle || 'Start Your Project Review').trim();
-  var OFFER_SUBMIT_LABEL = String(PRIMARY_OFFER.submitLabel || 'Send My Project Review').trim();
+  var OFFER_FORM_TITLE = String(PRIMARY_OFFER.formTitle || 'Get a Free Quote').trim();
+  var OFFER_SUBMIT_LABEL = String(PRIMARY_OFFER.submitLabel || 'Get My Free Quote').trim();
   var OFFER_PROMISE = String(PRIMARY_OFFER.promise || 'No pressure, no obligation, and a local team member follows up within one business day.').trim();
 
   function getLeadSubmissionEndpoint() {
@@ -101,7 +101,9 @@
       if (!field || field.disabled) return;
       var isValid = field.type === 'checkbox'
         ? field.checked
-        : String(field.value || '').trim() !== '';
+        : field.type === 'radio'
+          ? Boolean(field.form && field.form.querySelector('input[type="radio"][name="' + field.name + '"]:checked'))
+          : String(field.value || '').trim() !== '';
       setFieldValidationState(field, isValid);
       if (!isValid && !firstInvalid) firstInvalid = field;
     });
@@ -121,6 +123,196 @@
       summary.hidden = true;
     }
     return true;
+  }
+
+  // ------------------------------------------------------------------
+  // Service type branching ("What do you need?") shared by every lead form.
+  // maintenance -> short recurring-care form, one_time -> short job form,
+  // project -> the original design-build project review flow.
+  // ------------------------------------------------------------------
+  var SERVICE_TYPE_OPTIONS = [
+    { value: 'maintenance', title: 'Regular maintenance', hint: 'Weekly or biweekly yard care', label: 'Regular Maintenance' },
+    { value: 'one_time', title: 'One-time cleanup or repair', hint: 'Cleanup, irrigation fix, tree trim and more', label: 'One-Time Cleanup or Repair' },
+    { value: 'project', title: 'New project or redesign', hint: 'Design, hardscape, turf, lighting and more', label: '' }
+  ];
+  var SERVICE_TYPE_COPY = {
+    '': { title: 'Get a Free Quote', submit: 'Get My Free Quote' },
+    maintenance: { title: 'Get a Yard Care Quote', submit: 'Request My Maintenance Quote' },
+    one_time: { title: 'Get a Quote for Your Job', submit: 'Request My Quote' },
+    project: { title: 'Start Your Project Review', submit: 'Send My Project Review' }
+  };
+
+  function normalizeServiceTypeValue(value) {
+    var raw = String(value || '').trim().toLowerCase().replace(/-/g, '_');
+    if (raw === 'maintenance' || raw === 'one_time' || raw === 'project') return raw;
+    if (raw === 'onetime' || raw === 'cleanup' || raw === 'repair') return 'one_time';
+    if (raw === 'recurring' || raw === 'yard_care') return 'maintenance';
+    return '';
+  }
+
+  function getServiceTypeFromUrl() {
+    return normalizeServiceTypeValue(URL_PARAMS.get('type') || URL_PARAMS.get('service_type'));
+  }
+
+  function getFormServiceType(form) {
+    var checked = form && form.querySelector('input[name="service_type"]:checked');
+    return checked ? checked.value : '';
+  }
+
+  function getServiceTypeServiceLabel(form) {
+    var type = getFormServiceType(form);
+    for (var i = 0; i < SERVICE_TYPE_OPTIONS.length; i += 1) {
+      if (SERVICE_TYPE_OPTIONS[i].value === type) return SERVICE_TYPE_OPTIONS[i].label;
+    }
+    return '';
+  }
+
+  function buildServiceTypeChooserHtml(prefix) {
+    return '<fieldset class="form-field service-type" data-service-type-chooser>' +
+      '<legend class="service-type__legend">What do you need?</legend>' +
+      '<div class="service-type__options">' +
+      SERVICE_TYPE_OPTIONS.map(function (option, index) {
+        var id = prefix + '-type-' + option.value;
+        return '<label class="service-type__option" for="' + id + '">' +
+          '<input type="radio" id="' + id + '" name="service_type" value="' + option.value + '"' + (index === 0 ? ' required' : '') + ' />' +
+          '<span class="service-type__title">' + option.title + '</span>' +
+          '<span class="service-type__hint">' + option.hint + '</span>' +
+          '</label>';
+      }).join('') +
+      '</div>' +
+      '</fieldset>';
+  }
+
+  function buildServiceTypeGroupsHtml(prefix) {
+    var today = new Date();
+    var minDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    return '' +
+      '<div class="service-type-group" data-service-type-only="maintenance one_time" hidden>' +
+      '  <div class="form-field">' +
+      '    <label for="' + prefix + '-service-address">Service Address <span class="field-required">Required</span></label>' +
+      '    <input type="text" id="' + prefix + '-service-address" name="service_address" placeholder="Street address" autocomplete="street-address" required />' +
+      '  </div>' +
+      '</div>' +
+      '<div class="service-type-group" data-service-type-only="maintenance" hidden>' +
+      '  <div class="form-row consult-drawer__grid">' +
+      '    <div class="form-field">' +
+      '      <label for="' + prefix + '-yard-size">Yard Size <span class="field-required">Required</span></label>' +
+      '      <select id="' + prefix + '-yard-size" name="yard_size" required>' +
+      '        <option value="">Select size</option>' +
+      '        <option value="Small">Small (townhome or small lot)</option>' +
+      '        <option value="Medium">Medium (typical single-family)</option>' +
+      '        <option value="Large">Large (half acre or more)</option>' +
+      '        <option value="Not sure">Not sure</option>' +
+      '      </select>' +
+      '    </div>' +
+      '    <div class="form-field">' +
+      '      <label for="' + prefix + '-frequency">How Often <span class="field-required">Required</span></label>' +
+      '      <select id="' + prefix + '-frequency" name="service_frequency" required>' +
+      '        <option value="">Select frequency</option>' +
+      '        <option value="Weekly">Weekly</option>' +
+      '        <option value="Biweekly">Biweekly</option>' +
+      '        <option value="Monthly">Monthly</option>' +
+      '      </select>' +
+      '    </div>' +
+      '  </div>' +
+      '  <div class="form-field form-field--optional">' +
+      '    <label for="' + prefix + '-start-date">Preferred Start Date <span class="field-optional">Optional</span></label>' +
+      '    <input type="date" id="' + prefix + '-start-date" name="preferred_start_date" min="' + minDate + '" />' +
+      '  </div>' +
+      '</div>' +
+      '<div class="service-type-group" data-service-type-only="one_time" hidden>' +
+      '  <div class="form-field">' +
+      '    <label for="' + prefix + '-job-description">What Needs Doing? <span class="field-required">Required</span></label>' +
+      '    <textarea id="' + prefix + '-job-description" name="job_description" rows="3" placeholder="Example: yard cleanup after the monsoon, broken drip line in the backyard, trim two palo verde trees" required></textarea>' +
+      '  </div>' +
+      '  <div class="form-field">' +
+      '    <label for="' + prefix + '-job-timing">Timing <span class="field-required">Required</span></label>' +
+      '    <select id="' + prefix + '-job-timing" name="job_timing" required>' +
+      '      <option value="">Select timing</option>' +
+      '      <option value="As soon as possible">As soon as possible</option>' +
+      '      <option value="Within 2 weeks">Within 2 weeks</option>' +
+      '      <option value="Within a month">Within a month</option>' +
+      '      <option value="Flexible">Flexible</option>' +
+      '    </select>' +
+      '  </div>' +
+      '  <p class="service-type-note">Have photos? Reply to your confirmation email with them and we will look before we call.</p>' +
+      '</div>';
+  }
+
+  function setServiceTypeGroupState(el, visible) {
+    el.hidden = !visible;
+    el.classList.toggle('is-service-type-hidden', !visible);
+    var fields = el.matches && el.matches('input, select, textarea') ? [el] : Array.prototype.slice.call(el.querySelectorAll('input, select, textarea'));
+    fields.forEach(function (field) {
+      if (field.type === 'hidden') return;
+      field.disabled = !visible;
+    });
+  }
+
+  function applyServiceType(form, type, options) {
+    var settings = options || {};
+    var activeType = normalizeServiceTypeValue(type);
+    form.setAttribute('data-active-service-type', activeType || 'none');
+    form.querySelectorAll('[data-service-type-only]').forEach(function (el) {
+      var allowed = String(el.getAttribute('data-service-type-only') || '').split(/\s+/);
+      setServiceTypeGroupState(el, Boolean(activeType) && allowed.indexOf(activeType) !== -1);
+    });
+    var copy = SERVICE_TYPE_COPY[activeType] || SERVICE_TYPE_COPY[''];
+    if (activeType === 'project' && typeof settings.projectCopy === 'function') {
+      copy = Object.assign({}, copy, settings.projectCopy() || {});
+    }
+    if (settings.titleEl && !settings.keepTitle) settings.titleEl.textContent = copy.title;
+    if (settings.submitEl && !settings.submitEl.disabled) settings.submitEl.textContent = copy.submit;
+    var chooser = form.querySelector('[data-service-type-chooser]');
+    if (chooser && activeType) chooser.classList.remove('has-error');
+    if (typeof settings.onChange === 'function') settings.onChange(activeType);
+  }
+
+  function setFormServiceType(form, type) {
+    var activeType = normalizeServiceTypeValue(type);
+    form.querySelectorAll('input[name="service_type"]').forEach(function (radio) {
+      radio.checked = radio.value === activeType;
+    });
+    if (form.__serviceTypeApply) form.__serviceTypeApply(activeType);
+  }
+
+  // options: prefix, chooserAnchor (insert chooser before), groupsAnchor (insert groups after),
+  // titleEl, submitEl, initialType, chooserOnly, projectCopy(), onChange(type), keepTitle
+  function enhanceServiceTypeForm(form, options) {
+    if (!form || form.__serviceTypeEnhanced) return;
+    form.__serviceTypeEnhanced = true;
+    var settings = options || {};
+    var prefix = settings.prefix || (form.id || 'lead');
+    var wrapper = document.createElement('div');
+    wrapper.innerHTML = buildServiceTypeChooserHtml(prefix);
+    var chooser = wrapper.firstChild;
+    var chooserAnchor = settings.chooserAnchor || form.querySelector('.form-field');
+    if (chooserAnchor && chooserAnchor.parentNode) {
+      chooserAnchor.parentNode.insertBefore(chooser, chooserAnchor);
+    } else {
+      form.insertBefore(chooser, form.firstChild);
+    }
+    if (!settings.chooserOnly) {
+      var groupsWrap = document.createElement('div');
+      groupsWrap.className = 'service-type-groups';
+      groupsWrap.innerHTML = buildServiceTypeGroupsHtml(prefix);
+      var groupsAnchor = settings.groupsAnchor;
+      if (groupsAnchor && groupsAnchor.parentNode) {
+        groupsAnchor.parentNode.insertBefore(groupsWrap, groupsAnchor.nextSibling);
+      } else {
+        chooser.parentNode.insertBefore(groupsWrap, chooser.nextSibling);
+      }
+    }
+    form.__serviceTypeApply = function (type) { applyServiceType(form, type, settings); };
+    chooser.addEventListener('change', function (event) {
+      if (event.target && event.target.name === 'service_type') form.__serviceTypeApply(event.target.value);
+    });
+    var initial = normalizeServiceTypeValue(settings.initialType) || getServiceTypeFromUrl();
+    if (initial) {
+      setFormServiceType(form, initial);
+    } else {
+      form.__serviceTypeApply('');
+    }
   }
 
   function setTurnstileStatus(form, message, isError) {
@@ -428,8 +620,8 @@
     var sourceMap = PHONE_TRACKING.sources || {};
     var defaultTracking = PHONE_TRACKING.default || {};
     var sourceConfig = sourceMap[source] || defaultTracking || PHONE || {};
-    var resolvedRaw = normalizePhone(sourceConfig.raw || PHONE.raw || '4809229497');
-    var resolvedDisplay = sourceConfig.display || PHONE.display || '(480) 922-9497';
+    var resolvedRaw = normalizePhone(sourceConfig.raw || PHONE.raw || '4805550142');
+    var resolvedDisplay = sourceConfig.display || PHONE.display || '(480) 555-0142';
 
     SITE_PHONE_RAW = resolvedRaw || SITE_PHONE_RAW;
     SITE_PHONE_DISPLAY = resolvedDisplay || SITE_PHONE_DISPLAY;
@@ -781,10 +973,11 @@
             var reviewLink = document.createElement('a');
             reviewLink.className = 'footer__meta-link';
             reviewLink.href = reviewUrl;
-            reviewLink.target = '_blank';
-            reviewLink.rel = 'noopener noreferrer';
+            if (/^https?:/i.test(reviewUrl)) {
+              reviewLink.target = '_blank';
+              reviewLink.rel = 'noopener noreferrer';
+            }
             reviewLink.textContent = reviewLabel;
-            reviewLink.setAttribute('aria-label', reviewLabel + ' on Google Maps');
 
             var reviewLine = document.createElement('p');
             reviewLine.className = 'footer__meta-item';
@@ -934,6 +1127,14 @@
     var source = String(currentState.source || 'Google').trim() || 'Google';
     var live = Boolean(currentState.live);
 
+    if (/sample/i.test(source)) {
+      return {
+        summary: 'Sample testimonials written for this demo site',
+        badge: 'Sample testimonials',
+        dateText: 'Placeholder reviews. Swap in real client reviews before launch.'
+      };
+    }
+
     if (live) {
       if (rating && count) {
         return {
@@ -1025,7 +1226,7 @@
       el.textContent = source;
     });
     document.querySelectorAll('[data-review-state-label]').forEach(function (el) {
-      el.textContent = state.live ? '' : 'Cached snapshot: ';
+      el.textContent = state.live || /sample/i.test(String(state.source || '')) ? '' : 'Cached snapshot: ';
     });
     document.querySelectorAll('[data-review-live-badge]').forEach(function (el) {
       el.textContent = copy.badge;
@@ -1108,14 +1309,14 @@
       var metaParts = [
         review.location || REVIEW_STATE.source || 'Google',
         review.projectType || 'Google review',
-        review.reviewDate || 'Recent review'
+        review.reviewDate || ''
       ].filter(Boolean);
       location.textContent = metaParts.join(' · ');
 
       meta.appendChild(author);
       meta.appendChild(location);
 
-      if (sourceUrl) {
+      if (sourceUrl && /^https?:/i.test(sourceUrl)) {
         var sourceLink = document.createElement('a');
         sourceLink.className = 'review-card__source';
         sourceLink.href = sourceUrl;
@@ -1421,15 +1622,15 @@
     proofBlock.innerHTML = '' +
       '<div class="local-proof__intro">' +
       '  <p class="eyebrow">Local Proof</p>' +
-      '  <h3>Why ' + locationData.city + ' homeowners use Think Green</h3>' +
-      '  <p>Licensed Arizona landscape contractor support, visible Google review proof, and a quote-first process for ' + locationData.nearbyAreas + '.</p>' +
+      '  <h3>Why ' + locationData.city + ' homeowners use Mesa Wren</h3>' +
+      '  <p>Licensed Arizona landscape contractor support, clear pricing, and a quote-first process for ' + locationData.nearbyAreas + '.</p>' +
       '</div>' +
       '<div class="local-proof__grid">' +
       '  <article class="local-proof__card local-proof__card--review">' +
       '    <p class="local-proof__label"><span data-review-state-label>' + (REVIEW_STATE.live ? '' : 'Cached snapshot: ') + '</span><span data-review-rating>' + REVIEW_STATE.rating + '</span>-star <span data-review-source>' + REVIEW_STATE.source + '</span> rating across <span data-review-count>' + REVIEW_STATE.count + '</span> reviews</p>' +
       '    <p class="reviews__proof"><span data-review-live-badge>' + reviewCopy.badge + '</span></p>' +
-      '    <blockquote>Open the Google review profile to read homeowner feedback directly from the source before you start a project review.</blockquote>' +
-      '    <p class="local-proof__meta"><a href="' + REVIEW_STATE.sourceUrl + '" target="_blank" rel="noopener noreferrer" data-review-feed-link>Read Google reviews</a></p>' +
+      '    <blockquote>Read sample homeowner testimonials, then request a quote for maintenance, a one-time job, or a full project.</blockquote>' +
+      '    <p class="local-proof__meta"><a href="' + REVIEW_STATE.sourceUrl + '" target="_blank" rel="noopener noreferrer" data-review-feed-link>Read testimonials</a></p>' +
       '  </article>' +
       '  <article class="local-proof__card">' +
       '    <p class="local-proof__label">What usually matters most</p>' +
@@ -2683,6 +2884,7 @@
         prefill.selected_project_label = trigger.getAttribute('data-prefill-project-label') || prefill.selected_project_label;
         prefill.prefill_message = trigger.getAttribute('data-prefill-message') || prefill.prefill_message;
         prefill.source = trigger.getAttribute('data-prefill-source') || prefill.source;
+        prefill.service_type = trigger.getAttribute('data-prefill-type') || prefill.service_type;
       }
     }
 
@@ -2715,10 +2917,10 @@
       '    <ul class="consult-drawer__proof">' +
       '      <li>Prefer not to fill this out? Call ' + SITE_PHONE_DISPLAY + ' and we will talk it through.</li>' +
       '      <li>Starter phases and full transformations are both welcome when the scope is prioritized.</li>' +
-      '      <li>We use your phone only to clarify this project request. Prefer text? Choose text below.</li>' +
+      '      <li>We use your phone only to clarify this request. Prefer text? Choose text below.</li>' +
       '    </ul>' +
       '    <div class="consult-drawer__trust-row" aria-label="Project review trust signals">' +
-      '      <span>43 Google reviews</span>' +
+      '      <span>Same-day callback</span>' +
       '      <span>ROC + warranty review</span>' +
       '      <span>1-business-day follow-up</span>' +
       '    </div>' +
@@ -2773,13 +2975,13 @@
       '          <label for="consult-email">Email <span class="field-optional">Optional</span></label>' +
       '          <input type="email" id="consult-email" name="email_visible" placeholder="you@example.com" autocomplete="email" inputmode="email" />' +
       '        </div>' +
-      '        <div class="form-field">' +
+      '        <div class="form-field" data-service-type-only="project">' +
       '          <label for="consult-service">Project Type <span class="field-required">Required</span></label>' +
       '          <select id="consult-service" name="service" data-service-select required></select>' +
       '        </div>' +
       '      </div>' +
       '      <p class="consult-drawer__talk-note">Prefer to talk it through? Call ' + SITE_PHONE_DISPLAY + ', or choose text below and send only the basics.</p>' +
-      '      <details class="consult-drawer__details">' +
+      '      <details class="consult-drawer__details" data-service-type-only="project">' +
       '        <summary>Add optional details</summary>' +
       '      <div class="consult-drawer__grid">' +
       '        <div class="form-field">' +
@@ -2845,14 +3047,14 @@
       '      </details>' +
       '      <label class="form-consent form-consent--drawer" for="consult-contact-consent">' +
       '        <input type="checkbox" id="consult-contact-consent" name="contact_consent" value="yes" required />' +
-      '        <span>I agree to be contacted by Think Green about this project request by phone, text, or email. No spam, no resale. See our <a href="/privacy-policy">Privacy Policy</a>.</span>' +
+      '        <span>I agree to be contacted by Mesa Wren about this request by phone, text, or email. No spam, no resale. See our <a href="/privacy-policy">Privacy Policy</a>.</span>' +
       '      </label>' +
       '      <div class="turnstile-field" data-turnstile-container></div>' +
       '      <p class="turnstile-status" data-turnstile-status role="status" aria-live="polite"></p>' +
       '      <div class="consult-drawer__actions">' +
       '        <button type="submit" class="btn btn--submit" id="consult-submit">' + OFFER_SUBMIT_LABEL + '</button>' +
-      '        <p class="consult-drawer__budget-note" id="consult-budget-note">Focused first phases and larger builds are reviewed by the same local team. We filter out maintenance-only, tree trimming, mow/blow, and tiny repair calls before scheduling.</p>' +
-      '        <p class="consult-drawer__note" id="consult-contact-help">Takes about 60 seconds. No obligation. Your phone is used only to follow up about this project, and we do not sell or share your request.</p>' +
+      '        <p class="consult-drawer__budget-note" id="consult-budget-note">Weekly yard care, one-time jobs, and full design-build projects are all handled by the same local team.</p>' +
+      '        <p class="consult-drawer__note" id="consult-contact-help">Takes about 60 seconds. No obligation. Your phone is used only to follow up about this request, and we do not sell or share it.</p>' +
       '        <p class="consult-drawer__error" id="consult-drawer-error" role="alert" aria-live="polite"></p>' +
       '      </div>' +
       '    </form>' +
@@ -2918,6 +3120,22 @@
     };
 
     setupTurnstileForm(consultDrawerState.form, 'project_request');
+    enhanceServiceTypeForm(consultDrawerState.form, {
+      prefix: 'consult',
+      chooserAnchor: consultDrawerState.fullName.closest('.form-field'),
+      groupsAnchor: consultDrawerState.service.closest('.consult-drawer__grid'),
+      titleEl: consultDrawerState.title,
+      submitEl: consultDrawerState.submit,
+      projectCopy: function () { return consultDrawerState.projectCopy || null; },
+      onChange: function (type) {
+        if (!consultDrawerState.sub) return;
+        if (type === 'maintenance' || type === 'one_time') {
+          consultDrawerState.sub.textContent = 'Share the basics and we call back with a price within 24 hours. No contract needed to get a quote.';
+        } else if (consultDrawerState.projectSub) {
+          consultDrawerState.sub.textContent = consultDrawerState.projectSub;
+        }
+      }
+    });
 
     consultDrawerState.focusTrap = createFocusTrap(consultDrawerState.panel, function () {
       closeConsultDrawer();
@@ -2976,14 +3194,8 @@
       event.preventDefault();
       clearDrawerError();
 
-      var requiredFields = [
-        consultDrawerState.fullName,
-        consultDrawerState.phone,
-        consultDrawerState.city,
-        consultDrawerState.service,
-        consultDrawerState.consent
-      ];
-      if (!validateRequiredFields(requiredFields, consultDrawerState.error, 'Please complete the required fields before submitting your project request.')) {
+      var requiredFields = Array.prototype.slice.call(consultDrawerState.form.querySelectorAll('[required]'));
+      if (!validateRequiredFields(requiredFields, consultDrawerState.error, 'Please complete the required fields before submitting your request.')) {
         consultDrawerState.error.classList.add('is-visible');
         return;
       }
@@ -3001,7 +3213,10 @@
       var submittedDate = new Date();
       var submittedLocalTime = formatPhoenixDateTime(submittedDate);
       var nameParts = splitName(consultDrawerState.fullName.value);
-      var service = String(consultDrawerState.service.value || '').trim();
+      var drawerServiceType = getFormServiceType(consultDrawerState.form) || 'project';
+      var service = drawerServiceType === 'project'
+        ? String(consultDrawerState.service.value || '').trim()
+        : getServiceTypeServiceLabel(consultDrawerState.form);
       var city = String(consultDrawerState.city.value || '').trim();
       var leadSource = String(consultDrawerState.leadSource.value || deriveConsultSource()).trim();
       var selectedStyle = String(consultDrawerState.selectedStyle.value || '').trim();
@@ -3179,6 +3394,16 @@
     state.contactChoice.value = nextPrefill.contact_method || '';
     state.timeline.value = nextPrefill.estimated_timeline || '';
     state.message.value = nextPrefill.prefill_message || '';
+    var contextualSubmit = getConsultSubmitLabel();
+    state.projectSub = getConsultSubcopy();
+    state.projectCopy = {
+      title: getConsultTitle(),
+      submit: contextualSubmit === OFFER_SUBMIT_LABEL ? SERVICE_TYPE_COPY.project.submit : contextualSubmit
+    };
+    setFormServiceType(
+      state.form,
+      normalizeServiceTypeValue(nextPrefill.service_type) || getServiceTypeFromUrl() || (nextPrefill.service ? 'project' : '')
+    );
 
     state.contactMethod.value = state.contactChoice.value;
     state.contactMethodValue.value = state.contactChoice.value;
@@ -4148,6 +4373,8 @@
         var prefillImage = this.getAttribute('data-prefill-image') || '';
         var prefillMessage = this.getAttribute('data-prefill-message') || '';
         var prefillSource = this.getAttribute('data-prefill-source') || 'website';
+        var prefillType = this.getAttribute('data-prefill-type') || (prefillService ? 'project' : '');
+        if (prefillType) setFormServiceType(form, prefillType);
 
         if (serviceInput && prefillService) {
           serviceInput.value = prefillService;
@@ -4210,13 +4437,19 @@
       var hiddenJsCheck = gateForm.querySelector('input[name="js_check"]');
 
       setupTurnstileForm(gateForm, 'resource_gate');
+      enhanceServiceTypeForm(gateForm, {
+        prefix: 'checklist',
+        chooserOnly: true,
+        chooserAnchor: gateForm.querySelector('.resource-gate__grid')
+      });
       if (hiddenFormStartedAt) hiddenFormStartedAt.value = String(Date.now());
       if (hiddenJsCheck) hiddenJsCheck.value = '1';
 
       gateForm.addEventListener('submit', async function (event) {
         event.preventDefault();
         if (error) error.textContent = '';
-        if (!validateRequiredFields([requiredName, requiredEmail, requiredConsent], error, 'Enter your name, email, and consent to unlock the checklist download.')) {
+        var requiredType = gateForm.querySelector('input[name="service_type"]');
+        if (!validateRequiredFields([requiredType, requiredName, requiredEmail, requiredConsent], error, 'Choose what you need, then enter your name, email, and consent to unlock the checklist download.')) {
           return;
         }
 
@@ -4288,8 +4521,21 @@
 
   bindResourceGateForms();
 
+  var quoteStarterForm = document.getElementById('quote-starter-form');
+  if (quoteStarterForm) {
+    enhanceServiceTypeForm(quoteStarterForm, { prefix: 'starter', chooserOnly: true });
+  }
+
   if (form) {
     setupTurnstileForm(form, 'project_request');
+    enhanceServiceTypeForm(form, {
+      prefix: 'contact',
+      chooserAnchor: form.querySelector('#full_name') ? form.querySelector('#full_name').closest('.form-field') : null,
+      groupsAnchor: form.querySelector('[data-service-type-groups-anchor]'),
+      titleEl: form.querySelector('.contact__form-title'),
+      submitEl: form.querySelector('.btn--submit'),
+      initialType: URL_PARAMS.get('service') || URL_PARAMS.get('selected_service') ? 'project' : ''
+    });
     var params = URL_PARAMS;
     var utmSource = params.get('utm_source') || '';
     var utmMedium = params.get('utm_medium') || '';
@@ -4508,7 +4754,7 @@
 
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
-      if (!validateRequiredFields(Array.from(form.querySelectorAll('[required]')), errorMessage, 'Please complete all required fields before submitting your project request.')) {
+      if (!validateRequiredFields(Array.from(form.querySelectorAll('[required]')), errorMessage, 'Please complete the required fields before submitting your request.')) {
         if (errorMessage) errorMessage.style.display = 'block';
         return;
       }
@@ -4538,14 +4784,17 @@
       if (emailInput) emailInput.value = valueOrFallback(emailVisibleInput, '');
 
       var fullName = (valueOrFallback(firstNameInput, '') + ' ' + valueOrFallback(lastNameInput, '')).trim();
-      var service = valueOrFallback(serviceInput, '');
+      var serviceType = getFormServiceType(form) || 'project';
+      var service = serviceType === 'project' ? valueOrFallback(serviceInput, '') : getServiceTypeServiceLabel(form);
       var leadTier = valueOrFallback(leadTierInput, '');
       var consultationTier = valueOrFallback(consultationTierInput, '');
       if (!consultationTier && leadTier) {
         consultationTier = leadTier;
       }
       var budget = valueOrFallback(budgetInput, '');
-      if (!budget || budget === 'Not discussed yet') {
+      if (serviceType !== 'project') {
+        budget = '';
+      } else if (!budget || budget === 'Not discussed yet') {
         budget = getBudgetRangeFromTier(consultationTier || leadTier);
       }
       var timeline = valueOrFallback(startTimelineInput || timelineInput, '');
@@ -4573,7 +4822,7 @@
 
       if (ownerSummary) {
         ownerSummary.value = [
-          'New project request submitted.',
+          serviceType === 'maintenance' ? 'New maintenance quote request.' : serviceType === 'one_time' ? 'New one-time job request.' : 'New project request submitted.',
           'Priority: ' + priority,
           service ? 'Requested service: ' + service : '',
           [budget, timeline].filter(Boolean).length ? 'Budget / Timeline: ' + [budget, timeline].filter(Boolean).join(' / ') : '',

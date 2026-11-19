@@ -76,7 +76,8 @@ const publicFiles = [
   'terms-of-service.html',
   'thank-you.html',
   'warranty.html',
-  'xeriscape-vs-turf-arizona.html'
+  'xeriscape-vs-turf-arizona.html',
+  'yard-maintenance.html'
 ];
 
 const publicDirs = ['.well-known', 'downloads', 'email-assets', 'fonts', 'img', 'services'];
@@ -111,6 +112,7 @@ publicDirs.forEach(copyDir);
 
 const headers = [
   '/*',
+  '  X-Robots-Tag: noindex, nofollow',
   '  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload',
   "  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://region1.analytics.google.com; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests",
   '  X-Frame-Options: DENY',

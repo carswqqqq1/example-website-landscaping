@@ -5,7 +5,7 @@ Use this before sending client-facing confirmation emails at scale.
 ## 1) Use a branded sending domain
 - Buy/use a domain you control (example: `clientdomain.com`).
 - Set `RESEND_FROM_EMAIL` to a real mailbox on that domain.
-- Example: `Think Green <quotes@clientdomain.com>`.
+- Example: `Mesa Wren <quotes@clientdomain.com>`.
 
 ## 2) Configure DNS authentication
 Add these records in DNS exactly as your provider requests:

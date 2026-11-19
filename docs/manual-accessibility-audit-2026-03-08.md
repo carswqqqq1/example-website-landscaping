@@ -1,8 +1,8 @@
 # Manual Accessibility Audit Record
 
 Date: March 8, 2026  
-Project: Think Green Landscape Website Template  
-Build target: `thinkgreendesignbuild.com`
+Project: Mesa Wren Landscape Website Template  
+Build target: the landscaping template demo
 
 ## Audit Scope
 

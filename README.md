@@ -1,6 +1,6 @@
-# Think Green Landscaping Template
+# Mesa Wren Landscaping Template
 
-This branch contains the reusable static landscaping template that powers the live Think Green demo: HTML, CSS, vanilla JS, Cloudflare Pages Functions, branded emails, and the Google Sheets lead workflow.
+This branch contains the reusable static landscaping template that powers the live Mesa Wren demo: HTML, CSS, vanilla JS, Cloudflare Pages Functions, branded emails, and the Google Sheets lead workflow.
 
 ## Source Of Truth
 
@@ -29,7 +29,7 @@ Required:
 
 Optional:
 
-- `FROM_EMAIL` (defaults to `Think Green <SMTP_USER>`), `SMTP_HOST` (default `smtp.gmail.com`), `SMTP_PORT` (465), `SMTP_SECURE`
+- `FROM_EMAIL` (defaults to `Mesa Wren <SMTP_USER>`), `SMTP_HOST` (default `smtp.gmail.com`), `SMTP_PORT` (465), `SMTP_SECURE`
 - `EMAIL_PROVIDER` / `OWNER_EMAIL_PROVIDER` (`smtp` or `resend`, owner defaults to `smtp`, falls back to whichever has credentials)
 - `RESEND_API_KEY`, `RESEND_FROM_EMAIL` if you prefer Resend
 - `GOOGLE_SHEETS_WEBHOOK_URL`, `GOOGLE_SHEETS_WEBHOOK_SECRET`, `GOOGLE_SHEET_URL` for the lead dashboard. If the webhook URL is not set, leads still go out by email. If it is set and fails, the lead is rejected so nothing is lost silently.
@@ -46,6 +46,29 @@ Netlify note: the browser form still renders Cloudflare Turnstile. Add the Netli
 - `/img/*` and `/email-assets/*` send exactly one `Cross-Origin-Resource-Policy: cross-origin` header on both hosts. Apple Mail enforces CORP on remote images, so a conflicting `same-origin` value blanks the logo.
 
 If production and branch ever drift, fix that before making visual or funnel edits. The branch should stay the source of truth for this template.
+
+## Demo Brand (Fictional)
+
+The live demo uses a made-up brand, **Mesa Wren Landscape Co.**, so it never shows a real company's identity.
+
+- Phone `(480) 555-0142` (reserved 555-01xx fiction range), email `hello@mesawren.example`, city line "Scottsdale, AZ" with no street address.
+- Testimonials in `google-reviews.json` are labeled sample reviews (first name and last initial). The Google reviews workflow is disabled until a real client profile is connected.
+- ROC links go to the generic Arizona ROC contractor search with a placeholder license.
+- Logo files: `img/logo*.png`, `img/favicon-*`, `img/apple-touch-icon.*`, and the email badge `email-assets/logo-email.png` (set in `site-config.js` as `emailLogoUrl`).
+- Footer label "Sample site by Arroyo Marketing" and site-wide `noindex, nofollow` (meta tags plus `X-Robots-Tag` on both hosts).
+- Project photos in `img/projects` and the hero video are still the original template assets. Swap them before showing the demo publicly as a client's own work.
+
+## Lead Service Types
+
+Every lead form (homepage form, quote drawer, `/free-consultation` starter, checklist gate) opens with "What do you need?":
+
+| `service_type` | Form fields | Client email | Owner email tag |
+| --- | --- | --- | --- |
+| `maintenance` | name, phone, email, city, `service_address`, `yard_size`, `service_frequency`, `preferred_start_date` | "Your quote request", 24-hour callback | `[MAINTENANCE]` |
+| `one_time` | name, phone, email, city, `service_address`, `job_description`, `job_timing` (photos by email reply) | "Your quote request", 24-hour callback | `[ONE-TIME]` |
+| `project` | original project review flow | original project email | `[PROJECT]` |
+
+Shared logic lives in `lib/lead-service-types.js` and is used by both the Cloudflare handler and the Netlify function. A missing `service_type` is treated as `project`; an unknown value is rejected with 422. Links can preselect a type with `?type=maintenance|one_time|project`. The recurring care page is `/yard-maintenance`.
 
 ## What Is Part Of The Template
 
@@ -65,8 +88,8 @@ Core template files:
 - `services-data.js`
 - `projects-data.js`
 - `functions/api/lead.js`
-- `emails/thinkgreen-client-email.html`
-- `emails/thinkgreen-owner-email.html`
+- `emails/lead-client-email.html`
+- `emails/lead-owner-email.html`
 
 This branch intentionally excludes the old unrelated Next.js app so the repo stays resale-ready and limited to the live landscaping template.
 
@@ -118,8 +141,8 @@ Update:
 
 Update:
 
-- `emails/thinkgreen-client-email.html`
-- `emails/thinkgreen-owner-email.html`
+- `emails/lead-client-email.html`
+- `emails/lead-owner-email.html`
 
 Swap branding, links, and footer language if the business name, city, or call-to-action needs to change.
 

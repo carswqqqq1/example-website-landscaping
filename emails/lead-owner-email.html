@@ -7,7 +7,7 @@
 <meta name="supported-color-schemes" content="light only"/>
 <meta name="x-apple-disable-message-reformatting"/>
 <meta name="robots" content="noindex, nofollow"/>
-<title>Think Green - New Project Inquiry</title>
+<title>{{BRAND_SHORT}} - {{owner_type_tag}} {{owner_header_title}}</title>
 <style>
 :root{color-scheme:light only;supported-color-schemes:light only;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -23,6 +23,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .header-logo-shell{width:80px;line-height:0;text-align:center;vertical-align:middle;}
 .header-logo{display:block;border:0;outline:none;text-decoration:none;margin:0 auto;}
 .header-tag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#66ab78;font-weight:600;margin-bottom:4px;}
+.type-badge{display:inline-block;background:#e6f2e9;color:#0f2a18;font-size:11px;font-weight:700;letter-spacing:0.14em;line-height:1;padding:6px 9px;border-radius:4px;margin-bottom:8px;}
 .header-title{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:32px;font-weight:600;line-height:1.04;color:#f5f0e8;}
 
 .alert{background:#1b4728;padding:9px 22px;border-bottom:1px solid rgba(255,255,255,.14);}
@@ -84,7 +85,8 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 @media(max-width:600px){
   .header,.alert,.section,.actions,.footer{padding-left:18px !important;padding-right:18px !important;}
   .header-logo-cell{width:82px;}
-  .header-title{font-size:28px;line-height:1.06;}
+  .type-badge{display:inline-block;background:#e6f2e9;color:#0f2a18;font-size:11px;font-weight:700;letter-spacing:0.14em;line-height:1;padding:6px 9px;border-radius:4px;margin-bottom:8px;}
+.header-title{font-size:28px;line-height:1.06;}
   .alert-right{text-align:left;padding-top:8px;}
   .alert-table td{display:block;width:100%;}
   .client-name{font-size:30px;}
@@ -98,7 +100,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 </style>
 </head>
 <body>
-<div class="preheader" style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;color:transparent;">New Think Green project inquiry from {{submission.data.full_name}}.</div>
+<div class="preheader" style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;color:transparent;">{{owner_preheader}}</div>
 <div class="email-wrap">
 
   <div class="header">
@@ -108,14 +110,14 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
           <table class="header-logo-table" role="presentation" align="center">
             <tr>
               <td class="header-logo-shell" align="center" valign="middle">
-                <img class="header-logo" src="{{EMAIL_LOGO_URL}}" alt="Think Green Design | Build Landscape" width="80" height="80" style="display:block;width:80px;height:80px;max-width:80px;border:0;outline:none;text-decoration:none;margin:0 auto;"/>
+                <img class="header-logo" src="{{EMAIL_LOGO_URL}}" alt="{{BRAND_NAME}}" width="80" height="80" style="display:block;width:80px;height:80px;max-width:80px;border:0;outline:none;text-decoration:none;margin:0 auto;"/>
               </td>
             </tr>
           </table>
         </td>
         <td>
-          <div class="header-tag">New Project Inquiry</div>
-          <div class="header-title">Project Request Received</div>
+          <div class="type-badge">{{owner_type_tag}}</div>
+          <div class="header-title">{{owner_header_title}}</div>
         </td>
       </tr>
     </table>
@@ -147,7 +149,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
     </div>
 
     <div class="section">
-      <div class="section-head">Project Details</div>
+      <div class="section-head">{{owner_details_heading}}</div>
       <table class="detail-table" role="presentation">{{owner_detail_rows_html}}</table>
     </div>
 
@@ -173,14 +175,14 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
     <table class="footer-logo-table" role="presentation" align="center">
       <tr>
         <td class="footer-logo-shell" align="center" valign="middle">
-          <img class="footer-logo" src="{{EMAIL_LOGO_URL}}" alt="Think Green Design | Build Landscape" width="64" height="64" style="display:block;width:64px;height:64px;max-width:64px;border:0;outline:none;text-decoration:none;margin:0 auto;"/>
+          <img class="footer-logo" src="{{EMAIL_LOGO_URL}}" alt="{{BRAND_NAME}}" width="64" height="64" style="display:block;width:64px;height:64px;max-width:64px;border:0;outline:none;text-decoration:none;margin:0 auto;"/>
         </td>
       </tr>
     </table>
     <div class="footer-divider"></div>
     <p>
-      Think Green Landscape - Owner Notification<br/>
-      Scottsdale, AZ
+      {{BRAND_SHORT}} - Owner Notification<br/>
+      {{BRAND_CITY_LINE}}
       <small>This email is for internal use only.</small>
     </p>
   </div>

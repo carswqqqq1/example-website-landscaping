@@ -1,6 +1,6 @@
 # Project Photo Permission Policy
 
-Think Green site photos must be approved before they are published in portfolio, service, or landing page content.
+Mesa Wren site photos must be approved before they are published in portfolio, service, or landing page content.
 
 ## Publishing Rules
 
