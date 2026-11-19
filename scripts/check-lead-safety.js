@@ -153,6 +153,19 @@ function assertStaticRoutingAndSafety() {
   const cloudflareBuild = read("scripts/build-cloudflare-pages.js");
   assert(cloudflareBuild.includes("'/favicon.ico /img/favicon-32.png 200'"), "Cloudflare build must route /favicon.ico to the PNG favicon");
   assert(/'\/img\/\*'[\s\S]{0,180}'  Cross-Origin-Resource-Policy: cross-origin'/i.test(cloudflareBuild), "Cloudflare images must remain embeddable in email clients");
+  assert(/'\/img\/\*',\s*'  ! Cross-Origin-Resource-Policy'/.test(cloudflareBuild), "Cloudflare images must detach the site-wide same-origin CORP so only one CORP header is sent");
+  assert(/'\/email-assets\/\*',\s*'  ! Cross-Origin-Resource-Policy'[\s\S]{0,120}'  Cross-Origin-Resource-Policy: cross-origin'/.test(cloudflareBuild), "email assets must send a single cross-origin CORP header");
+  assert(cloudflareBuild.includes("'email-assets'"), "Cloudflare build must publish email-assets");
+  assert(/emailLogoUrl:\s*emailLogoUrl/.test(siteConfig) && /var emailLogoUrl = 'https:\/\/[^']+\.png'/.test(siteConfig), "site config must define one absolute https emailLogoUrl");
+  for (const [name, template] of [["owner", ownerTemplate], ["client", clientTemplate]]) {
+    const logoTags = template.match(/<img[^>]+>/g) || [];
+    assert(logoTags.length >= 2, `${name} email must include header and footer logos`);
+    for (const tag of logoTags) {
+      assert(tag.includes('src="{{EMAIL_LOGO_URL}}"'), `${name} email logo must use EMAIL_LOGO_URL`);
+      assert(/\swidth="\d+"/.test(tag) && /\sheight="\d+"/.test(tag) && /\salt="[^"]+"/.test(tag), `${name} email logo needs width, height and alt`);
+    }
+    assert(!/(?:logo|shell|cell)[^{]*\{[^}]*(?:filter|object-fit|border-radius)/i.test(template), `${name} email logo styles must avoid filter, object-fit and border-radius (Apple Mail)`);
+  }
   assert(/script-src[^\n]+https:\/\/challenges\.cloudflare\.com/.test(cloudflareBuild), "Cloudflare CSP must allow the Turnstile script");
   assert(/frame-src https:\/\/challenges\.cloudflare\.com/.test(cloudflareBuild), "Cloudflare CSP must allow the Turnstile frame");
 }
@@ -193,8 +206,8 @@ async function assertAcceptedAndEmailRendering(handleLeadRequest) {
   assert(ownerEmail && clientEmail, "expected owner and client recipients");
   assert.strictEqual(ownerEmail.idempotencyKey, "lead_owner_TG-SAFETY-TEST-001");
   assert.strictEqual(clientEmail.idempotencyKey, "lead_client_TG-SAFETY-TEST-001");
-  assert(ownerEmail.body.html.includes("https://qa.example.com/img/logo.png"), "owner email logo must be absolute");
-  assert(clientEmail.body.html.includes("https://qa.example.com/img/logo.png"), "client email logo must be absolute");
+  assert(ownerEmail.body.html.includes('src="https://qa.example.com/email-assets/logo-email.png"'), "owner email logo must be absolute");
+  assert(clientEmail.body.html.includes('src="https://qa.example.com/email-assets/logo-email.png"'), "client email logo must be absolute");
   assert(clientEmail.body.html.includes("https://qa.example.com/portfolio"), "client CTA must be absolute");
   assert(!/\b(?:src|href)="\/(?:img\/logo\.png|portfolio)"/i.test(`${ownerEmail.body.html}\n${clientEmail.body.html}`), "email templates must not render relative brand links");
   const sheetBody = JSON.parse(calls.find((call) => call.type === "sheet").options.body);

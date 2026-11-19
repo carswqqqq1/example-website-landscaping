@@ -1,0 +1,8 @@
+{
+  "name": "think-green-netlify-functions",
+  "private": true,
+  "description": "Runtime deps for the Netlify lead functions only. Cloudflare Pages does not use this.",
+  "dependencies": {
+    "nodemailer": "^9.0.1"
+  }
+}

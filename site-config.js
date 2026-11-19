@@ -11,6 +11,10 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   var siteBaseUrl = 'https://example-website-landscaping.pages.dev';
   var manifestPath = '/manifest.json';
+  // Email logo: the ONE place to change it. Absolute https URL that does not depend on the demo host.
+  // Runtime override: EMAIL_LOGO_URL env var (Cloudflare Pages and Netlify).
+  // Source file: email-assets/logo-email.png (320x320 PNG, shown at 96px or smaller).
+  var emailLogoUrl = 'https://raw.githubusercontent.com/carswqqqq1/example-website-landscaping/master/email-assets/logo-email.png';
   var googlePlaceId = 'ChIJU32YfHd0K4cRIIJTYW8ky4o';
   var reviewSnapshotDate = 'Google Maps public profile snapshot, June 27, 2026';
   var reviewSourceUrl = 'https://www.google.com/maps/place/Think+Green+Design+%7C+Build+Landscape/@33.61549,-111.9165894,17z/data=!3m1!4b1!4m6!3m5!1s0x872b74777c987d53:0x8acb242f61538220!8m2!3d33.6154856!4d-111.9140145!16s%2Fg%2F1vg4k7_v?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D';
@@ -18,6 +22,7 @@
   return {
     siteBaseUrl: siteBaseUrl,
     manifestPath: manifestPath,
+    emailLogoUrl: emailLogoUrl,
     businessName: 'Think Green Design | Build Landscape',
     shortName: 'Think Green',
     email: 'carson.elevatemarketing@gmail.com',

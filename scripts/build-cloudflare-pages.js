@@ -79,7 +79,7 @@ const publicFiles = [
   'xeriscape-vs-turf-arizona.html'
 ];
 
-const publicDirs = ['.well-known', 'downloads', 'fonts', 'img', 'services'];
+const publicDirs = ['.well-known', 'downloads', 'email-assets', 'fonts', 'img', 'services'];
 
 function copyFile(relativePath) {
   const source = path.join(root, relativePath);
@@ -142,7 +142,15 @@ const headers = [
   '/fonts/*',
   '  Cache-Control: public, max-age=31536000, immutable',
   '',
+  // Images are embedded by email clients (Apple Mail enforces CORP). Detach the
+  // site-wide same-origin CORP so exactly one value (cross-origin) is sent.
   '/img/*',
+  '  ! Cross-Origin-Resource-Policy',
+  '  Cache-Control: public, max-age=604800',
+  '  Cross-Origin-Resource-Policy: cross-origin',
+  '',
+  '/email-assets/*',
+  '  ! Cross-Origin-Resource-Policy',
   '  Cache-Control: public, max-age=604800',
   '  Cross-Origin-Resource-Policy: cross-origin',
   ''

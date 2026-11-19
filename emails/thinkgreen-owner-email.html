@@ -16,8 +16,8 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .header-table{width:100%;border-collapse:collapse;}
 .header-logo-cell{width:96px;vertical-align:middle;}
 .header-logo-table{margin:0 auto;border-collapse:separate;}
-.header-logo-shell{width:90px;height:90px;border-radius:999px;overflow:hidden;line-height:0;background:radial-gradient(circle at 50% 45%,#fffef9 0%,#f8f4eb 72%,#e7efe9 100%);border:2px solid rgba(255,255,255,1);box-shadow:0 9px 16px rgba(0,0,0,.2),0 0 0 6px rgba(255,255,255,.16),inset 0 0 0 1px rgba(27,71,40,.08);text-align:center;vertical-align:middle;}
-.header-logo{width:74px;height:74px;border-radius:999px;object-fit:contain;display:block;margin:0 auto;filter:brightness(1.1) contrast(1.16) saturate(1.08);}
+.header-logo-shell{width:80px;line-height:0;text-align:center;vertical-align:middle;}
+.header-logo{display:block;border:0;outline:none;text-decoration:none;margin:0 auto;}
 .header-tag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#66ab78;font-weight:600;margin-bottom:4px;}
 .header-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:600;line-height:1.04;color:#f5f0e8;}
 
@@ -69,8 +69,8 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 
 .footer{background:#0b0b0b;padding:16px 22px 14px;text-align:center;}
 .footer-logo-table{margin:0 auto 12px;border-collapse:separate;}
-.footer-logo-shell{width:78px;height:78px;border-radius:999px;overflow:hidden;line-height:0;background:radial-gradient(circle at 50% 45%,#fffef9 0%,#f8f4eb 72%,#e7efe9 100%);border:2px solid rgba(255,255,255,1);box-shadow:0 9px 16px rgba(0,0,0,.22),0 0 0 6px rgba(255,255,255,.14),inset 0 0 0 1px rgba(27,71,40,.08);text-align:center;vertical-align:middle;}
-.footer-logo{width:62px;height:62px;border-radius:999px;object-fit:contain;display:block;margin:0 auto;filter:brightness(1.1) contrast(1.16) saturate(1.08);}
+.footer-logo-shell{width:64px;line-height:0;text-align:center;vertical-align:middle;}
+.footer-logo{display:block;border:0;outline:none;text-decoration:none;margin:0 auto;}
 .footer-divider{width:42px;height:1px;background:#2c2c2c;margin:10px auto 12px;}
 .footer p{font-size:12px;color:#8c938f;line-height:1.8;}
 .footer a{color:#66b67a;text-decoration:none;}
@@ -80,8 +80,6 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 @media(max-width:600px){
   .header,.alert,.section,.actions,.footer{padding-left:18px !important;padding-right:18px !important;}
   .header-logo-cell{width:82px;}
-  .header-logo-shell{width:80px;height:80px;box-shadow:0 8px 12px rgba(0,0,0,.22),0 0 0 5px rgba(255,255,255,.14);}
-  .header-logo{width:66px;height:66px;}
   .header-title{font-size:28px;line-height:1.06;}
   .alert-right{text-align:left;padding-top:8px;}
   .alert-table td{display:block;width:100%;}
@@ -91,8 +89,6 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
   .vision-quote{font-size:24px;line-height:1.2;padding-left:12px;}
   .intel-grid .k,.intel-grid .v{display:block;width:100%;}
   .intel-grid .v{padding-top:3px;}
-  .footer-logo-shell{width:68px;height:68px;box-shadow:0 8px 12px rgba(0,0,0,.24),0 0 0 5px rgba(255,255,255,.12);}
-  .footer-logo{width:54px;height:54px;}
   .safe-pad{height:6px;}
 }
 </style>
@@ -108,7 +104,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
           <table class="header-logo-table" role="presentation" align="center">
             <tr>
               <td class="header-logo-shell" align="center" valign="middle">
-                <img class="header-logo" src="{{SITE_URL}}/img/logo.png" alt="Think Green" width="74" height="74"/>
+                <img class="header-logo" src="{{EMAIL_LOGO_URL}}" alt="Think Green Design | Build Landscape" width="80" height="80" style="display:block;width:80px;height:80px;max-width:80px;border:0;outline:none;text-decoration:none;margin:0 auto;"/>
               </td>
             </tr>
           </table>
@@ -173,7 +169,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
     <table class="footer-logo-table" role="presentation" align="center">
       <tr>
         <td class="footer-logo-shell" align="center" valign="middle">
-          <img class="footer-logo" src="{{SITE_URL}}/img/logo.png" alt="Think Green" width="62" height="62"/>
+          <img class="footer-logo" src="{{EMAIL_LOGO_URL}}" alt="Think Green Design | Build Landscape" width="64" height="64" style="display:block;width:64px;height:64px;max-width:64px;border:0;outline:none;text-decoration:none;margin:0 auto;"/>
         </td>
       </tr>
     </table>

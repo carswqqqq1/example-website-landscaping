@@ -8,6 +8,43 @@ This branch contains the reusable static landscaping template that powers the li
 - Branch: `master`
 - Live demo: `https://example-website-landscaping.pages.dev`
 
+## Hosting
+
+The same repo can be served by two hosts. Both read `site-config.js` and the templates in `emails/`.
+
+| Host | URL | How it deploys | Lead endpoint | Config file |
+| --- | --- | --- | --- | --- |
+| Cloudflare Pages (project `example-website-landscaping`) | `https://example-website-landscaping.pages.dev` | Git-connected: every push to `master` builds and deploys automatically (`npm run build:cloudflare`, output `dist`). Manual: `npm run deploy:cloudflare`. | `/api/lead` -> `functions/api/lead.js` | `wrangler.jsonc`, `scripts/build-cloudflare-pages.js` (writes `dist/_headers`) |
+| Netlify (sites `thinkgreen-az`, `thinkgreen-landscape`) | `https://thinkgreen-az.netlify.app` | Netlify CLI from a checkout: `netlify deploy --site <site-id>` (draft) or `--prod`. Build: `npm install && npm --prefix netlify/functions ci && npm run build:assets`. | `/api/lead` -> `netlify/functions/lead-gateway.js` -> `netlify/functions/send-ticket-emails.js` | `netlify.toml` |
+
+### Netlify environment variables
+
+Set in Netlify **Site configuration -> Environment variables** (functions scope). Never commit values.
+
+Required:
+
+- `LEAD_PROXY_SECRET` long random string. The gateway adds it so the mailer function cannot be called directly. Without it every lead returns 503.
+- `OWNER_EMAIL` where owner lead notifications go (test value `sirjarvis@mail.grokbot.com`).
+- `SMTP_USER` and `SMTP_PASS` free Gmail SMTP: a Gmail address and a Google **app password** (needs 2-step verification on that Google account).
+
+Optional:
+
+- `FROM_EMAIL` (defaults to `Think Green <SMTP_USER>`), `SMTP_HOST` (default `smtp.gmail.com`), `SMTP_PORT` (465), `SMTP_SECURE`
+- `EMAIL_PROVIDER` / `OWNER_EMAIL_PROVIDER` (`smtp` or `resend`, owner defaults to `smtp`, falls back to whichever has credentials)
+- `RESEND_API_KEY`, `RESEND_FROM_EMAIL` if you prefer Resend
+- `GOOGLE_SHEETS_WEBHOOK_URL`, `GOOGLE_SHEETS_WEBHOOK_SECRET`, `GOOGLE_SHEET_URL` for the lead dashboard. If the webhook URL is not set, leads still go out by email. If it is set and fails, the lead is rejected so nothing is lost silently.
+- `SITE_URL`, `EMAIL_LOGO_URL`
+
+Netlify note: the browser form still renders Cloudflare Turnstile. Add the Netlify hostname to the Turnstile widget's allowed hostnames in Cloudflare, or the widget will not issue a token there. The Netlify function does not verify Turnstile server-side.
+
+### Email logo
+
+- File: `email-assets/logo-email.png` (320x320 PNG with the cream badge baked in, shown at 96px or smaller, about 11 KB).
+- URL: `emailLogoUrl` in `site-config.js` is the one place to change it. Default is `https://raw.githubusercontent.com/carswqqqq1/example-website-landscaping/master/email-assets/logo-email.png` so emails do not depend on the demo host staying up.
+- Override per host with the `EMAIL_LOGO_URL` env var (Cloudflare Pages and Netlify).
+- Templates use a plain `<img>` with `width`, `height` and `alt`, no CSS filter, border-radius or object-fit. Apple Mail renders these reliably. The business name stays as text next to the logo as a fallback.
+- `/img/*` and `/email-assets/*` send exactly one `Cross-Origin-Resource-Policy: cross-origin` header on both hosts. Apple Mail enforces CORP on remote images, so a conflicting `same-origin` value blanks the logo.
+
 If production and branch ever drift, fix that before making visual or funnel edits. The branch should stay the source of truth for this template.
 
 ## What Is Part Of The Template
@@ -144,6 +181,7 @@ Set these in the Cloudflare Pages project's **Settings → Variables and Secrets
 
 Optional:
 
+- `EMAIL_LOGO_URL` absolute https logo URL for emails (defaults to `emailLogoUrl` in `site-config.js`)
 - `FROM_EMAIL` as a compatibility alias for `RESEND_FROM_EMAIL`
 - `GOOGLE_SHEET_URL`
 - `CRM_WEBHOOK_URL`
