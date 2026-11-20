@@ -681,6 +681,15 @@
     setText('[data-site-zip]', SITE_ZIP);
     setText('[data-site-name]', SITE_NAME);
     setText('[data-site-year]', String(new Date().getFullYear()));
+    document.querySelectorAll('[data-site-name]').forEach(function (el) {
+      var node = el.nextSibling;
+      if (!node || node.nodeType !== 3) return;
+      var name = String(el.textContent || '').trim();
+      var text = node.textContent || '';
+      if (/[.!?]$/.test(name) && /^\s*\./.test(text)) {
+        node.textContent = text.replace(/^\s*\./, '');
+      }
+    });
 
     var cityField = document.getElementById('city');
     if (cityField && !cityField.value) {
@@ -5003,12 +5012,23 @@
   document.body.appendChild(banner);
 
   var cookieDelay = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 2200 : 0;
+  function syncCookieBannerSpace() {
+    if (!banner.isConnected || !banner.classList.contains('is-visible')) {
+      document.documentElement.style.setProperty('--cookie-banner-space', '0px');
+      return;
+    }
+    document.documentElement.style.setProperty('--cookie-banner-space', banner.offsetHeight + 'px');
+  }
+
   setTimeout(function () {
     requestAnimationFrame(function () {
       document.body.classList.add('has-cookie-banner-visible');
       banner.classList.add('is-visible');
+      syncCookieBannerSpace();
     });
   }, cookieDelay);
+
+  window.addEventListener('resize', syncCookieBannerSpace);
 
   function dismiss(accepted) {
     localStorage.setItem(COOKIE_KEY, accepted ? 'accepted' : 'declined');
@@ -5017,6 +5037,8 @@
     }
     document.body.classList.remove('has-cookie-banner-visible');
     banner.classList.remove('is-visible');
+    document.documentElement.style.setProperty('--cookie-banner-space', '0px');
+    window.removeEventListener('resize', syncCookieBannerSpace);
     setTimeout(function () { banner.remove(); }, 450);
   }
 
