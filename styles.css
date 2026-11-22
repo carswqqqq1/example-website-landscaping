@@ -965,6 +965,36 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   width: min(1040px, 100%);
 }
 
+.sample-preview:not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .1rem .75rem;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: .85rem;
+  padding: .3rem .65rem;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 8px;
+  background: #162a21;
+  color: #fff;
+  font-size: .8125rem;
+  line-height: 1.4;
+}
+.sample-preview a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: .15em;
+}
+.sample-preview a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 /* Hero text entry animations — staggered on page load */
 @keyframes heroSlideUp {
   from { opacity: 0; transform: translateY(36px); }
