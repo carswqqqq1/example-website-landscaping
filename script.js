@@ -646,6 +646,13 @@
   function applySiteBranding() {
     applyBrandTokens();
 
+    if (BRAND.sampleLabel && /^(?:[a-z0-9-]+--)?thinkgreen-az\.netlify\.app$/.test(window.location.hostname)) {
+      setText('[data-sample-preview-label]', BRAND.sampleLabel);
+      document.querySelectorAll('[data-sample-preview]').forEach(function (notice) {
+        notice.hidden = false;
+      });
+    }
+
     if (BRAND.logoPath) {
       var resolvedLogoPath = toRootAssetPath(BRAND.logoPath);
       document.querySelectorAll('[data-site-logo]').forEach(function (logo) {
