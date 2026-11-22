@@ -425,7 +425,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     radial-gradient(circle at center, rgba(250,247,243,.22) 0%, rgba(250,247,243,.1) 54%, rgba(250,247,243,.03) 70%, transparent 74%);
 }
 .nav__logo-img {
-  height: 48px;
+  height: 56px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -4481,6 +4481,9 @@ body.has-cookie-banner-visible .sticky-bar {
   .nav__logo {
     margin-right: auto;
   }
+  .nav .nav__logo-img {
+    height: 46px;
+  }
   .nav__links { display: none; }
   .nav__actions { display: none; }
   .nav__burger { display: flex; }
@@ -4509,9 +4512,6 @@ body.has-cookie-banner-visible .sticky-bar {
   }
   .nav__inner {
     height: 66px;
-  }
-  .nav__logo-img {
-    height: 44px;
   }
   .nav__logo-img--footer {
     height: 80px;
@@ -4910,7 +4910,7 @@ body.has-cookie-banner-visible .sticky-bar {
     gap: .2rem;
     padding-inline: .9rem;
   }
-  .nav__logo-img {
+  .nav__logo-img--footer {
     height: 40px;
   }
   .nav__burger {
