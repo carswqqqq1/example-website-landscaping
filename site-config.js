@@ -484,6 +484,7 @@
     brand: {
       logoPath: 'img/logo-160.png',
       sampleLabel: 'Sample site by Arroyo Marketing',
+      sampleCtaUrl: 'https://arroyomarketing.com/?utm_source=mesa_wren_demo&utm_medium=email&utm_campaign=demo_lead_confirmation',
       primary: '#1b4332',
       primaryMid: '#2d6a4f',
       paper: '#faf7f3'

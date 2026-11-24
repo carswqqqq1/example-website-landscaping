@@ -1025,6 +1025,7 @@ function buildOwnerTables(data) {
     buildDataRow('Lead Quality', data.lead_quality),
     buildDataRow('Estimated Value', data.estimated_project_value),
     buildDataRow('Lead Tags', data.owner_lead_tags),
+    buildDataRow('Customer List Opt-in', data.sheet_opt_in),
     buildDataRow('Status', data.sheet_status),
     buildDataRow('Submitted', data.submitted_local),
     buildDataRow('Urgency', data.start_timeline)
@@ -2146,16 +2147,23 @@ exports.handler = async (event) => {
     normalized.sheet_url = safeText(normalized.sheet_url, GOOGLE_SHEET_URL);
     normalized.owner_summary = buildOwnerSummary(normalized);
 
-    const sheetsResult = await sendToGoogleSheets(normalized, {
-      created_at: createdAt,
-      page_url: pageUrl
-    }).catch((err) => ({ ok: false, error: err.message }));
+    // The customer list sheet only gets leads who ticked the optional opt-in box.
+    // Leads who did not opt in still reach the owner by email.
+    const sheetOptIn = isConsentGiven(data.sheet_opt_in || payload.sheet_opt_in);
+    normalized.sheet_opt_in = sheetOptIn ? 'Yes' : 'No';
+    const sheetsResult = sheetOptIn
+      ? await sendToGoogleSheets(normalized, {
+        created_at: createdAt,
+        page_url: pageUrl
+      }).catch((err) => ({ ok: false, error: err.message }))
+      : { ok: false, skipped: true, reason: 'not_opted_in' };
 
     // Google Sheets is optional. When GOOGLE_SHEETS_WEBHOOK_URL is not set the lead
     // still goes out by owner email (Gmail SMTP or Resend). A configured webhook that
     // fails still blocks, so a broken dashboard is never silently skipped.
     const sheetsSkippedNotConfigured = Boolean(
-      sheetsResult && sheetsResult.skipped === true && !GOOGLE_SHEETS_WEBHOOK_URL
+      sheetsResult && sheetsResult.skipped === true &&
+      (!GOOGLE_SHEETS_WEBHOOK_URL || sheetsResult.reason === 'not_opted_in')
     );
     if (!sheetsSkippedNotConfigured && (!sheetsResult || !sheetsResult.ok)) {
       logLeadFailure('google_sheet_delivery_failed', normalized, {

@@ -3065,6 +3065,10 @@
       '        <input type="checkbox" id="consult-contact-consent" name="contact_consent" value="yes" required />' +
       '        <span>I agree to be contacted by Mesa Wren about this request by phone, text, or email. No spam, no resale. See our <a href="/privacy-policy">Privacy Policy</a>.</span>' +
       '      </label>' +
+      '      <label class="form-consent form-consent--drawer form-consent--optin" for="consult-sheet-opt-in">' +
+      '        <input type="checkbox" id="consult-sheet-opt-in" name="sheet_opt_in" value="yes" />' +
+      '        <span>Optional: add me to the Mesa Wren customer list for seasonal yard tips and offers. Unsubscribe anytime.</span>' +
+      '      </label>' +
       '      <div class="turnstile-field" data-turnstile-container></div>' +
       '      <p class="turnstile-status" data-turnstile-status role="status" aria-live="polite"></p>' +
       '      <div class="consult-drawer__actions">' +
