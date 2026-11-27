@@ -5997,6 +5997,13 @@ body.has-nav-overlay-open .cookie-banner {
     linear-gradient(0deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,0) 60%),
     linear-gradient(90deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.56) 50%, rgba(0,0,0,.2) 100%);
 }
+/* Phones: text spans the full width, so the scrim runs top to bottom. */
+@media (max-width: 768px) {
+  .hero__overlay { background: linear-gradient(180deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,.58) 50%, rgba(0,0,0,.74) 100%); }
+}
+.hero__sub { color: #fff; }
+.hero__reassurance { color: #fff; font-size: .875rem; }
+.nav:not(.is-scrolled) .nav__link { color: #fff; }
 .hero__fit-note {
   padding: 0;
   border: 0;
