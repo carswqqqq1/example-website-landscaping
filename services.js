@@ -122,28 +122,6 @@
     document.head.appendChild(script);
   }
 
-  function applyReviewSnapshot(selector) {
-    var reviewConfig = window.SITE_CONFIG || {};
-    var reviewSummary = reviewConfig.reviewSummary || {};
-    var target = selector ? document.querySelector(selector) : null;
-    if (!target) return;
-
-    var rating = String(reviewSummary.rating || reviewConfig.reviewRating || (reviewConfig.googleReviews && reviewConfig.googleReviews.rating) || '').trim();
-    var count = String(reviewSummary.count || reviewConfig.reviewCount || (reviewConfig.googleReviews && reviewConfig.googleReviews.count) || '').trim();
-    var platform = String(reviewSummary.source || reviewConfig.reviewSource || (reviewConfig.googleReviews && reviewConfig.googleReviews.platform) || 'Birdeye').trim();
-    var link = String(reviewSummary.sourceUrl || reviewConfig.reviewSourceUrl || (reviewConfig.googleReviews && reviewConfig.googleReviews.profileUrl) || '').trim();
-    var snapshotDate = String(reviewSummary.snapshotDate || reviewConfig.reviewSnapshotDate || (reviewConfig.googleReviews && reviewConfig.googleReviews.snapshotDate) || '').trim();
-    if (!rating && !count) return;
-
-    var text = rating + '-star ' + platform + ' rating';
-    if (count) text += ' across ' + count + ' reviews';
-    if (snapshotDate) text += ' · ' + snapshotDate;
-
-    target.innerHTML = link
-      ? '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' + text + '</a>'
-      : text;
-  }
-
   function buildServiceStoryMarkup(service, options) {
     if (!service || !service.featuredProject) return '';
 
@@ -369,13 +347,9 @@
   function renderHub() {
     var hubGrid = byId('services-hub-grid');
     var hubProof = byId('service-proof');
-    var hubReviewProof = byId('services-hub-proof');
     if (!hubGrid) return;
     if (hubProof) {
       hubProof.innerHTML = buildProofMarkup();
-    }
-    if (hubReviewProof) {
-      applyReviewSnapshot('#services-hub-proof');
     }
 
     hubGrid.innerHTML = services.map(function (service) {
@@ -384,7 +358,6 @@
         : '';
       return '' +
         '<article class="service-card reveal reveal--scale">' +
-        '  <p class="service-card__eyebrow">Scottsdale &amp; Phoenix</p>' +
         '  <h3>' + service.title + '</h3>' +
         '  <p>' + service.heroSubtext + '</p>' +
         planningRange +
@@ -423,7 +396,6 @@
     var area = byId('service-area-text');
     var faq = byId('service-faq');
     var related = byId('related-services-list');
-    var reviewProof = byId('service-review-proof');
     var relatedSection = related ? related.closest('.service-related') : null;
     var gallerySection = gallery ? gallery.closest('.service-block') : null;
     var faqHeading = faq && faq.closest('.service-block')
@@ -585,9 +557,6 @@
       }).join('');
     }
 
-    if (reviewProof) {
-      applyReviewSnapshot('#service-review-proof');
-    }
 
     if (relatedSection) {
       var existingResourceBlock = relatedSection.querySelector('.service-related__resources');
