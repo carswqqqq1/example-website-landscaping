@@ -585,6 +585,8 @@
   .pf-cta__inner { flex-direction: column; align-items: flex-start; }
   .pf-item__cap { opacity: 1; }
   .pf-item__cap-inner { transform: none; }
+  /* The caption is always visible here, so the chip would cover its location line. */
+  .pf-item__chip { display: none; }
   .pf-lightbox__dialog {
     inset: .75rem;
     grid-template-columns: 36px minmax(0, 1fr) 36px;
