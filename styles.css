@@ -6289,3 +6289,23 @@ body.has-nav-overlay-open .cookie-banner {
 [data-review-copy-row][hidden],
 [data-google-reviews-date][hidden],
 [data-license-numbers][hidden] { display: none !important; }
+
+/* Homepage proof photos (a single finished project in place of the old slider). */
+.finished-photo { margin: 0 0 2.4rem; }
+.finished-photo__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(20,20,20,.1);
+}
+.finished-photo__caption {
+  margin-top: .75rem;
+  font-size: .875rem;
+  line-height: 1.55;
+  color: var(--ink-light);
+}
+.finished-photo--flat { margin-bottom: 0; }
+.finished-photo--flat .finished-photo__image { aspect-ratio: 4 / 3; }
