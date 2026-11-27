@@ -582,3 +582,28 @@
   font-size: .875rem;
   color: #fff;
 }
+
+/* Checklist gate: the shared "What do you need?" options keep the homepage
+   form's look instead of the gate's uppercase field-label style. */
+.resource-gate__form .form-field label.service-type__option {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  margin-bottom: 0;
+  font-size: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+  color: inherit;
+}
+.resource-gate__form .service-type__option input {
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+}
+.resource-gate__form .form-consent input {
+  width: 24px;
+  min-height: 0;
+  padding: 0;
+}
