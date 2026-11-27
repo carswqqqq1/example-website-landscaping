@@ -127,8 +127,8 @@
 /* ----- Hero: text over a neutral scrim, no glass cards ----- */
 .hero__overlay {
   background:
-    linear-gradient(0deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,0) 55%),
-    linear-gradient(90deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,.42) 48%, rgba(0,0,0,.18) 100%);
+    linear-gradient(0deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,0) 60%),
+    linear-gradient(90deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.56) 50%, rgba(0,0,0,.2) 100%);
 }
 .hero__fit-note {
   padding: 0;
