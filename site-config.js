@@ -540,7 +540,7 @@
       beforeAlt: 'Scottsdale backyard before renovation with worn grass, dated concrete, and limited shade',
       afterImage: 'img/projects/after-29.jpg',
       afterAlt: 'Scottsdale backyard after renovation with pavers, fire feature, lighting, and low-water planting',
-      note: 'Drag the slider to compare a real project before and after completion.'
+      note: 'Drag the slider to compare before and after.'
     },
     reviews: [],
     googleReviews: {
