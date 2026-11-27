@@ -616,3 +616,70 @@
 @media (max-width: 768px) {
   .page-hero--plain { min-height: 240px; }
 }
+
+/* Process table: row headers read like the other cells on wide screens */
+.comparison-table--stack tbody th {
+  background: none;
+  font-size: .86rem;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 700;
+  vertical-align: top;
+  border-bottom: 1px solid #eee6da;
+}
+
+/* Under 600px each step becomes a stacked card */
+@media (max-width: 599px) {
+  .comparison-table--stack,
+  .comparison-table--stack tbody,
+  .comparison-table--stack tr,
+  .comparison-table--stack th,
+  .comparison-table--stack td {
+    display: block;
+    width: 100%;
+  }
+  .comparison-table--stack {
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .comparison-table--stack thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .comparison-table--stack tr {
+    border: 1px solid #e4d9c8;
+    border-radius: 10px;
+    background: #fff;
+    margin-bottom: .75rem;
+    overflow: hidden;
+  }
+  .comparison-table--stack tbody th {
+    background: #f4efe6;
+    font-size: .95rem;
+    padding: .75rem .9rem;
+  }
+  .comparison-table--stack td {
+    padding: .7rem .9rem;
+  }
+  .comparison-table--stack td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: .2rem;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--tan-text);
+  }
+  .comparison-table--stack tr td:last-child {
+    border-bottom: none;
+  }
+}
+@media (min-width: 600px) {
+  .comparison-table--stack tr:last-child th { border-bottom: none; }
+}
