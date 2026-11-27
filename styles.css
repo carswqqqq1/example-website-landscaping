@@ -6397,3 +6397,8 @@ summary:focus-visible,
   min-height: 44px;
   padding: .35rem 1rem;
 }
+
+/* Three estimate paths: yard care, one-time fix, new project. */
+@media (min-width: 769px) {
+  .estimate-route__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
