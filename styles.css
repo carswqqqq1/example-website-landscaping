@@ -5863,3 +5863,415 @@ body.has-nav-overlay-open .cookie-banner {
 .consult-drawer__form .service-type-groups:not(:has(.service-type-group:not([hidden]))) { display: none; }
 .quote-starter__form .service-type__options { grid-template-columns: 1fr; }
 .home-page .contact__form .service-type-group .field-required { display: none; }
+
+/* ============================================================
+   2026-11 refresh: quieter, less templated finish
+   Loaded last so it settles the older layered rules above.
+   - Labels and buttons in sentence case, no tracked caps
+   - Flat buttons, no resting shadows or pulse effects
+   - No glass panels, icon chips, pill badges or index numbers
+   - Full-screen mobile menu with plain type instead of numbered cards
+   ============================================================ */
+
+/* ----- Type: labels and small caps ----- */
+.eyebrow,
+.hero__eyebrow,
+.text-link,
+.nav__call-label,
+.nav__cta,
+.nav__mobile-call,
+.hero-stat p,
+.hero-stat__cta,
+.trust-bar__item h3,
+.estimate-route__label,
+.estimate-route__cta,
+.about__badge span,
+.featured-project__label,
+.before-after__label,
+.portfolio__tag,
+.reviews__badge,
+.review-page-proof__snapshot,
+.review-page-proof__stat span,
+.areas__local-links a,
+.trust-assets__card a,
+.recent-project__chip,
+.recent-project__cta,
+.search-intent__links a,
+.fit-card__label,
+.fit-card__action,
+.lead-tier__btn,
+.cost-card__label,
+.ticket-panel__title,
+.response-promise__eyebrow,
+.contact__quote strong,
+.footer__col h4,
+.footer__bottom .footer__sample-label,
+.sticky-bar__phone-label,
+.consult-drawer__eyebrow,
+.consult-drawer__trust-row span,
+.consult-drawer__details summary,
+.consult-drawer__context strong,
+.exit-popup__eyebrow {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.eyebrow.eyebrow,
+.hero__eyebrow,
+.response-promise__eyebrow,
+.consult-drawer__eyebrow,
+.exit-popup__eyebrow {
+  font-size: .9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--green);
+}
+.eyebrow.eyebrow--light,
+.hero__eyebrow { color: rgba(255,255,255,.86); }
+
+.text-link {
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+.text-link:hover { text-decoration-thickness: 2px; }
+
+.footer__col h4 {
+  font-size: .9375rem;
+  font-weight: 600;
+}
+
+/* ----- Buttons: flat, one radius, sentence case ----- */
+.btn,
+.nav__cta,
+.nav__call,
+.lead-tier__btn {
+  text-transform: none;
+  letter-spacing: 0;
+  border-radius: 4px;
+  box-shadow: none;
+}
+.btn {
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease), transform .12s var(--ease);
+}
+.btn:hover,
+.btn--solid:hover,
+.btn--ghost:hover,
+.btn--dark:hover {
+  transform: none;
+  box-shadow: none;
+  animation: none;
+}
+.btn:active { transform: translateY(1px); }
+.btn--solid:hover {
+  background: var(--green);
+  border-color: var(--green);
+}
+.nav__cta { font-size: .9375rem; }
+.nav__call-label { font-size: .75rem; font-weight: 500; }
+
+/* Secondary hero action reads as a plain phone link, so the hero has one button */
+.hero__actions .btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  padding-inline: .5rem;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .25em;
+}
+.hero__actions .btn--ghost:hover {
+  background: transparent;
+  border-color: transparent;
+  text-decoration-thickness: 2px;
+}
+
+/* ----- Hero: text over a neutral scrim, no glass cards ----- */
+.hero__overlay {
+  background:
+    linear-gradient(0deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,0) 55%),
+    linear-gradient(90deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,.42) 48%, rgba(0,0,0,.18) 100%);
+}
+.hero__fit-note {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  font-size: .9375rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,.9);
+}
+.hero__fit-note strong { font-weight: 700; }
+.hero__stats { gap: 1.25rem 2rem; margin-top: 2rem; }
+.hero-stat,
+.hero-stat--link:hover,
+.hero-stat--link:focus-visible {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transform: none;
+}
+.hero-stat__icon { display: none; }
+.hero-stat strong {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.hero-stat p {
+  margin-top: .15rem;
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 1.45;
+  color: rgba(255,255,255,.86);
+}
+.hero-stat__cta {
+  margin-top: .4rem;
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--white);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+.hero-stat--link:hover .hero-stat__cta,
+.hero-stat--link:focus-visible .hero-stat__cta { text-decoration-thickness: 2px; }
+
+/* ----- Owner proof: a plain list, no boxed icon chips ----- */
+.owner-proof-strip { border: 0; }
+.owner-proof-strip__wrap { text-align: left; padding-top: clamp(2rem, 4vw, 3rem); }
+.owner-proof-strip__headline { font-size: clamp(1.6rem, 2.6vw, 2.1rem); }
+.owner-proof-strip__sub { margin-left: 0; font-size: 1rem; color: var(--ink); }
+.owner-proof-strip__inner {
+  gap: 1rem 2rem;
+  padding-block: 1.5rem clamp(2rem, 4vw, 3rem);
+}
+.owner-proof-strip__item {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.owner-proof-strip__icon { display: none; }
+.owner-proof-strip__item p {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* ----- Estimate paths: flat tiles, label as plain text, intro pinned ----- */
+.estimate-route { border-bottom: 0; }
+.estimate-route__inner { align-items: start; }
+.estimate-route__intro { position: sticky; top: 110px; }
+.estimate-route__grid { gap: .5rem; }
+.estimate-route__card,
+.estimate-route__card:hover {
+  min-height: 0;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: none;
+  transform: none;
+}
+.estimate-route__card { padding: 1.25rem; transition: background-color .2s var(--ease); }
+.estimate-route__card:hover { background: var(--paper-alt); }
+.estimate-route__label,
+.estimate-route__card--call .estimate-route__label {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: .875rem;
+  font-weight: 600;
+}
+.estimate-route__card--call:hover { background: var(--green-dark); }
+.estimate-route__card p { font-size: .9375rem; color: var(--ink); }
+.estimate-route__card--call p { color: rgba(255,255,255,.82); }
+.estimate-route__cta {
+  font-size: .9375rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+.estimate-route__card:hover .estimate-route__cta { text-decoration-thickness: 2px; }
+
+/* ----- Services and process: order by position, not 01/02 counters ----- */
+.service-item { grid-template-columns: 1fr; }
+.service-item__num { display: none; }
+.service-item.is-visible .service-item__num { animation: none; }
+
+.process__steps {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2rem;
+}
+.process__connector,
+.process__step-num { display: none; }
+.process__step { text-align: left; padding: 0; }
+.process__step h3 { font-size: 1.5rem; }
+.process__step p { color: var(--ink); }
+@media (max-width: 900px) {
+  .process__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .process__steps { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+
+/* Review cards no longer tilt in */
+.review-card.reveal--tilt { transform: translateY(18px); }
+
+/* ----- Mobile header: plain scrim, no blur ----- */
+@media (max-width: 768px) {
+  .nav {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* ----- Mobile menu: full-screen sheet with plain type ----- */
+.nav__overlay {
+  background: var(--paper);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: calc(1rem + env(safe-area-inset-top)) 1.5rem calc(1.5rem + env(safe-area-inset-bottom));
+}
+.nav__overlay nav,
+.nav__overlay .nav__overlay-actions,
+.nav__overlay .nav__overlay-contact {
+  width: 100%;
+  max-width: 560px;
+  margin-left: 0;
+  margin-right: auto;
+}
+.nav__overlay nav {
+  margin-top: calc(3.25rem + env(safe-area-inset-top));
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  max-height: none;
+  overflow: visible;
+}
+.nav__overlay .nav__overlay-intro { display: none; }
+.nav__overlay .nav__overlay-link {
+  grid-column: 1 / -1;
+  display: block;
+  padding: .3rem 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 9vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -.015em;
+  text-transform: none;
+  text-align: left;
+  color: var(--ink);
+}
+.nav__overlay .nav__overlay-link::before,
+.nav__overlay .nav__overlay-link::after {
+  content: none;
+  display: none;
+}
+.nav__overlay .nav__overlay-link:hover,
+.nav__overlay .nav__overlay-link[aria-current="page"] {
+  color: var(--green);
+  background: none;
+  box-shadow: none;
+}
+/* Second tier: planning pages in a smaller two-column list */
+.nav__overlay .nav__overlay-link[href="/cost-calculator"],
+.nav__overlay .nav__overlay-link[href="/financing"],
+.nav__overlay .nav__overlay-link[href="/warranty"],
+.nav__overlay .nav__overlay-link[href="/faq"],
+.nav__overlay .nav__overlay-link[href="/resources"] {
+  grid-column: auto;
+  padding: .45rem 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: var(--ink-light);
+}
+.nav__overlay .nav__overlay-link[href="/cost-calculator"],
+.nav__overlay .nav__overlay-link[href="/financing"] { margin-top: 1.5rem; }
+.nav__overlay .nav__overlay-actions {
+  display: block;
+  margin-top: 2rem;
+}
+.nav__overlay .nav__overlay-action {
+  min-height: 52px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: none;
+  background-image: none;
+}
+.nav__overlay .nav__overlay-action:hover { transform: none; box-shadow: none; }
+.nav__overlay .nav__overlay-action--ghost { display: none; }
+.nav__overlay .nav__overlay-action--solid {
+  display: flex;
+  width: 100%;
+  background-color: var(--green-dark);
+  border-color: var(--green-dark);
+}
+.nav__overlay .nav__overlay-action--solid:hover { background-color: var(--green); }
+.nav__overlay .nav__overlay-contact {
+  margin-top: 1rem;
+  padding: 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .25rem 1rem;
+  font-size: .9375rem;
+  color: var(--ink-light);
+}
+.nav__overlay .nav__overlay-contact a {
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+.nav__overlay .nav__overlay-contact a::before { content: "Call "; }
+.nav__overlay .nav__overlay-close {
+  top: calc(.75rem + env(safe-area-inset-top));
+  right: .75rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ink);
+  font-size: 1.5rem;
+}
+.nav__overlay .nav__overlay-close:hover { color: var(--green); }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__overlay,
+  .nav__overlay nav,
+  .nav__overlay .nav__overlay-link,
+  .nav__overlay .nav__overlay-actions,
+  .nav__overlay .nav__overlay-contact {
+    transition: none !important;
+    transform: none !important;
+  }
+}

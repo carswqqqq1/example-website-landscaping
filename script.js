@@ -1742,16 +1742,17 @@
 
   function getOverlayNavigationItems() {
     return [
+      // Main pages first, then the planning pages (styled as a smaller second tier in styles.css)
       { label: 'Home', href: '/' },
       { label: 'Services', href: '/services' },
       { label: 'Portfolio', href: '/portfolio' },
-      { label: 'Cost Calculator', href: '/cost-calculator' },
-      { label: 'Warranty', href: '/warranty' },
-      { label: 'Financing', href: '/financing' },
-      { label: 'FAQ', href: '/faq' },
-      { label: 'Resources', href: '/resources' },
       { label: 'Process', href: '/process' },
-      { label: 'Reviews', href: '/reviews' }
+      { label: 'Reviews', href: '/reviews' },
+      { label: 'Cost calculator', href: '/cost-calculator' },
+      { label: 'Financing', href: '/financing' },
+      { label: 'Warranty', href: '/warranty' },
+      { label: 'FAQ', href: '/faq' },
+      { label: 'Resources', href: '/resources' }
     ];
   }
 
