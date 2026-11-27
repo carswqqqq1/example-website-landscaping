@@ -6343,3 +6343,57 @@ summary:focus-visible,
   outline-offset: 2px;
   box-shadow: 0 0 0 5px rgba(0,0,0,.55);
 }
+
+/* ----- Tap targets: 44px minimum for standalone links and controls ----- */
+.footer__col ul { gap: 0; }
+.footer a:not(.footer__social-link):not(.nav__logo) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .55rem 0;
+}
+.form-consent {
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  min-height: 44px;
+}
+.form-consent input {
+  width: 24px;
+  height: 24px;
+  margin-top: 0;
+}
+.home-page .reviews__proof {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-inline: auto;
+}
+.reviews__proof a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .6rem 0;
+}
+@media (max-width: 768px) {
+  .text-link,
+  .service-item__body a,
+  .trust-assets__links a,
+  .trust-assets__card > p > a,
+  .search-intent__links a,
+  .contact__details a,
+  .contact__quote a,
+  .contact__trust-list a,
+  .nav__overlay-contact a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+.areas__list li { padding: 0; }
+.areas__list li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: .35rem 1rem;
+}
