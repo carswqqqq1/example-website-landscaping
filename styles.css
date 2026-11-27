@@ -898,6 +898,8 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .hero__slides {
   position: absolute;
   inset: 0;
+  /* Own stacking context so slide z-indexes stay below .hero__overlay. */
+  z-index: 0;
 }
 .hero__slide {
   position: absolute;
