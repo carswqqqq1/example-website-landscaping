@@ -4893,7 +4893,9 @@ body.has-cookie-banner-visible .sticky-bar {
   .footer__brand { grid-column: span 1; }
   .footer__bottom { flex-direction: column; text-align: center; }
   .sticky-bar { display: flex; }
-  body { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+  /* Space for the sticky call bar sits on the dark footer, not the white body. */
+  body { padding-bottom: 0; }
+  .footer { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
   .scroll-top {
     display: none;
   }
@@ -5357,6 +5359,9 @@ body.has-cookie-banner-visible .sticky-bar {
   transition: opacity .24s var(--ease-out), transform .24s var(--ease-out);
 }
 body.has-cookie-banner-visible {
+  padding-bottom: 0;
+}
+body.has-cookie-banner-visible .footer {
   padding-bottom: var(--cookie-banner-space);
 }
 body.has-cookie-banner-visible .contact__form,
@@ -5423,6 +5428,9 @@ body.has-nav-overlay-open .cookie-banner {
 .cookie-banner__decline:hover { color: var(--ink); border-color: var(--ink); background: var(--paper); }
 @media (max-width: 640px) {
   body.has-cookie-banner-visible {
+    padding-bottom: 0;
+  }
+  body.has-cookie-banner-visible .footer {
     padding-bottom: calc(92px + var(--cookie-banner-space) + env(safe-area-inset-bottom));
   }
   .cookie-banner {
