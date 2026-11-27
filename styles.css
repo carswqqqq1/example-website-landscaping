@@ -2436,7 +2436,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .review-page-proof__stats {
   margin-top: 1.2rem;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: .75rem;
 }
 .review-page-proof__stat {
