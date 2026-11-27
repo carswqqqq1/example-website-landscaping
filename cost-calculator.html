@@ -24,9 +24,9 @@
   <link rel="canonical" href="https://example-website-landscaping.pages.dev/cost-calculator" />
     <link rel="preload" as="font" href="/fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2" type="font/woff2" crossorigin />
   <link rel="preload" as="font" href="/fonts/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/fonts.min.css?v=20261127refresh" />
-  <link rel="stylesheet" href="/styles.min.css?v=20261127refresh" />
-  <link rel="stylesheet" href="/pages.min.css?v=20261127refresh" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20261127fixlist2" />
+  <link rel="stylesheet" href="/styles.min.css?v=20261127fixlist2" />
+  <link rel="stylesheet" href="/pages.min.css?v=20261127fixlist2" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -110,7 +110,7 @@
 
   <main id="main-content">
     <section class="page-hero">
-      <div class="page-hero__bg" style="background-image:url('img/projects/slide1-1280.avif')"></div>
+      <div class="page-hero__bg" style="background-image:url('img/projects/slide3-1280.avif')"></div>
       <div class="page-hero__overlay"></div>
       <div class="container page-hero__inner">
         <p class="eyebrow">Starter Planning Range</p>
@@ -201,7 +201,7 @@
       </div>
     </section>
 
-    <section class="page-section page-section--alt">
+    <section class="page-section page-section--alt" id="planning-ranges">
       <div class="container">
         <header class="page-section__header reveal">
           <p class="eyebrow">Typical Planning Ranges</p>
@@ -216,15 +216,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>Landscape Design &amp; Build</td><td>$10,000 - $45,000 starter planning</td></tr>
+              <tr><td>Landscape Design &amp; Build</td><td>$5,000 - $15,000 design planning</td></tr>
               <tr><td>Hardscaping</td><td>$10,000 - $40,000</td></tr>
-              <tr><td>Outdoor Kitchens</td><td>$15,000 - $60,000</td></tr>
-              <tr><td>Fire Features</td><td>$5,000 - $25,000</td></tr>
-              <tr><td>Outdoor Lighting</td><td>$2,500 - $12,000</td></tr>
-              <tr><td>Pergola / Shade Structure</td><td>$8,000 - $30,000</td></tr>
-              <tr><td>Artificial Turf</td><td>$7,000 - $25,000</td></tr>
-              <tr><td>Irrigation</td><td>$2,500 - $10,000</td></tr>
-              <tr><td>Desert / Drought-Tolerant Design</td><td>$5,000 - $25,000</td></tr>
+              <tr><td>Outdoor Kitchens</td><td>$20,000 - $60,000</td></tr>
+              <tr><td>Fire Features</td><td>$5,000 - $20,000</td></tr>
+              <tr><td>Outdoor Lighting</td><td>$3,000 - $18,000</td></tr>
+              <tr><td>Pergola / Shade Structure</td><td>$8,000 - $45,000</td></tr>
+              <tr><td>Artificial Turf</td><td>$5,000 - $15,000</td></tr>
+              <tr><td>Irrigation</td><td>$2,000 - $10,000</td></tr>
+              <tr><td>Desert / Drought-Tolerant Design</td><td>$8,000 - $35,000</td></tr>
             </tbody>
           </table>
         </div>
@@ -235,7 +235,7 @@
       <div class="container">
         <div class="thank-you-card reveal">
           <h2>Need a more exact number?</h2>
-          <p>Use the calculator as a planning tool, then let the project review refine scope, materials, and phasing into a real project range.</p>
+          <p>Use the calculator as a planning tool, then let the project review refine scope, materials, and phasing into a project range for your yard.</p>
           <div class="page-hero__actions">
             <a href="/free-consultation?source=calculator_page&autostart=1" class="btn btn--solid" data-calc-review-link>Refine My Estimate</a>
             <a href="/landscaping-cost-scottsdale" class="btn btn--outline-dark">View the cost guide</a>
@@ -286,8 +286,8 @@
       </div>
     </div>
     <div class="footer__bottom container">
-      <p>&copy; <span data-site-year>2026</span> <span data-site-name>Mesa Wren Landscape Co.</span> Fictional demo brand.</p>
-      <p class="footer__sample-label" data-sample-label>Sample site by Arroyo Marketing</p>
+      <p>&copy; <span data-site-year>2026</span> <span data-site-name>Mesa Wren Landscape Co.</span> Mesa Wren is a fictional demo brand. Reviews are illustrative.</p>
+      <p class="footer__sample-label" data-sample-label>Demo site by Arroyo Marketing</p>
       <p>Serving <span data-site-city>Scottsdale</span> &middot; Paradise Valley &middot; Phoenix &amp; the Greater Valley of the Sun</p>
     </div>
   </footer>
@@ -305,15 +305,15 @@
       'use strict';
 
       var SERVICE_RANGES = {
-        'landscape-design': { label: 'Landscape Design & Build', low: 10000, high: 45000, note: 'Good for master planning, starter phases, and phased yard transformations.' },
+        'landscape-design': { label: 'Landscape Design & Build', low: 5000, high: 15000, note: 'Good for master planning, starter phases, and phased yard transformations.' },
         'hardscaping': { label: 'Hardscaping', low: 10000, high: 40000, note: 'Common when patios, pavers, walls, and drainage work all move together.' },
-        'outdoor-kitchens': { label: 'Outdoor Kitchens', low: 15000, high: 60000, note: 'Appliances, utility routing, and shade can raise the scope quickly.' },
-        'fire-features': { label: 'Fire Features', low: 5000, high: 25000, note: 'Often part of a larger patio or entertaining zone.' },
-        'outdoor-lighting': { label: 'Outdoor Lighting', low: 2500, high: 12000, note: 'A smaller budget band, but still important for safety and curb appeal.' },
-        'pergola-shade': { label: 'Pergola / Shade Structure', low: 8000, high: 30000, note: 'Adds comfort and usually pairs with patios or seating zones.' },
-        'artificial-turf': { label: 'Artificial Turf', low: 7000, high: 25000, note: 'Base prep and layout size are the biggest cost drivers.' },
-        'irrigation': { label: 'Irrigation', low: 2500, high: 10000, note: 'Coverage, repairs, and system complexity affect the final range.' },
-        'desert-landscaping': { label: 'Desert / Drought-Tolerant Design', low: 5000, high: 25000, note: 'Plant density, hardscape, and grading all shape the budget.' }
+        'outdoor-kitchens': { label: 'Outdoor Kitchens', low: 20000, high: 60000, note: 'Appliances, utility routing, and shade can raise the scope quickly.' },
+        'fire-features': { label: 'Fire Features', low: 5000, high: 20000, note: 'Often part of a larger patio or entertaining zone.' },
+        'outdoor-lighting': { label: 'Outdoor Lighting', low: 3000, high: 18000, note: 'A smaller budget band, but still important for safety and curb appeal.' },
+        'pergola-shade': { label: 'Pergola / Shade Structure', low: 8000, high: 45000, note: 'Adds comfort and usually pairs with patios or seating zones.' },
+        'artificial-turf': { label: 'Artificial Turf', low: 5000, high: 15000, note: 'Base prep and layout size are the biggest cost drivers.' },
+        'irrigation': { label: 'Irrigation', low: 2000, high: 10000, note: 'Coverage, repairs, and system complexity affect the final range.' },
+        'desert-landscaping': { label: 'Desert / Drought-Tolerant Design', low: 8000, high: 35000, note: 'Plant density, hardscape, and grading all shape the budget.' }
       };
 
       var sizeField = document.getElementById('calc-size');
@@ -452,7 +452,7 @@
       renderEstimate();
     })();
   </script>
-  <script src="/site-config.js?v=20261127refresh" defer></script>
-  <script src="/script.min.js?v=20261127refresh" defer></script>
+  <script src="/site-config.js?v=20261127fixlist2" defer></script>
+  <script src="/script.min.js?v=20261127fixlist2" defer></script>
 </body>
 </html>

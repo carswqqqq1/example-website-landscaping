@@ -898,6 +898,8 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .hero__slides {
   position: absolute;
   inset: 0;
+  /* Own stacking context so slide z-indexes stay below .hero__overlay. */
+  z-index: 0;
 }
 .hero__slide {
   position: absolute;
@@ -1076,9 +1078,9 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .hero__stats {
   margin-top: 1.6rem;
-  max-width: 1040px;
+  max-width: 820px;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: .7rem;
 }
 .hero-stat {
@@ -2434,7 +2436,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .review-page-proof__stats {
   margin-top: 1.2rem;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: .75rem;
 }
 .review-page-proof__stat {
@@ -4380,7 +4382,7 @@ body.has-cookie-banner-visible .sticky-bar {
    ============================================================ */
 @media (max-width: 1024px) {
   .hero__stats {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     max-width: 620px;
   }
   .owner-proof-strip__inner {
@@ -4742,7 +4744,7 @@ body.has-cookie-banner-visible .sticky-bar {
   .hero__scroll { display: none; }
   .hero__indicators { display: none; }
   .hero__stats {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: .42rem;
     margin-top: .8rem;
   }
@@ -4891,7 +4893,9 @@ body.has-cookie-banner-visible .sticky-bar {
   .footer__brand { grid-column: span 1; }
   .footer__bottom { flex-direction: column; text-align: center; }
   .sticky-bar { display: flex; }
-  body { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+  /* Space for the sticky call bar sits on the dark footer, not the white body. */
+  body { padding-bottom: 0; }
+  .footer { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
   .scroll-top {
     display: none;
   }
@@ -5355,6 +5359,9 @@ body.has-cookie-banner-visible .sticky-bar {
   transition: opacity .24s var(--ease-out), transform .24s var(--ease-out);
 }
 body.has-cookie-banner-visible {
+  padding-bottom: 0;
+}
+body.has-cookie-banner-visible .footer {
   padding-bottom: var(--cookie-banner-space);
 }
 body.has-cookie-banner-visible .contact__form,
@@ -5421,6 +5428,9 @@ body.has-nav-overlay-open .cookie-banner {
 .cookie-banner__decline:hover { color: var(--ink); border-color: var(--ink); background: var(--paper); }
 @media (max-width: 640px) {
   body.has-cookie-banner-visible {
+    padding-bottom: 0;
+  }
+  body.has-cookie-banner-visible .footer {
     padding-bottom: calc(92px + var(--cookie-banner-space) + env(safe-area-inset-bottom));
   }
   .cookie-banner {
@@ -5995,6 +6005,13 @@ body.has-nav-overlay-open .cookie-banner {
     linear-gradient(0deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,0) 60%),
     linear-gradient(90deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.56) 50%, rgba(0,0,0,.2) 100%);
 }
+/* Phones: text spans the full width, so the scrim runs top to bottom. */
+@media (max-width: 768px) {
+  .hero__overlay { background: linear-gradient(180deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,.58) 50%, rgba(0,0,0,.74) 100%); }
+}
+.hero__sub { color: #fff; }
+.hero__reassurance { color: #fff; font-size: .875rem; }
+.nav:not(.is-scrolled) .nav__link { color: #fff; }
 .hero__fit-note {
   padding: 0;
   border: 0;
@@ -6275,3 +6292,124 @@ body.has-nav-overlay-open .cookie-banner {
     transform: none !important;
   }
 }
+
+/* Review and license text slots that have nothing to show stay hidden. */
+[data-review-copy-row][hidden],
+[data-google-reviews-date][hidden],
+[data-license-numbers][hidden] { display: none !important; }
+
+/* Homepage proof photos (a single finished project in place of the old slider). */
+.finished-photo { margin: 0 0 2.4rem; }
+.finished-photo__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(20,20,20,.1);
+}
+.finished-photo__caption {
+  margin-top: .75rem;
+  font-size: .875rem;
+  line-height: 1.55;
+  color: var(--ink-light);
+}
+.finished-photo--flat { margin-bottom: 0; }
+.finished-photo--flat .finished-photo__image { aspect-ratio: 4 / 3; }
+
+/* ----- Focus rings: dark green on light surfaces, white with a dark halo on dark ones ----- */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+.btn--outline-dark:focus-visible,
+.nav__link:focus-visible,
+.nav__call:focus-visible,
+.nav__cta:focus-visible,
+.nav__overlay-link:focus-visible {
+  outline: 3px solid var(--green-dark);
+  outline-offset: 2px;
+}
+.hero :focus-visible,
+.page-hero :focus-visible,
+.service-hero :focus-visible,
+.footer :focus-visible,
+.nav:not(.is-scrolled) :focus-visible,
+.btn--solid:focus-visible,
+.btn--ghost:focus-visible,
+.btn--dark:focus-visible,
+.btn--submit:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(0,0,0,.55);
+}
+
+/* ----- Tap targets: 44px minimum for standalone links and controls ----- */
+.footer__col ul { gap: 0; }
+.footer a:not(.footer__social-link):not(.nav__logo) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .55rem 0;
+}
+.form-consent {
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  min-height: 44px;
+}
+.form-consent input {
+  width: 24px;
+  height: 24px;
+  margin-top: 0;
+}
+.home-page .reviews__proof {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-inline: auto;
+}
+.reviews__proof a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .6rem 0;
+}
+@media (max-width: 768px) {
+  .text-link,
+  .service-item__body a,
+  .trust-assets__links a,
+  .trust-assets__card > p > a,
+  .search-intent__links a,
+  .contact__details a,
+  .contact__quote a,
+  .contact__trust-list a,
+  .nav__overlay-contact a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+.areas__list li { padding: 0; }
+.areas__list li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: .35rem 1rem;
+}
+
+/* Three estimate paths: yard care, one-time fix, new project. */
+@media (min-width: 769px) {
+  .estimate-route__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Scope lines moved out of the hero into "Start with the right path". */
+.estimate-route__scope {
+  margin-top: 1rem;
+  display: grid;
+  gap: .45rem;
+  font-size: .875rem;
+  line-height: 1.55;
+  color: var(--ink-light);
+}
+.estimate-route__scope strong { color: var(--ink); font-weight: 700; }
