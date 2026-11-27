@@ -81,51 +81,51 @@
       gallery: [
         {
           src: 'img/projects/slide6.webp',
-          alt: 'Landscape design build project in Scottsdale Arizona',
+          alt: 'Pool with a rock waterfall, turf and desert planting below Camelback Mountain',
           width: 1630,
           height: 860,
           chip: 'Design-Build',
-          label: 'Backyard Transformation'
+          label: 'Pool & Rock Waterfall'
         },
         {
           src: 'img/projects/slide7.webp',
-          alt: 'Custom landscape design project in Chandler Arizona',
+          alt: 'Backyard with a gravel planting island, palms, turf and a pool',
           width: 1630,
           height: 860,
           chip: 'Planning',
-          label: 'Outdoor Living Layout'
+          label: 'Gravel Island & Turf'
         },
         {
           src: 'img/projects/shade-structure.jpg',
-          alt: 'Outdoor living design and shade layout in Phoenix Arizona',
+          alt: 'Pergola with string lights over an outdoor kitchen, paver patio and turf',
           width: 1000,
           height: 668,
           chip: 'Outdoor Living',
-          label: 'Integrated Shade Design'
+          label: 'Pergola & Outdoor Kitchen'
         },
         {
           src: 'img/projects/after-29.jpg',
-          alt: 'Completed landscape transformation by Mesa Wren in Gilbert Arizona',
+          alt: 'Three ceramic pot fountains set in river rock',
           width: 880,
           height: 670,
-          chip: 'Transformation',
-          label: 'Completed Installation'
+          chip: 'Accents',
+          label: 'Pot Fountains'
         },
         {
-          src: 'img/projects/slide10.webp',
-          alt: 'Luxury front yard landscape design in Scottsdale Arizona',
+          src: 'img/projects/slide5.webp',
+          alt: 'Front yard with decomposed granite, boulders, a dry creek bed and desert plants',
           width: 1630,
           height: 860,
           chip: 'Curb Appeal',
-          label: 'Front Yard Upgrade'
+          label: 'Desert Front Yard'
         },
         {
           src: 'img/projects/zen-garden.jpg',
-          alt: 'Water-wise landscape design in Fountain Hills Arizona',
+          alt: 'Side yard with stepping stones, desert plants and a small water feature',
           width: 1600,
           height: 954,
           chip: 'Water Smart',
-          label: 'Desert-Friendly Planning'
+          label: 'Desert Side Yard'
         }
       ]
     },
@@ -208,51 +208,51 @@
       gallery: [
         {
           src: 'img/projects/fireplace.jpg',
-          alt: 'Hardscape and stone patio installation in Paradise Valley Arizona',
+          alt: 'Covered patio with a fireplace, lounge seating and travertine pavers',
           width: 1600,
           height: 1066,
-          chip: 'Hardscaping',
-          label: 'Stone + Paver System'
+          chip: 'Pavers',
+          label: 'Travertine Fireplace Patio'
         },
         {
-          src: 'img/projects/slide7.webp',
-          alt: 'Modern driveway and hardscape design in Chandler Arizona',
-          width: 1630,
+          src: 'img/projects/slide4.webp',
+          alt: 'Paver steps, turf with stepping pavers and lounge seating beside a pool',
+          width: 1620,
           height: 860,
-          chip: 'Pavers',
-          label: 'Driveway Upgrade'
+          chip: 'Steps',
+          label: 'Paver Steps & Walkway'
         },
         {
           src: 'img/projects/firepit.jpg',
-          alt: 'Fire pit with paver seating area in Scottsdale Arizona',
+          alt: 'Round stone fire pit on a travertine patio beside a pool',
           width: 1600,
           height: 900,
-          chip: 'Patio Build',
-          label: 'Fire Feature Base'
+          chip: 'Fire Feature',
+          label: 'Fire Pit Surround'
         },
         {
           src: 'img/projects/shade-structure.jpg',
-          alt: 'Hardscape patio with shade structure in Phoenix Arizona',
+          alt: 'Pergola with string lights over an outdoor kitchen, paver patio and turf',
           width: 1000,
           height: 668,
-          chip: 'Outdoor Living',
-          label: 'Entertaining Zone'
+          chip: 'Patio',
+          label: 'Paver Patio & Kitchen'
         },
         {
           src: 'img/projects/after-30.jpg',
-          alt: 'Landscape hardscape transformation near Carefree Arizona',
+          alt: 'Linear fire table, landscape lighting and turf at dusk',
           width: 880,
           height: 670,
-          chip: 'Transformation',
-          label: 'Backyard Renovation'
+          chip: 'Fire Table',
+          label: 'Travertine Fire Table'
         },
         {
-          src: 'img/projects/slide10.webp',
-          alt: 'Front hardscape and curb appeal project in Scottsdale Arizona',
+          src: 'img/projects/slide1.webp',
+          alt: 'Pool and cabana with a fireplace under palms',
           width: 1630,
           height: 860,
-          chip: 'Curb Appeal',
-          label: 'Entry Sequence'
+          chip: 'Pool Deck',
+          label: 'Travertine Pool Deck'
         }
       ]
     },
@@ -335,51 +335,35 @@
       gallery: [
         {
           src: 'img/projects/shade-structure.jpg',
-          alt: 'Outdoor kitchen and lounge layout in Phoenix Arizona',
+          alt: 'Pergola with string lights over an outdoor kitchen, paver patio and turf',
           width: 1000,
           height: 668,
-          chip: 'Outdoor Kitchen',
-          label: 'Dining + Prep Zone'
+          chip: 'Kitchen',
+          label: 'Pergola Kitchen'
         },
         {
           src: 'img/projects/fireplace.jpg',
-          alt: 'Outdoor entertaining space with integrated features in Paradise Valley',
+          alt: 'Covered patio with a fireplace, lounge seating and travertine pavers',
           width: 1600,
           height: 1066,
-          chip: 'Entertaining',
-          label: 'High-End Finishes'
-        },
-        {
-          src: 'img/projects/slide6.webp',
-          alt: 'Backyard layout with integrated outdoor living amenities in Scottsdale',
-          width: 1630,
-          height: 860,
-          chip: 'Design-Build',
-          label: 'Complete Layout'
+          chip: 'Covered Patio',
+          label: 'Covered Patio & Grill'
         },
         {
           src: 'img/projects/firepit.jpg',
-          alt: 'Outdoor kitchen and fire feature concept zone in Scottsdale',
+          alt: 'Round stone fire pit on a travertine patio beside a pool',
           width: 1600,
           height: 900,
-          chip: 'Kitchen + Fire',
-          label: 'Evening Entertaining'
+          chip: 'Fire Feature',
+          label: 'Round Fire Pit'
         },
         {
-          src: 'img/projects/after-29.jpg',
-          alt: 'Finished outdoor dining and patio space in Gilbert Arizona',
-          width: 880,
-          height: 670,
-          chip: 'Completed Build',
-          label: 'Dining Patio'
-        },
-        {
-          src: 'img/projects/slide7.webp',
-          alt: 'Outdoor entertainment patio project in Chandler Arizona',
-          width: 1630,
-          height: 860,
-          chip: 'Outdoor Living',
-          label: 'Hosting-Friendly Plan'
+          src: 'img/projects/fireplace-vertical.jpg',
+          alt: 'Fireplace lounge on a covered travertine patio',
+          width: 620,
+          height: 700,
+          chip: 'Lounge',
+          label: 'Fireplace Lounge'
         }
       ]
     },
@@ -461,36 +445,36 @@
       ],
       gallery: [
         {
-          src: 'img/projects/slide10.webp',
-          alt: 'Landscape lighting and curb appeal upgrade in Scottsdale Arizona',
-          width: 1630,
-          height: 860,
-          chip: 'Lighting',
-          label: 'Front Entry Highlighting'
+          src: 'img/projects/slide8.webp',
+          alt: 'Lit pool with a linear fire feature on the flagstone edge',
+          width: 1000,
+          height: 563,
+          chip: 'Pool Lighting',
+          label: 'Lit Pool & Fire Edge'
         },
         {
-          src: 'img/projects/firepit.jpg',
-          alt: 'Outdoor lighting around patio and fire feature in Scottsdale Arizona',
-          width: 1600,
-          height: 900,
-          chip: 'Outdoor Living',
-          label: 'Patio + Fire Glow'
+          src: 'img/projects/after-30.jpg',
+          alt: 'Linear fire table, landscape lighting and turf at dusk',
+          width: 880,
+          height: 670,
+          chip: 'Path Lighting',
+          label: 'Landscape Lighting at Dusk'
         },
         {
           src: 'img/projects/shade-structure.jpg',
-          alt: 'Lighting around covered patio in Phoenix Arizona',
+          alt: 'Pergola with string lights over an outdoor kitchen, paver patio and turf',
           width: 1000,
           height: 668,
-          chip: 'Evening Use',
-          label: 'Entertaining Zone'
+          chip: 'String Lights',
+          label: 'String-Lit Pergola'
         },
         {
-          src: 'img/projects/fireplace.jpg',
-          alt: 'Landscape lighting and fireplace integration in Paradise Valley Arizona',
-          width: 1600,
-          height: 1066,
-          chip: 'Feature Lighting',
-          label: 'Architectural Accent'
+          src: 'img/projects/slide3.webp',
+          alt: 'Fire table on a paver patio beside a lit pool',
+          width: 1630,
+          height: 860,
+          chip: 'Patio Lighting',
+          label: 'Pool & Fire Table Glow'
         }
       ]
     },
@@ -573,35 +557,35 @@
       gallery: [
         {
           src: 'img/projects/shade-structure.jpg',
-          alt: 'Custom pergola and shade structure for a Phoenix outdoor lounge',
+          alt: 'Pergola with string lights over an outdoor kitchen, paver patio and turf',
           width: 1000,
           height: 668,
-          chip: 'Shade Structure',
-          label: 'Covered Lounge Zone'
+          chip: 'Pergola',
+          label: 'Pergola Kitchen & Lounge'
         },
         {
-          src: 'img/projects/firepit.jpg',
-          alt: 'Pergola and fire feature layout in Scottsdale Arizona',
+          src: 'img/projects/fireplace.jpg',
+          alt: 'Covered patio with a fireplace, lounge seating and travertine pavers',
           width: 1600,
-          height: 900,
-          chip: 'Outdoor Living',
-          label: 'Shade + Fire'
+          height: 1066,
+          chip: 'Covered Patio',
+          label: 'Covered Fireplace Patio'
         },
         {
-          src: 'img/projects/after-29.jpg',
-          alt: 'Pergola and dining patio design in Chandler Arizona',
-          width: 880,
-          height: 670,
-          chip: 'Dining Patio',
-          label: 'Hosting Upgrade'
+          src: 'img/projects/fireplace-vertical.jpg',
+          alt: 'Fireplace lounge on a covered travertine patio',
+          width: 620,
+          height: 700,
+          chip: 'Covered Lounge',
+          label: 'Fireplace Lounge'
         },
         {
-          src: 'img/projects/slide7.webp',
-          alt: 'Modern backyard shade structure in Paradise Valley Arizona',
+          src: 'img/projects/slide1.webp',
+          alt: 'Pool and cabana with a fireplace under palms',
           width: 1630,
           height: 860,
-          chip: 'Architectural Shade',
-          label: 'Backyard Retreat'
+          chip: 'Cabana',
+          label: 'Pool Cabana'
         }
       ]
     },
@@ -683,51 +667,51 @@
       gallery: [
         {
           src: 'img/projects/firepit.jpg',
-          alt: 'Custom backyard fire pit installation in Scottsdale Arizona',
+          alt: 'Round stone fire pit on a travertine patio beside a pool',
           width: 1600,
           height: 900,
           chip: 'Fire Pit',
-          label: 'Gathering Circle'
+          label: 'Round Fire Pit'
         },
         {
           src: 'img/projects/fireplace.jpg',
-          alt: 'Outdoor fireplace installation in Paradise Valley Arizona',
+          alt: 'Covered patio with a fireplace, lounge seating and travertine pavers',
           width: 1600,
           height: 1066,
           chip: 'Fireplace',
-          label: 'Architectural Feature'
+          label: 'Covered Fireplace'
         },
         {
           src: 'img/projects/fireplace-vertical.jpg',
-          alt: 'Vertical outdoor fireplace detail by Mesa Wren',
+          alt: 'Fireplace lounge on a covered travertine patio',
           width: 620,
           height: 700,
-          chip: 'Detailing',
-          label: 'Finish Craftsmanship'
+          chip: 'Detail',
+          label: 'Fireplace Lounge'
         },
         {
-          src: 'img/projects/slide6.webp',
-          alt: 'Outdoor living design with fire feature layout in Scottsdale',
+          src: 'img/projects/slide3.webp',
+          alt: 'Fire table on a paver patio beside a lit pool',
           width: 1630,
           height: 860,
-          chip: 'Outdoor Living',
-          label: 'Integrated Seating'
+          chip: 'Fire Table',
+          label: 'Fire Table by the Pool'
         },
         {
-          src: 'img/projects/slide7.webp',
-          alt: 'Patio and fire zone in Chandler Arizona',
-          width: 1630,
-          height: 860,
-          chip: 'Patio Build',
-          label: 'Warm Entertaining Area'
+          src: 'img/projects/slide8.webp',
+          alt: 'Lit pool with a linear fire feature on the flagstone edge',
+          width: 1000,
+          height: 563,
+          chip: 'Fire Edge',
+          label: 'Linear Fire Edge'
         },
         {
           src: 'img/projects/after-30.jpg',
-          alt: 'Finished fire feature and hardscape project in Carefree Arizona',
+          alt: 'Linear fire table, landscape lighting and turf at dusk',
           width: 880,
           height: 670,
-          chip: 'Completed Build',
-          label: 'Backyard Upgrade'
+          chip: 'Fire Table',
+          label: 'Dusk Fire Table'
         }
       ]
     },
@@ -809,51 +793,51 @@
       gallery: [
         {
           src: 'img/projects/zen-garden.jpg',
-          alt: 'Desert landscaping and xeriscape design in Fountain Hills Arizona',
+          alt: 'Side yard with stepping stones, desert plants and a small water feature',
           width: 1600,
           height: 954,
-          chip: 'Xeriscape',
-          label: 'Sonoran Plant Palette'
+          chip: 'Desert Garden',
+          label: 'Desert Side Yard'
         },
         {
-          src: 'img/projects/slide8.webp',
-          alt: 'Water-smart desert landscape layout in Scottsdale Arizona',
-          width: 1000,
-          height: 563,
-          chip: 'Water Smart',
-          label: 'Low-Water Layout'
-        },
-        {
-          src: 'img/projects/slide10.webp',
-          alt: 'Front yard desert landscaping upgrade in Scottsdale Arizona',
+          src: 'img/projects/slide5.webp',
+          alt: 'Front yard with decomposed granite, boulders, a dry creek bed and desert plants',
           width: 1630,
           height: 860,
-          chip: 'Curb Appeal',
-          label: 'Front Yard Refresh'
-        },
-        {
-          src: 'img/projects/after-29.jpg',
-          alt: 'Completed drought-tolerant backyard renovation in Gilbert Arizona',
-          width: 880,
-          height: 670,
-          chip: 'Completed Build',
-          label: 'Low-Maintenance Yard'
-        },
-        {
-          src: 'img/projects/shade-structure.jpg',
-          alt: 'Desert-friendly outdoor living layout in Phoenix Arizona',
-          width: 1000,
-          height: 668,
-          chip: 'Outdoor Living',
-          label: 'Shade + Planting Balance'
+          chip: 'Front Yard',
+          label: 'Desert Front Yard'
         },
         {
           src: 'img/projects/slide7.webp',
-          alt: 'Modern Arizona landscape with drought-tolerant detailing in Chandler',
+          alt: 'Backyard with a gravel planting island, palms, turf and a pool',
           width: 1630,
           height: 860,
-          chip: 'Modern Desert',
-          label: 'Clean Material Mix'
+          chip: 'Gravel & Palms',
+          label: 'Gravel Island & Palms'
+        },
+        {
+          src: 'img/projects/after-29.jpg',
+          alt: 'Three ceramic pot fountains set in river rock',
+          width: 880,
+          height: 670,
+          chip: 'Accents',
+          label: 'Pot Fountains in River Rock'
+        },
+        {
+          src: 'img/projects/water-feature.jpg',
+          alt: 'Bowl fountain filled with river rock at a front entry',
+          width: 1333,
+          height: 2000,
+          chip: 'Entry',
+          label: 'Entry Bowl Fountain'
+        },
+        {
+          src: 'img/projects/slide6.webp',
+          alt: 'Pool with a rock waterfall, turf and desert planting below Camelback Mountain',
+          width: 1630,
+          height: 860,
+          chip: 'Planting',
+          label: 'Desert Planting & Turf'
         }
       ]
     },
@@ -940,52 +924,52 @@
       ],
       gallery: [
         {
-          src: 'img/projects/slide10.webp',
-          alt: 'Artificial turf and front yard landscaping in Scottsdale Arizona',
-          width: 1630,
+          src: 'img/projects/slide4.webp',
+          alt: 'Paver steps, turf with stepping pavers and lounge seating beside a pool',
+          width: 1620,
           height: 860,
-          chip: 'Artificial Turf',
-          label: 'Front Yard Refresh'
+          chip: 'Turf',
+          label: 'Turf & Stepping Pavers'
         },
         {
           src: 'img/projects/slide6.webp',
-          alt: 'Backyard turf and outdoor living layout in Scottsdale',
+          alt: 'Pool with a rock waterfall, turf and desert planting below Camelback Mountain',
           width: 1630,
           height: 860,
-          chip: 'Backyard Turf',
-          label: 'Family-Friendly Space'
-        },
-        {
-          src: 'img/projects/after-29.jpg',
-          alt: 'Finished turf and patio project in Gilbert Arizona',
-          width: 880,
-          height: 670,
-          chip: 'Completed Install',
-          label: 'Low-Maintenance Yard'
+          chip: 'Turf',
+          label: 'Turf Around the Pool'
         },
         {
           src: 'img/projects/slide7.webp',
-          alt: 'Modern turf border and hardscape project in Chandler Arizona',
+          alt: 'Backyard with a gravel planting island, palms, turf and a pool',
           width: 1630,
           height: 860,
-          chip: 'Turf + Hardscape',
-          label: 'Clean Border Detailing'
+          chip: 'Turf',
+          label: 'Turf & Gravel Island'
         },
         {
           src: 'img/projects/shade-structure.jpg',
-          alt: 'Artificial turf and shade integration in Phoenix Arizona',
+          alt: 'Pergola with string lights over an outdoor kitchen, paver patio and turf',
           width: 1000,
           height: 668,
-          chip: 'Outdoor Living',
-          label: 'Comfortable Gathering Zone'
+          chip: 'Turf',
+          label: 'Turf by the Pergola'
         },
         {
           src: 'img/projects/zen-garden.jpg',
-          alt: 'Water-wise landscaping with turf accents in Fountain Hills',
+          alt: 'Side yard with stepping stones, desert plants and a small water feature',
           width: 1600,
           height: 954,
-          chip: 'Water-Smart',
-          label: 'Desert-Friendly Mix'
+          chip: 'Turf',
+          label: 'Turf Strip in a Side Yard'
+        },
+        {
+          src: 'img/projects/after-30.jpg',
+          alt: 'Linear fire table, landscape lighting and turf at dusk',
+          width: 880,
+          height: 670,
+          chip: 'Turf',
+          label: 'Turf Along the Patio'
         }
       ]
     },
@@ -1067,51 +1051,51 @@
       gallery: [
         {
           src: 'img/projects/zen-garden.jpg',
-          alt: 'Water-efficient planting and irrigation design in Fountain Hills Arizona',
+          alt: 'Side yard with stepping stones, desert plants and a small water feature',
           width: 1600,
           height: 954,
-          chip: 'Irrigation',
-          label: 'Efficient Plant Hydration'
+          chip: 'Planting',
+          label: 'Desert Planting Beds'
         },
         {
-          src: 'img/projects/slide8.webp',
-          alt: 'Desert landscape with irrigation planning in Scottsdale Arizona',
-          width: 1000,
-          height: 563,
-          chip: 'Water-Wise',
-          label: 'Desert System Layout'
-        },
-        {
-          src: 'img/projects/slide10.webp',
-          alt: 'Front yard irrigation and planting upgrade in Scottsdale Arizona',
+          src: 'img/projects/slide5.webp',
+          alt: 'Front yard with decomposed granite, boulders, a dry creek bed and desert plants',
           width: 1630,
           height: 860,
-          chip: 'Retrofit',
-          label: 'Front Yard Upgrade'
+          chip: 'Low Water',
+          label: 'Low-Water Front Yard'
+        },
+        {
+          src: 'img/projects/slide7.webp',
+          alt: 'Backyard with a gravel planting island, palms, turf and a pool',
+          width: 1630,
+          height: 860,
+          chip: 'Planting',
+          label: 'Palms & Gravel Island'
         },
         {
           src: 'img/projects/after-30.jpg',
-          alt: 'Irrigation and landscape refresh in Carefree Arizona',
+          alt: 'Linear fire table, landscape lighting and turf at dusk',
           width: 880,
           height: 670,
-          chip: 'System Upgrade',
-          label: 'Backyard Optimization'
+          chip: 'Planting',
+          label: 'Turf & Desert Beds'
         },
         {
           src: 'img/projects/slide6.webp',
-          alt: 'Large backyard with integrated irrigation planning in Scottsdale',
+          alt: 'Pool with a rock waterfall, turf and desert planting below Camelback Mountain',
           width: 1630,
           height: 860,
-          chip: 'Design-Build',
-          label: 'Integrated Planning'
+          chip: 'Planting',
+          label: 'Poolside Planting'
         },
         {
           src: 'img/projects/shade-structure.jpg',
-          alt: 'Outdoor living landscape with irrigation support in Phoenix Arizona',
+          alt: 'Pergola with string lights over an outdoor kitchen, paver patio and turf',
           width: 1000,
           height: 668,
-          chip: 'Outdoor Living',
-          label: 'Balanced Watering Zones'
+          chip: 'Turf',
+          label: 'Turf & Patio Edges'
         }
       ]
     }
