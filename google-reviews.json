@@ -23,7 +23,6 @@
       "text": "The crew shows up on the same day every week, cleans up after themselves, and texts when they are done. Our front yard has never looked this sharp.",
       "location": "Scottsdale",
       "projectType": "Weekly yard care",
-      "reviewDate": "Sample testimonial",
       "ratingOnly": false,
       "sourceUrl": ""
     },
@@ -35,7 +34,6 @@
       "text": "They walked us through three layout options before anything was built. The new patio, lighting and planting feel like they were always meant to be there.",
       "location": "Paradise Valley",
       "projectType": "Backyard redesign",
-      "reviewDate": "Sample testimonial",
       "ratingOnly": false,
       "sourceUrl": ""
     },
@@ -47,7 +45,6 @@
       "text": "Called about a broken drip line on a Monday and it was fixed on Wednesday. Clear price up front and no upsell.",
       "location": "Phoenix",
       "projectType": "Irrigation repair",
-      "reviewDate": "Sample testimonial",
       "ratingOnly": false,
       "sourceUrl": ""
     },
@@ -59,7 +56,6 @@
       "text": "The turf install was clean and the edges along the pavers are tight. The kids and the dog are out there every day now.",
       "location": "Tempe",
       "projectType": "Artificial turf",
-      "reviewDate": "Sample testimonial",
       "ratingOnly": false,
       "sourceUrl": ""
     },
@@ -71,7 +67,6 @@
       "text": "Biweekly service fits our budget and the yard stays tidy between visits. Easy to pause when we travel in the summer.",
       "location": "Fountain Hills",
       "projectType": "Biweekly maintenance",
-      "reviewDate": "Sample testimonial",
       "ratingOnly": false,
       "sourceUrl": ""
     },
@@ -83,7 +78,6 @@
       "text": "Good communication from design to cleanup. The outdoor kitchen came in on the timeline they gave us.",
       "location": "Gilbert",
       "projectType": "Outdoor kitchen",
-      "reviewDate": "Sample testimonial",
       "ratingOnly": false,
       "sourceUrl": ""
     },
@@ -95,7 +89,6 @@
       "text": "They cleared years of overgrowth, trimmed the palo verde and hauled everything away in one day. Great value.",
       "location": "Cave Creek",
       "projectType": "Desert cleanup",
-      "reviewDate": "Sample testimonial",
       "ratingOnly": false,
       "sourceUrl": ""
     },
@@ -107,7 +100,6 @@
       "text": "The path lighting and new paver walk changed how the house looks at night. Professional crew start to finish.",
       "location": "Chandler",
       "projectType": "Lighting and pavers",
-      "reviewDate": "Sample testimonial",
       "ratingOnly": false,
       "sourceUrl": ""
     }

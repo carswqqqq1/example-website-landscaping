@@ -1296,7 +1296,7 @@
       authorPhoto: String(review && review.authorPhoto || author.photoUri || author.photoURI || '').trim(),
       location: String(review && review.location || '').trim(),
       projectType: String(review && review.projectType || 'Google review').trim(),
-      reviewDate: String(review && review.reviewDate || publishTime || 'Recent review').trim(),
+      reviewDate: String(review && review.reviewDate || publishTime || '').trim(),
       sourceUrl: String(review && (review.sourceUrl || review.googleMapsUri || review.reviewUri) || '').trim()
     };
   }

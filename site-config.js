@@ -67,7 +67,7 @@
     footer: {
       blurb: 'Premium landscape design and construction for Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities.',
       note: 'Arizona licensed, bonded, and insured team',
-      reviewLabel: 'Sample testimonials',
+      reviewLabel: 'Read reviews',
       reviewUrl: reviewSourceUrl
     },
     serviceAreas: [
