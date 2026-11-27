@@ -6317,3 +6317,29 @@ body.has-nav-overlay-open .cookie-banner {
 }
 .finished-photo--flat { margin-bottom: 0; }
 .finished-photo--flat .finished-photo__image { aspect-ratio: 4 / 3; }
+
+/* ----- Focus rings: dark green on light surfaces, white with a dark halo on dark ones ----- */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+.btn--outline-dark:focus-visible,
+.nav__link:focus-visible,
+.nav__call:focus-visible,
+.nav__cta:focus-visible,
+.nav__overlay-link:focus-visible {
+  outline: 3px solid var(--green-dark);
+  outline-offset: 2px;
+}
+.hero :focus-visible,
+.page-hero :focus-visible,
+.service-hero :focus-visible,
+.footer :focus-visible,
+.nav:not(.is-scrolled) :focus-visible,
+.btn--solid:focus-visible,
+.btn--ghost:focus-visible,
+.btn--dark:focus-visible,
+.btn--submit:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px rgba(0,0,0,.55);
+}
