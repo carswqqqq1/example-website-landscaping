@@ -433,8 +433,9 @@
     if (heading) heading.textContent = service.heroHeadline;
     if (breadcrumbCurrent) breadcrumbCurrent.textContent = service.title;
     if (subtext) subtext.textContent = service.heroSubtext;
-    if (heroBackground && Array.isArray(service.gallery) && service.gallery.length) {
-      heroBackground.style.backgroundImage = 'url(\"../' + service.gallery[0].src + '\")';
+    var heroImage = service.heroImage || (Array.isArray(service.gallery) && service.gallery.length ? service.gallery[0].src : '');
+    if (heroBackground && heroImage) {
+      heroBackground.style.backgroundImage = 'url(\"../' + heroImage + '\")';
     }
 
     var ctaLabel = serviceCtaLabel(service);

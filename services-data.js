@@ -385,6 +385,7 @@
     },
     {
       slug: 'outdoor-lighting',
+      heroImage: 'img/projects/slide8.webp',
       path: '/services/outdoor-lighting',
       navLabel: 'Outdoor Lighting',
       title: 'Outdoor Lighting',
@@ -495,6 +496,7 @@
     },
     {
       slug: 'pergola-shade',
+      heroImage: 'img/projects/fireplace.jpg',
       path: '/services/pergola-shade',
       navLabel: 'Pergola & Shade',
       title: 'Pergola & Shade Structures',
@@ -857,6 +859,7 @@
     },
     {
       slug: 'artificial-turf',
+      heroImage: 'img/projects/slide4.webp',
       path: '/services/artificial-turf',
       navLabel: 'Artificial Turf',
       title: 'Artificial Turf',
