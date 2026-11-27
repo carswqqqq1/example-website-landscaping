@@ -315,12 +315,42 @@
     }
   }
 
+  // A security-check problem only shows after the visitor tries to submit;
+  // before that the form stays quiet. Errors come with a phone fallback.
   function setTurnstileStatus(form, message, isError) {
     var status = form && form.querySelector('[data-turnstile-status]');
     if (!status) return;
-    status.textContent = String(message || '');
-    status.classList.toggle('is-error', Boolean(isError && message));
+    var text = String(message || '');
+    var state = turnstileWidgets.get(form);
+    if (isError && text && !form.__turnstileSubmitAttempted) {
+      if (state) state.pendingError = text;
+      status.textContent = '';
+      status.classList.remove('is-error');
+      return;
+    }
+    if (state) state.pendingError = '';
+    status.classList.toggle('is-error', Boolean(isError && text));
+    if (isError && text) {
+      status.textContent = text + ' Having trouble? Call ';
+      var phoneLink = document.createElement('a');
+      phoneLink.href = 'tel:' + SITE_PHONE_RAW;
+      phoneLink.textContent = SITE_PHONE_DISPLAY;
+      status.appendChild(phoneLink);
+      status.appendChild(document.createTextNode('.'));
+    } else {
+      status.textContent = text;
+    }
   }
+
+  // Runs before each form's own submit handler, so a security-check error
+  // raised during that submit (or held back earlier) becomes visible.
+  document.addEventListener('submit', function (event) {
+    var form = event.target;
+    if (!form || !turnstileWidgets.get(form)) return;
+    form.__turnstileSubmitAttempted = true;
+    var state = turnstileWidgets.get(form);
+    if (state.pendingError) setTurnstileStatus(form, state.pendingError, true);
+  }, true);
 
   function loadTurnstileApi() {
     if (window.turnstile && typeof window.turnstile.render === 'function') {
