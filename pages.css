@@ -575,3 +575,10 @@
     justify-content: center;
   }
 }
+
+/* One short demo disclosure under the reviews page title. */
+.page-hero p.page-hero__disclosure {
+  margin-top: .5rem;
+  font-size: .875rem;
+  color: #fff;
+}

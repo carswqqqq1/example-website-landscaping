@@ -120,7 +120,7 @@
         'Design Consultation',
         'Same-Week Estimate Request'
       ],
-      cloningNote: 'Change this offer to match the landscaper sales process before launch. Keep the CTA outcome-specific and easy to understand.'
+      cloningNote: 'Change this offer to match the landscaper sales process when cloning for a client. Keep the CTA outcome-specific and easy to understand.'
     },
     aiReadability: {
       summary: 'Mesa Wren Landscape Co. is a Scottsdale-based residential landscaping and outdoor living company serving homeowners across Scottsdale, Paradise Valley, Phoenix, and nearby East Valley communities.',
@@ -483,7 +483,7 @@
     businessYears: '15+ years of Arizona residential landscape experience',
     brand: {
       logoPath: 'img/logo-160.png',
-      sampleLabel: 'Sample site by Arroyo Marketing',
+      sampleLabel: 'Demo site by Arroyo Marketing',
       sampleCtaUrl: 'https://arroyomarketing.com/?utm_source=mesa_wren_demo&utm_medium=email&utm_campaign=demo_lead_confirmation',
       primary: '#1b4332',
       primaryMid: '#2d6a4f',
@@ -555,15 +555,14 @@
     trustAssets: {
       licenseVerifyUrl: 'https://roc.az.gov/contractor-search',
       bondVerifyUrl: '',
-      licenseNumbers: ['ROC #000000 (sample placeholder)'],
-      licensePrompt: 'Homeowners can verify Mesa Wren Landscape Co. through the official Arizona ROC contractor search once a real client license is added. This sample site shows a placeholder.',
+      licenseNumbers: [],
+      licensePrompt: 'Verify any Arizona contractor\'s license at the official ROC search.',
       bondPrompt: 'Bond and insurance documentation is provided during project review so you can review current coverage before project start.',
       insuranceStatement: 'Current insurance and bonding documentation is available during project review for full transparency.',
       responsePromise: 'Most new project requests receive a response within one business day, often sooner.',
       workmanshipWarranty: 'Workmanship warranty details are reviewed during handoff so scope, coverage, and maintenance expectations stay clear.',
       trustHighlights: [
         'Licensed, bonded, and insured for Arizona residential work',
-        'Testimonials clearly labeled as samples on this demo site',
         'Local project experience across Scottsdale, Paradise Valley, Phoenix, Mesa, and Chandler'
       ]
     },

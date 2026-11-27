@@ -1145,9 +1145,10 @@
 
     if (/sample/i.test(source)) {
       return {
-        summary: 'Sample testimonials written for this demo site',
-        badge: 'Sample testimonials',
-        dateText: 'Placeholder reviews. Swap in real client reviews before launch.'
+        // The footer and the reviews page carry the one demo disclosure.
+        summary: '',
+        badge: '',
+        dateText: ''
       };
     }
 
@@ -1217,13 +1218,8 @@
     var source = String(state.source || 'Google').trim() || 'Google';
     var copy = getReviewPresentationCopy(state);
 
-    if (copy.summary) {
-      setText('[data-google-reviews-summary]', copy.summary);
-    }
-
-    if (copy.dateText) {
-      setText('[data-google-reviews-date]', copy.dateText);
-    }
+    setReviewCopyRow('[data-google-reviews-summary]', copy.summary);
+    setReviewCopyRow('[data-google-reviews-date]', copy.dateText);
 
     var profileUrl = state.sourceUrl;
     if (profileUrl) {
@@ -1244,8 +1240,15 @@
     document.querySelectorAll('[data-review-state-label]').forEach(function (el) {
       el.textContent = state.live || /sample/i.test(String(state.source || '')) ? '' : 'Cached snapshot: ';
     });
-    document.querySelectorAll('[data-review-live-badge]').forEach(function (el) {
-      el.textContent = copy.badge;
+    setReviewCopyRow('[data-review-live-badge]', copy.badge);
+  }
+
+  // Fills a review text slot, and hides its row when there is nothing to say.
+  function setReviewCopyRow(selector, value) {
+    document.querySelectorAll(selector).forEach(function (el) {
+      el.textContent = value || '';
+      var row = el.closest('[data-review-copy-row]') || el;
+      row.hidden = !value;
     });
   }
 
@@ -1505,9 +1508,10 @@
     if (licensePrompt) {
       setText('[data-license-verify-text]', licensePrompt);
     }
-    if (licenseNumbers.length) {
-      setText('[data-license-numbers]', 'Arizona ROC license numbers: ' + licenseNumbers.join(' · '));
-    }
+    document.querySelectorAll('[data-license-numbers]').forEach(function (el) {
+      el.textContent = licenseNumbers.length ? 'Arizona ROC license numbers: ' + licenseNumbers.join(' · ') : '';
+      el.hidden = !licenseNumbers.length;
+    });
 
     if (bondUrl) {
       document.querySelectorAll('[data-bond-verify-link]').forEach(function (link) {
@@ -1644,8 +1648,8 @@
       '<div class="local-proof__grid">' +
       '  <article class="local-proof__card local-proof__card--review">' +
       '    <p class="local-proof__label"><span data-review-state-label>' + (REVIEW_STATE.live ? '' : 'Cached snapshot: ') + '</span><span data-review-rating>' + REVIEW_STATE.rating + '</span>-star <span data-review-source>' + REVIEW_STATE.source + '</span> rating across <span data-review-count>' + REVIEW_STATE.count + '</span> reviews</p>' +
-      '    <p class="reviews__proof"><span data-review-live-badge>' + reviewCopy.badge + '</span></p>' +
-      '    <blockquote>Read sample homeowner testimonials, then request a quote for maintenance, a one-time job, or a full project.</blockquote>' +
+      '    <p class="reviews__proof" data-review-copy-row' + (reviewCopy.badge ? '' : ' hidden') + '><span data-review-live-badge>' + reviewCopy.badge + '</span></p>' +
+      '    <blockquote>Read homeowner testimonials, then request a quote for maintenance, a one-time job, or a full project.</blockquote>' +
       '    <p class="local-proof__meta"><a href="' + REVIEW_STATE.sourceUrl + '" target="_blank" rel="noopener noreferrer" data-review-feed-link>Read testimonials</a></p>' +
       '  </article>' +
       '  <article class="local-proof__card">' +
