@@ -5205,3 +5205,32 @@
     show();
   });
 })();
+
+/* ============================================================
+   Footer: the link to the page you are on becomes plain current-page text
+   (keeps one shared footer markup; avoids links that point at themselves)
+   ============================================================ */
+(function () {
+  function normalize(path) {
+    return String(path || '').replace(/\/index\.html$/, '/').replace(/\.html$/, '').replace(/\/+$/, '') || '/';
+  }
+  function markCurrentFooterLinks() {
+    var here = normalize(window.location.pathname);
+    var links = document.querySelectorAll('.footer a[href]');
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i];
+      var url;
+      try { url = new URL(link.getAttribute('href'), window.location.href); } catch (e) { continue; }
+      if (url.origin !== window.location.origin || url.search || url.hash) continue;
+      if (normalize(url.pathname) !== here) continue;
+      link.setAttribute('aria-current', 'page');
+      link.removeAttribute('href');
+      link.classList.add('is-current');
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', markCurrentFooterLinks);
+  } else {
+    markCurrentFooterLinks();
+  }
+})();

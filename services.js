@@ -56,6 +56,16 @@
     return labels[service && service.slug] || offerLabel;
   }
 
+  function serviceGalleryQuoteHref(service, item) {
+    var params = new URLSearchParams();
+    if (service && service.slug) params.set('service', service.slug);
+    params.set('source', 'service_gallery');
+    params.set('autostart', '1');
+    if (item && item.label) params.set('selected_project_label', item.label);
+    if (item && item.src) params.set('selected_image', item.src);
+    return withBase('/free-consultation?' + params.toString());
+  }
+
   function servicePortfolioHref(service) {
     return withBase('portfolio?service=' + encodeURIComponent(service.slug));
   }
@@ -128,7 +138,8 @@
     var story = service.featuredProject;
     var isHub = !!(options && options.isHub);
     var eyebrow = isHub ? service.title : 'Project Story';
-    var detailLinkLabel = isHub ? 'View ' + service.title + ' Service' : 'See More ' + service.title + ' Projects';
+    var detailLinkLabel = isHub ? 'View ' + service.title + ' Service' : 'See Example Projects';
+    var detailLinkHref = isHub ? normalizeDisplayPath(service.path) : servicePortfolioHref(service);
 
     return '' +
       '<article class="service-story-card reveal reveal--scale">' +
@@ -142,7 +153,7 @@
       '  <p class="service-story-card__outcome">' + story.outcome + '</p>' +
       '  <div class="service-story-card__actions">' +
       '    <a class="btn btn--dark" href="' + serviceConsultationHref(service) + '">' + serviceCtaLabel(service) + '</a>' +
-      '    <a class="text-link" href="' + normalizeDisplayPath(service.path) + '">' + detailLinkLabel + ' &rarr;</a>' +
+      '    <a class="text-link" href="' + detailLinkHref + '">' + detailLinkLabel + ' &rarr;</a>' +
       '  </div>' +
       '</article>';
   }
@@ -496,7 +507,7 @@
       gallery.innerHTML = service.gallery.map(function (item) {
         var sourceSet = sourceSetForImage(item.src);
         return '' +
-          '<a class="service-gallery__item" href="' + servicePortfolioHref(service) + '">' +
+          '<a class="service-gallery__item" href="' + serviceGalleryQuoteHref(service, item) + '" aria-label="Request a project like ' + item.label + '">' +
           '  <picture>' +
           '    <source type="image/avif" srcset="' + sourceSet.avif + '" />' +
           '    <img src="' + sourceSet.fallback + '" alt="' + item.alt + '" title="' + item.alt + '" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="' + item.width + '" height="' + item.height + '" />' +
