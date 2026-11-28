@@ -4566,7 +4566,10 @@ body.has-cookie-banner-visible .sticky-bar {
     -webkit-backdrop-filter: blur(3px);
   }
   .nav.is-scrolled {
-    background: rgba(255,255,255,.96);
+    background: #fff;
+    border-bottom: 1px solid #e4dccf;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   .nav__inner {
     height: 66px;
