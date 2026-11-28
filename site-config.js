@@ -110,8 +110,6 @@
     },
     primaryOffer: {
       label: 'Get a Free Quote',
-      // Shown while demoMode is true (4.10 + 5.03); client builds show label.
-      demoLabel: 'Try a sample quote',
       shortLabel: 'Free Quote',
       pageTitle: 'Free Landscaping Quote',
       formTitle: 'Get a Free Quote',

@@ -51,15 +51,8 @@
     snapshotDate: REVIEW_SNAPSHOT_DATE,
     live: false
   };
-  // 4.10 + 5.03: one quote label everywhere. The public demo (demoMode true) says
-  // "Try a sample quote"; client builds (demoMode false) use primaryOffer.label.
-  var OFFER_LIVE_LABEL = String(PRIMARY_OFFER.label || 'Get a Free Quote').trim();
-  var OFFER_LABEL = SITE_CONFIG.demoMode === true
-    ? String(PRIMARY_OFFER.demoLabel || 'Try a sample quote').trim()
-    : OFFER_LIVE_LABEL;
-  var OFFER_SHORT_LABEL = SITE_CONFIG.demoMode === true
-    ? OFFER_LABEL
-    : String(PRIMARY_OFFER.shortLabel || 'Project Review').trim();
+  var OFFER_LABEL = String(PRIMARY_OFFER.label || 'Get a Free Quote').trim();
+  var OFFER_SHORT_LABEL = String(PRIMARY_OFFER.shortLabel || 'Project Review').trim();
   var OFFER_FORM_TITLE = String(PRIMARY_OFFER.formTitle || 'Get a Free Quote').trim();
   var OFFER_SUBMIT_LABEL = String(PRIMARY_OFFER.submitLabel || 'Get My Free Quote').trim();
   var OFFER_PROMISE = String(PRIMARY_OFFER.promise || 'No pressure, no obligation, and a local team member follows up within one business day.').trim();
@@ -308,14 +301,6 @@
     { value: 'one_time', title: 'One-time cleanup or repair', hint: 'Cleanup, irrigation fix, tree trim and more', label: 'One-Time Cleanup or Repair' },
     { value: 'project', title: 'New project or redesign', hint: 'Design, hardscape, turf, lighting and more', label: '' }
   ];
-  // 5.08: on the public demo the drawer keeps one title and one last-step label
-  // whichever path is picked; client builds keep the per-path copy below.
-  var DEMO_QUOTE_COPY = {
-    title: 'Try the quote experience',
-    sub: 'Pick what you need. You see a sample receipt at the end, and nothing is sent.',
-    submit: 'Preview my sample request'
-  };
-
   var SERVICE_TYPE_COPY = {
     '': { title: 'Get a Free Quote', submit: 'Get My Free Quote' },
     maintenance: { title: 'Get a Yard Care Quote', submit: 'Request My Maintenance Quote' },
@@ -361,27 +346,7 @@
           '</label>';
       }).join('') +
       '</div>' +
-      '<p class="service-type__chosen" hidden><span>Selected: <strong data-service-type-chosen></strong></span> ' +
-      '<button type="button" class="service-type__change" data-service-type-change>Change service</button></p>' +
       '</fieldset>';
-  }
-
-  // 5.08: a path that is already known shows as the selected default with a
-  // Change service control. Expanding it never rebuilds the form, so a name,
-  // phone or anything else already typed stays put.
-  function setServiceTypeCollapsed(form, collapsed) {
-    var chooser = form && form.querySelector('[data-service-type-chooser]');
-    if (!chooser) return;
-    var chosen = chooser.querySelector('.service-type__chosen');
-    var label = chooser.querySelector('[data-service-type-chosen]');
-    var checked = chooser.querySelector('input[name="service_type"]:checked');
-    var isCollapsed = Boolean(collapsed && checked);
-    if (label && checked) {
-      var title = checked.parentNode.querySelector('.service-type__title');
-      label.textContent = title ? title.textContent : checked.value;
-    }
-    chooser.classList.toggle('is-collapsed', isCollapsed);
-    if (chosen) chosen.hidden = !isCollapsed;
   }
 
   function buildServiceTypeGroupsHtml(prefix) {
@@ -462,7 +427,6 @@
     if (activeType === 'project' && typeof settings.projectCopy === 'function') {
       copy = Object.assign({}, copy, settings.projectCopy() || {});
     }
-    if (isDemoMode() && settings.demoCopy) copy = DEMO_QUOTE_COPY;
     if (settings.titleEl && !settings.keepTitle) settings.titleEl.textContent = copy.title;
     if (settings.submitEl && !settings.submitEl.disabled) settings.submitEl.textContent = copy.submit;
     var chooser = form.querySelector('[data-service-type-chooser]');
@@ -509,14 +473,6 @@
     chooser.addEventListener('change', function (event) {
       if (event.target && event.target.name === 'service_type') form.__serviceTypeApply(event.target.value);
     });
-    var changeButton = chooser.querySelector('[data-service-type-change]');
-    if (changeButton) {
-      changeButton.addEventListener('click', function () {
-        setServiceTypeCollapsed(form, false);
-        var checked = chooser.querySelector('input[name="service_type"]:checked') || chooser.querySelector('input[name="service_type"]');
-        if (checked) checked.focus();
-      });
-    }
     var initial = normalizeServiceTypeValue(settings.initialType) || getServiceTypeFromUrl();
     if (initial) {
       setFormServiceType(form, initial);
@@ -899,22 +855,8 @@
     return '/' + value.replace(/^\.?\//, '');
   }
 
-  // Static pages ship the demo label; swap every quote button to the label this build uses.
-  function applyQuoteLabels() {
-    var quoteLabelPattern = /^(?:Get a Free Quote|Try a sample quote)( for .+)?$/i;
-    document.querySelectorAll('a, button').forEach(function (el) {
-      if (el.children.length) return;
-      var text = String(el.textContent || '').trim();
-      var match = text.match(quoteLabelPattern);
-      if (!match) return;
-      var label = OFFER_LABEL + (match[1] || '');
-      if (text !== label) el.textContent = label;
-    });
-  }
-
   function applySiteBranding() {
     applyBrandTokens();
-    applyQuoteLabels();
 
     var showSamplePreview = Boolean(isDemoMode() && BRAND.sampleLabel);
     if (showSamplePreview) setText('[data-sample-preview-label]', BRAND.sampleLabel);
@@ -945,7 +887,7 @@
     document.querySelectorAll('.sticky-bar .btn[data-site-phone-link]').forEach(function (el) {
       el.innerHTML =
         '<span class="sticky-bar__phone-number" data-site-phone-display>' + SITE_PHONE_DISPLAY + '</span>' +
-        '<span class="sticky-bar__phone-label">Call</span>';
+        '<span class="sticky-bar__phone-label">Call Now</span>';
     });
 
     setText('[data-site-email-display]', SITE_EMAIL);
@@ -1390,32 +1332,6 @@
     };
   }
 
-  // 5.11: one short excerpt above the review list. A short review is shown
-  // whole and left out of the list below, so the same words never sit twice
-  // in a row. Returns the review it used, or null.
-  function renderReviewExcerpt(list) {
-    var box = document.querySelector('[data-review-excerpt]');
-    if (!box) return null;
-    var written = (list || []).filter(function (review) {
-      return !review.ratingOnly && String(review.text || review.originalText || '').trim();
-    });
-    if (!written.length) { box.hidden = true; return null; }
-    var short = written.filter(function (review) {
-      return String(review.text || review.originalText).trim().length <= 220;
-    })[0];
-    var pick = short || written[0];
-    var full = String(pick.text || pick.originalText).trim();
-    var excerpt = full;
-    if (!short) {
-      excerpt = (full.match(/^[\s\S]*?[.!?](?=\s|$)/) || [full])[0];
-      if (excerpt.length > 200) excerpt = excerpt.slice(0, 197).replace(/\s+\S*$/, '') + '...';
-    }
-    box.querySelector('[data-review-excerpt-text]').textContent = excerpt;
-    box.querySelector('[data-review-excerpt-meta]').textContent = [pick.author || 'Homeowner', pick.location || ''].filter(Boolean).join(', ');
-    box.hidden = false;
-    return short ? pick : null;
-  }
-
   function renderReviewCards(reviews) {
     var grid = document.getElementById('reviews-grid');
     var reviewList = Array.isArray(reviews) ? reviews.filter(function (review) {
@@ -1493,7 +1409,7 @@
       article.appendChild(stars);
       article.appendChild(text);
 
-      if (isReviewsPage && !review.ratingOnly && reviewText.length > 260) {
+      if (isReviewsPage && !review.ratingOnly && reviewText.length > 420) {
         text.classList.add('is-collapsed');
 
         var textToggle = document.createElement('button');
@@ -1516,13 +1432,6 @@
 
       article.appendChild(meta);
       return article;
-    }
-
-    if (isReviewsPage) {
-      var excerpted = renderReviewExcerpt(displayList);
-      if (excerpted && displayList.length > 1) {
-        displayList = displayList.filter(function (review) { return review !== excerpted; });
-      }
     }
 
     if (!isReviewsPage) {
@@ -1556,7 +1465,7 @@
       if (remaining > 0) {
         var nextCount = Math.min(reviewsPerBatch, remaining);
         showMore.disabled = false;
-        showMore.textContent = nextCount === 1 ? 'Show 1 more review' : 'Show ' + nextCount + ' more reviews';
+        showMore.textContent = 'Show next ' + nextCount + ' reviews';
       } else {
         showMore.disabled = true;
         showMore.textContent = 'All reviews shown';
@@ -1785,8 +1694,6 @@
     var guidePath = normalizedPath.replace(/\.html$/i, '');
     var guide = PAGE_CONVERSION_GUIDES[normalizedPath] || PAGE_CONVERSION_GUIDES[guidePath];
     if (!guide || document.querySelector('[data-page-conversion-guide]')) return;
-    // 5.10: the local shell already has its one decision block and action.
-    if (document.querySelector('[data-local-shell]')) return;
 
     var targetSection = document.querySelector('.page-section--alt') || document.querySelector('.faq.page-section') || document.querySelector('main .page-section:last-of-type');
     if (!targetSection || !targetSection.parentNode) return;
@@ -3148,8 +3055,7 @@
       budget_range: '',
       estimate_context: '',
       project_goal: '',
-      priority_zone: '',
-      service_type: ''
+      priority_zone: ''
     };
     var parsedUrl = null;
 
@@ -3168,8 +3074,6 @@
         prefill.estimate_context = parsedUrl.searchParams.get('estimate_context') || prefill.estimate_context;
         prefill.project_goal = parsedUrl.searchParams.get('project_goal') || prefill.project_goal;
         prefill.priority_zone = parsedUrl.searchParams.get('priority_zone') || prefill.priority_zone;
-        // 5.04 / 5.06: a link's own type (maintenance, one_time, project) picks the quote branch.
-        prefill.service_type = parsedUrl.searchParams.get('type') || parsedUrl.searchParams.get('service_type') || prefill.service_type;
       }
 
       if (trigger.hasAttribute('data-service-choice')) {
@@ -3216,10 +3120,21 @@
       '<aside class="consult-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="consult-drawer-title">' +
       '  <button type="button" class="consult-drawer__close" id="consult-drawer-close" aria-label="Close consultation drawer">&#x2715;</button>' +
       '  <div class="consult-drawer__content">' +
+      '    <span class="consult-drawer__eyebrow">Fastest Way to Start</span>' +
       '    <h2 class="consult-drawer__title" id="consult-drawer-title">' + OFFER_FORM_TITLE + '</h2>' +
       '    <p class="consult-drawer__sub" id="consult-drawer-sub">Share the basics only. We use this to understand your yard before calling. No spam, no obligation.</p>' +
+      '    <ul class="consult-drawer__proof">' +
+      '      <li>Prefer not to fill this out? Call ' + SITE_PHONE_DISPLAY + ' and we will talk it through.</li>' +
+      '      <li>Starter phases and full transformations are both welcome when the scope is prioritized.</li>' +
+      '      <li>We use your phone only to clarify this request. Prefer text? Choose text below.</li>' +
+      '    </ul>' +
+      '    <div class="consult-drawer__trust-row" aria-label="Project review trust signals">' +
+      '      <span>Same-day callback</span>' +
+      '      <span>ROC + warranty review</span>' +
+      '      <span>1-business-day follow-up</span>' +
+      '    </div>' +
       '    <div class="consult-drawer__context" id="consult-drawer-context">' +
-      '      <strong id="consult-drawer-context-label">Already filled in</strong>' +
+      '      <strong id="consult-drawer-context-label">Request Context</strong>' +
       '      <p id="consult-drawer-context-body"></p>' +
       '    </div>' +
       '    <form class="consult-drawer__form" id="consult-drawer-form" novalidate>' +
@@ -3351,6 +3266,7 @@
       '      <p class="turnstile-status" data-turnstile-status role="status" aria-live="polite"></p>' +
       '      <div class="consult-drawer__actions">' +
       '        <button type="submit" class="btn btn--submit" id="consult-submit">' + OFFER_SUBMIT_LABEL + '</button>' +
+      '        <p class="consult-drawer__budget-note" id="consult-budget-note">Weekly yard care, one-time jobs, and full design-build projects are all handled by the same local team.</p>' +
       '        <p class="consult-drawer__note" id="consult-contact-help">Takes about 60 seconds. No obligation. Your phone is used only to follow up about this request, and we do not sell or share it.</p>' +
       '        <p class="consult-drawer__error" id="consult-drawer-error" role="alert" aria-live="polite"></p>' +
       '      </div>' +
@@ -3425,9 +3341,8 @@
       titleEl: consultDrawerState.title,
       submitEl: consultDrawerState.submit,
       projectCopy: function () { return consultDrawerState.projectCopy || null; },
-      demoCopy: true,
       onChange: function (type) {
-        if (!consultDrawerState.sub || isDemoMode()) return;
+        if (!consultDrawerState.sub) return;
         if (type === 'maintenance' || type === 'one_time') {
           consultDrawerState.sub.textContent = 'Share the basics and we call back with a price within one business day. No contract needed to get a quote.';
         } else if (consultDrawerState.projectSub) {
@@ -3435,11 +3350,6 @@
         }
       }
     });
-
-    var drawerChooser = consultDrawerState.form.querySelector('[data-service-type-chooser]');
-    if (drawerChooser && consultDrawerState.context) {
-      drawerChooser.parentNode.insertBefore(consultDrawerState.context, drawerChooser.nextSibling);
-    }
 
     consultDrawerState.focusTrap = createFocusTrap(consultDrawerState.panel, function () {
       closeConsultDrawer();
@@ -3640,7 +3550,6 @@
     var activeBeforeDrawer = document.activeElement;
 
     function getConsultSubmitLabel() {
-      if (isDemoMode()) return DEMO_QUOTE_COPY.submit;
       if (/first_phase$/.test(contextSource) || /first phase/i.test(String(nextPrefill.prefill_message || ''))) {
         return 'Price My First Phase';
       }
@@ -3651,7 +3560,6 @@
     }
 
     function getConsultTitle() {
-      if (isDemoMode()) return DEMO_QUOTE_COPY.title;
       if (/first_phase$/.test(contextSource) || /first phase/i.test(String(nextPrefill.prefill_message || nextPrefill.project_goal || ''))) {
         return 'Price a Practical First Phase';
       }
@@ -3662,7 +3570,6 @@
     }
 
     function getConsultSubcopy() {
-      if (isDemoMode()) return DEMO_QUOTE_COPY.sub;
       if (/first_phase$/.test(contextSource) || /first phase/i.test(String(nextPrefill.prefill_message || nextPrefill.project_goal || ''))) {
         return 'Share the city, priority zone, budget comfort range, and timing so the team can price the highest-impact first phase before a larger rebuild.';
       }
@@ -3712,25 +3619,17 @@
     state.city.value = nextPrefill.city || '';
     state.contactChoice.value = nextPrefill.contact_method || '';
     state.timeline.value = nextPrefill.estimated_timeline || '';
-    /* 5.12: the calculator range and inputs go into the editable Project Notes, so they are
-       submitted with the request. They stay out of the Budget field (2.19). */
-    var notesValue = String(nextPrefill.prefill_message || '');
-    if (nextPrefill.estimate_context) {
-      var estimateNote = 'Calculator estimate (planning range, not my budget): ' + nextPrefill.estimate_context;
-      if (notesValue.indexOf(estimateNote) === -1) {
-        notesValue = notesValue ? notesValue + '\n' + estimateNote : estimateNote;
-      }
-    }
-    state.message.value = notesValue;
+    state.message.value = nextPrefill.prefill_message || '';
     var contextualSubmit = getConsultSubmitLabel();
     state.projectSub = getConsultSubcopy();
     state.projectCopy = {
       title: getConsultTitle(),
       submit: contextualSubmit === OFFER_SUBMIT_LABEL ? SERVICE_TYPE_COPY.project.submit : contextualSubmit
     };
-    var prefillType = normalizeServiceTypeValue(nextPrefill.service_type) || getServiceTypeFromUrl() || (nextPrefill.service ? 'project' : '');
-    setFormServiceType(state.form, prefillType);
-    setServiceTypeCollapsed(state.form, Boolean(prefillType));
+    setFormServiceType(
+      state.form,
+      normalizeServiceTypeValue(nextPrefill.service_type) || getServiceTypeFromUrl() || (nextPrefill.service ? 'project' : '')
+    );
 
     state.contactMethod.value = state.contactChoice.value;
     state.contactMethodValue.value = state.contactChoice.value;
@@ -3948,8 +3847,6 @@
     : null;
   var heroPausedForMotion = Boolean(heroMotionPreference && heroMotionPreference.matches);
   var heroPausedByUser = false;
-  /* 5.01: slide 1 stays on screen until the visitor uses a dot or the play control. */
-  var heroAwaitingVisitor = true;
   var heroHeldByHover = false;
   var heroHeldByFocus = false;
   var heroPauseButton = null;
@@ -4061,7 +3958,7 @@
   }
 
   function carouselCanRun() {
-    return slides.length > 1 && !heroAwaitingVisitor && !heroPausedForMotion && !heroPausedByUser &&
+    return slides.length > 1 && !heroPausedForMotion && !heroPausedByUser &&
       !heroHeldByHover && !heroHeldByFocus && !document.hidden;
   }
 
@@ -4073,15 +3970,14 @@
 
   function syncPauseButton() {
     if (!heroPauseButton) return;
-    var paused = heroAwaitingVisitor || heroPausedByUser || heroPausedForMotion;
+    var paused = heroPausedByUser || heroPausedForMotion;
+    heroPauseButton.setAttribute('aria-pressed', paused ? 'true' : 'false');
     heroPauseButton.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
     heroPauseButton.classList.toggle('is-paused', paused);
   }
 
   dots.forEach(function (dot) {
     dot.addEventListener('click', function () {
-      heroAwaitingVisitor = false;
-      syncPauseButton();
       goToSlide(parseInt(this.dataset.slide, 10));
       /* Choosing a slide holds it while the dot keeps focus or hover. */
       startCarousel();
@@ -4108,13 +4004,7 @@
       heroPauseButton.className = 'hero__pause';
       heroPauseButton.innerHTML = '<span class="hero__pause-icon" aria-hidden="true"></span>';
       heroPauseButton.addEventListener('click', function () {
-        if (heroAwaitingVisitor) {
-          heroAwaitingVisitor = false;
-          heroPausedByUser = false;
-          heroPausedForMotion = false;
-          heroHeldByFocus = false;
-          heroHeldByHover = false;
-        } else if (heroPausedForMotion) {
+        if (heroPausedForMotion) {
           heroPausedForMotion = false;
           heroPausedByUser = false;
         } else {
@@ -4128,6 +4018,10 @@
     }
 
     preloadHeroSlide(0);
+    if (!heroPausedForMotion) {
+      var initialHeroPreloadDelay = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 3500 : 2000;
+      scheduleHeroPreload(1, initialHeroPreloadDelay);
+    }
     startCarousel();
   }
 
@@ -4997,24 +4891,6 @@
   }
 
   bindResourceGateForms();
-
-  // 5.12: the checklist downloads on the first tap in demo mode. A client
-  // build keeps its gate, so the download buttons point to the form there.
-  function setupChecklistDownload() {
-    var gate = document.querySelector('[data-checklist-gate]');
-    if (!gate) return;
-    if (isDemoMode()) {
-      gate.hidden = true;
-      return;
-    }
-    document.querySelectorAll('[data-checklist-download]').forEach(function (link) {
-      link.removeAttribute('download');
-      link.setAttribute('href', '#checklist-gate');
-      link.textContent = 'Get the checklist';
-    });
-  }
-
-  setupChecklistDownload();
 
   var quoteStarterForm = document.getElementById('quote-starter-form');
   if (quoteStarterForm) {

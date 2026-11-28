@@ -164,42 +164,7 @@
     });
 
     updateRequestLinks(null);
-    updateResults(cat);
   }
-
-  /* 5.07: say how many projects show, and give an empty filter a way out. */
-  var countEl = document.getElementById('pf-count');
-  var resetButtons = Array.prototype.slice.call(document.querySelectorAll('#pf-reset, [data-pf-reset]'));
-  var emptyEl = document.getElementById('pf-empty');
-  var emptyServiceLink = document.getElementById('pf-empty-service');
-
-  function filterName(cat) {
-    if (cat.indexOf('service:') === 0) return toTitle(cat.slice(8));
-    var btn = filters.find(function (item) { return (item.dataset.filter || 'all') === cat; });
-    return btn ? btn.childNodes[0].textContent.trim() : '';
-  }
-
-  function updateResults(cat) {
-    var shown = visibleItems().length;
-    var name = cat === 'all' ? '' : filterName(cat);
-    if (countEl) {
-      countEl.textContent = cat === 'all'
-        ? 'Showing all ' + shown + ' projects'
-        : 'Showing ' + shown + ' ' + (shown === 1 ? 'project' : 'projects') + (name ? ': ' + name : '');
-    }
-    var topReset = document.getElementById('pf-reset');
-    if (topReset) topReset.hidden = cat === 'all';
-    if (emptyEl) emptyEl.hidden = shown > 0;
-    if (emptyServiceLink) {
-      var slug = cat.indexOf('service:') === 0 ? cat.slice(8) : mapCategoryToServiceSlug(cat, '');
-      emptyServiceLink.setAttribute('href', slug ? '/services/' + slug : '/services');
-      emptyServiceLink.textContent = slug ? 'See ' + toTitle(slug) + ' service' : 'Browse services';
-    }
-  }
-
-  resetButtons.forEach(function (btn) {
-    btn.addEventListener('click', function () { applyFilter('all'); });
-  });
 
   function updateLightboxFrame(item) {
     if (!lightbox || !lightboxImg || !item) return;

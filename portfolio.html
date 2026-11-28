@@ -29,9 +29,9 @@
   <link rel="alternate" hreflang="en-us" href="https://demo.tryarroyo.com/portfolio" />
     <link rel="preload" as="font" href="/fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2" type="font/woff2" crossorigin />
   <link rel="preload" as="font" href="/fonts/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/fonts.min.css?v=20261128p5f" />
-  <link rel="stylesheet" href="/styles.min.css?v=20261128p5f" />
-  <link rel="stylesheet" href="/portfolio.min.css?v=20261128p5f" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20261128p3" />
+  <link rel="stylesheet" href="/styles.min.css?v=20261128p3" />
+  <link rel="stylesheet" href="/portfolio.min.css?v=20261128p3" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -97,7 +97,7 @@
           <span class="nav__call-number" data-site-phone-display>(480) 555-0142</span>
           <span class="nav__call-label">Call Now</span>
         </a>
-        <a href="/free-consultation?source=portfolio&autostart=1" class="nav__cta">Try a sample quote</a>
+        <a href="/free-consultation?source=portfolio&autostart=1" class="nav__cta">Get a Free Quote</a>
       </div>
     </div>
   </header>
@@ -112,7 +112,7 @@
       <a href="/#process" class="nav__overlay-link">Process</a>
       <a href="/reviews" class="nav__overlay-link">Reviews</a>
       <a href="/free-consultation?source=portfolio&autostart=1" class="nav__overlay-link">Contact</a>
-      <a href="/free-consultation?source=portfolio&autostart=1" class="nav__overlay-link nav__overlay-cta">Try a sample quote</a>
+      <a href="/free-consultation?source=portfolio&autostart=1" class="nav__overlay-link nav__overlay-cta">Get a Free Quote</a>
     </nav>
     <div class="nav__overlay-contact">
       <a href="tel:4805550142" data-site-phone-link data-site-phone-display>(480) 555-0142</a>
@@ -124,11 +124,22 @@
 
   <main id="main-content">
 
-    <!-- PAGE OPENER (5.07: short, type-led, the work starts on the first scroll) -->
-    <section class="pf-hero pf-hero--short">
+    <!-- PAGE HERO -->
+    <section class="pf-hero">
       <div class="pf-hero__inner container">
-        <h1 class="pf-hero__title">Project examples</h1>
-        <p class="pf-hero__sub">Pool decks, shade, fire features and desert yards around the Valley. Pick a type, then open any project.</p>
+        <p class="eyebrow">Our Portfolio</p>
+        <h1 class="pf-hero__title">Landscape Design Inspiration for Arizona Homes</h1>
+        <p class="pf-hero__sub">Scottsdale and Phoenix project examples to compare layout styles, planting direction, and outdoor-living ideas before your project review.</p>
+        <p class="pf-hero__local">Mesa Wren builds hardscaping, outdoor kitchens, fire features, water features, and xeriscape projects across Scottsdale, Paradise Valley, Phoenix, Tempe, and Mesa.</p>
+        <ul class="pf-hero__proof">
+          <li>Project photos</li>
+          <li>Request a similar layout in one click</li>
+          <li>Best for scope, budget band, and style direction</li>
+        </ul>
+        <div class="pf-hero__actions">
+          <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--solid">Get a Free Quote</a>
+          <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--dark">Request a Similar Project</a>
+        </div>
       </div>
     </section>
 
@@ -147,10 +158,33 @@
 
     <!-- PORTFOLIO GRID -->
     <section class="pf-grid-section container">
-      <div class="pf-results">
-        <p class="pf-count" id="pf-count" aria-live="polite">Showing all projects</p>
-        <button type="button" class="pf-reset" id="pf-reset" hidden>Show all projects</button>
+      <div class="pf-request reveal">
+        <p>See a layout you like? We will prefill the contact form with the style, service direction, and project reference so you can move faster.</p>
+        <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--dark" id="pf-request-style">Request a Similar Project</a>
       </div>
+      <article class="pf-story reveal">
+        <figure class="pf-story__media">
+          <img src="img/projects/fireplace-1280.avif" srcset="img/projects/fireplace-640.avif 640w, img/projects/fireplace-1280.avif 1280w" sizes="(max-width: 900px) 100vw, 50vw" alt="Featured Paradise Valley hardscape and fireplace project by Mesa Wren" loading="lazy" decoding="async" width="1600" height="1066" />
+        </figure>
+        <div class="pf-story__body">
+          <p class="eyebrow">Flagship Project Story</p>
+          <h2>Outdoor Living Project in Paradise Valley</h2>
+          <ul class="pf-story__list">
+            <li><strong>Location:</strong> Paradise Valley, AZ</li>
+            <li><strong>Scope:</strong> Travertine pavers, covered patio, fireplace, lounge seating</li>
+            <li><strong>Timeline:</strong> 3 weeks</li>
+            <li><strong>Best fit:</strong> Homeowners prioritizing evening entertaining, stronger circulation, and one coordinated outdoor-living layout</li>
+          </ul>
+          <p class="pf-story__text">This project is a strong reference if you want an entertaining-focused layout with warmer night use, cleaner circulation, and materials that feel tailored to the home.</p>
+          <p class="pf-story__text">The biggest win here was not just the finish materials. It was defining the fire feature, hardscape flow, and seating zones before construction so the yard worked as one complete experience instead of a series of disconnected upgrades.</p>
+          <a href="/free-consultation?source=portfolio_story&service=hardscaping&selected_style=hardscaping&selected_image=fireplace.jpg&selected_project_label=Architectural%20Grounds&prefill_message=Interested%20in%20a%20project%20similar%20to%20the%20Featured%20Project.&autostart=1" class="btn btn--solid">Request a Similar Project</a>
+        </div>
+      </article>
+      <header class="pf-grid__header reveal reveal--left">
+        <p class="eyebrow">Projects Across Scottsdale &amp; Phoenix</p>
+        <h2>Browse Project Styles</h2>
+        <p>Filter by project type, then tap any image to open full-screen details and inspiration notes.</p>
+      </header>
       <div class="pf-grid" id="pf-grid">
 
         <figure data-services="landscape-design artificial-turf desert-landscaping" class="pf-item reveal reveal--scale" data-cat="backyard" data-type="Outdoor Living" data-location="Scottsdale, AZ" data-detail="Pool Surround + Rock Waterfall + Turf + Desert Planting">
@@ -162,7 +196,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Backyard Resort</span>
               <h3>Camelback View Backyard</h3>
-              <p>Scottsdale · Pool surround, rock waterfall, turf, desert planting</p>
+              <p>Scottsdale, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -176,7 +210,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Hardscaping</span>
               <h3>Covered Fireplace Patio</h3>
-              <p>Paradise Valley · Covered patio, fireplace, travertine pavers</p>
+              <p>Paradise Valley, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -190,7 +224,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Desert Garden</span>
               <h3>Desert Side Yard</h3>
-              <p>Fountain Hills · Stepping stones, desert planting, small water feature</p>
+              <p>Fountain Hills, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -204,12 +238,12 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Curb Appeal</span>
               <h3>Desert Front Yard</h3>
-              <p>Cave Creek · Decomposed granite, boulders, dry creek bed</p>
+              <p>Cave Creek, AZ</p>
             </div>
           </figcaption>
         </figure>
 
-        <figure data-services="outdoor-kitchens pergola-shade outdoor-lighting artificial-turf" class="pf-item reveal reveal--scale" data-cat="outdoor" data-type="Outdoor Living" data-location="Phoenix, AZ" data-detail="Lit Pergola + Outdoor Kitchen + Turf">
+        <figure data-services="pergola-shade outdoor-kitchens outdoor-lighting artificial-turf" class="pf-item reveal reveal--scale" data-cat="outdoor" data-type="Outdoor Living" data-location="Phoenix, AZ" data-detail="Lit Pergola + Outdoor Kitchen + Turf">
           <div class="pf-item__img-wrap">
             <img src="img/projects/shade-structure-1280.avif" srcset="img/projects/shade-structure-640.avif 640w, img/projects/shade-structure-1280.avif 1000w" sizes="(max-width: 600px) 100vw, 33vw" alt="Pergola with string lights over an outdoor kitchen, paver patio and turf in Phoenix" loading="lazy" decoding="async" width="1000" height="668" />
           </div>
@@ -218,7 +252,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Outdoor Living</span>
               <h3>Pergola Kitchen</h3>
-              <p>Phoenix · Lit pergola, outdoor kitchen, turf</p>
+              <p>Phoenix, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -232,7 +266,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Pool &amp; Fire</span>
               <h3>Evening Pool Deck</h3>
-              <p>Scottsdale · Flagstone pool deck, linear fire feature, landscape lighting</p>
+              <p>Scottsdale, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -246,7 +280,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Fire Pit</span>
               <h3>Poolside Fire Pit</h3>
-              <p>Scottsdale · Round fire pit, travertine patio, turf</p>
+              <p>Scottsdale, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -260,7 +294,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Backyard</span>
               <h3>Desert Island Backyard</h3>
-              <p>Chandler · Gravel island, palms, turf border</p>
+              <p>Chandler, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -274,7 +308,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Pool Deck</span>
               <h3>Turf &amp; Paver Pool Deck</h3>
-              <p>North Phoenix · Paver steps, turf, pool lounge</p>
+              <p>North Phoenix, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -289,7 +323,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Fire Table</span>
               <h3>Fire Table Patio</h3>
-              <p>Mesa · Fire table, paver patio, pool lighting</p>
+              <p>Mesa, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -303,7 +337,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Water Wall</span>
               <h3>Spa Water Wall</h3>
-              <p>Rio Verde · Spa, sheer water wall, desert views</p>
+              <p>Rio Verde, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -317,7 +351,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Backyard Resort</span>
               <h3>Dusk Fire Table</h3>
-              <p>Carefree · Linear fire table, landscape lighting, turf</p>
+              <p>Carefree, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -331,7 +365,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Fountain</span>
               <h3>Entry Bowl Fountain</h3>
-              <p>Scottsdale · Bowl fountain, river rock, entry planting</p>
+              <p>Scottsdale, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -345,7 +379,7 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Pool Cabana</span>
               <h3>Palm Court Cabana</h3>
-              <p>Chandler · Pool cabana, fireplace, travertine deck</p>
+              <p>Chandler, AZ</p>
             </div>
           </figcaption>
         </figure>
@@ -359,19 +393,15 @@
             <div class="pf-item__cap-inner">
               <span class="pf-item__tag">Fountain</span>
               <h3>Pot Fountain Trio</h3>
-              <p>Gilbert · Ceramic pot fountains, river rock, desert accents</p>
+              <p>Gilbert, AZ</p>
             </div>
           </figcaption>
         </figure>
 
       </div>
-      <div class="pf-empty" id="pf-empty" hidden>
-        <p>No projects match this filter yet.</p>
-        <p><button type="button" class="pf-reset" data-pf-reset>Show all projects</button> <a class="pf-empty__service" id="pf-empty-service" href="/services">Browse services</a></p>
-      </div>
       <div class="pf-grid__cta reveal">
         <p class="pf-grid__cta-copy">Want this level of finish, detail, and material quality in your own yard?</p>
-        <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--solid">Try a sample quote</a>
+        <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--solid">Get a Free Quote</a>
       </div>
       <p class="pf-grid__note container">Photos show finished outdoor spaces in the style we design. Addresses and homeowner names are never shown.</p>
     </section>
@@ -385,7 +415,7 @@
           <p>Bring the portfolio ideas you like best. We will translate them into a design direction that fits your property, budget, and day-to-day lifestyle.</p>
         </div>
         <div class="pf-cta__actions reveal">
-          <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--solid">Try a sample quote</a>
+          <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--solid">Get a Free Quote</a>
           <a href="tel:4805550142" class="btn btn--dark" data-site-phone-link>
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="width:16px;height:16px"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
             <span data-site-phone-display>(480) 555-0142</span>
@@ -470,7 +500,7 @@
       <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
       Call Now
     </a>
-    <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--outline-dark">Try a sample quote</a>
+    <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--outline-dark">Get a Free Quote</a>
   </div>
 
   <div class="pf-lightbox" id="pf-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Project preview">
@@ -486,15 +516,15 @@
             <span class="pf-lightbox__chip pf-lightbox__chip--location" id="pf-lightbox-location">Scottsdale / Phoenix Area</span>
           </div>
           <p id="pf-lightbox-detail"></p>
-          <a href="/free-consultation?source=portfolio&service=landscape-design&selected_style=backyard&selected_project_label=Portfolio%20Project&autostart=1" class="btn btn--solid pf-lightbox__request" id="pf-lightbox-request">Try a sample quote for this type of project</a>
+          <a href="/free-consultation?source=portfolio&service=landscape-design&selected_style=backyard&selected_project_label=Portfolio%20Project&autostart=1" class="btn btn--solid pf-lightbox__request" id="pf-lightbox-request">Request a Similar Project</a>
         </figcaption>
       </figure>
       <button type="button" class="pf-lightbox__nav pf-lightbox__nav--next" id="pf-lightbox-next" aria-label="Next project">&#10095;</button>
     </div>
   </div>
 
-  <script src="/site-config.js?v=20261128p5f" defer></script>
-  <script src="/script.min.js?v=20261128p5f" defer></script>
-  <script src="/portfolio.min.js?v=20261128p5f" defer></script>
+  <script src="/site-config.js?v=20261128p3" defer></script>
+  <script src="/script.min.js?v=20261128p3" defer></script>
+  <script src="/portfolio.min.js?v=20261128p3" defer></script>
 </body>
 </html>

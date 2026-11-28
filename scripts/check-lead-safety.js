@@ -119,10 +119,7 @@ function assertStaticRoutingAndSafety() {
   assert(browserScript.includes("setupTurnstileForm(gateForm, 'resource_gate')"), "resource gates must render resource_gate Turnstile widgets");
   assert(browserScript.includes("setupTurnstileForm(form, 'project_request')"), "homepage form must render a project_request Turnstile widget");
   assert(siteConfig.includes("siteKey: '0x4AAAAAADz87LUSWTNh1x7k'"), "site config must contain the supplied public Turnstile site key");
-  // 4.07: the homepage no longer carries the long form; if a form comes back, it must keep Turnstile.
-  if (/id="contact-form"/.test(homepage)) {
-    assert(/id="contact-form"[\s\S]*data-turnstile-container[\s\S]*data-turnstile-status/.test(homepage), "homepage form must include a Turnstile container and live status");
-  }
+  assert(/id="contact-form"[\s\S]*data-turnstile-container[\s\S]*data-turnstile-status/.test(homepage), "homepage form must include a Turnstile container and live status");
   assert(/data-resource-gate-form[\s\S]*data-turnstile-container[\s\S]*data-turnstile-status/.test(checklist), "resource gate must include a Turnstile container and live status");
 
   assert(/name="form_started_at"/.test(checklist), "resource gate must include timing verification");

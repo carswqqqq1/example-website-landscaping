@@ -39,7 +39,7 @@ function extractLinks(html) {
 }
 
 function isIntentQuoteLabel(text) {
-  return text && !/^(?:Contact|Quote|Project Review|Get Quote|Start Project Review|Get a Free Quote|Try a sample quote|Request My Project Review)$/i.test(text);
+  return text && !/^(?:Contact|Quote|Project Review|Get Quote|Start Project Review|Get a Free Quote|Request My Project Review)$/i.test(text);
 }
 
 if (!fs.existsSync(sitemapPath)) {

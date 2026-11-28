@@ -25,62 +25,89 @@
   <link rel="alternate" hreflang="en-us" href="https://demo.tryarroyo.com/scottsdale-landscaping" />
     <link rel="preload" as="font" href="/fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2" type="font/woff2" crossorigin />
   <link rel="preload" as="font" href="/fonts/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/fonts.min.css?v=20261128p5f" />
-  <link rel="stylesheet" href="/styles.min.css?v=20261128p5f" />
-  <link rel="stylesheet" href="/pages.min.css?v=20261128p5f" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20261128p3" />
+  <link rel="stylesheet" href="/styles.min.css?v=20261128p3" />
+  <link rel="stylesheet" href="/pages.min.css?v=20261128p3" />
 
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
     {
-      "@type": "Service",
-      "@id": "https://demo.tryarroyo.com/scottsdale-landscaping#service",
-      "name": "Scottsdale Landscaping Design Build",
-      "serviceType": "Landscape design and outdoor living construction",
-      "provider": {
-        "@type": "HomeAndConstructionBusiness",
-        "@id": "https://demo.tryarroyo.com/#business",
-        "name": "Mesa Wren Landscape Co.",
-        "url": "https://demo.tryarroyo.com/",
-        "telephone": "+1-480-555-0142"
-      },
-      "areaServed": [
+      "@context": "https://schema.org",
+      "@graph": [
         {
-          "@type": "City",
-          "name": "Scottsdale"
+          "@type": "Service",
+          "@id": "https://demo.tryarroyo.com/scottsdale-landscaping#service",
+          "name": "Scottsdale Landscaping Design Build",
+          "serviceType": "Landscape design and outdoor living construction",
+          "provider": {
+            "@type": "HomeAndConstructionBusiness",
+            "@id": "https://demo.tryarroyo.com/#business",
+            "name": "Mesa Wren Landscape Co.",
+            "url": "https://demo.tryarroyo.com/",
+            "telephone": "+1-480-555-0142"
+          },
+          "areaServed": [
+            {"@type": "City", "name": "Scottsdale"},
+            {"@type": "City", "name": "Paradise Valley"},
+            {"@type": "City", "name": "Phoenix"}
+          ],
+          "url": "https://demo.tryarroyo.com/scottsdale-landscaping"
         },
         {
-          "@type": "City",
-          "name": "Paradise Valley"
+          "@type": "FAQPage",
+          "@id": "https://demo.tryarroyo.com/scottsdale-landscaping#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How much does a Scottsdale backyard remodel usually cost?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Cost depends on scope, materials, and existing site conditions. Mesa Wren provides clear range options during project review so expectations stay realistic."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do you handle HOA-friendly design and approvals support?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The team can provide layout and finish documentation that supports HOA review requirements in Scottsdale communities."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can you combine hardscape, fire features, and planting in one project?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Mesa Wren plans patios, fire elements, irrigation, and planting as one coordinated design-build scope."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How fast do you respond to new Scottsdale project requests?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Most new project requests receive a response within one business day, often sooner."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What should I prepare before requesting a quote?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Bring inspiration photos, your rough timeline, and any target budget range. This helps us recommend the best first phase."
+              }
+            }
+          ]
         },
         {
-          "@type": "City",
-          "name": "Phoenix"
-        }
-      ],
-      "url": "https://demo.tryarroyo.com/scottsdale-landscaping"
-    },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://demo.tryarroyo.com/scottsdale-landscaping#breadcrumb",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://demo.tryarroyo.com/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Scottsdale Landscaping",
-          "item": "https://demo.tryarroyo.com/scottsdale-landscaping"
+          "@type": "BreadcrumbList",
+          "@id": "https://demo.tryarroyo.com/scottsdale-landscaping#breadcrumb",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://demo.tryarroyo.com/"},
+            {"@type": "ListItem", "position": 2, "name": "Scottsdale Landscaping", "item": "https://demo.tryarroyo.com/scottsdale-landscaping"}
+          ]
         }
       ]
     }
-  ]
-}
   </script>
 </head>
 <body class="simple-page">
@@ -110,7 +137,7 @@
       </nav>
       <div class="nav__actions">
         <a href="tel:4805550142" class="nav__call" data-site-phone-link><span data-site-phone-display>(480) 555-0142</span></a>
-        <a href="/free-consultation?city=Scottsdale&source=location_page&autostart=1" class="nav__cta">Try a sample quote</a>
+        <a href="/free-consultation?city=Scottsdale&source=location_page&autostart=1" class="nav__cta">Get a Free Quote</a>
       </div>
     </div>
   </header>
@@ -124,7 +151,7 @@
       <a href="/#process" class="nav__overlay-link">Process</a>
       <a href="/reviews" class="nav__overlay-link">Reviews</a>
       <a href="/free-consultation?city=Scottsdale&source=location_page&autostart=1" class="nav__overlay-link">Contact</a>
-      <a href="/free-consultation?city=Scottsdale&source=location_page&autostart=1" class="nav__overlay-link nav__overlay-cta">Try a sample quote</a>
+      <a href="/free-consultation?city=Scottsdale&source=location_page&autostart=1" class="nav__overlay-link nav__overlay-cta">Get a Free Quote</a>
     </nav>
     <div class="nav__overlay-contact">
       <a href="tel:4805550142" data-site-phone-link data-site-phone-display>(480) 555-0142</a>
@@ -142,69 +169,153 @@
     </div>
   </nav>
 
-  <main id="main-content" data-local-shell>
-    <section class="page-hero page-hero--short local-hero">
+  <main id="main-content">
+    <section class="page-hero">
       <div class="page-hero__bg" style="background-image:url('img/projects/slide6-1280.avif')"></div>
       <div class="page-hero__overlay"></div>
       <div class="container page-hero__inner">
-        <p class="eyebrow">Scottsdale</p>
-        <h1>Scottsdale landscape design and outdoor living</h1>
-        <p>Backyards, pool decks and front yards around Scottsdale, planned for the heat, the views and the way you use the space.</p>
+        <p class="eyebrow">Scottsdale Service Area</p>
+        <h1>Scottsdale Landscape Design and Outdoor Living Construction</h1>
+        <p>Mesa Wren designs and builds outdoor living spaces for Scottsdale homeowners — from resort-style backyards in DC Ranch and Troon to desert-contemporary remodels in McCormick Ranch and Gainey Ranch. We know Scottsdale lots, Scottsdale soil, and what Scottsdale HOAs actually require before they approve a build.</p>
         <div class="page-hero__actions">
-          <a href="/free-consultation?city=Scottsdale&amp;type=project&amp;source=location_page&amp;autostart=1" class="btn btn--solid" data-keep-href>Plan my Scottsdale project</a>
+          <a href="/free-consultation?city=Scottsdale&source=location_page&autostart=1" class="btn btn--solid">Plan My Scottsdale Project</a>
+          <a href="/portfolio" class="btn btn--ghost">View Portfolio</a>
         </div>
       </div>
     </section>
 
-    <section class="page-section local-decision" aria-labelledby="local-decision-title">
+    <section class="page-section">
       <div class="container">
-        <h2 class="section-title" id="local-decision-title">Where Scottsdale projects usually start</h2>
-        <ul class="local-cards">
-          <li class="local-card"><h3>Pool deck and shade</h3><p>Cooler paving, shade over the seating and lighting so the deck works on summer evenings.</p></li>
-          <li class="local-card"><h3>View-friendly planting</h3><p>Low desert planting that frames the mountains instead of blocking them.</p></li>
-          <li class="local-card"><h3>HOA-ready plans</h3><p>Many communities review materials and plant lists, so the plan is drawn with that in mind.</p></li>
+        <header class="page-section__header reveal">
+          <p class="eyebrow">Local Knowledge</p>
+          <h2 class="section-title">What Makes Scottsdale Projects Different</h2>
+        </header>
+        <div class="reveal" style="max-width:760px;">
+          <p>Scottsdale landscape projects range from modern desert-contemporary in DC Ranch and Silverleaf to lush resort-style backyards in North Scottsdale's Troon and Grayhawk corridors. Most homeowners we work with are navigating HOA architectural approval processes in communities like Desert Mountain, Estancia, Terravita, and McCormick Ranch — each with specific plant palette restrictions and hardscape material requirements that vary block by block.</p>
+          <p style="margin-top:1rem;">The caliche-heavy soil in North Scottsdale (especially ZIP codes 85255, 85262, 85266) requires proper excavation and drainage engineering before any paver or foundation work goes in. Contractors who skip this step produce patios that heave within two seasons. We've corrected enough of those projects to know exactly what to do instead.</p>
+          <p style="margin-top:1rem;">The sloping lots common in McCormick Ranch and the elevated terrain in Troon North also require thoughtful grading and retaining wall planning before any design looks the way it should. We handle all of this as part of the standard design-build scope — not as unexpected add-ons after you've already committed.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section page-section--alt">
+      <div class="container">
+        <header class="page-section__header reveal">
+          <p class="eyebrow">What We Build Here</p>
+          <h2 class="section-title">Popular Project Types in Scottsdale</h2>
+        </header>
+        <ul class="topic-list">
+          <li class="reveal">
+            <h3>Resort-Style Backyard Transformations</h3>
+            <p>Full-yard design-build scopes covering hardscape, outdoor kitchen, fire feature, turf or desert planting, and lighting. Most Scottsdale resort builds run $40,000–$100,000+ depending on lot size and finish package. We provide a 3D rendering of the full layout before breaking ground.</p>
+            <a href="/services/landscape-design">Explore landscape design</a>
+          </li>
+          <li class="reveal">
+            <h3>Paver Patios and Hardscape Upgrades</h3>
+            <p>Travertine, concrete pavers, and flagstone patios designed for Arizona heat tolerance and HOA compliance. We handle drainage, grading, and material selection in one coordinated scope so your patio holds up through every monsoon season.</p>
+            <a href="/services/hardscaping">Explore hardscaping</a>
+          </li>
+          <li class="reveal">
+            <h3>Outdoor Kitchens and Fire Features</h3>
+            <p>Scottsdale homeowners use their outdoor spaces 9–10 months of the year. A well-planned outdoor kitchen and fire element turns a patio into an extension of the home. We integrate gas, utilities, and cooking zones from the design phase so nothing gets retrofitted awkwardly later.</p>
+            <a href="/services/outdoor-kitchens">Explore outdoor kitchens</a>
+          </li>
+          <li class="reveal">
+            <h3>HOA-Compliant Desert Landscaping</h3>
+            <p>Whether you're converting from turf to xeriscape or refreshing an existing desert yard, we work with your HOA's approved plant palette and material list from day one. We've submitted and received approval for projects in Desert Mountain, Terravita, Troon North, and DC Ranch.</p>
+            <a href="/services/desert-landscaping">Explore desert landscaping</a>
+          </li>
         </ul>
       </div>
     </section>
 
-    <section class="page-section page-section--alt local-examples" aria-labelledby="local-examples-title">
+    <section class="page-section">
       <div class="container">
-        <h2 class="section-title" id="local-examples-title">Nearby examples</h2>
-        <ul class="local-examples__grid">
-          <li>
-            <figure class="local-example">
-              <picture>
-                <source type="image/avif" srcset="img/projects/slide6-640.avif 640w, img/projects/slide6-1280.avif 1280w" sizes="(max-width: 768px) 100vw, 33vw" />
-                <img src="img/projects/slide6-640.avif" alt="Pool with a rock waterfall, turf and desert planting below Camelback Mountain" loading="lazy" decoding="async" width="1630" height="860" />
-              </picture>
-              <figcaption>Camelback view backyard · Scottsdale</figcaption>
-            </figure>
-          </li>
-          <li>
-            <figure class="local-example">
-              <picture>
-                <source type="image/avif" srcset="img/projects/firepit-640.avif 640w, img/projects/firepit-1280.avif 1280w" sizes="(max-width: 768px) 100vw, 33vw" />
-                <img src="img/projects/firepit-640.avif" alt="Round stone fire pit on a travertine patio beside a pool in Scottsdale" loading="lazy" decoding="async" width="1600" height="900" />
-              </picture>
-              <figcaption>Poolside fire pit · Scottsdale</figcaption>
-            </figure>
-          </li>
-          <li>
-            <figure class="local-example">
-              <picture>
-                <source type="image/avif" srcset="img/projects/slide8-640.avif 640w, img/projects/slide8-1280.avif 1280w" sizes="(max-width: 768px) 100vw, 33vw" />
-                <img src="img/projects/slide8-640.avif" alt="Lit pool with a linear fire feature on the flagstone edge in Scottsdale" loading="lazy" decoding="async" width="1000" height="563" />
-              </picture>
-              <figcaption>Evening pool deck · Scottsdale</figcaption>
-            </figure>
-          </li>
+        <header class="page-section__header reveal">
+          <p class="eyebrow">Local Project Proof</p>
+          <h2 class="section-title">Example Projects</h2>
+          <p>Projects completed across North Scottsdale, McCormick Ranch, Gainey Ranch, DC Ranch, Troon, and Grayhawk communities.</p>
+        </header>
+        <ul class="checklist reveal">
+          <li>Full backyard hardscape and outdoor kitchen — North Scottsdale, 85255</li>
+          <li>Desert xeriscape conversion with HOA approval — Troon North, 85262</li>
+          <li>Paver patio, fire pit, and turf install — McCormick Ranch, 85258</li>
+          <li>Resort-style pool surround and landscape lighting — Gainey Ranch, 85254</li>
+          <li>Front and backyard design-build — DC Ranch, 85255</li>
         </ul>
-        <p class="local-guides"><span>Helpful next reads:</span> <a href="/landscaping-cost-scottsdale">Landscaping cost guide</a><span aria-hidden="true"> · </span><a href="/pavers-vs-concrete-arizona">Pavers or concrete?</a><span aria-hidden="true"> · </span><a href="/process">How a project works</a></p>
-        <div class="local-examples__action">
-          <a href="/free-consultation?city=Scottsdale&amp;type=project&amp;source=location_page&amp;autostart=1" class="btn btn--solid" data-keep-href>Plan my Scottsdale project</a>
+      </div>
+    </section>
+
+    <section class="faq page-section page-section--alt">
+      <div class="container">
+        <header class="faq__header reveal">
+          <p class="eyebrow">Scottsdale FAQ</p>
+          <h2 class="section-title">Questions Scottsdale Homeowners Ask</h2>
+        </header>
+        <div class="faq__list">
+          <article class="faq-item reveal">
+            <button class="faq__question" type="button" aria-expanded="false">
+              <span>How much does a backyard remodel typically cost in Scottsdale?</span>
+              <span class="faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Scottsdale backyard projects typically range from $20,000 for a targeted patio-and-planting refresh to $100,000+ for a full resort-style transformation with outdoor kitchen, fire feature, turf, and lighting. The biggest drivers are lot size, finish level (travertine vs. concrete pavers, for example), and whether utility work (gas, water, electrical) needs to be added. We provide a planning estimate range after the first site visit — not before, because Scottsdale lots vary too much to quote blind.</p>
+            </div>
+          </article>
+          <article class="faq-item reveal">
+            <button class="faq__question" type="button" aria-expanded="false">
+              <span>Do you handle HOA approval submissions in Scottsdale communities?</span>
+              <span class="faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Yes. We've worked with HOAs across Desert Mountain, Estancia, Terravita, Troon North, DC Ranch, McCormick Ranch, and Grayhawk. We prepare the architectural review package — site plan, material specifications, plant palette — and submit on your behalf. Approval timelines vary by community but we build that into the project schedule from the start.</p>
+            </div>
+          </article>
+          <article class="faq-item reveal">
+            <button class="faq__question" type="button" aria-expanded="false">
+              <span>What's the deal with caliche soil in North Scottsdale?</span>
+              <span class="faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Caliche is a hardpan calcium carbonate layer that exists at varying depths throughout North Scottsdale soil. It blocks drainage and prevents root penetration. Before any paver or hardscape installation, we probe the soil depth and determine whether we need to break through the caliche layer and install proper drainage. Contractors who skip this step end up with patios that hold water, crack, or heave within 2–3 seasons. We include this assessment as part of the site evaluation.</p>
+            </div>
+          </article>
+          <article class="faq-item reveal">
+            <button class="faq__question" type="button" aria-expanded="false">
+              <span>How long does a full backyard design-build take in Scottsdale?</span>
+              <span class="faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>A full backyard transformation typically takes 4–8 weeks from agreement to final walkthrough, depending on scope complexity. The design phase (site visit, 3D rendering, revision) takes 1–2 weeks. Construction runs 2–5 weeks depending on what's involved. We provide a specific schedule during project review, not a vague range after you've committed.</p>
+            </div>
+          </article>
+          <article class="faq-item reveal">
+            <button class="faq__question" type="button" aria-expanded="false">
+              <span>When is the best time to start a Scottsdale landscape project?</span>
+              <span class="faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Fall and early spring are the most popular windows because the ground is workable, crews can work full days, and plants establish well. That said, hardscape and construction work can be done year-round in Scottsdale. Summer works fine for hardscape-heavy scopes. If your project involves significant planting, fall installation gives roots 6+ months to establish before the heat of summer. The main thing is requesting a quote early enough to get into the construction schedule you want.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
+
+    <section class="page-section">
+      <div class="container" style="text-align:center;">
+        <header class="page-section__header reveal">
+          <p class="eyebrow">Start Here</p>
+          <h2 class="section-title">Request Your Free Scottsdale Quote</h2>
+          <p>We'll come to the site, walk the yard, and give you a real scope — not a ballpark from a phone call. No obligation, no pressure.</p>
+        </header>
+        <div class="page-hero__actions reveal" style="justify-content:center;margin-top:1.5rem;">
+          <a href="/free-consultation?city=Scottsdale&source=location_page&autostart=1" class="btn btn--solid">Plan My Scottsdale Project</a>
+          <a href="/reviews" class="btn btn--ghost">Read Homeowner Reviews</a>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="footer">
@@ -277,10 +388,10 @@
 
   <div class="sticky-bar" id="sticky-bar" aria-label="Mobile call to action">
     <a href="tel:4805550142" class="btn btn--solid" data-site-phone-link>Call Now</a>
-    <a href="/free-consultation?city=Scottsdale&source=location_page&autostart=1" class="btn btn--outline-dark">Try a sample quote</a>
+    <a href="/free-consultation?city=Scottsdale&source=location_page&autostart=1" class="btn btn--outline-dark">Get a Free Quote</a>
   </div>
 
-  <script src="/site-config.js?v=20261128p5f" defer></script>
-  <script src="/script.min.js?v=20261128p5f" defer></script>
+  <script src="/site-config.js?v=20261128p3" defer></script>
+  <script src="/script.min.js?v=20261128p3" defer></script>
 </body>
 </html>
