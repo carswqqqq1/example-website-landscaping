@@ -334,7 +334,7 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--tan);
+  color: var(--tan-text);
 }
 
 .service-card h3 {
@@ -367,7 +367,7 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--tan);
+  color: var(--tan-text);
 }
 
 .service-card__range strong {

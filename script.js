@@ -865,6 +865,7 @@
       el.innerHTML =
         '<span class="nav__call-number" data-site-phone-display>' + SITE_PHONE_DISPLAY + '</span>' +
         '<span class="nav__call-label">Call Now</span>';
+      if (el.hasAttribute('aria-label')) el.setAttribute('aria-label', 'Call ' + SITE_PHONE_DISPLAY);
     });
 
     document.querySelectorAll('.sticky-bar .btn[data-site-phone-link]').forEach(function (el) {

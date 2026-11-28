@@ -657,7 +657,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--tan);
+  color: var(--tan-text);
 }
 .nav__overlay-kicker::before {
   content: "";
@@ -2071,7 +2071,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   letter-spacing: .12em;
   text-transform: uppercase;
   font-weight: 700;
-  color: var(--tan);
+  color: var(--tan-text);
 }
 .featured-project__meta strong {
   display: block;
