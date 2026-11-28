@@ -40,13 +40,13 @@
       "heroTextContrast": [
         {
           "el": "hero__heading",
-          "worst": 5.76,
-          "typical": 16.18
+          "worst": 5.77,
+          "typical": 16.15
         },
         {
           "el": "hero__sub",
-          "worst": 11.21,
-          "typical": 19.44
+          "worst": 11.14,
+          "typical": 19.41
         }
       ]
     },
@@ -185,12 +185,12 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1128,
+        "lcp": 1116,
         "element": "hero__slide hero__slide--first is-active",
         "runs": [
-          1120,
-          1128,
-          1164
+          1112,
+          1116,
+          1116
         ]
       }
     },
@@ -234,9 +234,9 @@
         "lcp": 1100,
         "element": "service-hero__bg",
         "runs": [
-          1088,
+          1096,
           1100,
-          1104
+          1132
         ]
       }
     },
@@ -277,12 +277,12 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 980,
+        "lcp": 976,
         "element": "P",
         "runs": [
-          972,
-          980,
-          992
+          968,
+          976,
+          976
         ]
       }
     }
@@ -417,7 +417,7 @@
       ]
     },
     "home-390": {
-      "height": 13189,
+      "height": 15120,
       "scrollWidth": 390,
       "viewport": 390,
       "overflowingElements": [],
@@ -433,42 +433,42 @@
       "heroTextContrast": [
         {
           "el": "hero__eyebrow",
-          "worst": 2.91,
-          "typical": 15.3
+          "worst": 4.27,
+          "typical": 16.24
         },
         {
           "el": "hero__heading",
-          "worst": 10.38,
-          "typical": 15.88
+          "worst": 11.59,
+          "typical": 16.53
         },
         {
           "el": "hero__sub",
-          "worst": 12.52,
-          "typical": 15.89
+          "worst": 12.83,
+          "typical": 16.04
         },
         {
           "el": "LI",
-          "worst": 7.95,
-          "typical": 15.91
+          "worst": 8.15,
+          "typical": 15.97
         },
         {
           "el": "LI",
-          "worst": 7.1,
-          "typical": 10.75
+          "worst": 7.24,
+          "typical": 10.9
         },
         {
           "el": "LI",
-          "worst": 6.96,
-          "typical": 9.24
+          "worst": 7.08,
+          "typical": 9.39
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1192,
+        "lcp": 1188,
         "element": "hero__heading",
         "runs": [
-          1180,
-          1192,
-          1192
+          1184,
+          1188,
+          1196
         ]
       }
     },
@@ -499,12 +499,12 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1144,
+        "lcp": 1152,
         "element": "H1",
         "runs": [
-          1140,
-          1144,
-          1148
+          1152,
+          1152,
+          1160
         ]
       }
     },
@@ -536,12 +536,12 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1136,
+        "lcp": 1128,
         "element": "page-hero__bg page-hero__bg--about",
         "runs": [
           1128,
-          1136,
-          1140
+          1128,
+          1196
         ]
       }
     }
