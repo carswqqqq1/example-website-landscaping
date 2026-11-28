@@ -863,7 +863,9 @@
         }
 
         var meta = brand.querySelector('.footer__meta');
-        if (!meta && reviewUrl) {
+        var onReviewPage = reviewUrl.charAt(0) === '/' &&
+          window.location.pathname.replace(/\/+$/, '').replace(/\.html$/, '') === reviewUrl.replace(/\/+$/, '');
+        if (!meta && reviewUrl && !onReviewPage) {
           meta = document.createElement('div');
           meta.className = 'footer__meta';
 
