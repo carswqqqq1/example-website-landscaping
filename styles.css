@@ -6521,3 +6521,13 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* ----- 3.03 First hero slide: 1280 on desktop, 640 on phones ----- */
+.hero__slide--first {
+  background-image: image-set(url('img/projects/slide1-1280.avif') type('image/avif'), url('img/projects/slide1.webp') type('image/webp'));
+}
+@media (max-width: 700px) {
+  .hero__slide--first {
+    background-image: image-set(url('img/projects/slide1-640.avif') type('image/avif'), url('img/projects/slide1.webp') type('image/webp'));
+  }
+}

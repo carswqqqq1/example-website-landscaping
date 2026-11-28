@@ -864,7 +864,7 @@
         'Old grass, rock, concrete, or irrigation may need removal or adjustment first.'
       ],
       whatYouGet: [
-        'Premium turf product recommendations for your use case',
+        'Turf product recommendations matched to your use case',
         'Sub-base prep and grading for long-term performance',
         'Drainage and edge-detail planning',
         'Seam management for clean visual flow',

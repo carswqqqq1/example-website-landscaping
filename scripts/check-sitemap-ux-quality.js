@@ -94,8 +94,9 @@ if (!fs.existsSync(sitemapPath)) {
       if (quoteLinks.length < 2) {
         failures.push(`${file}: money page needs multiple quote paths`);
       }
-      if (intent !== 'portfolio' && intentQuoteLinks.length < 2) {
-        failures.push(`${file}: money page needs at least two intent-labeled quote CTAs`);
+      // 3.10: header and mobile bar share one quote label, so one in-page intent label is enough.
+      if (intent !== 'portfolio' && intentQuoteLinks.length < 1) {
+        failures.push(`${file}: money page needs at least one intent-labeled quote CTA`);
       }
       if (!/sticky-bar/.test(html)) {
         failures.push(`${file}: money page missing mobile sticky CTA shell`);

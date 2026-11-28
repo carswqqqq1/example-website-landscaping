@@ -28,7 +28,10 @@
   )}body[data-service-slug=irrigation] .service-hero__bg{background-image:image-set(
     url('../img/projects/zen-garden-1280.avif') type('image/avif'),
     url('../img/projects/zen-garden.jpg') type('image/jpeg')
-  )}@media (max-width:768px){body[data-service-slug=landscape-design] .service-hero__bg{background-image:image-set(
+  )}@media (max-width:768px){.services-hub-hero__bg{background-image:image-set(
+      url('img/projects/water-feature-640.avif') type('image/avif'),
+      url('img/projects/water-feature.jpg') type('image/jpeg')
+    )}body[data-service-slug=landscape-design] .service-hero__bg{background-image:image-set(
       url('../img/projects/slide6-640.avif') type('image/avif'),
       url('../img/projects/slide6.webp') type('image/webp')
     )}body[data-service-slug=hardscaping] .service-hero__bg{background-image:image-set(

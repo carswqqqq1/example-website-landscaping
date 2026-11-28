@@ -47,8 +47,8 @@ const heroSlides = [...indexHtml.matchAll(/<div\b[^>]*>/g)]
     const classMatch = tag.match(/\bclass="([^"]*)"/i);
     return classMatch && classMatch[1].split(/\s+/).includes('hero__slide');
   });
-const eagerHeroSlides = heroSlides.filter((tag) => /style="[^"]*background-image/i.test(tag));
-const deferredHeroSlides = heroSlides.filter((tag) => /data-hero-image-avif=/i.test(tag) && !/style="[^"]*background-image/i.test(tag));
+const eagerHeroSlides = heroSlides.filter((tag) => /style="[^"]*background-image/i.test(tag) || /class="[^"]*hero__slide--first/i.test(tag));
+const deferredHeroSlides = heroSlides.filter((tag) => /data-hero-image-avif=/i.test(tag) && !eagerHeroSlides.includes(tag));
 
 if (heroSlides.length > 1 && eagerHeroSlides.length !== 1) {
   failures.push(`index.html eagerly declares ${eagerHeroSlides.length} hero backgrounds (expected exactly 1)`);

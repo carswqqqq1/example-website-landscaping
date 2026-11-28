@@ -359,8 +359,15 @@
     var hubGrid = byId('services-hub-grid');
     var hubProof = byId('service-proof');
     if (!hubGrid) return;
-    if (hubProof) {
+    /* services.html ships this markup pre-rendered (scripts/render-services-hub.js),
+       so the page lists every service without JS and does not shift as it loads. */
+    if (hubProof && !hubProof.children.length) {
       hubProof.innerHTML = buildProofMarkup();
+    }
+
+    if (hubGrid.children.length) {
+      renderHubStories();
+      return;
     }
 
     hubGrid.innerHTML = services.map(function (service) {
