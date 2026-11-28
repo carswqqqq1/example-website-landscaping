@@ -99,7 +99,7 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 .service-hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.62) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.70) 100%);
 }
 
 .services-hub-hero__content,
@@ -122,17 +122,18 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 
 .services-hub-hero .eyebrow,
 .service-hero .eyebrow {
-  color: rgba(255, 255, 255, 0.72);
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
 .services-hub-hero__sub,
 .service-hero__sub {
   margin-top: 0.95rem;
   max-width: 720px;
-  color: rgba(255, 255, 255, 0.95);
+  color: #fff;
   font-size: 1rem;
   line-height: 1.72;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
 .services-hub-hero__proof,
