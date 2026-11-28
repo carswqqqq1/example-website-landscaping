@@ -2250,25 +2250,53 @@
 
   function createFocusTrap(container, onEscape) {
     var previousActiveElement = null;
+    var active = false;
+    var focusRetryTimers = [];
 
+    function focusInside(target) {
+      var candidate = target && container.contains(target) ? target : null;
+      var focusable = getFocusableElements(container);
+      var next = candidate && (candidate.offsetParent !== null || candidate === container) ? candidate : (focusable[0] || container);
+      if (next === container && !container.hasAttribute('tabindex')) container.setAttribute('tabindex', '-1');
+      if (next && typeof next.focus === 'function') next.focus({ preventScroll: true });
+      return container.contains(document.activeElement);
+    }
+
+    function clearRetries() {
+      focusRetryTimers.forEach(function (id) { window.clearTimeout(id); });
+      focusRetryTimers = [];
+    }
+
+    /* Listen on the document, not the container: if focus never made it inside
+       (for example while the panel was still becoming visible), Escape and Tab
+       must still work. */
     function handleKeydown(event) {
-      if (event.key === 'Escape') {
+      if (!active) return;
+      if (event.key === 'Escape' || event.key === 'Esc') {
+        event.preventDefault();
         if (typeof onEscape === 'function') onEscape();
         return;
       }
       if (event.key !== 'Tab') return;
 
       var focusable = getFocusableElements(container);
-      if (!focusable.length) return;
+      if (!focusable.length) {
+        event.preventDefault();
+        focusInside(null);
+        return;
+      }
 
       var first = focusable[0];
       var last = focusable[focusable.length - 1];
-      var active = document.activeElement;
+      var current = document.activeElement;
 
-      if (event.shiftKey && active === first) {
+      if (!container.contains(current)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+      } else if (event.shiftKey && (current === first || current === container)) {
         event.preventDefault();
         last.focus();
-      } else if (!event.shiftKey && active === last) {
+      } else if (!event.shiftKey && current === last) {
         event.preventDefault();
         first.focus();
       }
@@ -2277,14 +2305,26 @@
     return {
       activate: function activate(initialTarget) {
         previousActiveElement = document.activeElement;
-        container.addEventListener('keydown', handleKeydown);
-        var target = initialTarget || getFocusableElements(container)[0] || container;
-        if (target && typeof target.focus === 'function') target.focus();
+        active = true;
+        document.addEventListener('keydown', handleKeydown, true);
+        clearRetries();
+        /* Move focus synchronously, then re-check on the next frames in case the
+           panel was not focusable yet. No transitionend dependency, so this also
+           works with prefers-reduced-motion. */
+        if (!focusInside(initialTarget)) {
+          [0, 60, 400].forEach(function (delay) {
+            focusRetryTimers.push(window.setTimeout(function () {
+              if (active && !container.contains(document.activeElement)) focusInside(initialTarget);
+            }, delay));
+          });
+        }
       },
       deactivate: function deactivate(restoreFocus) {
-        container.removeEventListener('keydown', handleKeydown);
+        active = false;
+        clearRetries();
+        document.removeEventListener('keydown', handleKeydown, true);
         if (restoreFocus !== false && previousActiveElement && typeof previousActiveElement.focus === 'function') {
-          previousActiveElement.focus();
+          previousActiveElement.focus({ preventScroll: true });
         }
       }
     };
@@ -2686,6 +2726,11 @@
   }
 
   if (burger) burger.addEventListener('click', openMenu);
+  /* Close the sheet when the window grows past the mobile breakpoint (burger hidden). */
+  window.addEventListener('resize', function () {
+    if (!overlay || !burger || !overlay.classList.contains('is-open')) return;
+    if (window.getComputedStyle(burger).display === 'none') closeMenu(false);
+  });
   if (close) close.addEventListener('click', closeMenu);
   if (overlay) {
     overlay.querySelectorAll('a').forEach(function (a) {
@@ -3478,8 +3523,26 @@
     document.body.classList.add('has-consult-drawer-open');
     document.body.style.overflow = 'hidden';
     setBackgroundInertForConsult(true);
-    state.focusTrap.activate(state.close);
-    state.fullName.focus();
+    /* Clear errors left over from an earlier open. */
+    Array.prototype.forEach.call(state.form.querySelectorAll('.field-error'), function (error) {
+      error.textContent = '';
+      error.hidden = true;
+    });
+    Array.prototype.forEach.call(state.form.querySelectorAll('[aria-invalid="true"]'), function (field) {
+      field.setAttribute('aria-invalid', 'false');
+      field.style.borderColor = '';
+    });
+    Array.prototype.forEach.call(state.form.querySelectorAll('.has-error'), function (wrap) {
+      wrap.classList.remove('has-error');
+    });
+    Array.prototype.forEach.call(state.drawer.querySelectorAll('.consult-drawer__error'), function (summary) {
+      summary.textContent = '';
+    });
+    /* Focus moves into the drawer synchronously. On a fine pointer the name field
+       gets focus; on touch screens the close button does, so the keyboard does not
+       jump open (2.09). */
+    var prefersFinePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+    state.focusTrap.activate(prefersFinePointer ? state.fullName : state.close);
     updateStickyBar();
     updateScrollTop();
 
