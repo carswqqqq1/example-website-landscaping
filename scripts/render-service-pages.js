@@ -193,7 +193,7 @@ ${examples.map((item) => `          <li>
                 <img src="../${esc(item.src)}" alt="${esc(item.alt)}" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="${item.width}" height="${item.height}" />
               </picture>
               <span class="service-example__title">${esc(item.label)}</span>
-              <span class="service-example__line">${esc(item.alt)}</span>
+              <span class="service-example__line" aria-hidden="true">${esc(item.alt)}</span>
               <span class="service-example__go">Try a sample quote like this</span>
             </a>
           </li>`).join('\n')}

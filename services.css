@@ -1158,3 +1158,14 @@ body[data-service-slug="outdoor-lighting"] .service-hero__bg { background-positi
 .service-once__line { margin-top: .5rem; max-width: 60ch; color: var(--ink-light); line-height: 1.6; }
 .service-once__actions { margin-top: 1rem; }
 .service-once__actions .btn { text-transform: none; letter-spacing: 0; box-shadow: none; }
+
+/* 5.06: the second hero action on a service page (irrigation's "Plan a new system")
+   reads as an outline next to the main button, not a second filled button. */
+[data-service-shell] .service-hero .btn--ghost {
+  background: rgba(0, 0, 0, .18);
+  border-color: rgba(255, 255, 255, .82);
+  box-shadow: none;
+}
+[data-service-shell] .service-hero .btn--ghost:hover {
+  background: rgba(0, 0, 0, .34);
+}
