@@ -6601,3 +6601,32 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
 @media (min-width: 901px) and (max-width: 1320px) {
   .hero__indicators { display: flex; }
 }
+
+/* ----- 4.02 Choice moment: three image-led cards ----- */
+.choice { background: var(--paper); padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+.choice__header { max-width: 720px; margin-bottom: 2rem; }
+.choice__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+.choice__card { display: flex; flex-direction: column; color: var(--ink); text-decoration: none; }
+.choice__card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-md); margin-bottom: 1rem; }
+.choice__title { font-family: var(--font-head); font-size: 1.6rem; font-weight: 600; line-height: 1.15; }
+.choice__text { margin-top: .35rem; color: var(--ink-light); font-size: .95rem; line-height: 1.6; }
+.choice__cta { margin-top: .6rem; color: var(--green); font-weight: 600; font-size: .92rem; text-decoration: underline; text-underline-offset: .2em; }
+.choice__card:hover .choice__cta, .choice__card:focus-visible .choice__cta { text-decoration-thickness: 2px; }
+.choice__card:focus-visible { outline: 3px solid var(--green); outline-offset: 4px; border-radius: var(--r-md); }
+
+/* ----- 5.04 The three estimate paths: a quiet reading flow inside the choice section ----- */
+.estimate-paths { margin-top: clamp(2.5rem, 5vw, 3.5rem); padding-top: 2rem; border-top: 1px solid var(--paper-alt); }
+.estimate-paths__title { font-family: var(--font-body); font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 1.1rem; }
+.estimate-paths__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem 2.5rem; }
+.estimate-paths__item { display: flex; flex-direction: column; gap: .25rem; font-size: .92rem; line-height: 1.55; color: var(--ink-light); }
+.estimate-paths__item strong { font-size: 1.02rem; color: var(--ink); }
+.estimate-paths__note { font-size: .82rem; color: var(--ink-faint); }
+.estimate-paths__item a { margin-top: .35rem; align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; color: var(--green); font-weight: 600; text-decoration: underline; text-underline-offset: .2em; }
+@media (max-width: 900px) {
+  .choice__grid { grid-template-columns: 1fr; gap: 2rem; }
+  .estimate-paths__list { grid-template-columns: 1fr; gap: 1.25rem; }
+}
+@media (min-width: 560px) and (max-width: 900px) {
+  .choice__card { display: grid; grid-template-columns: 220px 1fr; column-gap: 1.25rem; align-items: start; }
+  .choice__card img { grid-row: span 3; margin-bottom: 0; }
+}

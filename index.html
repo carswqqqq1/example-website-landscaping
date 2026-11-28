@@ -348,36 +348,54 @@
       </ul>
     </section>
 
-    <section class="estimate-route" aria-label="Choose your estimate path">
-      <div class="container estimate-route__inner">
-        <div class="estimate-route__intro reveal reveal--glide-left">
-          <p class="eyebrow">Start With the Right Path</p>
-          <h2>Weekly yard care, a one-time fix, or a full redesign.</h2>
-          <p>Pick what you need. Maintenance and one-time jobs get a short form and a callback within one business day. Bigger projects get a full project review.</p>
-          <div class="estimate-route__scope" aria-label="Project scope guidance">
-            <p><strong>Projects:</strong> residential design-build work from about $10k, including hardscape, turf, outdoor living, irrigation upgrades, and phased builds.</p>
-            <p><strong>Also here:</strong> weekly and biweekly yard care, cleanups, irrigation fixes, and tree trims with a quote callback within one business day.</p>
-          </div>
+    <section class="choice" id="choose" aria-labelledby="choice-title">
+      <div class="container">
+        <header class="choice__header reveal">
+          <h2 class="section-title" id="choice-title">What are you trying to make better?</h2>
+        </header>
+        <div class="choice__grid">
+          <a class="choice__card reveal" href="/free-consultation?type=project&amp;service=pergola-shade&amp;source=homepage_choice_use&amp;autostart=1">
+            <img src="img/projects/shade-structure-640.avif" srcset="img/projects/shade-structure-640.avif 640w, img/projects/shade-structure-1280.avif 1000w" sizes="(max-width: 768px) 100vw, 33vw" alt="Pergola with string lights over an outdoor kitchen, paver patio and turf in Phoenix" loading="lazy" decoding="async" width="1000" height="668" />
+            <span class="choice__title">Easier to use</span>
+            <span class="choice__text">Shade, seating and cooking placed so the yard works on a July evening.</span>
+            <span class="choice__cta">Plan an outdoor room</span>
+          </a>
+          <a class="choice__card reveal" href="/free-consultation?type=project&amp;service=desert-landscaping&amp;source=homepage_choice_maintain&amp;autostart=1">
+            <img src="img/projects/zen-garden-640.avif" srcset="img/projects/zen-garden-640.avif 640w, img/projects/zen-garden-1280.avif 1280w" sizes="(max-width: 768px) 100vw, 33vw" alt="Side yard with stepping stones, desert plants and a small water feature in Fountain Hills" loading="lazy" decoding="async" width="1280" height="764" />
+            <span class="choice__title">Easier to maintain</span>
+            <span class="choice__text">Low-water planting, rock and clean edges that need less weekly work.</span>
+            <span class="choice__cta">Plan a low-water yard</span>
+          </a>
+          <a class="choice__card reveal" href="/free-consultation?type=project&amp;service=outdoor-lighting&amp;source=homepage_choice_finish&amp;autostart=1">
+            <img src="img/projects/after-30-640.avif" srcset="img/projects/after-30-640.avif 640w, img/projects/after-30.jpg 880w" sizes="(max-width: 768px) 100vw, 33vw" alt="Linear fire table, landscape lighting and turf at dusk in Carefree" loading="lazy" decoding="async" width="880" height="670" />
+            <span class="choice__title">Feels finished</span>
+            <span class="choice__text">Lighting, fire and the last details that make the yard feel complete.</span>
+            <span class="choice__cta">Plan the finishing details</span>
+          </a>
         </div>
-        <div class="estimate-route__grid">
-          <a href="/free-consultation?type=maintenance&source=estimate_path_maintenance&autostart=1" class="estimate-route__card reveal reveal--settle" data-form-prefill-trigger data-prefill-type="maintenance" data-prefill-source="estimate_path_maintenance">
-            <span class="estimate-route__label">Yard Care</span>
-            <strong>Weekly or biweekly maintenance</strong>
-            <p>Mowing, trimming, weed control, and irrigation checks from one steady crew. Weekly, biweekly, or monthly.</p>
-            <span class="estimate-route__cta">Get a maintenance quote</span>
-          </a>
-          <a href="/free-consultation?type=one_time&source=estimate_path_one_time&autostart=1" class="estimate-route__card reveal reveal--settle" data-form-prefill-trigger data-prefill-type="one_time" data-prefill-source="estimate_path_one_time">
-            <span class="estimate-route__label">One-Time</span>
-            <strong>Cleanup or repair</strong>
-            <p>Overgrown yard, storm cleanup, broken drip line, or a tree trim. Tell us what needs doing and when.</p>
-            <span class="estimate-route__cta">Get a one-time quote</span>
-          </a>
-          <a href="#contact" class="estimate-route__card reveal reveal--settle" data-form-prefill-trigger data-prefill-service="Landscape Design & Build" data-prefill-source="estimate_path_design" data-prefill-message="Interested in a new landscape project. Please help me understand the right first step.">
-            <span class="estimate-route__label">New Project</span>
-            <strong>Patio, turf, or a full redesign</strong>
-            <p>Hardscape, turf, planting, lighting, or a connected backyard plan, reviewed before any pricing.</p>
-            <span class="estimate-route__cta">Start a project review</span>
-          </a>
+
+        <div class="estimate-paths" aria-labelledby="estimate-paths-title">
+          <h3 class="estimate-paths__title" id="estimate-paths-title">Ready for numbers? Pick a path for a sample quote.</h3>
+          <ol class="estimate-paths__list">
+            <li class="estimate-paths__item">
+              <strong>Ongoing yard care</strong>
+              <span>One steady crew, weekly, every other week or monthly.</span>
+              <span class="estimate-paths__note">You enter: address area, yard size and schedule.</span>
+              <a href="/free-consultation?type=maintenance&amp;source=estimate_path_maintenance&amp;autostart=1">Get a yard-care quote</a>
+            </li>
+            <li class="estimate-paths__item">
+              <strong>One-time cleanup or repair</strong>
+              <span>Overgrowth, a broken drip line or a tree trim, done once.</span>
+              <span class="estimate-paths__note">You enter: what needs doing and when.</span>
+              <a href="/free-consultation?type=one_time&amp;source=estimate_path_one_time&amp;autostart=1">Get a one-time quote</a>
+            </li>
+            <li class="estimate-paths__item">
+              <strong>Landscape project</strong>
+              <span>Patio, turf, planting or a full redesign, scoped before pricing.</span>
+              <span class="estimate-paths__note">You enter: city, project type and timing.</span>
+              <a href="/free-consultation?type=project&amp;source=estimate_path_design&amp;autostart=1">Plan a landscape project</a>
+            </li>
+          </ol>
         </div>
       </div>
     </section>
