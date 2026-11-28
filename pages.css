@@ -1010,3 +1010,172 @@
   .process-stages__action .btn,
   .about-next__actions .btn { width: 100%; justify-content: center; }
 }
+
+/* 5.12: checklist landing and calculator */
+.checklist-preview__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 2rem 2.5rem;
+  align-items: start;
+}
+.checklist-preview__sheet {
+  padding: 1.4rem 1.5rem;
+  border: 1px solid #e4d9c8;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(28, 44, 36, .08);
+}
+.checklist-preview__label {
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--tan-text, var(--ink-light));
+}
+.checklist-preview__title {
+  margin-top: .5rem;
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  color: var(--ink);
+}
+.checklist-preview__sections {
+  margin: .9rem 0 0;
+  padding-left: 1.4rem;
+  display: grid;
+  gap: .35rem;
+  color: var(--ink-light);
+  line-height: 1.6;
+}
+.checklist-preview__actions {
+  margin-top: 1.3rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .6rem 1.2rem;
+}
+.checklist-preview__print {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--green);
+  font-weight: 600;
+}
+.checklist-preview__inner .resource-gate { grid-column: 1 / -1; margin-top: 0; }
+.resource-gate[hidden] { display: none; }
+.checklist-next__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+}
+.checklist-next__inner p { margin-top: .4rem; color: var(--ink-light); }
+
+.calc__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2rem 2.5rem;
+  align-items: start;
+}
+.calc__inputs { display: grid; gap: 1rem; }
+.calc__heading {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  color: var(--ink);
+}
+.calc__inputs .form-field label {
+  display: block;
+  margin-bottom: .35rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.calc__inputs select,
+.calc__budget select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 .8rem;
+  border: 1.5px solid rgba(20, 20, 20, .18);
+  border-radius: 8px;
+  background: var(--white);
+  font: inherit;
+}
+.calc__inputs input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--green); }
+.calc__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.calc__jump { display: none; }
+.calc__result { position: sticky; top: 100px; display: grid; gap: 1rem; outline: none; }
+.calc__card {
+  padding: 1.5rem;
+  border-radius: 14px;
+  background: var(--green-dark, #1b4332);
+  color: #fff;
+}
+.calc__label {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .8);
+}
+.calc__range {
+  margin-top: .4rem;
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.1;
+  color: #fff;
+  overflow-wrap: break-word;
+}
+.calc__qualifier {
+  margin-top: .45rem;
+  font-size: .92rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, .88);
+}
+.calc__summary {
+  margin-top: .9rem;
+  padding-top: .9rem;
+  border-top: 1px solid rgba(255, 255, 255, .2);
+  font-size: .9rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, .85);
+}
+.calc__ask { margin-top: 1.1rem; }
+.calc__card .btn--solid { background: #fff; color: var(--green-dark, #1b4332); }
+.calc__ask-note {
+  margin-top: .6rem;
+  font-size: .82rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, .8);
+}
+.calc__budget {
+  padding: 1.1rem 1.2rem;
+  border: 1px dashed #cfc3b1;
+  border-radius: 12px;
+  background: #fff;
+}
+.calc__budget label { display: block; margin-bottom: .4rem; font-weight: 600; color: var(--ink); }
+.calc__budget-note { margin-top: .45rem; font-size: .84rem; color: var(--ink-light); }
+.calc__guide { margin-top: 1rem; color: var(--ink-light); }
+.calc__guide a { color: var(--green); font-weight: 600; }
+@media (max-width: 860px) {
+  .checklist-preview__inner,
+  .calc__layout { grid-template-columns: 1fr; }
+  .calc__result { position: static; }
+  .calc__jump {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    justify-self: start;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .calc__ask,
+  .checklist-preview__actions .btn,
+  .checklist-next__inner .btn { width: 100%; justify-content: center; }
+}
+@media (max-width: 420px) {
+  .calc__row { grid-template-columns: 1fr; }
+}

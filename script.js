@@ -4973,6 +4973,24 @@
 
   bindResourceGateForms();
 
+  // 5.12: the checklist downloads on the first tap in demo mode. A client
+  // build keeps its gate, so the download buttons point to the form there.
+  function setupChecklistDownload() {
+    var gate = document.querySelector('[data-checklist-gate]');
+    if (!gate) return;
+    if (isDemoMode()) {
+      gate.hidden = true;
+      return;
+    }
+    document.querySelectorAll('[data-checklist-download]').forEach(function (link) {
+      link.removeAttribute('download');
+      link.setAttribute('href', '#checklist-gate');
+      link.textContent = 'Get the checklist';
+    });
+  }
+
+  setupChecklistDownload();
+
   var quoteStarterForm = document.getElementById('quote-starter-form');
   if (quoteStarterForm) {
     enhanceServiceTypeForm(quoteStarterForm, { prefix: 'starter', chooserOnly: true });
