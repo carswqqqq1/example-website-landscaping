@@ -480,7 +480,7 @@
     },
     {
       slug: 'pergola-shade',
-      heroImage: 'img/projects/fireplace.jpg',
+      heroImage: 'img/projects/shade-structure.jpg',
       path: '/services/pergola-shade',
       navLabel: 'Pergola & Shade',
       title: 'Pergola & Shade Structures',

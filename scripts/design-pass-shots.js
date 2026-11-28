@@ -90,16 +90,100 @@ async function settle(page) {
   }
   // Walk the page so lazy images load and reveal animations finish.
   const height = await page.evaluate(() => document.documentElement.scrollHeight);
-  for (let y = 0; y < height; y += 500) {
+  for (let y = 0; y < height; y += 400) {
     await page.evaluate((top) => window.scrollTo(0, top), y);
-    await page.waitForTimeout(90);
+    await page.waitForTimeout(220);
   }
+  await page.waitForTimeout(900);
   await page.evaluate(() => window.scrollTo(0, 0));
+  // Show the first hero slide, held, so every run captures the same photo.
+  const firstDot = page.locator('.hero__dot[data-slide="0"]');
+  if (await firstDot.count()) {
+    await firstDot.click().catch(() => {});
+    const pause = page.locator('.hero__pause[aria-pressed="false"]');
+    if (await pause.count()) await pause.click().catch(() => {});
+    await page.mouse.move(1, 1);
+    await page.waitForTimeout(2400);
+  }
   await page.waitForLoadState('networkidle').catch(() => {});
   await page.evaluate(() => Promise.all(Array.from(document.images).map((img) =>
     img.complete ? null : new Promise((r) => { img.onload = img.onerror = r; setTimeout(r, 4000); })
   )));
   await page.waitForTimeout(700);
+}
+
+
+// Worst-case contrast of white hero text over the photo: hide the text, grab
+// the pixels behind each line, and test white against the brightest 5% of them.
+async function heroContrast(page) {
+  const sel = '.hero__heading, .hero__sub, .hero__eyebrow, .hero__assure li, .page-hero h1, .page-hero__inner > p, .service-hero h1, .service-hero__sub';
+  const rects = await page.evaluate((s) => Array.from(document.querySelectorAll(s)).filter((el) => {
+    const r = el.getBoundingClientRect();
+    return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < window.innerHeight;
+  }).map((el) => {
+    const r = el.getBoundingClientRect();
+    return { name: (el.className || el.tagName).toString().split(' ')[0], x: r.left, y: r.top, w: r.width, h: r.height };
+  }), sel);
+  if (!rects.length) return [];
+  await page.addStyleTag({ content: sel.split(',').map((x) => x.trim() + '{visibility:hidden !important}').join('\n') + '\n.__dp_contrast{}' });
+  const png = await page.screenshot({ type: 'png' });
+  await page.evaluate(() => {
+    const tags = Array.from(document.querySelectorAll('style')).filter((t) => t.textContent.includes('.__dp_contrast'));
+    tags.forEach((t) => t.remove());
+  });
+  return page.evaluate(async ({ data, rects }) => {
+    const img = new Image();
+    img.src = 'data:image/png;base64,' + data;
+    await img.decode();
+    const scale = img.width / window.innerWidth;
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width; canvas.height = img.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const lin = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+    return rects.map((r) => {
+      const x = Math.max(0, Math.floor(r.x * scale)), y = Math.max(0, Math.floor(r.y * scale));
+      const w = Math.max(1, Math.min(canvas.width - x, Math.floor(r.w * scale))), h = Math.max(1, Math.min(canvas.height - y, Math.floor(r.h * scale)));
+      const px = ctx.getImageData(x, y, w, h).data;
+      const lums = [];
+      for (let i = 0; i < px.length; i += 16) lums.push(0.2126 * lin(px[i]) + 0.7152 * lin(px[i + 1]) + 0.0722 * lin(px[i + 2]));
+      lums.sort((a, b) => a - b);
+      const p95 = lums[Math.floor(lums.length * 0.95)] || 0;
+      const median = lums[Math.floor(lums.length * 0.5)] || 0;
+      return { el: r.name, worst: +(1.05 / (p95 + 0.05)).toFixed(2), typical: +(1.05 / (median + 0.05)).toFixed(2) };
+    });
+  }, { data: png.toString('base64'), rects });
+}
+
+// Small text on flat backgrounds below the hero: text colour against the first
+// opaque background behind it. Text over photos is skipped (heroContrast covers it).
+async function labelContrast(page) {
+  return page.evaluate(() => {
+    const parse = (c) => { const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(',').map(Number); return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 }; };
+    const lin = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+    const lum = (c) => 0.2126 * lin(c.r) + 0.7152 * lin(c.g) + 0.0722 * lin(c.b);
+    const out = [];
+    document.querySelectorAll('main .eyebrow, main [class*="__label"], main .portfolio__tag, main .review-card__sample, main .review-card__who span, main .areas__chips a, main figcaption, main .about-stats__label').forEach((el) => {
+      const r = el.getBoundingClientRect();
+      const cs = getComputedStyle(el);
+      if (!r.width || !r.height || cs.visibility === 'hidden' || cs.display === 'none' || !el.textContent.trim()) return;
+      const fg = parse(cs.color); if (!fg) return;
+      let node = el, bg = null;
+      while (node && node.nodeType === 1) {
+        const ns = getComputedStyle(node);
+        if (ns.backgroundImage && ns.backgroundImage !== 'none' && !ns.backgroundImage.startsWith('linear-gradient')) return;
+        if (node.tagName === 'FIGURE' && node.querySelector('img') && getComputedStyle(el).position === 'absolute') return;
+        const b = parse(ns.backgroundColor);
+        if (b && b.a > 0.85) { bg = b; break; }
+        node = node.parentElement;
+      }
+      if (!bg) bg = { r: 255, g: 255, b: 255 };
+      const l1 = lum(fg), l2 = lum(bg);
+      const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+      if (ratio < 4.5) out.push(el.textContent.trim().replace(/\s+/g, ' ').slice(0, 40) + ' (' + ratio.toFixed(2) + ')');
+    });
+    return Array.from(new Set(out)).slice(0, 15);
+  });
 }
 
 async function metrics(page) {
@@ -181,7 +265,12 @@ async function mobileLcp(browser, base, pagePath) {
         const stem = path.join(OUT, `${source.label}-${p.name}-${vp.name}`);
         await page.screenshot({ path: stem + '-fold.jpg', type: 'jpeg', quality: 82 });
         await page.screenshot({ path: stem + '-full.jpg', type: 'jpeg', quality: 72, fullPage: true });
-        report[source.label][`${p.name}-${vp.name}`] = await metrics(page);
+        const m = await metrics(page);
+        m.lowContrastLabels = await labelContrast(page);
+        await page.evaluate(() => window.scrollTo(0, 0));
+        await page.waitForTimeout(300);
+        m.heroTextContrast = await heroContrast(page);
+        report[source.label][`${p.name}-${vp.name}`] = m;
         await page.close();
         console.log(`${source.label} ${p.name} ${vp.name}: ${report[source.label][`${p.name}-${vp.name}`].height}px`);
       }

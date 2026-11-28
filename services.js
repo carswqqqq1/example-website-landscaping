@@ -394,6 +394,34 @@
     renderHubStories();
   }
 
+  var SERVICE_BAND_PHOTOS = {
+    'landscape-design': ['slide10', 'Backyard pool, palms and Camelback views', 'Paradise Valley, AZ'],
+    'hardscaping': ['slide2', 'Paver deck, spillway wall and lit planters', 'Scottsdale, AZ'],
+    'outdoor-kitchens': ['fireplace', 'Covered patio with fireplace and lounge', 'Scottsdale, AZ'],
+    'fire-features': ['slide3', 'Poolside fire pit and lounge seating', 'Scottsdale, AZ'],
+    'desert-landscaping': ['slide5', 'Desert planting, boulders and dry creek bed', 'Cave Creek, AZ'],
+    'artificial-turf': ['slide7', 'Turf lawn framed by desert planting', 'Phoenix, AZ'],
+    'outdoor-lighting': ['slide8', 'Pool, fire feature and planting lit at dusk', 'Phoenix, AZ'],
+    'pergola-shade': ['slide4', 'Covered patio, pool deck and lounge seating', 'Scottsdale, AZ'],
+    'irrigation': ['slide7', 'Planting beds on drip around a turf lawn', 'Phoenix, AZ']
+  };
+
+  function insertServicePhotoBand(service, anchor) {
+    var existing = document.getElementById('service-photo-band');
+    if (existing) existing.remove();
+    var photo = SERVICE_BAND_PHOTOS[service.slug];
+    if (!photo || !anchor) return;
+    var base = withBase('img/projects/' + photo[0]);
+    var band = document.createElement('section');
+    band.className = 'service-band';
+    band.id = 'service-photo-band';
+    band.setAttribute('aria-label', 'Example project photo');
+    band.innerHTML = '' +
+      '<img src="' + base + '-1280.avif" srcset="' + base + '-640.avif 640w, ' + base + '-1280.avif 1280w" sizes="100vw" alt="' + photo[1] + '" loading="lazy" decoding="async" width="1280" height="675" />' +
+      '<p class="service-band__caption"><strong>' + photo[1] + '</strong><span>' + photo[2] + ' &middot; Example project</span></p>';
+    anchor.insertAdjacentElement('afterend', band);
+  }
+
   function renderServicePage() {
     if (!root || !root.dataset.serviceSlug) return;
 
@@ -546,6 +574,9 @@
         gallerySection.insertAdjacentElement('afterend', storySection);
       }
     }
+
+    var firstBlock = document.querySelector('main .service-block');
+    insertServicePhotoBand(service, firstBlock);
 
     if (area) {
       area.textContent = service.serviceAreaText;
