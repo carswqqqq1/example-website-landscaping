@@ -1799,9 +1799,24 @@
   }
 
   function renderRecentProjects() {
-    var list = Array.isArray(window.RECENT_PROJECTS) ? window.RECENT_PROJECTS.slice(0, 3) : [];
     var grid = document.getElementById('recent-projects-grid');
-    if (!grid || !list.length) return;
+    if (!grid || !Array.isArray(window.RECENT_PROJECTS)) return;
+    // Skip any project whose photo already shows elsewhere on the page, so no photo repeats.
+    var photoBase = function (value) {
+      var file = String(value || '').split('?')[0].split('/').pop();
+      return file.replace(/\.(avif|webp|jpe?g|png)$/i, '').replace(/-(320|640|960|1280|1600)$/, '');
+    };
+    var usedPhotos = {};
+    document.querySelectorAll('main img, .hero__slide').forEach(function (node) {
+      if (grid.contains(node)) return;
+      [node.getAttribute('src'), node.getAttribute('data-hero-image-avif'), node.getAttribute('data-hero-image-webp')].forEach(function (value) {
+        if (value) usedPhotos[photoBase(value)] = true;
+      });
+    });
+    var list = window.RECENT_PROJECTS.filter(function (project) {
+      return !usedPhotos[photoBase(project.image)];
+    }).slice(0, 3);
+    if (!list.length) return;
 
     grid.innerHTML = list.map(function (project, index) {
       var title = String(project.title || 'Recent Project').trim();
