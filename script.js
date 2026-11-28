@@ -3712,7 +3712,16 @@
     state.city.value = nextPrefill.city || '';
     state.contactChoice.value = nextPrefill.contact_method || '';
     state.timeline.value = nextPrefill.estimated_timeline || '';
-    state.message.value = nextPrefill.prefill_message || '';
+    /* 5.12: the calculator range and inputs go into the editable Project Notes, so they are
+       submitted with the request. They stay out of the Budget field (2.19). */
+    var notesValue = String(nextPrefill.prefill_message || '');
+    if (nextPrefill.estimate_context) {
+      var estimateNote = 'Calculator estimate (planning range, not my budget): ' + nextPrefill.estimate_context;
+      if (notesValue.indexOf(estimateNote) === -1) {
+        notesValue = notesValue ? notesValue + '\n' + estimateNote : estimateNote;
+      }
+    }
+    state.message.value = notesValue;
     var contextualSubmit = getConsultSubmitLabel();
     state.projectSub = getConsultSubcopy();
     state.projectCopy = {
