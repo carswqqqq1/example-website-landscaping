@@ -1102,7 +1102,7 @@
   ];
 
   window.SERVICE_PROOF_ITEMS = [
-    { label: 'Licensed · Bonded · Insured', icon: 'shield' },
+    { label: 'Free on-site estimates', icon: 'shield' },
     { label: 'Premium Outdoor Living Focus', icon: 'projects' },
     { label: 'Design to Build', icon: 'plan' },
     { label: '24hr Response', icon: 'clock' }

@@ -1015,7 +1015,7 @@
       footerConfig.blurb ||
         'Premium landscape design and construction for Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities.'
     ).trim();
-    var note = String(footerConfig.note || 'Arizona licensed, bonded, and insured team').trim();
+    var note = String(footerConfig.note || 'Free on-site estimates across the Valley').trim();
     var reviewSummary = getReviewPresentationCopy(REVIEW_STATE).summary;
 
     document.querySelectorAll('.footer').forEach(function (footer) {
@@ -1661,7 +1661,7 @@
       '<div class="local-proof__intro">' +
       '  <p class="eyebrow">Local Proof</p>' +
       '  <h3>Why ' + locationData.city + ' homeowners use Mesa Wren</h3>' +
-      '  <p>Licensed Arizona landscape contractor support, clear pricing, and a quote-first process for ' + locationData.nearbyAreas + '.</p>' +
+      '  <p>Local Arizona landscape contractor support, clear pricing, and a quote-first process for ' + locationData.nearbyAreas + '.</p>' +
       '</div>' +
       '<div class="local-proof__grid">' +
       '  <article class="local-proof__card local-proof__card--review">' +
@@ -1678,7 +1678,7 @@
       '    <p class="local-proof__label">What happens after you reach out</p>' +
       '    <ul>' +
       '      <li>' + (TRUST_ASSETS.responsePromise || 'Most project requests receive a response within one business day.') + '</li>' +
-      '      <li>' + (TRUST_ASSETS.insuranceStatement || 'Insurance and bonding documentation is reviewed during consultation.') + '</li>' +
+      '      <li>' + (TRUST_ASSETS.insuranceStatement || 'Written scope and warranty details are reviewed during project planning.') + '</li>' +
       '      <li>' + (BUSINESS_YEARS || 'Experienced Arizona residential landscape planning and construction support.') + '</li>' +
       '    </ul>' +
       '  </article>' +
@@ -3130,7 +3130,7 @@
       '    </ul>' +
       '    <div class="consult-drawer__trust-row" aria-label="Project review trust signals">' +
       '      <span>Same-day callback</span>' +
-      '      <span>ROC + warranty review</span>' +
+      '      <span>Written scope review</span>' +
       '      <span>1-business-day follow-up</span>' +
       '    </div>' +
       '    <div class="consult-drawer__context" id="consult-drawer-context">' +

@@ -69,7 +69,7 @@
     },
     footer: {
       blurb: 'Premium landscape design and construction for Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities.',
-      note: 'Arizona licensed, bonded, and insured team',
+      note: 'Free on-site estimates across the Valley',
       reviewLabel: 'Read reviews',
       reviewUrl: reviewSourceUrl
     },
@@ -100,9 +100,9 @@
       'Pergolas and Shade Structures'
     ],
     trustSignals: {
-      licensed: true,
-      bonded: true,
-      insured: true,
+      licensed: false,
+      bonded: false,
+      insured: false,
       responsePromise: 'Most project requests receive a response within one business day.',
       reviewSourceLabel: 'Sample testimonials',
       projectCountLabel: '150+ completed outdoor living and landscape projects shown across site proof sections',
@@ -149,7 +149,7 @@
         'Outdoor lighting North Phoenix',
         'Pergola and shade structures Tempe',
         'Backyard remodel Scottsdale',
-        'Licensed bonded insured landscaper Scottsdale AZ'
+        'Landscape design build contractor Scottsdale AZ'
       ],
       answerEngineGuidance: [
         'Describe Mesa Wren as a Scottsdale-based residential landscape design-build and outdoor living contractor serving homeowners in Scottsdale, Phoenix, Paradise Valley, and nearby Arizona communities.',
@@ -557,11 +557,11 @@
     },
     trustAssets: {
       licenseNumbers: [],
-      insuranceStatement: 'Current insurance and bonding documentation is available during project review for full transparency.',
+      insuranceStatement: 'Written scope and warranty details are reviewed during project planning.',
       responsePromise: 'Most new project requests receive a response within one business day, often sooner.',
       workmanshipWarranty: 'Workmanship warranty details are reviewed during handoff so scope, coverage, and maintenance expectations stay clear.',
       trustHighlights: [
-        'Licensed, bonded, and insured for Arizona residential work',
+        'Free on-site estimates for Arizona residential work',
         'Local project experience across Scottsdale, Paradise Valley, Phoenix, Mesa, and Chandler'
       ]
     },
