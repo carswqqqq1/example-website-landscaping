@@ -1193,7 +1193,7 @@
       }
 
       return {
-        summary: 'Read recent homeowner feedback on ' + source,
+        summary: 'Read homeowner feedback on ' + source,
         badge: 'Live Google reviews',
         dateText: 'Live from Google Business Profile'
       };
