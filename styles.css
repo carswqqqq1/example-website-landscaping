@@ -6682,3 +6682,15 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
   .timeline__step { padding-top: 0; }
   .timeline__step::before { left: -1.75rem; top: .3rem; }
 }
+
+/* ----- 4.06 Confidence panel ----- */
+.confidence { background: var(--paper-alt); padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+.confidence .section-title { margin-bottom: 2rem; }
+.confidence__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; }
+.confidence__col h3 { font-family: var(--font-head); font-size: 1.35rem; font-weight: 600; color: var(--ink); margin-bottom: .35rem; }
+.confidence__col p { font-size: .95rem; line-height: 1.6; color: var(--ink-light); }
+.confidence__links { display: flex; flex-wrap: wrap; gap: 0 1.25rem; margin-top: .4rem; }
+.confidence__links a, .confidence__areas a { display: inline-flex; align-items: center; min-height: 44px; color: var(--green); font-weight: 600; text-decoration: underline; text-underline-offset: .2em; }
+.confidence__areas { margin-top: 1.75rem; font-size: .92rem; color: var(--ink-light); }
+.confidence__areas a { min-height: 0; font-weight: 500; }
+@media (max-width: 900px) { .confidence__grid { grid-template-columns: 1fr; gap: 1.5rem; } }
