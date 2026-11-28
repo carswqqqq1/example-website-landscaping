@@ -3862,8 +3862,17 @@
       return Promise.resolve(slide);
     }
 
+    if (slide.classList.contains('hero__slide--first')) {
+      slide.dataset.preloaded = 'true';
+      return Promise.resolve(slide);
+    }
+
     var avifPath = String(slide.dataset.heroImageAvif || '').trim();
     var webpPath = String(slide.dataset.heroImageWebp || '').trim();
+    /* Phones get the 640px file, the same size the first slide uses there. */
+    if (avifPath && window.matchMedia && window.matchMedia('(max-width: 700px)').matches) {
+      avifPath = avifPath.replace(/-1280\.avif$/, '-640.avif');
+    }
     var primaryPath = avifPath || webpPath;
     if (!primaryPath) return Promise.resolve(null);
 

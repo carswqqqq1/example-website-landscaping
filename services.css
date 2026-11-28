@@ -97,6 +97,15 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 
 /* Phones get the 640px hero, matching the preload in each service page. */
 @media (max-width: 768px) {
+  .services-hub-hero__bg {
+    background-image: image-set(
+      url('img/projects/water-feature-640.avif') type('image/avif'),
+      url('img/projects/water-feature.jpg') type('image/jpeg')
+    );
+  }
+}
+
+@media (max-width: 768px) {
   body[data-service-slug="landscape-design"] .service-hero__bg {
     background-image: image-set(
       url('../img/projects/slide6-640.avif') type('image/avif'),
