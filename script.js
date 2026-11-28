@@ -1556,7 +1556,7 @@
       if (remaining > 0) {
         var nextCount = Math.min(reviewsPerBatch, remaining);
         showMore.disabled = false;
-        showMore.textContent = 'Show next ' + nextCount + ' reviews';
+        showMore.textContent = nextCount === 1 ? 'Show 1 more review' : 'Show ' + nextCount + ' more reviews';
       } else {
         showMore.disabled = true;
         showMore.textContent = 'All reviews shown';
