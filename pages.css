@@ -704,3 +704,17 @@
     background-image: url('img/projects/water-feature-640.avif');
   }
 }
+
+/* ----- 3.08 Narrow screens: page-hero text and buttons stay inside the container ----- */
+.page-hero__inner { min-width: 0; }
+.page-hero h1,
+.page-hero p { overflow-wrap: break-word; }
+.page-hero__actions .btn { max-width: 100%; }
+@media (max-width: 480px) {
+  .page-hero h1 { font-size: clamp(1.65rem, 8.2vw, 2rem); }
+  .page-hero__actions .btn {
+    white-space: normal;
+    text-align: center;
+    line-height: 1.3;
+  }
+}
