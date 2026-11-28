@@ -1741,8 +1741,9 @@
       { label: 'Services', href: '/services' },
       { label: 'Portfolio', href: '/portfolio' },
       { label: 'Process', href: '/process' },
+      { label: 'Reviews', href: '/reviews' },
       { label: 'Financing', href: '/financing' },
-      { label: 'Reviews', href: '/reviews' }
+      { label: 'Contact', href: '/contact' }
     ];
   }
 
@@ -2586,6 +2587,7 @@
       var isConsultText = text.indexOf('consultation') >= 0 || text === 'contact';
       var isLocalConsultAnchor = href.charAt(0) === '#' && (href.indexOf('consultation') >= 0 || href === '#contact');
       if (!isConsultText && !isLocalConsultAnchor) return;
+      if (/^\/contact(?:[?#]|$)/.test(href)) return;
       if (link.hasAttribute('data-service-consultation-link')) return;
       if (shouldKeepConsultHref(link)) return;
       link.setAttribute('href', dedicatedHref);
@@ -3339,7 +3341,7 @@
       onChange: function (type) {
         if (!consultDrawerState.sub) return;
         if (type === 'maintenance' || type === 'one_time') {
-          consultDrawerState.sub.textContent = 'Share the basics and we call back with a price within 24 hours. No contract needed to get a quote.';
+          consultDrawerState.sub.textContent = 'Share the basics and we call back with a price within one business day. No contract needed to get a quote.';
         } else if (consultDrawerState.projectSub) {
           consultDrawerState.sub.textContent = consultDrawerState.projectSub;
         }
@@ -3545,7 +3547,7 @@
     var activeBeforeDrawer = document.activeElement;
 
     function getConsultSubmitLabel() {
-      if (contextSource === 'mesa_first_phase' || /first phase/i.test(String(nextPrefill.prefill_message || ''))) {
+      if (/first_phase$/.test(contextSource) || /first phase/i.test(String(nextPrefill.prefill_message || ''))) {
         return 'Price My First Phase';
       }
       if (contextSource === 'paradise_valley_private_review' || contextSource === 'estate_project_review') {
@@ -3555,7 +3557,7 @@
     }
 
     function getConsultTitle() {
-      if (contextSource === 'mesa_first_phase' || /first phase/i.test(String(nextPrefill.prefill_message || nextPrefill.project_goal || ''))) {
+      if (/first_phase$/.test(contextSource) || /first phase/i.test(String(nextPrefill.prefill_message || nextPrefill.project_goal || ''))) {
         return 'Price a Practical First Phase';
       }
       if (contextSource === 'paradise_valley_private_review' || contextSource === 'estate_project_review' || /estate/i.test(String(nextPrefill.project_goal || ''))) {
@@ -3565,7 +3567,7 @@
     }
 
     function getConsultSubcopy() {
-      if (contextSource === 'mesa_first_phase' || /first phase/i.test(String(nextPrefill.prefill_message || nextPrefill.project_goal || ''))) {
+      if (/first_phase$/.test(contextSource) || /first phase/i.test(String(nextPrefill.prefill_message || nextPrefill.project_goal || ''))) {
         return 'Share the city, priority zone, budget comfort range, and timing so the team can price the highest-impact first phase before a larger rebuild.';
       }
       if (contextSource === 'paradise_valley_private_review' || contextSource === 'estate_project_review' || /estate/i.test(String(nextPrefill.project_goal || ''))) {
@@ -3654,6 +3656,8 @@
     }
     if (contextSource === 'mesa_first_phase') {
       contextLines.push('First-phase request: price the highest-impact Mesa scope before a whole-yard rebuild.');
+    } else if (contextSource === 'east_valley_first_phase') {
+      contextLines.push('First-phase request: price the highest-impact scope before a whole-yard rebuild.');
     }
     if (contextSource === 'paradise_valley_private_review' || contextSource === 'estate_project_review') {
       contextLines.push('Private review: coordination, finish quality, access, and construction sequencing matter.');

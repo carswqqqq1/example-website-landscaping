@@ -194,8 +194,10 @@ htmlFiles.forEach((file) => {
     ].includes(file);
   const intentCtas = quoteCtas.filter((cta) => !isGenericQuoteText(cta.text));
 
-  if (isMoneyPage && quoteCtas.length && intentCtas.length < 2) {
-    failures.push(`${file}: money page needs at least two intent-specific quote CTA labels`);
+  // 3.10: the shared quote action uses one label everywhere (header, mobile bar), so a money
+  // page only needs one in-page button that names the work.
+  if (isMoneyPage && quoteCtas.length && intentCtas.length < 1) {
+    failures.push(`${file}: money page needs at least one intent-specific quote CTA label`);
   }
 
   if (isIndexedPage && !/<meta\s+(?:property|name)="og:image"/i.test(html)) {

@@ -115,7 +115,7 @@
       formTitle: 'Get a Free Quote',
       submitLabel: 'Get My Free Quote',
       path: '/free-consultation',
-      promise: 'No pressure, no obligation. Maintenance and one-time quotes get a callback within 24 hours. Projects get a project review within one business day.',
+      promise: 'No pressure, no obligation. Every request gets a callback within one business day.',
       customizableExamples: [
         'Project Review',
         'Turf Project Review',
