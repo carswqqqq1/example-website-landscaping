@@ -156,7 +156,7 @@ If a client has not given you verified numbers or URLs, soften the wording inste
 Examples:
 
 - use `Highly rated by local homeowners` instead of exact review counts
-- use `Arizona licensed, bonded, and insured team` instead of exact license statements if not verified
+- use `Free on-site estimates across the Valley` instead of exact license statements if not verified
 
 If you keep exact review, address, or ROC/license details, they must be intentional and current for that client.
 

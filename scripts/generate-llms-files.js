@@ -79,7 +79,7 @@ ${config.aiReadability.summary} ${config.aiReadability.homeownerFit}
 ${bulletList(config.aiReadability.localSearchIntents)}
 
 ## Trust And Credentials Summary
-- Licensed, bonded, and insured in Arizona
+- Free on-site estimates for Arizona residential work
 - Visible review summary on site: ${config.reviewSummary.rating} stars across ${config.reviewSummary.count} reviews on ${config.reviewSummary.source}
 - Review source URL: ${config.reviewSummary.sourceUrl}
 - Review snapshot date shown on site: ${config.reviewSummary.snapshotDate}
