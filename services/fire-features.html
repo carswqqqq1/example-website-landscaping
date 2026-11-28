@@ -27,9 +27,9 @@
   <link rel="preload" as="image" href="../img/projects/firepit-640.avif" type="image/avif" media="(max-width: 768px)" fetchpriority="high" />
     <link rel="preload" as="font" href="/fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2" type="font/woff2" crossorigin />
   <link rel="preload" as="font" href="/fonts/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/fonts.min.css?v=20261128p4c" />
-  <link rel="stylesheet" href="/styles.min.css?v=20261128p4c" />
-  <link rel="stylesheet" href="/services.min.css?v=20261128p4c" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20261128p5" />
+  <link rel="stylesheet" href="/styles.min.css?v=20261128p5" />
+  <link rel="stylesheet" href="/services.min.css?v=20261128p5" />
 
   <script type="application/ld+json">
     {
@@ -146,170 +146,96 @@
     </div>
   </nav>
 
-  <main id="main-content">
-    <section class="service-hero">
+  <main id="main-content" data-service-shell>
+    <section class="service-hero" aria-labelledby="service-heading">
       <div class="service-hero__bg" aria-hidden="true"></div>
       <div class="service-hero__overlay" aria-hidden="true"></div>
       <div class="container service-hero__content">
-        <p class="eyebrow">Outdoor Living</p>
-        <h1 id="service-heading">Fire Features in Scottsdale and Phoenix</h1>
-        <p class="service-hero__sub" id="service-subtext">Add warmth, ambiance, and year-round gathering space with custom fire pits and fireplaces built into your outdoor layout.</p>
+        <h1 id="service-heading">Fire pits, fireplaces and fire tables</h1>
+        <p class="service-hero__sub" id="service-subtext">A fire pit, fireplace or fire table placed where people sit, with gas and clearances handled.</p>
         <div class="service-hero__actions">
-          <a href="/free-consultation?service=fire-features&source=service_page&autostart=1" class="btn btn--solid" data-service-consultation-link>Plan My Fire Feature</a>
-          <a href="tel:4805550142" class="btn btn--ghost" data-site-phone-link>Call Now</a>
+          <a href="/free-consultation?service=fire-features&amp;source=service_page&amp;autostart=1" class="btn btn--solid" data-service-consultation-link>Plan my fire feature</a>
+          <a href="#service-examples" class="service-hero__link">See example work</a>
         </div>
       </div>
     </section>
 
-    <section class="service-proof-strip" aria-label="Trust indicators">
-      <div class="container service-proof-strip__inner" id="service-proof"><article class="service-proof__item"><span class="service-proof__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l8 4v6c0 5-3.2 7.8-8 9-4.8-1.2-8-4-8-9V7l8-4z"></path><path d="M9 12l2 2 4-4"></path></svg></span><p>Fire features are positioned to improve evening use and social flow, not just to fill an empty corner of the yard.</p></article><article class="service-proof__item"><span class="service-proof__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 19h16"></path><path d="M5 19V7l7-4 7 4v12"></path><path d="M9 12h6"></path></svg></span><p>Scale, seating distance, and finish detailing are planned so the feature feels integrated with the patio.</p></article><article class="service-proof__item"><span class="service-proof__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h10"></path><path d="M17 17l2 2 3-3"></path></svg></span><p>Gas and safety considerations are addressed up front to keep the build clean and code-aware.</p></article></div>
-    </section>
-
-    <section class="service-block">
+    <section class="service-block" id="service-plan" aria-labelledby="service-plan-title">
       <div class="container">
-        <header class="service-block__header reveal reveal--left">
-          <p class="eyebrow">What You Get</p>
-          <h2 class="section-title">Scope and Deliverables</h2>
-        </header>
-        <ul class="service-checklist reveal reveal--right reveal--d2" id="service-what-you-get"><li>Custom fire pit and fireplace design options</li><li>Safe placement with seating and circulation planning</li><li>Material detailing that matches your hardscape palette</li><li>Integrated lighting and evening usability enhancements</li><li>Design coordination with patios and outdoor kitchens</li><li>Clean installation and final safety review</li></ul>
+        <h2 class="section-title" id="service-plan-title">What you can plan</h2>
+        <ul class="service-types" aria-label="Fire feature types">
+          <li><a class="service-type" href="/free-consultation?service=fire-features&amp;source=service_type&amp;selected_project_label=Fire+pit&amp;autostart=1"><span class="service-type__name">Fire pit</span><span class="service-type__line">Round or square, gas or wood, set into the patio or a seat wall.</span><span class="service-type__go">Try a sample quote for a fire pit</span></a></li>
+          <li><a class="service-type" href="/free-consultation?service=fire-features&amp;source=service_type&amp;selected_project_label=Built-in+fireplace&amp;autostart=1"><span class="service-type__name">Built-in fireplace</span><span class="service-type__line">A covered-patio or freestanding hearth that anchors a lounge.</span><span class="service-type__go">Try a sample quote for a built-in fireplace</span></a></li>
+          <li><a class="service-type" href="/free-consultation?service=fire-features&amp;source=service_type&amp;selected_project_label=Fire+table&amp;autostart=1"><span class="service-type__name">Fire table</span><span class="service-type__line">A linear table at dining or lounge height, often beside the pool.</span><span class="service-type__go">Try a sample quote for a fire table</span></a></li>
+        </ul>
+        <ul class="service-checklist">
+          <li>Custom fire pit and fireplace design options</li>
+          <li>Safe placement with seating and circulation planning</li>
+          <li>Material detailing that matches your hardscape palette</li>
+          <li>Integrated lighting and evening usability enhancements</li>
+          <li>Design coordination with patios and outdoor kitchens</li>
+          <li>Clean installation and final safety review</li>
+        </ul>
       </div>
     </section>
 
-    <section class="service-block service-block--alt">
-      <div class="container">
-        <header class="service-block__header reveal reveal--left">
-          <p class="eyebrow">Process</p>
-          <h2 class="section-title">How We Deliver This Service</h2>
-        </header>
-        <div class="service-steps reveal reveal--right reveal--d2" id="service-process"><article class="service-step"><span class="service-step__num">01</span><p>Feature planning and location strategy</p></article><article class="service-step"><span class="service-step__num">02</span><p>Material, style, and finish selection</p></article><article class="service-step"><span class="service-step__num">03</span><p>Build integration with patio and utilities</p></article><article class="service-step"><span class="service-step__num">04</span><p>Final testing and owner walkthrough</p></article></div>
-      </div>
-    </section>
-
-    <section class="service-block">
-      <div class="container">
-        <header class="service-block__header reveal reveal--left">
-          <p class="eyebrow">Project Examples</p>
-          <h2 class="section-title">Example Projects</h2>
-          <p>Tap any image to request a project like it.</p>
-        </header>
-        <div class="service-gallery" id="service-gallery"><a class="service-gallery__item" href="/portfolio?service=fire-features">
-      <picture>
-        <source type="image/avif" srcset="../img/projects/firepit-640.avif" />
-        <img src="../img/projects/firepit.jpg" alt="Round stone fire pit on a travertine patio beside a pool" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="1600" height="900" />
-      </picture>
-      <span class="service-gallery__chip">Fire Pit</span>
-      <span class="service-gallery__label">Round Fire Pit</span>
-    </a><a class="service-gallery__item" href="/portfolio?service=fire-features">
-      <picture>
-        <source type="image/avif" srcset="../img/projects/fireplace-640.avif" />
-        <img src="../img/projects/fireplace.jpg" alt="Covered patio with a fireplace, lounge seating and travertine pavers" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="1600" height="1066" />
-      </picture>
-      <span class="service-gallery__chip">Fireplace</span>
-      <span class="service-gallery__label">Covered Fireplace</span>
-    </a><a class="service-gallery__item" href="/portfolio?service=fire-features">
-      <picture>
-        <source type="image/avif" srcset="../img/projects/fireplace-vertical-640.avif" />
-        <img src="../img/projects/fireplace-vertical.jpg" alt="Fireplace lounge on a covered travertine patio" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="620" height="700" />
-      </picture>
-      <span class="service-gallery__chip">Detail</span>
-      <span class="service-gallery__label">Fireplace Lounge</span>
-    </a><a class="service-gallery__item" href="/portfolio?service=fire-features">
-      <picture>
-        <source type="image/avif" srcset="../img/projects/slide3-640.avif" />
-        <img src="../img/projects/slide3.webp" alt="Fire table on a paver patio beside a lit pool" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="1630" height="860" />
-      </picture>
-      <span class="service-gallery__chip">Fire Table</span>
-      <span class="service-gallery__label">Fire Table by the Pool</span>
-    </a><a class="service-gallery__item" href="/portfolio?service=fire-features">
-      <picture>
-        <source type="image/avif" srcset="../img/projects/slide8-640.avif" />
-        <img src="../img/projects/slide8.webp" alt="Lit pool with a linear fire feature on the flagstone edge" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="1000" height="563" />
-      </picture>
-      <span class="service-gallery__chip">Fire Edge</span>
-      <span class="service-gallery__label">Linear Fire Edge</span>
-    </a><a class="service-gallery__item" href="/portfolio?service=fire-features">
-      <picture>
-        <source type="image/avif" srcset="../img/projects/after-30-640.avif" />
-        <img src="../img/projects/after-30.jpg" alt="Linear fire table, landscape lighting and turf at dusk" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="880" height="670" />
-      </picture>
-      <span class="service-gallery__chip">Fire Table</span>
-      <span class="service-gallery__label">Dusk Fire Table</span>
-    </a></div>
-      </div>
-    </section>
-
-    <section class="service-block service-block--alt">
-      <div class="container">
-        <header class="service-block__header reveal reveal--left">
-          <p class="eyebrow">Service Area</p>
-          <h2 class="section-title">Serving Scottsdale, Phoenix, and Nearby Valley Areas</h2>
-        </header>
-        <p class="service-area-text reveal reveal--fade" id="service-area-text">We build custom fire pits and fireplaces for homeowners in Scottsdale, Paradise Valley, Phoenix, and surrounding Valley locations.</p>
-      </div>
-    </section>
-
-    <section class="service-block">
-      <div class="container">
-        <header class="service-block__header reveal reveal--left">
-          <p class="eyebrow">FAQ</p>
-          <h2 class="section-title">Questions Homeowners Ask About Fire Features</h2>
-        </header>
-        <div class="faq__list service-faq" id="service-faq">
-    <article class="faq-item service-faq__item is-open">
-      <button class="faq__question service-faq__question" type="button" aria-expanded="true">
-        <span>What is the cost range for a custom fire pit in Scottsdale?</span><span class="faq__icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__answer"><p>The range depends on size, fuel type, finish materials, and surrounding hardscape scope. We provide pricing guidance after site and layout review.</p></div>
-    </article>
-    <article class="faq-item service-faq__item">
-      <button class="faq__question service-faq__question" type="button" aria-expanded="false">
-        <span>Can you integrate a fire feature into an existing patio?</span><span class="faq__icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__answer"><p>Yes. We can tie new features into existing spaces or redesign the full patio for better flow and visual consistency.</p></div>
-    </article>
-    <article class="faq-item service-faq__item">
-      <button class="faq__question service-faq__question" type="button" aria-expanded="false">
-        <span>Do fire features require permits?</span><span class="faq__icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__answer"><p>Requirements vary by municipality and fuel type. We guide permit and code considerations when they apply.</p></div>
-    </article>
-    <article class="faq-item service-faq__item">
-      <button class="faq__question service-faq__question" type="button" aria-expanded="false">
-        <span>Which fire feature type is best for our space?</span><span class="faq__icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__answer"><p>That depends on how you use the yard. We compare footprint, seating flow, heat output, and style to recommend the right option.</p></div>
-    </article>
-    <article class="faq-item service-faq__item">
-      <button class="faq__question service-faq__question" type="button" aria-expanded="false">
-        <span>How quickly can we start?</span><span class="faq__icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__answer"><p>After project review and scope approval, we schedule your project based on complexity and current pipeline timing.</p></div>
-    </article></div>
-      </div>
-    </section>
-
-    <section class="service-cta" id="service-consultation">
-      <div class="container service-cta__inner reveal">
+    <section class="service-block service-block--alt" id="service-scope" aria-labelledby="service-scope-title">
+      <div class="container service-scope">
         <div>
-          <p class="eyebrow">Ready to Start?</p>
-          <h2 class="section-title">Plan My Fire Feature</h2>
-          <p>Tell us whether you want a fire pit, fireplace, seating wall, or full lounge zone. We will help define the next step.</p>
+          <h2 class="section-title" id="service-scope-title">What affects the scope</h2>
+          <ul class="service-scope__list">
+            <li>Gas line distance, feature type, finish material, seating layout, ventilation, and ignition controls.</li>
+            <li>Whether the feature is standalone or tied into pavers, seat walls, kitchens, or full patio redesign.</li>
+            <li>Access, utility trenching, code clearance, drainage, and surrounding hardscape complexity.</li>
+          </ul>
         </div>
-        <div class="service-cta__actions">
-          <a href="/free-consultation?service=fire-features&source=service_page&autostart=1" class="btn btn--solid" data-service-consultation-link>Plan My Fire Feature</a>
-          <a href="/services" class="btn btn--outline-dark">Explore All Services</a>
-        </div>
+        <aside class="service-scope__range" aria-label="Typical planning range">
+          <p class="service-scope__label">Typical planning range</p>
+          <p class="service-scope__value">$5k to $20k</p>
+          <p class="service-scope__note">For a typical Valley yard. Size, access and finish choices move it up or down.</p>
+        </aside>
       </div>
     </section>
 
-    <section class="service-related">
+    <section class="service-block" id="service-examples" aria-labelledby="service-examples-title">
       <div class="container">
-        <header class="service-block__header reveal reveal--left">
-          <p class="eyebrow">Related Services</p>
-          <h2 class="section-title">Explore More Outdoor Upgrades</h2>
-        </header>
-        <ul class="service-related__list reveal reveal--fade" id="related-services-list"><li><a href="/services/landscape-design">Landscape Design &amp; Build</a></li><li><a href="/services/hardscaping">Hardscaping</a></li><li><a href="/services/outdoor-kitchens">Outdoor Kitchens</a></li></ul>
-        <p class="service-related__links reveal"><a href="/services">Back to all services</a><span aria-hidden="true">&middot;</span><a href="/portfolio">See full portfolio</a></p>
+        <h2 class="section-title" id="service-examples-title">Example work</h2>
+        <ul class="service-examples">
+          <li>
+            <a class="service-example" href="/free-consultation?service=fire-features&amp;source=service_gallery&amp;selected_project_label=Round+Fire+Pit&amp;autostart=1">
+              <picture>
+                <source type="image/avif" srcset="../img/projects/firepit-640.avif" />
+                <img src="../img/projects/firepit.jpg" alt="Round stone fire pit on a travertine patio beside a pool" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="1600" height="900" />
+              </picture>
+              <span class="service-example__title">Round Fire Pit</span>
+              <span class="service-example__line">Round stone fire pit on a travertine patio beside a pool</span>
+              <span class="service-example__go">Try a sample quote like this</span>
+            </a>
+          </li>
+          <li>
+            <a class="service-example" href="/free-consultation?service=fire-features&amp;source=service_gallery&amp;selected_project_label=Covered+Fireplace&amp;autostart=1">
+              <picture>
+                <source type="image/avif" srcset="../img/projects/fireplace-640.avif" />
+                <img src="../img/projects/fireplace.jpg" alt="Covered patio with a fireplace, lounge seating and travertine pavers" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="1600" height="1066" />
+              </picture>
+              <span class="service-example__title">Covered Fireplace</span>
+              <span class="service-example__line">Covered patio with a fireplace, lounge seating and travertine pavers</span>
+              <span class="service-example__go">Try a sample quote like this</span>
+            </a>
+          </li>
+          <li>
+            <a class="service-example" href="/free-consultation?service=fire-features&amp;source=service_gallery&amp;selected_project_label=Fireplace+Lounge&amp;autostart=1">
+              <picture>
+                <source type="image/avif" srcset="../img/projects/fireplace-vertical-640.avif" />
+                <img src="../img/projects/fireplace-vertical.jpg" alt="Fireplace lounge on a covered travertine patio" loading="lazy" decoding="async" sizes="(max-width: 768px) 100vw, 33vw" width="620" height="700" />
+              </picture>
+              <span class="service-example__title">Fireplace Lounge</span>
+              <span class="service-example__line">Fireplace lounge on a covered travertine patio</span>
+              <span class="service-example__go">Try a sample quote like this</span>
+            </a>
+          </li>
+        </ul>
+        <p class="service-examples__more"><a href="/portfolio?service=fire-features">See more fire features projects</a><span aria-hidden="true"> · </span><a href="/services">All services</a></p>
       </div>
     </section>
   </main>
@@ -390,9 +316,9 @@
     <a href="/free-consultation?service=fire-features&source=service_page&autostart=1" class="btn btn--outline-dark" data-service-consultation-link>Try a sample quote</a>
   </div>
 
-  <script src="/site-config.js?v=20261128p4c" defer></script>
-  <script src="/services-data.min.js?v=20261128p4c" defer></script>
-  <script src="/services.min.js?v=20261128p4c" defer></script>
-  <script src="/script.min.js?v=20261128p4c" defer></script>
+  <script src="/site-config.js?v=20261128p5" defer></script>
+  <script src="/services-data.min.js?v=20261128p5" defer></script>
+  <script src="/services.min.js?v=20261128p5" defer></script>
+  <script src="/script.min.js?v=20261128p5" defer></script>
 </body>
 </html>

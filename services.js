@@ -396,6 +396,9 @@
 
   function renderServicePage() {
     if (!root || !root.dataset.serviceSlug) return;
+    // 5.06: pages built from scripts/render-service-pages.js already carry the one
+    // service shell in their HTML, so nothing is injected on top of it.
+    if (document.querySelector('[data-service-shell]')) return;
 
     var service = (window.getServiceBySlug && window.getServiceBySlug(root.dataset.serviceSlug)) || null;
     if (!service) return;
