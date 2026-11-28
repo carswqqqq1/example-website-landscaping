@@ -1772,7 +1772,7 @@
   function getPrimaryConsultHref() {
     if (normalizedPath.indexOf('/free-consultation') === 0) return '#consultation-request';
     if (isHomePath) return buildConsultationPageHref({ source: 'homepage_nav' });
-    return getGlobalConsultFallbackHref();
+    return getRouteConsultHref() || getGlobalConsultFallbackHref();
   }
 
   function normalizePrimaryNavigation() {
@@ -1791,7 +1791,7 @@
     }
 
     if (primaryCta) {
-      primaryCta.setAttribute('href', consultHref);
+      if (!shouldKeepConsultHref(primaryCta)) primaryCta.setAttribute('href', consultHref);
       primaryCta.textContent = OFFER_LABEL;
     }
 
@@ -2428,7 +2428,13 @@
     var pathname = normalizedPath;
     var bodyServiceSlug = document.body && document.body.dataset ? document.body.dataset.serviceSlug : '';
     var nativeQuoteAction = getNativeQuoteAction();
+    var routeConsultHref = getRouteConsultHref();
 
+    if (routeConsultHref) {
+      return nativeQuoteAction && hasConsultContext(nativeQuoteAction.href)
+        ? nativeQuoteAction
+        : { href: routeConsultHref, label: OFFER_SHORT_LABEL };
+    }
     if (pathname === '/' || pathname === '/index.html') {
       return { href: buildConsultationPageHref({ source: 'homepage_sticky' }), label: OFFER_SHORT_LABEL };
     }
@@ -2507,6 +2513,8 @@
   }
 
   function getOverlayConsultHref() {
+    var routeConsultHref = getRouteConsultHref();
+    if (routeConsultHref) return routeConsultHref;
     var calculatorReviewLink = document.getElementById('calc-review-link');
     var calculatorReviewHref = calculatorReviewLink ? String(calculatorReviewLink.getAttribute('href') || '').trim() : '';
     if (normalizedPath.indexOf('/cost-calculator') === 0 && calculatorReviewHref) return calculatorReviewHref;
@@ -2529,6 +2537,8 @@
   }
 
   function getGlobalConsultFallbackHref() {
+    var routeConsultHref = getRouteConsultHref();
+    if (routeConsultHref) return routeConsultHref;
     var calculatorReviewLink = document.getElementById('calc-review-link');
     var calculatorReviewHref = calculatorReviewLink ? String(calculatorReviewLink.getAttribute('href') || '').trim() : '';
     if (normalizedPath.indexOf('/cost-calculator') === 0 && calculatorReviewHref) return calculatorReviewHref;
@@ -2562,6 +2572,7 @@
       var isLocalConsultAnchor = href.charAt(0) === '#' && (href.indexOf('consultation') >= 0 || href === '#contact');
       if (!isConsultText && !isLocalConsultAnchor) return;
       if (link.hasAttribute('data-service-consultation-link')) return;
+      if (shouldKeepConsultHref(link)) return;
       link.setAttribute('href', dedicatedHref);
     });
   }
@@ -2810,6 +2821,7 @@
   window.addEventListener('scroll', updateScrollTop, { passive: true });
   window.addEventListener('resize', updateScrollTop);
   configureMobileQuickActions();
+  forwardUtmToConsultLinks();
   updateStickyBar();
   updateScrollTop();
 
@@ -2871,17 +2883,92 @@
   function buildConsultationPageHref(overrides) {
     var params = new URLSearchParams();
     var options = overrides || {};
-    var service = String(options.service || currentServiceSlug() || '').trim();
-    var city = String(options.city || currentPageCity() || '').trim();
-    var source = String(options.source || deriveConsultSource() || 'website').trim();
+    var route = getRouteConsultContext() || {};
+    var service = String(options.service || currentServiceSlug() || route.service || '').trim();
+    var city = String(options.city || currentPageCity() || route.city || '').trim();
+    var type = String(options.type || route.type || '').trim();
+    var source = String(options.source || route.source || deriveConsultSource() || 'website').trim();
     var prefillMessage = String(options.prefill_message || '').trim();
+    var budgetRange = String(options.budget_range || route.budget_range || '').trim();
 
     if (service) params.set('service', service);
     if (city) params.set('city', city);
+    if (type) params.set('type', type);
     if (source) params.set('source', source);
+    if (budgetRange) params.set('budget_range', budgetRange);
     if (prefillMessage) params.set('prefill_message', prefillMessage);
     params.set('autostart', '1');
+    appendUtmParams(params);
     return '/free-consultation?' + params.toString();
+  }
+
+  /* Pages whose quote links carry context that the generic city and service
+     detection cannot infer from the path. Used for header, menu and sticky
+     fallbacks so they match the links authored in the page. */
+  var ROUTE_CONSULT_CONTEXT = {
+    '/ahwatukee-landscape-design': { city: 'Ahwatukee', service: 'landscape-design', source: 'location_page' },
+    '/glendale-hardscaping': { city: 'Glendale', service: 'hardscaping', source: 'location_page' },
+    '/peoria-artificial-turf': { city: 'Peoria', service: 'artificial-turf', source: 'location_page' },
+    '/north-phoenix-outdoor-lighting': { city: 'North Phoenix', service: 'outdoor-lighting', source: 'location_page' },
+    '/mesa-landscaping': { city: 'Mesa', source: 'mesa_first_phase', budget_range: '$10,000 - $25,000' },
+    '/paradise-valley-landscaping': { city: 'Paradise Valley', source: 'paradise_valley_private_review' },
+    '/yard-maintenance': { type: 'maintenance', source: 'maintenance_page' }
+  };
+
+  function getRouteConsultContext() {
+    var path = String(window.location.pathname || '/').toLowerCase().replace(/\.html$/, '').replace(/\/+$/, '') || '/';
+    return Object.prototype.hasOwnProperty.call(ROUTE_CONSULT_CONTEXT, path) ? ROUTE_CONSULT_CONTEXT[path] : null;
+  }
+
+  function getRouteConsultHref() {
+    var route = getRouteConsultContext();
+    return route ? buildConsultationPageHref({ source: route.source }) : '';
+  }
+
+  function hasConsultContext(href) {
+    var value = String(href || '');
+    if (value.indexOf('free-consultation') < 0) return false;
+    try {
+      var url = new URL(value, window.location.origin);
+      return ['city', 'service', 'type'].some(function (key) { return !!url.searchParams.get(key); });
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function shouldKeepConsultHref(link) {
+    if (!link) return false;
+    if (link.hasAttribute('data-keep-href')) return true;
+    return hasConsultContext(link.getAttribute('href'));
+  }
+
+  function getUtmParams() {
+    var found = [];
+    try {
+      new URLSearchParams(window.location.search || '').forEach(function (value, key) {
+        if (/^utm_[a-z_]+$/i.test(key) && value) found.push([key, value]);
+      });
+    } catch (error) {}
+    return found;
+  }
+
+  function appendUtmParams(params) {
+    getUtmParams().forEach(function (pair) {
+      if (!params.has(pair[0])) params.set(pair[0], pair[1]);
+    });
+  }
+
+  function forwardUtmToConsultLinks() {
+    if (!getUtmParams().length) return;
+    document.querySelectorAll('a[href*="free-consultation"]').forEach(function (link) {
+      var href = String(link.getAttribute('href') || '');
+      try {
+        var url = new URL(href, window.location.origin);
+        if (url.origin !== window.location.origin) return;
+        appendUtmParams(url.searchParams);
+        link.setAttribute('href', url.pathname + url.search + url.hash);
+      } catch (error) {}
+    });
   }
 
   function resolveServiceFormValue(value) {
