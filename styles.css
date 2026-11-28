@@ -6566,3 +6566,7 @@ summary:focus-visible,
     font-size: .75rem;
   }
 }
+
+/* 1.03 follow-up: thank-you action rows obey the hidden attribute (display:flex was overriding it) */
+.page-hero__actions[hidden],
+.thank-you-preview-link[hidden] { display: none !important; }
