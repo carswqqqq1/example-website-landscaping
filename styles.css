@@ -1207,6 +1207,40 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   width: 48px;
 }
 
+/* Slideshow pause and play (2.13) */
+.hero__pause {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 999px;
+  background: rgba(0,0,0,.28);
+  color: var(--white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.hero__pause:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 2px;
+}
+.hero__pause-icon {
+  width: 12px;
+  height: 14px;
+  border-left: 4px solid currentColor;
+  border-right: 4px solid currentColor;
+}
+.hero__pause.is-paused .hero__pause-icon {
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 12px solid currentColor;
+  border-right: 0;
+  margin-left: 3px;
+}
+
 /* Scroll arrow */
 .hero__scroll {
   position: absolute;

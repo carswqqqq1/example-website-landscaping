@@ -3818,6 +3818,10 @@
     ? window.matchMedia('(prefers-reduced-motion: reduce)')
     : null;
   var heroPausedForMotion = Boolean(heroMotionPreference && heroMotionPreference.matches);
+  var heroPausedByUser = false;
+  var heroHeldByHover = false;
+  var heroHeldByFocus = false;
+  var heroPauseButton = null;
 
   if (heroSection) {
     window.requestAnimationFrame(function () {
@@ -3916,45 +3920,85 @@
     goToSlide(current + 1);
   }
 
+  function carouselCanRun() {
+    return slides.length > 1 && !heroPausedForMotion && !heroPausedByUser &&
+      !heroHeldByHover && !heroHeldByFocus && !document.hidden;
+  }
+
   function startCarousel() {
     stopCarousel();
-    if (heroPausedForMotion || document.hidden) return;
+    if (!carouselCanRun()) return;
     heroTimer = setInterval(nextSlide, 5500);
+  }
+
+  function syncPauseButton() {
+    if (!heroPauseButton) return;
+    var paused = heroPausedByUser || heroPausedForMotion;
+    heroPauseButton.setAttribute('aria-pressed', paused ? 'true' : 'false');
+    heroPauseButton.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
+    heroPauseButton.classList.toggle('is-paused', paused);
   }
 
   dots.forEach(function (dot) {
     dot.addEventListener('click', function () {
       goToSlide(parseInt(this.dataset.slide, 10));
-      if (!heroPausedForMotion) startCarousel();
+      /* Choosing a slide holds it while the dot keeps focus or hover. */
+      startCarousel();
     });
   });
 
   if (heroMotionPreference && typeof heroMotionPreference.addEventListener === 'function') {
     heroMotionPreference.addEventListener('change', function (event) {
       heroPausedForMotion = event.matches;
-      if (heroPausedForMotion) stopCarousel();
-      else startCarousel();
+      syncPauseButton();
+      startCarousel();
     });
   }
 
   document.addEventListener('visibilitychange', function () {
-    if (document.hidden) stopCarousel();
-    else if (!heroPausedForMotion && slides.length > 1) startCarousel();
+    startCarousel();
   });
 
   if (slides.length > 1) {
+    var indicators = document.querySelector('.hero__indicators');
+    if (indicators) {
+      heroPauseButton = document.createElement('button');
+      heroPauseButton.type = 'button';
+      heroPauseButton.className = 'hero__pause';
+      heroPauseButton.innerHTML = '<span class="hero__pause-icon" aria-hidden="true"></span>';
+      heroPauseButton.addEventListener('click', function () {
+        if (heroPausedForMotion) {
+          heroPausedForMotion = false;
+          heroPausedByUser = false;
+        } else {
+          heroPausedByUser = !heroPausedByUser;
+        }
+        syncPauseButton();
+        startCarousel();
+      });
+      indicators.insertBefore(heroPauseButton, indicators.firstChild);
+      syncPauseButton();
+    }
+
     preloadHeroSlide(0);
-    var initialHeroPreloadDelay = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 3500 : 2000;
-    scheduleHeroPreload(1, initialHeroPreloadDelay);
+    if (!heroPausedForMotion) {
+      var initialHeroPreloadDelay = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 3500 : 2000;
+      scheduleHeroPreload(1, initialHeroPreloadDelay);
+    }
     startCarousel();
   }
 
-  /* Pause carousel on hover or keyboard focus (accessibility) */
+  /* Hold the carousel while a pointer is over it or a control inside it has
+     focus, so a chosen slide never changes under the visitor. */
   if (heroSection) {
-    heroSection.addEventListener('mouseenter', stopCarousel);
-    heroSection.addEventListener('mouseleave', function () { if (slides.length > 1 && !heroPausedForMotion) startCarousel(); });
-    heroSection.addEventListener('focusin', stopCarousel);
-    heroSection.addEventListener('focusout', function () { if (slides.length > 1 && !heroPausedForMotion) startCarousel(); });
+    heroSection.addEventListener('mouseenter', function () { heroHeldByHover = true; startCarousel(); });
+    heroSection.addEventListener('mouseleave', function () { heroHeldByHover = false; startCarousel(); });
+    heroSection.addEventListener('focusin', function () { heroHeldByFocus = true; startCarousel(); });
+    heroSection.addEventListener('focusout', function (event) {
+      if (event.relatedTarget && heroSection.contains(event.relatedTarget)) return;
+      heroHeldByFocus = false;
+      startCarousel();
+    });
   }
 
   /* ---- BEFORE / AFTER SLIDER ---- */
