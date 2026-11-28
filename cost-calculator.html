@@ -24,9 +24,9 @@
   <link rel="canonical" href="https://demo.tryarroyo.com/cost-calculator" />
     <link rel="preload" as="font" href="/fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2" type="font/woff2" crossorigin />
   <link rel="preload" as="font" href="/fonts/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/fonts.min.css?v=20261128p1" />
-  <link rel="stylesheet" href="/styles.min.css?v=20261128p1" />
-  <link rel="stylesheet" href="/pages.min.css?v=20261128p1" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20261128p2" />
+  <link rel="stylesheet" href="/styles.min.css?v=20261128p2" />
+  <link rel="stylesheet" href="/pages.min.css?v=20261128p2" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -215,7 +215,7 @@
                 <th>Typical planning range</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody data-calc-range-table>
               <tr><td>Hardscaping</td><td>$10,000 - $40,000</td></tr>
               <tr><td>Landscape design plan (design only)</td><td>$5,000 - $15,000</td></tr>
               <tr><td>Outdoor Kitchens</td><td>$20,000 - $60,000</td></tr>
@@ -309,6 +309,7 @@
       <p>&copy; <span data-site-year>2026</span> <span data-site-name>Mesa Wren Landscape Co.</span> Mesa Wren is a fictional demo brand. Reviews are illustrative.</p>
       <p class="footer__sample-label" data-sample-label>Demo site by Arroyo Marketing · <a href="https://arroyomarketing.com/#preview" target="_blank" rel="noopener">Get a free preview for your business</a></p>
       <p>Serving Scottsdale, Paradise Valley, Phoenix, and the Greater Valley.</p>
+      <p class="footer__legal"><a href="/privacy-policy">Privacy Policy</a><span aria-hidden="true"> · </span><a href="/terms-of-service">Terms of Service</a><span aria-hidden="true"> · </span><a href="/cookie-policy">Cookie Policy</a></p>
     </div>
   </footer>
 
@@ -367,14 +368,6 @@
         return currency.format(low) + ' - ' + currency.format(high);
       }
 
-      function mapRangeForReview(low, high) {
-        var midpoint = (Number(low || 0) + Number(high || 0)) / 2;
-        if (midpoint <= 25000) return '$10,000 - $25,000';
-        if (midpoint <= 60000) return '$25,000 - $60,000';
-        if (midpoint <= 150000) return '$60,000 - $150,000';
-        return '$150,000+';
-      }
-
       function mapGoalForReview(low, high, features) {
         if (high <= 25000) return 'Focused first phase';
         if (high >= 150000 || features >= 4) return 'Private estate project review';
@@ -387,7 +380,8 @@
           source: 'calculator_page',
           autostart: '1',
           service: service.reviewService || service.label,
-          budget_range: mapRangeForReview(low, high),
+          /* The estimate travels as context, never as the visitor's own budget. */
+          estimate_context: formatRange(low, high) + ' for ' + service.label,
           project_goal: mapGoalForReview(low, high, features),
           estimated_timeline: timeline === 'asap' ? 'ASAP' : timeline === 'this-season' ? '1-3 months' : '3-6 months'
         });
@@ -462,6 +456,17 @@
         if (announcementField) announcementField.textContent = 'Updated planning range: ' + formatRange(low, high) + ' for ' + service.label + '.';
       }
 
+      /* One source for the ranges: the table is rebuilt from SERVICE_RANGES so it
+         can never drift from what the calculator uses. */
+      var rangeTable = document.querySelector('[data-calc-range-table]');
+      if (rangeTable) {
+        rangeTable.innerHTML = Array.prototype.slice.call(serviceField.options).map(function (option) {
+          var entry = SERVICE_RANGES[option.value];
+          if (!entry) return '';
+          return '<tr><td>' + entry.label + '</td><td>' + formatRange(entry.low, entry.high) + '</td></tr>';
+        }).join('');
+      }
+
       sizeField.addEventListener('input', renderEstimate);
       serviceField.addEventListener('change', renderEstimate);
       finishField.addEventListener('change', renderEstimate);
@@ -472,7 +477,7 @@
       renderEstimate();
     })();
   </script>
-  <script src="/site-config.js?v=20261128p1" defer></script>
-  <script src="/script.min.js?v=20261128p1" defer></script>
+  <script src="/site-config.js?v=20261128p2" defer></script>
+  <script src="/script.min.js?v=20261128p2" defer></script>
 </body>
 </html>

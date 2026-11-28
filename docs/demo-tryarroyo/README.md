@@ -16,3 +16,25 @@ Form flow:
 Netlify deploys come from the Netlify CLI (`netlify deploy --prod --dir . --functions netlify/functions`).
 The Cloudflare Pages copy (example-website-landscaping.pages.dev) uses lib/landscape-lead-handler.mjs,
 which does not have the opt-in gate yet and has no RESEND_API_KEY.
+
+## Suggested Worker change (not deployed, owner step 2.21)
+
+Checked Nov 2026: `/services/`, `/about/`, `/portfolio/` and `/thank-you/` return 404 on the live
+demo because the Worker appends `index.html` to any path ending in `/`, and `/404` returns 200.
+`worker.js` in this folder still matches the deployed source. Suggested patch for whoever deploys the
+Worker, placed right after the `/api/lead` check and before the `index.html` line:
+
+```js
+// Trailing-slash URLs redirect to the clean path. Preview keys under /p/ stay untouched.
+if (!isPreview && p.length > 1 && p.endsWith('/')) {
+  return Response.redirect(u.origin + u.pathname.replace(/\/+$/, '') + u.search, 301);
+}
+// The 404 page itself answers with a real 404 status.
+if (p === '/404' || p === '/404.html') {
+  const nf = await env.SITE.get('/404.html', { type: 'arrayBuffer' });
+  return new Response(nf, { status: 404, headers: { 'content-type': T.html, ...extra } });
+}
+```
+
+After deploying, `/services/` should 301 to `/services`, `/404` should return 404, and every
+`/p/<slug>` preview should behave exactly as before.

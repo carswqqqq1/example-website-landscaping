@@ -69,6 +69,42 @@
 
   var SAMPLE_RECEIPT_KEY = 'mw_sample_receipt';
 
+  /* Defined up here, before any startup code runs: the sticky bar and menu
+     setup ask for route context while the script is still loading, and a
+     later `var` would still be undefined at that point. */
+  /* Pages whose quote links carry context that the generic city and service
+     detection cannot infer from the path. Used for header, menu and sticky
+     fallbacks so they match the links authored in the page. */
+  var ROUTE_CONSULT_CONTEXT = {
+    '/ahwatukee-landscape-design': { city: 'Ahwatukee', service: 'landscape-design', source: 'location_page' },
+    '/glendale-hardscaping': { city: 'Glendale', service: 'hardscaping', source: 'location_page' },
+    '/peoria-artificial-turf': { city: 'Peoria', service: 'artificial-turf', source: 'location_page' },
+    '/north-phoenix-outdoor-lighting': { city: 'North Phoenix', service: 'outdoor-lighting', source: 'location_page' },
+    '/mesa-landscaping': { city: 'Mesa', source: 'mesa_first_phase', budget_range: '$10,000 - $25,000' },
+    '/paradise-valley-landscaping': { city: 'Paradise Valley', source: 'paradise_valley_private_review' },
+    '/yard-maintenance': { type: 'maintenance', source: 'maintenance_page' }
+  };
+
+  // One US phone formatter for every form: strips non-digits, drops a leading
+  // country code 1 on an 11-digit number, then formats 10 digits. Anything that
+  // is not yet 10 digits is left as typed digits so typing is never mangled.
+  function normalizeUsPhone(value) {
+    var digits = String(value || '').replace(/\D/g, '');
+    if (digits.length === 11 && digits.charAt(0) === '1') digits = digits.slice(1);
+    if (digits.length === 10 && digits.charAt(0) !== '1' && digits.charAt(0) !== '0') {
+      return '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6);
+    }
+    return digits;
+  }
+
+  function isValidUsPhone(value) {
+    return /^\(\d{3}\) \d{3}-\d{4}$/.test(normalizeUsPhone(value));
+  }
+
+  function isPhoneField(field) {
+    return !!field && (field.type === 'tel' || /phone/i.test(String(field.name || '')));
+  }
+
   if (isDemoMode()) document.documentElement.classList.add('is-demo-mode');
 
   function runSampleSubmit(form, kind, details) {
@@ -184,7 +220,7 @@
     }
   }
 
-  function setFieldValidationState(field, isValid) {
+  function setFieldValidationState(field, isValid, message) {
     if (!field) return;
     var fieldId = String(field.id || '').trim();
     var errorId = fieldId ? fieldId + '-error' : '';
@@ -208,7 +244,7 @@
     field.style.borderColor = isValid ? '' : '#a82a22';
     if (fieldWrap) fieldWrap.classList.toggle('has-error', !isValid);
     if (error) {
-      error.textContent = isValid ? '' : 'This field is required.';
+      error.textContent = isValid ? '' : (message || 'This field is required.');
       error.hidden = isValid;
       if (!isValid && fieldId) {
         var describedBy = String(field.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
@@ -222,12 +258,19 @@
     var firstInvalid = null;
     (fields || []).forEach(function (field) {
       if (!field || field.disabled) return;
-      var isValid = field.type === 'checkbox'
+      var isFilled = field.type === 'checkbox'
         ? field.checked
         : field.type === 'radio'
           ? Boolean(field.form && field.form.querySelector('input[type="radio"][name="' + field.name + '"]:checked'))
           : String(field.value || '').trim() !== '';
-      setFieldValidationState(field, isValid);
+      var isValid = isFilled;
+      var message = '';
+      if (isFilled && isPhoneField(field)) {
+        isValid = isValidUsPhone(field.value);
+        if (isValid) field.value = normalizeUsPhone(field.value);
+        else message = 'Enter a 10-digit US phone number, like (480) 555-0123.';
+      }
+      setFieldValidationState(field, isValid, message);
       if (!isValid && !firstInvalid) firstInvalid = field;
     });
 
@@ -838,6 +881,7 @@
       el.innerHTML =
         '<span class="nav__call-number" data-site-phone-display>' + SITE_PHONE_DISPLAY + '</span>' +
         '<span class="nav__call-label">Call Now</span>';
+      if (el.hasAttribute('aria-label')) el.setAttribute('aria-label', 'Call ' + SITE_PHONE_DISPLAY);
     });
 
     document.querySelectorAll('.sticky-bar .btn[data-site-phone-link]').forEach(function (el) {
@@ -1745,7 +1789,7 @@
   function getPrimaryConsultHref() {
     if (normalizedPath.indexOf('/free-consultation') === 0) return '#consultation-request';
     if (isHomePath) return buildConsultationPageHref({ source: 'homepage_nav' });
-    return getGlobalConsultFallbackHref();
+    return getRouteConsultHref() || getGlobalConsultFallbackHref();
   }
 
   function normalizePrimaryNavigation() {
@@ -1764,7 +1808,7 @@
     }
 
     if (primaryCta) {
-      primaryCta.setAttribute('href', consultHref);
+      if (!shouldKeepConsultHref(primaryCta)) primaryCta.setAttribute('href', consultHref);
       primaryCta.textContent = OFFER_LABEL;
     }
 
@@ -2250,25 +2294,53 @@
 
   function createFocusTrap(container, onEscape) {
     var previousActiveElement = null;
+    var active = false;
+    var focusRetryTimers = [];
 
+    function focusInside(target) {
+      var candidate = target && container.contains(target) ? target : null;
+      var focusable = getFocusableElements(container);
+      var next = candidate && (candidate.offsetParent !== null || candidate === container) ? candidate : (focusable[0] || container);
+      if (next === container && !container.hasAttribute('tabindex')) container.setAttribute('tabindex', '-1');
+      if (next && typeof next.focus === 'function') next.focus({ preventScroll: true });
+      return container.contains(document.activeElement);
+    }
+
+    function clearRetries() {
+      focusRetryTimers.forEach(function (id) { window.clearTimeout(id); });
+      focusRetryTimers = [];
+    }
+
+    /* Listen on the document, not the container: if focus never made it inside
+       (for example while the panel was still becoming visible), Escape and Tab
+       must still work. */
     function handleKeydown(event) {
-      if (event.key === 'Escape') {
+      if (!active) return;
+      if (event.key === 'Escape' || event.key === 'Esc') {
+        event.preventDefault();
         if (typeof onEscape === 'function') onEscape();
         return;
       }
       if (event.key !== 'Tab') return;
 
       var focusable = getFocusableElements(container);
-      if (!focusable.length) return;
+      if (!focusable.length) {
+        event.preventDefault();
+        focusInside(null);
+        return;
+      }
 
       var first = focusable[0];
       var last = focusable[focusable.length - 1];
-      var active = document.activeElement;
+      var current = document.activeElement;
 
-      if (event.shiftKey && active === first) {
+      if (!container.contains(current)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+      } else if (event.shiftKey && (current === first || current === container)) {
         event.preventDefault();
         last.focus();
-      } else if (!event.shiftKey && active === last) {
+      } else if (!event.shiftKey && current === last) {
         event.preventDefault();
         first.focus();
       }
@@ -2277,14 +2349,26 @@
     return {
       activate: function activate(initialTarget) {
         previousActiveElement = document.activeElement;
-        container.addEventListener('keydown', handleKeydown);
-        var target = initialTarget || getFocusableElements(container)[0] || container;
-        if (target && typeof target.focus === 'function') target.focus();
+        active = true;
+        document.addEventListener('keydown', handleKeydown, true);
+        clearRetries();
+        /* Move focus synchronously, then re-check on the next frames in case the
+           panel was not focusable yet. No transitionend dependency, so this also
+           works with prefers-reduced-motion. */
+        if (!focusInside(initialTarget)) {
+          [0, 60, 400].forEach(function (delay) {
+            focusRetryTimers.push(window.setTimeout(function () {
+              if (active && !container.contains(document.activeElement)) focusInside(initialTarget);
+            }, delay));
+          });
+        }
       },
       deactivate: function deactivate(restoreFocus) {
-        container.removeEventListener('keydown', handleKeydown);
+        active = false;
+        clearRetries();
+        document.removeEventListener('keydown', handleKeydown, true);
         if (restoreFocus !== false && previousActiveElement && typeof previousActiveElement.focus === 'function') {
-          previousActiveElement.focus();
+          previousActiveElement.focus({ preventScroll: true });
         }
       }
     };
@@ -2337,15 +2421,37 @@
     var passedHero = window.scrollY > Math.max(220, window.innerHeight * 0.35);
     var menuOpen = overlay && overlay.classList.contains('is-open');
     var drawerOpen = document.body.classList.contains('has-consult-drawer-open');
-    var shouldShow = isMobile && passedHero && !menuOpen && !drawerOpen && !isContactInView;
+    var cookieBannerUp = document.body.classList.contains('has-cookie-banner-visible');
+    var shouldShow = isMobile && passedHero && !menuOpen && !drawerOpen && !isContactInView && !cookieBannerUp;
     stickyBar.classList.toggle('is-visible', shouldShow);
+    setHiddenControlInert(stickyBar, !shouldShow, menuOpen || drawerOpen);
+  }
+
+  /* A fixed control that is visually hidden must not take keyboard focus. */
+  function setHiddenControlInert(element, isHidden, managedByOverlay) {
+    if (!element || managedByOverlay) return;
+    if (isHidden) {
+      element.setAttribute('aria-hidden', 'true');
+      if ('inert' in element) element.inert = true;
+      else element.setAttribute('tabindex', '-1');
+    } else {
+      element.removeAttribute('aria-hidden');
+      if ('inert' in element) element.inert = false;
+      else element.removeAttribute('tabindex');
+    }
   }
 
   function getPageSecondaryAction() {
     var pathname = normalizedPath;
     var bodyServiceSlug = document.body && document.body.dataset ? document.body.dataset.serviceSlug : '';
     var nativeQuoteAction = getNativeQuoteAction();
+    var routeConsultHref = getRouteConsultHref();
 
+    if (routeConsultHref) {
+      return nativeQuoteAction && hasConsultContext(nativeQuoteAction.href)
+        ? nativeQuoteAction
+        : { href: routeConsultHref, label: OFFER_SHORT_LABEL };
+    }
     if (pathname === '/' || pathname === '/index.html') {
       return { href: buildConsultationPageHref({ source: 'homepage_sticky' }), label: OFFER_SHORT_LABEL };
     }
@@ -2424,6 +2530,8 @@
   }
 
   function getOverlayConsultHref() {
+    var routeConsultHref = getRouteConsultHref();
+    if (routeConsultHref) return routeConsultHref;
     var calculatorReviewLink = document.getElementById('calc-review-link');
     var calculatorReviewHref = calculatorReviewLink ? String(calculatorReviewLink.getAttribute('href') || '').trim() : '';
     if (normalizedPath.indexOf('/cost-calculator') === 0 && calculatorReviewHref) return calculatorReviewHref;
@@ -2446,6 +2554,8 @@
   }
 
   function getGlobalConsultFallbackHref() {
+    var routeConsultHref = getRouteConsultHref();
+    if (routeConsultHref) return routeConsultHref;
     var calculatorReviewLink = document.getElementById('calc-review-link');
     var calculatorReviewHref = calculatorReviewLink ? String(calculatorReviewLink.getAttribute('href') || '').trim() : '';
     if (normalizedPath.indexOf('/cost-calculator') === 0 && calculatorReviewHref) return calculatorReviewHref;
@@ -2479,6 +2589,7 @@
       var isLocalConsultAnchor = href.charAt(0) === '#' && (href.indexOf('consultation') >= 0 || href === '#contact');
       if (!isConsultText && !isLocalConsultAnchor) return;
       if (link.hasAttribute('data-service-consultation-link')) return;
+      if (shouldKeepConsultHref(link)) return;
       link.setAttribute('href', dedicatedHref);
     });
   }
@@ -2601,7 +2712,9 @@
     var menuOpen = overlay && overlay.classList.contains('is-open');
     var drawerOpen = document.body.classList.contains('has-consult-drawer-open');
     var shouldShow = window.scrollY > Math.max(420, window.innerHeight * 0.7);
-    scrollTopButton.classList.toggle('is-visible', shouldShow && !menuOpen && !drawerOpen);
+    var scrollTopVisible = shouldShow && !menuOpen && !drawerOpen;
+    scrollTopButton.classList.toggle('is-visible', scrollTopVisible);
+    setHiddenControlInert(scrollTopButton, !scrollTopVisible, menuOpen || drawerOpen);
   }
 
   function setBackgroundInertForMenu(isInert) {
@@ -2686,6 +2799,11 @@
   }
 
   if (burger) burger.addEventListener('click', openMenu);
+  /* Close the sheet when the window grows past the mobile breakpoint (burger hidden). */
+  window.addEventListener('resize', function () {
+    if (!overlay || !burger || !overlay.classList.contains('is-open')) return;
+    if (window.getComputedStyle(burger).display === 'none') closeMenu(false);
+  });
   if (close) close.addEventListener('click', closeMenu);
   if (overlay) {
     overlay.querySelectorAll('a').forEach(function (a) {
@@ -2720,6 +2838,7 @@
   window.addEventListener('scroll', updateScrollTop, { passive: true });
   window.addEventListener('resize', updateScrollTop);
   configureMobileQuickActions();
+  forwardUtmToConsultLinks();
   updateStickyBar();
   updateScrollTop();
 
@@ -2781,17 +2900,79 @@
   function buildConsultationPageHref(overrides) {
     var params = new URLSearchParams();
     var options = overrides || {};
-    var service = String(options.service || currentServiceSlug() || '').trim();
-    var city = String(options.city || currentPageCity() || '').trim();
-    var source = String(options.source || deriveConsultSource() || 'website').trim();
+    var route = getRouteConsultContext() || {};
+    var service = String(options.service || currentServiceSlug() || route.service || '').trim();
+    var city = String(options.city || currentPageCity() || route.city || '').trim();
+    var type = String(options.type || route.type || '').trim();
+    var source = String(options.source || route.source || deriveConsultSource() || 'website').trim();
     var prefillMessage = String(options.prefill_message || '').trim();
+    var budgetRange = String(options.budget_range || route.budget_range || '').trim();
 
     if (service) params.set('service', service);
     if (city) params.set('city', city);
+    if (type) params.set('type', type);
     if (source) params.set('source', source);
+    if (budgetRange) params.set('budget_range', budgetRange);
     if (prefillMessage) params.set('prefill_message', prefillMessage);
     params.set('autostart', '1');
+    appendUtmParams(params);
     return '/free-consultation?' + params.toString();
+  }
+
+  function getRouteConsultContext() {
+    var path = String(window.location.pathname || '/').toLowerCase().replace(/\.html$/, '').replace(/\/+$/, '') || '/';
+    return Object.prototype.hasOwnProperty.call(ROUTE_CONSULT_CONTEXT, path) ? ROUTE_CONSULT_CONTEXT[path] : null;
+  }
+
+  function getRouteConsultHref() {
+    var route = getRouteConsultContext();
+    return route ? buildConsultationPageHref({ source: route.source }) : '';
+  }
+
+  function hasConsultContext(href) {
+    var value = String(href || '');
+    if (value.indexOf('free-consultation') < 0) return false;
+    try {
+      var url = new URL(value, window.location.origin);
+      return ['city', 'service', 'type'].some(function (key) { return !!url.searchParams.get(key); });
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function shouldKeepConsultHref(link) {
+    if (!link) return false;
+    if (link.hasAttribute('data-keep-href')) return true;
+    return hasConsultContext(link.getAttribute('href'));
+  }
+
+  function getUtmParams() {
+    var found = [];
+    try {
+      new URLSearchParams(window.location.search || '').forEach(function (value, key) {
+        if (/^utm_[a-z_]+$/i.test(key) && value) found.push([key, value]);
+      });
+    } catch (error) {}
+    return found;
+  }
+
+  function appendUtmParams(params) {
+    getUtmParams().forEach(function (pair) {
+      if (!params.has(pair[0])) params.set(pair[0], pair[1]);
+    });
+  }
+
+  function forwardUtmToConsultLinks() {
+    if (!getUtmParams().length) return;
+    document.querySelectorAll('a[href*="free-consultation"]').forEach(function (link) {
+      var href = String(link.getAttribute('href') || '');
+      try {
+        var url = new URL(href, window.location.origin);
+        if (url.origin !== window.location.origin) return;
+        appendUtmParams(url.searchParams);
+        link.setAttribute('href', url.pathname + url.search + url.hash);
+      } catch (error) {}
+    });
   }
 
   function resolveServiceFormValue(value) {
@@ -2812,6 +2993,9 @@
 
     var configuredServices = Array.isArray(SITE_CONFIG.contactFormServices) ? SITE_CONFIG.contactFormServices : [];
     var serviceAliases = {
+      'landscape-design': 'Landscape Design & Build',
+      'landscape-design-build': 'Landscape Design & Build',
+      'landscape-design-and-build': 'Landscape Design & Build',
       'outdoor-kitchens': 'Fire Feature / Outdoor Kitchen',
       'outdoor-kitchen': 'Fire Feature / Outdoor Kitchen',
       'fire-features': 'Fire Feature / Outdoor Kitchen',
@@ -2853,6 +3037,7 @@
       consultation_tier: '',
       lead_tier: '',
       budget_range: '',
+      estimate_context: '',
       project_goal: '',
       priority_zone: ''
     };
@@ -2870,6 +3055,7 @@
         prefill.prefill_message = parsedUrl.searchParams.get('prefill_message') || prefill.prefill_message;
         prefill.estimated_timeline = parsedUrl.searchParams.get('estimated_timeline') || parsedUrl.searchParams.get('timeline') || prefill.estimated_timeline;
         prefill.budget_range = parsedUrl.searchParams.get('budget_range') || prefill.budget_range;
+        prefill.estimate_context = parsedUrl.searchParams.get('estimate_context') || prefill.estimate_context;
         prefill.project_goal = parsedUrl.searchParams.get('project_goal') || prefill.project_goal;
         prefill.priority_zone = parsedUrl.searchParams.get('priority_zone') || prefill.priority_zone;
       }
@@ -3165,7 +3351,8 @@
       consultDrawerState.startTimeline.value = next;
     }
 
-    function clearDrawerError() {
+    function clearDrawerError(force) {
+      if (!force && consultDrawerState.form.querySelector('[aria-invalid="true"]')) return;
       consultDrawerState.error.textContent = '';
       consultDrawerState.error.classList.remove('is-visible');
     }
@@ -3177,16 +3364,16 @@
       syncDrawerTimeline(this.value);
     });
     consultDrawerState.phone.addEventListener('input', function () {
-      var digits = this.value.replace(/\D/g, '');
-      if (digits.length >= 10) {
-        this.value = '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6, 10);
-      } else {
-        this.value = digits;
-      }
+      this.value = normalizeUsPhone(this.value);
     });
     consultDrawerState.form.querySelectorAll('input, select, textarea').forEach(function (field) {
       field.addEventListener('input', function () {
-        this.style.borderColor = '';
+        if (this.getAttribute('aria-invalid') === 'true') {
+          var fixed = isPhoneField(this) ? isValidUsPhone(this.value) : String(this.value || '').trim() !== '';
+          if (fixed) setFieldValidationState(this, true);
+        } else {
+          this.style.borderColor = '';
+        }
         clearDrawerError();
       });
       field.addEventListener('change', function () {
@@ -3204,7 +3391,7 @@
 
     consultDrawerState.form.addEventListener('submit', async function (event) {
       event.preventDefault();
-      clearDrawerError();
+      clearDrawerError(true);
 
       var requiredFields = Array.prototype.slice.call(consultDrawerState.form.querySelectorAll('[required]'));
       if (!validateRequiredFields(requiredFields, consultDrawerState.error, 'Please complete the required fields before submitting your request.')) {
@@ -3435,7 +3622,8 @@
     state.formStartedAt.value = String(Date.now());
     state.jsCheck.value = '1';
 
-    if (resolvedService) {
+    var configuredServiceList = Array.isArray(SITE_CONFIG.contactFormServices) ? SITE_CONFIG.contactFormServices : [];
+    if (resolvedService && (!configuredServiceList.length || configuredServiceList.indexOf(resolvedService) >= 0)) {
       contextLines.push('Project type: ' + resolvedService);
     }
     if (nextPrefill.city) {
@@ -3443,6 +3631,9 @@
     }
     if (nextPrefill.budget_range) {
       contextLines.push('Planning range: ' + nextPrefill.budget_range);
+    }
+    if (nextPrefill.estimate_context) {
+      contextLines.push('Calculator estimate: ' + nextPrefill.estimate_context);
     }
     if (nextPrefill.project_goal) {
       contextLines.push('Project goal: ' + nextPrefill.project_goal);
@@ -3474,8 +3665,26 @@
     document.body.classList.add('has-consult-drawer-open');
     document.body.style.overflow = 'hidden';
     setBackgroundInertForConsult(true);
-    state.focusTrap.activate(state.close);
-    state.fullName.focus();
+    /* Clear errors left over from an earlier open. */
+    Array.prototype.forEach.call(state.form.querySelectorAll('.field-error'), function (error) {
+      error.textContent = '';
+      error.hidden = true;
+    });
+    Array.prototype.forEach.call(state.form.querySelectorAll('[aria-invalid="true"]'), function (field) {
+      field.setAttribute('aria-invalid', 'false');
+      field.style.borderColor = '';
+    });
+    Array.prototype.forEach.call(state.form.querySelectorAll('.has-error'), function (wrap) {
+      wrap.classList.remove('has-error');
+    });
+    Array.prototype.forEach.call(state.drawer.querySelectorAll('.consult-drawer__error'), function (summary) {
+      summary.textContent = '';
+    });
+    /* Focus moves into the drawer synchronously. On a fine pointer the name field
+       gets focus; on touch screens the close button does, so the keyboard does not
+       jump open (2.09). */
+    var prefersFinePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+    state.focusTrap.activate(prefersFinePointer ? state.fullName : state.close);
     updateStickyBar();
     updateScrollTop();
 
@@ -3598,6 +3807,7 @@
           prefill_message: URL_PARAMS.get('prefill_message') || '',
           estimated_timeline: URL_PARAMS.get('estimated_timeline') || URL_PARAMS.get('timeline') || '',
           budget_range: URL_PARAMS.get('budget_range') || '',
+          estimate_context: URL_PARAMS.get('estimate_context') || '',
           project_goal: URL_PARAMS.get('project_goal') || '',
           priority_zone: URL_PARAMS.get('priority_zone') || ''
         });
@@ -3618,6 +3828,10 @@
     ? window.matchMedia('(prefers-reduced-motion: reduce)')
     : null;
   var heroPausedForMotion = Boolean(heroMotionPreference && heroMotionPreference.matches);
+  var heroPausedByUser = false;
+  var heroHeldByHover = false;
+  var heroHeldByFocus = false;
+  var heroPauseButton = null;
 
   if (heroSection) {
     window.requestAnimationFrame(function () {
@@ -3716,45 +3930,85 @@
     goToSlide(current + 1);
   }
 
+  function carouselCanRun() {
+    return slides.length > 1 && !heroPausedForMotion && !heroPausedByUser &&
+      !heroHeldByHover && !heroHeldByFocus && !document.hidden;
+  }
+
   function startCarousel() {
     stopCarousel();
-    if (heroPausedForMotion || document.hidden) return;
+    if (!carouselCanRun()) return;
     heroTimer = setInterval(nextSlide, 5500);
+  }
+
+  function syncPauseButton() {
+    if (!heroPauseButton) return;
+    var paused = heroPausedByUser || heroPausedForMotion;
+    heroPauseButton.setAttribute('aria-pressed', paused ? 'true' : 'false');
+    heroPauseButton.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
+    heroPauseButton.classList.toggle('is-paused', paused);
   }
 
   dots.forEach(function (dot) {
     dot.addEventListener('click', function () {
       goToSlide(parseInt(this.dataset.slide, 10));
-      if (!heroPausedForMotion) startCarousel();
+      /* Choosing a slide holds it while the dot keeps focus or hover. */
+      startCarousel();
     });
   });
 
   if (heroMotionPreference && typeof heroMotionPreference.addEventListener === 'function') {
     heroMotionPreference.addEventListener('change', function (event) {
       heroPausedForMotion = event.matches;
-      if (heroPausedForMotion) stopCarousel();
-      else startCarousel();
+      syncPauseButton();
+      startCarousel();
     });
   }
 
   document.addEventListener('visibilitychange', function () {
-    if (document.hidden) stopCarousel();
-    else if (!heroPausedForMotion && slides.length > 1) startCarousel();
+    startCarousel();
   });
 
   if (slides.length > 1) {
+    var indicators = document.querySelector('.hero__indicators');
+    if (indicators) {
+      heroPauseButton = document.createElement('button');
+      heroPauseButton.type = 'button';
+      heroPauseButton.className = 'hero__pause';
+      heroPauseButton.innerHTML = '<span class="hero__pause-icon" aria-hidden="true"></span>';
+      heroPauseButton.addEventListener('click', function () {
+        if (heroPausedForMotion) {
+          heroPausedForMotion = false;
+          heroPausedByUser = false;
+        } else {
+          heroPausedByUser = !heroPausedByUser;
+        }
+        syncPauseButton();
+        startCarousel();
+      });
+      indicators.insertBefore(heroPauseButton, indicators.firstChild);
+      syncPauseButton();
+    }
+
     preloadHeroSlide(0);
-    var initialHeroPreloadDelay = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 3500 : 2000;
-    scheduleHeroPreload(1, initialHeroPreloadDelay);
+    if (!heroPausedForMotion) {
+      var initialHeroPreloadDelay = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 3500 : 2000;
+      scheduleHeroPreload(1, initialHeroPreloadDelay);
+    }
     startCarousel();
   }
 
-  /* Pause carousel on hover or keyboard focus (accessibility) */
+  /* Hold the carousel while a pointer is over it or a control inside it has
+     focus, so a chosen slide never changes under the visitor. */
   if (heroSection) {
-    heroSection.addEventListener('mouseenter', stopCarousel);
-    heroSection.addEventListener('mouseleave', function () { if (slides.length > 1 && !heroPausedForMotion) startCarousel(); });
-    heroSection.addEventListener('focusin', stopCarousel);
-    heroSection.addEventListener('focusout', function () { if (slides.length > 1 && !heroPausedForMotion) startCarousel(); });
+    heroSection.addEventListener('mouseenter', function () { heroHeldByHover = true; startCarousel(); });
+    heroSection.addEventListener('mouseleave', function () { heroHeldByHover = false; startCarousel(); });
+    heroSection.addEventListener('focusin', function () { heroHeldByFocus = true; startCarousel(); });
+    heroSection.addEventListener('focusout', function (event) {
+      if (event.relatedTarget && heroSection.contains(event.relatedTarget)) return;
+      heroHeldByFocus = false;
+      startCarousel();
+    });
   }
 
   /* ---- BEFORE / AFTER SLIDER ---- */
@@ -4694,6 +4948,9 @@
         'outdoor-kitchen': 'Fire Feature / Outdoor Kitchen',
         'fire-features': 'Fire Feature / Outdoor Kitchen',
         'fire-feature': 'Fire Feature / Outdoor Kitchen',
+        'landscape-design': 'Landscape Design & Build',
+        'landscape-design-build': 'Landscape Design & Build',
+        'landscape-design-and-build': 'Landscape Design & Build',
         'pergola-shade': 'Pergola / Shade Structure',
         'pergola-shade-structure': 'Pergola / Shade Structure',
         'desert-landscaping': 'Desert / Drought-Tolerant Design',
@@ -4820,9 +5077,7 @@
 
     if (phoneInput) {
       phoneInput.addEventListener('input', function () {
-        var v = this.value.replace(/\D/g, '');
-        if (v.length >= 10) v = '(' + v.slice(0, 3) + ') ' + v.slice(3, 6) + '-' + v.slice(6, 10);
-        this.value = v;
+        this.value = normalizeUsPhone(this.value);
       });
     }
 
@@ -5127,6 +5382,7 @@
       window.initSiteAnalytics();
     }
     document.body.classList.remove('has-cookie-banner-visible');
+    window.dispatchEvent(new Event('scroll'));
     banner.classList.remove('is-visible');
     document.documentElement.style.setProperty('--cookie-banner-space', '0px');
     window.removeEventListener('resize', syncCookieBannerSpace);
@@ -5137,71 +5393,32 @@
   banner.querySelector('.cookie-banner__decline').addEventListener('click', function () { dismiss(false); });
 })();
 
+
 /* ============================================================
-   Exit-intent popup
+   Footer: the link to the page you are on becomes plain current-page text
+   (keeps one shared footer markup; avoids links that point at themselves)
    ============================================================ */
 (function () {
-  var POPUP_KEY = 'tg_exit_popup_seen';
-  if (localStorage.getItem(POPUP_KEY)) return;
-
-  var shown = false;
-  var minTimeMs = 15000;
-  var pageEnteredAt = Date.now();
-
-  function show() {
-    if (shown) return;
-    shown = true;
-    localStorage.setItem(POPUP_KEY, '1');
-
-    var popupConfig = window.SITE_CONFIG || {};
-    var popupBrand = popupConfig.brand || {};
-    var popupLogoPath = String(popupBrand.logoPath || 'img/logo-160.png').trim();
-    var popupLogo = popupLogoPath.charAt(0) === '/' ? popupLogoPath : '/' + popupLogoPath.replace(/^\.?\//, '');
-    var popupConsultHref = '/free-consultation?source=exit_popup&autostart=1';
-    var popup = document.createElement('div');
-    popup.className = 'exit-popup';
-    popup.setAttribute('role', 'dialog');
-    popup.setAttribute('aria-modal', 'true');
-    popup.setAttribute('aria-label', 'Before you go');
-    popup.innerHTML =
-      '<div class="exit-popup__backdrop"></div>' +
-      '<div class="exit-popup__card">' +
-      '<button class="exit-popup__close" aria-label="Close">&times;</button>' +
-      '<div class="exit-popup__icon" aria-hidden="true"><img src="' + popupLogo + '" alt="" loading="lazy" decoding="async" width="68" height="68"></div>' +
-      '<p class="exit-popup__eyebrow">Before You Leave</p>' +
-      '<h2 class="exit-popup__title">Want a clear next step for your yard?</h2>' +
-      '<p class="exit-popup__sub">Share your project goals and we will follow up with a clear next-step plan.</p>' +
-      '<div class="exit-popup__actions">' +
-      '<a href="' + popupConsultHref + '" class="btn btn--solid exit-popup__cta">' + OFFER_LABEL + '</a>' +
-      '<button class="exit-popup__dismiss" type="button">Continue browsing</button>' +
-      '</div>' +
-      '</div>';
-    document.body.appendChild(popup);
-
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        popup.classList.add('is-open');
-      });
-    });
-
-    function close() {
-      popup.classList.remove('is-open');
-      setTimeout(function () { popup.remove(); }, 400);
-    }
-
-    popup.querySelector('.exit-popup__close').addEventListener('click', close);
-    popup.querySelector('.exit-popup__dismiss').addEventListener('click', close);
-    popup.querySelector('.exit-popup__backdrop').addEventListener('click', close);
-    popup.querySelector('.exit-popup__cta').addEventListener('click', close);
-
-    document.addEventListener('keydown', function esc(e) {
-      if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
-    });
+  function normalize(path) {
+    return String(path || '').replace(/\/index\.html$/, '/').replace(/\.html$/, '').replace(/\/+$/, '') || '/';
   }
-
-  document.addEventListener('mouseleave', function (e) {
-    if (e.clientY > 0) return;
-    if (Date.now() - pageEnteredAt < minTimeMs) return;
-    show();
-  });
+  function markCurrentFooterLinks() {
+    var here = normalize(window.location.pathname);
+    var links = document.querySelectorAll('.footer a[href]');
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i];
+      var url;
+      try { url = new URL(link.getAttribute('href'), window.location.href); } catch (e) { continue; }
+      if (url.origin !== window.location.origin || url.search || url.hash) continue;
+      if (normalize(url.pathname) !== here) continue;
+      link.setAttribute('aria-current', 'page');
+      link.removeAttribute('href');
+      link.classList.add('is-current');
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', markCurrentFooterLinks);
+  } else {
+    markCurrentFooterLinks();
+  }
 })();

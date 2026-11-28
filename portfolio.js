@@ -75,6 +75,25 @@
     return 'landscape-design';
   }
 
+  function itemServiceSlugs(item) {
+    return String(item && item.dataset.services ? item.dataset.services : '')
+      .split(/\s+/)
+      .map(normalizeSlug)
+      .filter(Boolean);
+  }
+
+  function itemPrimaryService(item) {
+    var slugs = itemServiceSlugs(item);
+    if (slugs.length) return slugs[0];
+    return mapCategoryToServiceSlug(item && item.dataset.cat, item && item.dataset.type);
+  }
+
+  function itemMatchesFilter(item, cat) {
+    if (cat === 'all') return true;
+    if (cat.indexOf('service:') === 0) return itemServiceSlugs(item).indexOf(cat.slice(8)) >= 0;
+    return item.dataset.cat === cat;
+  }
+
   function mapServiceToFilter(serviceSlug) {
     var slug = normalizeSlug(serviceSlug);
     if (!slug) return 'all';
@@ -94,21 +113,28 @@
     var projectLabel = extractProjectLabel(item);
     var params = new URLSearchParams({
       source: 'portfolio',
-      service: mapCategoryToServiceSlug(category, itemType),
+      service: itemPrimaryService(item),
       selected_style: normalizeSlug(category),
       selected_image: extractImageId(item),
       selected_project_label: projectLabel,
-      prefill_message: 'Interested in a ' + (itemType || 'landscape') + ' project similar to ' + projectLabel + '.'
+      prefill_message: 'Interested in a project similar to ' + projectLabel + '.'
     });
     params.set('autostart', '1');
     return '/free-consultation?' + params.toString();
   }
 
+  /* The filter-bar CTA is generic: it never claims a project the visitor did
+     not pick. It only carries the service when the page is filtered by one. */
+  function buildGenericRequestHref() {
+    var params = new URLSearchParams({ source: 'portfolio' });
+    if (currentFilter.indexOf('service:') === 0) params.set('service', currentFilter.slice(8));
+    params.set('autostart', '1');
+    return '/free-consultation?' + params.toString();
+  }
+
   function updateRequestLinks(item) {
-    var targetItem = item || visibleItems()[0] || items[0];
-    var href = buildRequestHref(targetItem);
-    if (requestStyleButton) requestStyleButton.setAttribute('href', href);
-    if (lightboxRequest) lightboxRequest.setAttribute('href', href);
+    if (requestStyleButton) requestStyleButton.setAttribute('href', buildGenericRequestHref());
+    if (lightboxRequest && item) lightboxRequest.setAttribute('href', buildRequestHref(item));
   }
 
   function updateFilterCounts() {
@@ -131,13 +157,13 @@
     });
 
     items.forEach(function (item) {
-      var match = cat === 'all' || item.dataset.cat === cat;
+      var match = itemMatchesFilter(item, cat);
       item.classList.toggle('is-hidden', !match);
       item.setAttribute('aria-hidden', match ? 'false' : 'true');
       item.classList.toggle('is-visible', match);
     });
 
-    updateRequestLinks(visibleItems()[0]);
+    updateRequestLinks(null);
   }
 
   function updateLightboxFrame(item) {
@@ -176,6 +202,8 @@
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('has-pf-lightbox-open');
+    setLightboxBackgroundInert(true);
     if (lightboxClose) lightboxClose.focus();
   }
 
@@ -184,6 +212,8 @@
     lightbox.classList.remove('is-open');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    document.body.classList.remove('has-pf-lightbox-open');
+    setLightboxBackgroundInert(false);
     currentLightboxIndex = -1;
     if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
       lastFocusedElement.focus();
@@ -221,38 +251,58 @@
     });
   });
 
-  items.forEach(function (item) {
-    item.setAttribute('tabindex', '0');
-    item.setAttribute('role', 'button');
-    item.setAttribute('aria-label', 'Open project preview: ' + extractProjectLabel(item));
-
-    item.addEventListener('click', function () {
-      openLightboxByItem(item);
+  /* Each figure keeps its figure semantics; a real button inside it opens
+     the preview, so keyboard and screen reader users get native behavior. */
+  function addOpenButton(container, label, onOpen) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'pf-item__open';
+    button.setAttribute('aria-label', label);
+    button.addEventListener('click', function (event) {
+      event.stopPropagation();
+      onOpen();
     });
+    container.appendChild(button);
+    container.addEventListener('click', function (event) {
+      if (event.target === button || event.defaultPrevented) return;
+      if (event.target.closest && event.target.closest('a')) return;
+      onOpen();
+    });
+    return button;
+  }
 
-    item.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        openLightboxByItem(item);
-      }
+  items.forEach(function (item) {
+    item.removeAttribute('tabindex');
+    item.removeAttribute('role');
+    addOpenButton(item, 'Open project preview: ' + extractProjectLabel(item), function () {
+      openLightboxByItem(item);
     });
   });
 
   if (storyMedia) {
-    storyMedia.setAttribute('tabindex', '0');
-    storyMedia.setAttribute('role', 'button');
-    storyMedia.setAttribute('aria-label', 'Open featured project preview');
-    storyMedia.addEventListener('click', function () {
+    if (window.getComputedStyle(storyMedia).position === 'static') storyMedia.style.position = 'relative';
+    addOpenButton(storyMedia, 'Open featured project preview', function () {
       var storyItem = getStoryLightboxItem();
       if (storyItem) {
         applyFilter(storyItem.dataset.cat || 'all');
         openLightboxByItem(storyItem);
       }
     });
-    storyMedia.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        storyMedia.click();
+  }
+
+  function setLightboxBackgroundInert(isInert) {
+    Array.prototype.slice.call(document.body.children).forEach(function (node) {
+      if (node === lightbox || node.tagName === 'SCRIPT') return;
+      if (isInert) {
+        if (node.hasAttribute('data-lightbox-inert')) return;
+        if (node.inert || node.getAttribute('aria-hidden') === 'true') return;
+        node.setAttribute('data-lightbox-inert', '');
+        node.setAttribute('aria-hidden', 'true');
+        if ('inert' in node) node.inert = true;
+      } else if (node.hasAttribute('data-lightbox-inert')) {
+        node.removeAttribute('data-lightbox-inert');
+        node.removeAttribute('aria-hidden');
+        if ('inert' in node) node.inert = false;
       }
     });
   }
@@ -290,9 +340,12 @@
     if (event.key === 'ArrowRight') moveLightbox(1);
   });
 
-  var initialServiceFilter = mapServiceToFilter(pageParams.get('service'));
-  if (initialServiceFilter && initialServiceFilter !== 'all') {
-    currentFilter = initialServiceFilter;
+  var requestedService = normalizeSlug(pageParams.get('service'));
+  if (requestedService && items.some(function (item) { return itemServiceSlugs(item).indexOf(requestedService) >= 0; })) {
+    currentFilter = 'service:' + requestedService;
+  } else if (requestedService) {
+    var initialServiceFilter = mapServiceToFilter(requestedService);
+    if (initialServiceFilter && initialServiceFilter !== 'all') currentFilter = initialServiceFilter;
   }
 
   updateFilterCounts();
