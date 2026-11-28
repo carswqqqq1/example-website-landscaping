@@ -61,6 +61,87 @@
     return LEAD_SUBMISSION_ENDPOINT;
   }
 
+  // Demo sample mode: public demo forms validate and show a sample receipt, but send nothing.
+  // Client builds set demoMode: false in site-config.js to restore the live lead path.
+  function isDemoMode() {
+    return SITE_CONFIG.demoMode === true;
+  }
+
+  var SAMPLE_RECEIPT_KEY = 'mw_sample_receipt';
+
+  if (isDemoMode()) document.documentElement.classList.add('is-demo-mode');
+
+  function runSampleSubmit(form, kind, details) {
+    var info = details || {};
+    var record = {
+      ticket: 'SAMPLE-' + Date.now().toString(36).toUpperCase(),
+      service: String(info.service || '').trim(),
+      city: String(info.city || '').trim(),
+      kind: String(kind || 'project_request'),
+      createdAt: new Date().toISOString()
+    };
+    try {
+      window.sessionStorage.setItem(SAMPLE_RECEIPT_KEY, JSON.stringify(record));
+    } catch (storageError) {
+      // Storage blocked: the thank-you page falls back to its neutral state.
+    }
+    if (info.navigate === false) return record;
+    window.location.href = '/thank-you?sample=1';
+    return record;
+  }
+
+  function fillSampleDetails(form) {
+    if (!form) return;
+    if (form.querySelector('input[name="service_type"]')) setFormServiceType(form, 'project');
+    var named = {
+      full_name: 'Sample Homeowner',
+      phone: '(480) 555-0100',
+      city: 'Scottsdale'
+    };
+    Object.keys(named).forEach(function (name) {
+      var field = form.querySelector('[name="' + name + '"]:not([type="hidden"])');
+      if (field && !field.disabled) field.value = named[name];
+    });
+    form.querySelectorAll('[required]').forEach(function (field) {
+      if (field.disabled || field.type === 'hidden' || !field.getClientRects().length) return;
+      if (field.type === 'checkbox') {
+        field.checked = true;
+      } else if (field.type === 'radio') {
+        if (!form.querySelector('input[type="radio"][name="' + field.name + '"]:checked')) field.checked = true;
+      } else if (field.tagName === 'SELECT') {
+        if (!field.value) {
+          var option = Array.prototype.find.call(field.options, function (item) { return item.value; });
+          if (option) field.value = option.value;
+        }
+      } else if (!String(field.value || '').trim()) {
+        field.value = field.type === 'email' ? 'sample@example.com' : 'Sample';
+      }
+    });
+    form.querySelectorAll('input, select, textarea').forEach(function (field) {
+      if (field.type === 'hidden') return;
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+      field.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  }
+
+  function addSampleFormTools(form, options) {
+    if (!isDemoMode() || !form || form.querySelector('[data-sample-form-note]')) return;
+    var settings = options || {};
+    var submit = form.querySelector('[type="submit"]');
+    if (!submit) return;
+    var tools = document.createElement('div');
+    tools.className = 'sample-form-tools';
+    tools.innerHTML = '<p class="sample-form-note" data-sample-form-note>Sample form. Nothing is sent. Use made-up details.</p>' +
+      (settings.fillButton === false ? '' : '<button type="button" class="sample-form-fill" data-sample-fill>Fill sample details</button>');
+    submit.parentNode.insertBefore(tools, submit);
+    var fill = tools.querySelector('[data-sample-fill]');
+    if (fill) {
+      fill.addEventListener('click', function () {
+        fillSampleDetails(form);
+      });
+    }
+  }
+
   function setFieldValidationState(field, isValid) {
     if (!field) return;
     var fieldId = String(field.id || '').trim();
@@ -400,6 +481,14 @@
   var turnstileHostnameWarned = false;
 
   function setupTurnstileForm(form, action) {
+    if (isDemoMode()) {
+      if (form) {
+        form.querySelectorAll('[data-turnstile-container], [data-turnstile-status]').forEach(function (node) {
+          node.hidden = true;
+        });
+      }
+      return;
+    }
     if (!form) return Promise.resolve(null);
     var existingState = turnstileWidgets.get(form);
     if (existingState) return existingState.loadPromise;
@@ -3043,6 +3132,7 @@
     };
 
     setupTurnstileForm(consultDrawerState.form, 'project_request');
+    addSampleFormTools(consultDrawerState.form);
     enhanceServiceTypeForm(consultDrawerState.form, {
       prefix: 'consult',
       chooserAnchor: consultDrawerState.fullName.closest('.form-field'),
@@ -3120,6 +3210,17 @@
       var requiredFields = Array.prototype.slice.call(consultDrawerState.form.querySelectorAll('[required]'));
       if (!validateRequiredFields(requiredFields, consultDrawerState.error, 'Please complete the required fields before submitting your request.')) {
         consultDrawerState.error.classList.add('is-visible');
+        return;
+      }
+
+      if (isDemoMode()) {
+        var sampleDrawerType = getFormServiceType(consultDrawerState.form) || 'project';
+        runSampleSubmit(consultDrawerState.form, 'project_request', {
+          service: sampleDrawerType === 'project'
+            ? String(consultDrawerState.service.value || '').trim()
+            : getServiceTypeServiceLabel(consultDrawerState.form),
+          city: consultDrawerState.city.value
+        });
         return;
       }
 
@@ -4412,12 +4513,32 @@
         chooserOnly: true,
         chooserAnchor: gateForm.querySelector('.resource-gate__grid')
       });
+      if (isDemoMode()) {
+        gateForm.querySelectorAll('[required]').forEach(function (field) {
+          field.removeAttribute('required');
+        });
+        gateForm.querySelectorAll('[data-service-type-chooser]').forEach(function (chooser) {
+          chooser.hidden = true;
+        });
+        if (submit) submit.textContent = 'Download the sample checklist';
+        addSampleFormTools(gateForm, { fillButton: false });
+      }
       if (hiddenFormStartedAt) hiddenFormStartedAt.value = String(Date.now());
       if (hiddenJsCheck) hiddenJsCheck.value = '1';
 
       gateForm.addEventListener('submit', async function (event) {
         event.preventDefault();
         if (error) error.textContent = '';
+        if (isDemoMode()) {
+          gateForm.setAttribute('hidden', 'hidden');
+          if (downloadTarget) {
+            downloadTarget.hidden = false;
+            downloadTarget.classList.add('is-visible');
+            var downloadLink = downloadTarget.querySelector('a[href]');
+            if (downloadLink) downloadLink.focus();
+          }
+          return;
+        }
         var requiredType = gateForm.querySelector('input[name="service_type"]');
         if (!validateRequiredFields([requiredType, requiredName, requiredEmail, requiredConsent], error, 'Choose what you need, then enter your name, email, and consent to unlock the checklist download.')) {
           return;
@@ -4498,6 +4619,7 @@
 
   if (form) {
     setupTurnstileForm(form, 'project_request');
+    addSampleFormTools(form);
     enhanceServiceTypeForm(form, {
       prefix: 'contact',
       chooserAnchor: form.querySelector('#full_name') ? form.querySelector('#full_name').closest('.form-field') : null,
@@ -4726,6 +4848,15 @@
       e.preventDefault();
       if (!validateRequiredFields(Array.from(form.querySelectorAll('[required]')), errorMessage, 'Please complete the required fields before submitting your request.')) {
         if (errorMessage) errorMessage.style.display = 'block';
+        return;
+      }
+
+      if (isDemoMode()) {
+        var sampleInlineType = getFormServiceType(form) || 'project';
+        runSampleSubmit(form, 'project_request', {
+          service: sampleInlineType === 'project' ? valueOrFallback(serviceInput, '') : getServiceTypeServiceLabel(form),
+          city: valueOrFallback(cityInput, '')
+        });
         return;
       }
 

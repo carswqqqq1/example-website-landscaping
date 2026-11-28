@@ -1,5 +1,6 @@
 {
   "siteBaseUrl": "https://example-client-site.pages.dev",
+  "demoMode": false,
   "manifestPath": "/manifest.json",
   "businessName": "Client Landscaping Company",
   "shortName": "Client Name",

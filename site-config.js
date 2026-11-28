@@ -24,6 +24,10 @@
     siteBaseUrl: siteBaseUrl,
     manifestPath: manifestPath,
     emailLogoUrl: emailLogoUrl,
+    // Same-origin lead endpoint used by client builds.
+    leadEndpoint: '/api/lead',
+    // Public demo: forms run in a labeled sample mode and send nothing. Set false for a real client site.
+    demoMode: true,
     businessName: 'Mesa Wren Landscape Co.',
     shortName: 'Mesa Wren',
     // Fictional demo brand. Phone uses the reserved 555-01xx range. No street address on purpose.
