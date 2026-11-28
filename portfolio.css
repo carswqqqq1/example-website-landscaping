@@ -788,3 +788,47 @@ body.has-pf-lightbox-open .scroll-top {
     display: none;
   }
 }
+
+/* ----- 5.07 Portfolio: work on the first scroll, captions always visible ----- */
+.pf-hero--short { padding-top: calc(98px + 1.75rem); padding-bottom: 1.25rem; border-bottom: 0; }
+.pf-hero--short .pf-hero__title { font-weight: 600; margin-block: 0 .4rem; }
+.pf-hero--short .pf-hero__sub { max-width: 60ch; line-height: 1.6; }
+.pf-hero--short + .pf-filters { padding-block: .9rem; background: var(--paper); }
+.pf-filter { box-shadow: none; transform: none; }
+.pf-filter:hover { transform: none; box-shadow: none; }
+.pf-filter.is-active { box-shadow: none; }
+.pf-grid-section { padding-block: 1rem 3.5rem; }
+.pf-results { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 1rem; margin-bottom: .9rem; }
+.pf-count { color: var(--ink-light); font-size: .92rem; }
+.pf-reset { min-height: 44px; padding: 0 .25rem; background: none; border: 0; color: var(--green); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: .2em; cursor: pointer; }
+.pf-empty { padding: 2rem 0; text-align: center; color: var(--ink-light); }
+.pf-empty p + p { margin-top: .5rem; }
+.pf-empty__service { display: inline-flex; align-items: center; min-height: 44px; margin-left: .75rem; color: var(--green); font-weight: 600; text-decoration: underline; text-underline-offset: .2em; }
+/* Cards: one ratio, title and one line under the image, visible without hover or focus. */
+.pf-item { background: var(--white); }
+.pf-item:hover { transform: none; }
+.pf-item__chip, .pf-item__tag { display: none; }
+.pf-item__cap { position: static; inset: auto; display: block; opacity: 1; background: none; padding: .8rem .95rem 1rem; color: var(--ink); }
+.pf-item:hover .pf-item__cap { opacity: 1; }
+.pf-item__cap-inner, .pf-item:hover .pf-item__cap-inner { transform: none; }
+.pf-item__cap h3 { font-size: 1.15rem; font-weight: 600; color: var(--ink); }
+.pf-item__cap p { margin-top: .15rem; color: var(--ink-light); font-size: .88rem; line-height: 1.5; }
+.pf-item:hover .pf-item__cap h3, .pf-item:focus-within .pf-item__cap h3 { color: var(--green); text-decoration: underline; text-underline-offset: .2em; }
+.pf-item__open:focus-visible { outline-offset: -3px; }
+/* Crops keep the subject in view: canopy and cooking zone, fire pit and seating, turf and paver edge. */
+.pf-item img[src*="shade-structure"] { object-position: 50% 35%; }
+.pf-item img[src*="firepit"] { object-position: 30% 70%; }
+.pf-item img[src*="slide4"] { object-position: 40% 65%; }
+.pf-item img[src*="fireplace"] { object-position: 45% 60%; }
+@media (max-width: 900px) {
+  .pf-item__cap { opacity: 1; }
+}
+@media (max-width: 600px) {
+  .pf-hero--short { padding-top: calc(90px + 1rem); padding-bottom: .75rem; }
+  .pf-hero--short + .pf-filters { padding-block: .6rem; }
+  .pf-grid-section { padding-top: .75rem; }
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  .pf-hero--short { padding-top: calc(72px + .75rem); padding-bottom: .5rem; }
+  .pf-hero--short .pf-hero__title { font-size: 1.8rem; }
+}
