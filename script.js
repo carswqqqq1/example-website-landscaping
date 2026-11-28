@@ -69,6 +69,22 @@
 
   var SAMPLE_RECEIPT_KEY = 'mw_sample_receipt';
 
+  /* Defined up here, before any startup code runs: the sticky bar and menu
+     setup ask for route context while the script is still loading, and a
+     later `var` would still be undefined at that point. */
+  /* Pages whose quote links carry context that the generic city and service
+     detection cannot infer from the path. Used for header, menu and sticky
+     fallbacks so they match the links authored in the page. */
+  var ROUTE_CONSULT_CONTEXT = {
+    '/ahwatukee-landscape-design': { city: 'Ahwatukee', service: 'landscape-design', source: 'location_page' },
+    '/glendale-hardscaping': { city: 'Glendale', service: 'hardscaping', source: 'location_page' },
+    '/peoria-artificial-turf': { city: 'Peoria', service: 'artificial-turf', source: 'location_page' },
+    '/north-phoenix-outdoor-lighting': { city: 'North Phoenix', service: 'outdoor-lighting', source: 'location_page' },
+    '/mesa-landscaping': { city: 'Mesa', source: 'mesa_first_phase', budget_range: '$10,000 - $25,000' },
+    '/paradise-valley-landscaping': { city: 'Paradise Valley', source: 'paradise_valley_private_review' },
+    '/yard-maintenance': { type: 'maintenance', source: 'maintenance_page' }
+  };
+
   // One US phone formatter for every form: strips non-digits, drops a leading
   // country code 1 on an 11-digit number, then formats 10 digits. Anything that
   // is not yet 10 digits is left as typed digits so typing is never mangled.
@@ -2918,19 +2934,6 @@
     appendUtmParams(params);
     return '/free-consultation?' + params.toString();
   }
-
-  /* Pages whose quote links carry context that the generic city and service
-     detection cannot infer from the path. Used for header, menu and sticky
-     fallbacks so they match the links authored in the page. */
-  var ROUTE_CONSULT_CONTEXT = {
-    '/ahwatukee-landscape-design': { city: 'Ahwatukee', service: 'landscape-design', source: 'location_page' },
-    '/glendale-hardscaping': { city: 'Glendale', service: 'hardscaping', source: 'location_page' },
-    '/peoria-artificial-turf': { city: 'Peoria', service: 'artificial-turf', source: 'location_page' },
-    '/north-phoenix-outdoor-lighting': { city: 'North Phoenix', service: 'outdoor-lighting', source: 'location_page' },
-    '/mesa-landscaping': { city: 'Mesa', source: 'mesa_first_phase', budget_range: '$10,000 - $25,000' },
-    '/paradise-valley-landscaping': { city: 'Paradise Valley', source: 'paradise_valley_private_review' },
-    '/yard-maintenance': { type: 'maintenance', source: 'maintenance_page' }
-  };
 
   function getRouteConsultContext() {
     var path = String(window.location.pathname || '/').toLowerCase().replace(/\.html$/, '').replace(/\/+$/, '') || '/';
