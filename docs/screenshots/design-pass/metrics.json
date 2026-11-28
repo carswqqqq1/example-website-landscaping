@@ -1,0 +1,228 @@
+{
+  "before": {
+    "home-1440": {
+      "height": 12754,
+      "scrollWidth": 1440,
+      "viewport": 1440,
+      "overflowingElements": [],
+      "smallTapTargets": 13,
+      "smallTapTargetSamples": [
+        "Home (63x38)",
+        "Services (79x38)",
+        "Portfolio (79x38)",
+        "Process (76x38)",
+        "Reviews (77x38)",
+        "Financing (86x38)",
+        "Contact (79x38)",
+        "Get a free preview for your business (236x28)",
+        "Request a Similar Project (212x38)",
+        "Request a Similar Project (214x40)",
+        "Request a Similar Project (210x38)",
+        "(480) 555-0142 (113x24)"
+      ]
+    },
+    "pergola-1440": {
+      "height": 6421,
+      "scrollWidth": 1440,
+      "viewport": 1440,
+      "overflowingElements": [],
+      "smallTapTargets": 8,
+      "smallTapTargetSamples": [
+        "Home (63x38)",
+        "Services (79x38)",
+        "Portfolio (79x38)",
+        "Process (76x38)",
+        "Reviews (77x38)",
+        "Financing (86x38)",
+        "Contact (79x38)",
+        "See example projects → (181x42)"
+      ]
+    },
+    "about-1440": {
+      "height": 4033,
+      "scrollWidth": 1440,
+      "viewport": 1440,
+      "overflowingElements": [],
+      "smallTapTargets": 7,
+      "smallTapTargetSamples": [
+        "Home (63x38)",
+        "Services (79x38)",
+        "Portfolio (79x38)",
+        "Process (76x38)",
+        "Reviews (77x38)",
+        "Financing (86x38)",
+        "Contact (79x38)"
+      ]
+    },
+    "home-390": {
+      "height": 12680,
+      "scrollWidth": 390,
+      "viewport": 390,
+      "overflowingElements": [
+        "service-item",
+        "service-item__body",
+        "H3",
+        "P",
+        "faq-item",
+        "faq__question",
+        "faq__answer"
+      ],
+      "smallTapTargets": 7,
+      "smallTapTargetSamples": [
+        "Get a free preview for your business (220x28)",
+        "Show project photo 1 (40x44)",
+        "Show project photo 2 (40x44)",
+        "Show project photo 3 (40x44)",
+        "Show project photo 4 (40x44)",
+        "Show project photo 5 (40x44)",
+        "Privacy Policy (80x17)"
+      ],
+      "throttledLcpMs": {
+        "lcp": 2460,
+        "element": "hero__slide hero__slide--first is-active"
+      }
+    },
+    "pergola-390": {
+      "height": 10152,
+      "scrollWidth": 390,
+      "viewport": 390,
+      "overflowingElements": [
+        "service-steps",
+        "service-step"
+      ],
+      "smallTapTargets": 1,
+      "smallTapTargetSamples": [
+        "See example projects → (179x41)"
+      ],
+      "throttledLcpMs": {
+        "lcp": 2480,
+        "element": "service-hero__bg"
+      }
+    },
+    "about-390": {
+      "height": 6416,
+      "scrollWidth": 390,
+      "viewport": 390,
+      "overflowingElements": [],
+      "smallTapTargets": 0,
+      "smallTapTargetSamples": [],
+      "throttledLcpMs": {
+        "lcp": 2104,
+        "element": "P"
+      }
+    }
+  },
+  "after": {
+    "home-1440": {
+      "height": 12754,
+      "scrollWidth": 1440,
+      "viewport": 1440,
+      "overflowingElements": [],
+      "smallTapTargets": 13,
+      "smallTapTargetSamples": [
+        "Home (63x38)",
+        "Services (79x38)",
+        "Portfolio (79x38)",
+        "Process (76x38)",
+        "Reviews (77x38)",
+        "Financing (86x38)",
+        "Contact (79x38)",
+        "Get a free preview for your business (236x28)",
+        "Request a Similar Project (212x38)",
+        "Request a Similar Project (214x40)",
+        "Request a Similar Project (210x38)",
+        "(480) 555-0142 (113x24)"
+      ]
+    },
+    "pergola-1440": {
+      "height": 6421,
+      "scrollWidth": 1440,
+      "viewport": 1440,
+      "overflowingElements": [],
+      "smallTapTargets": 8,
+      "smallTapTargetSamples": [
+        "Home (63x38)",
+        "Services (79x38)",
+        "Portfolio (79x38)",
+        "Process (76x38)",
+        "Reviews (77x38)",
+        "Financing (86x38)",
+        "Contact (79x38)",
+        "See example projects → (181x42)"
+      ]
+    },
+    "about-1440": {
+      "height": 4033,
+      "scrollWidth": 1440,
+      "viewport": 1440,
+      "overflowingElements": [],
+      "smallTapTargets": 7,
+      "smallTapTargetSamples": [
+        "Home (63x38)",
+        "Services (79x38)",
+        "Portfolio (79x38)",
+        "Process (76x38)",
+        "Reviews (77x38)",
+        "Financing (86x38)",
+        "Contact (79x38)"
+      ]
+    },
+    "home-390": {
+      "height": 12680,
+      "scrollWidth": 390,
+      "viewport": 390,
+      "overflowingElements": [
+        "service-item",
+        "service-item__body",
+        "H3",
+        "P",
+        "faq-item",
+        "faq__question",
+        "faq__answer"
+      ],
+      "smallTapTargets": 7,
+      "smallTapTargetSamples": [
+        "Get a free preview for your business (220x28)",
+        "Show project photo 1 (40x44)",
+        "Show project photo 2 (40x44)",
+        "Show project photo 3 (40x44)",
+        "Show project photo 4 (40x44)",
+        "Show project photo 5 (40x44)",
+        "Privacy Policy (80x17)"
+      ],
+      "throttledLcpMs": {
+        "lcp": 2452,
+        "element": "hero__slide hero__slide--first is-active"
+      }
+    },
+    "pergola-390": {
+      "height": 10152,
+      "scrollWidth": 390,
+      "viewport": 390,
+      "overflowingElements": [
+        "service-steps",
+        "service-step"
+      ],
+      "smallTapTargets": 1,
+      "smallTapTargetSamples": [
+        "See example projects → (179x41)"
+      ],
+      "throttledLcpMs": {
+        "lcp": 2480,
+        "element": "service-hero__bg"
+      }
+    },
+    "about-390": {
+      "height": 6416,
+      "scrollWidth": 390,
+      "viewport": 390,
+      "overflowingElements": [],
+      "smallTapTargets": 0,
+      "smallTapTargetSamples": [],
+      "throttledLcpMs": {
+        "lcp": 2124,
+        "element": "P"
+      }
+    }
+  }
+}
