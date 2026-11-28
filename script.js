@@ -4065,7 +4065,6 @@
   function syncPauseButton() {
     if (!heroPauseButton) return;
     var paused = heroAwaitingVisitor || heroPausedByUser || heroPausedForMotion;
-    heroPauseButton.setAttribute('aria-pressed', paused ? 'true' : 'false');
     heroPauseButton.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
     heroPauseButton.classList.toggle('is-paused', paused);
   }
