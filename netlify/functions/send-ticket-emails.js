@@ -27,7 +27,10 @@ function resolveSiteUrl(...candidates) {
 }
 
 const SITE_URL = resolveSiteUrl(process.env.SITE_URL, SITE_CONFIG.siteBaseUrl);
-const OWNER_EMAIL = process.env.OWNER_EMAIL || SITE_CONFIG.ownerEmail || SITE_CONFIG.email || '';
+// Server-side fallback so leads still reach the owner when OWNER_EMAIL is not set in Netlify.
+// Kept here (never served to browsers) instead of in the public site-config.js.
+const OWNER_EMAIL_FALLBACK = 'carson.elevatemarketing@gmail.com';
+const OWNER_EMAIL = String(process.env.OWNER_EMAIL || '').trim() || SITE_CONFIG.ownerEmail || OWNER_EMAIL_FALLBACK;
 // Email logo URL: EMAIL_LOGO_URL env override, else site-config.js emailLogoUrl (the one config spot).
 const EMAIL_LOGO_URL = resolveSiteUrl(
   process.env.EMAIL_LOGO_URL,
