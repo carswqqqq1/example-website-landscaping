@@ -908,9 +908,9 @@
   content: "";
   position: absolute;
   left: -18%;
-  right: 8%;
+  right: 6%;
   top: -18%;
-  bottom: -8%;
+  bottom: -26%;
   z-index: -1;
   background: radial-gradient(closest-side, rgba(18,12,8,.72) 0%, rgba(18,12,8,.64) 55%, rgba(18,12,8,.32) 80%, rgba(18,12,8,0) 100%);
   pointer-events: none;
