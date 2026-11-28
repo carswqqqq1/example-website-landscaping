@@ -40,13 +40,13 @@
       "heroTextContrast": [
         {
           "el": "hero__heading",
-          "worst": 5.77,
-          "typical": 16.15
+          "worst": 5.78,
+          "typical": 16.12
         },
         {
           "el": "hero__sub",
-          "worst": 11.13,
-          "typical": 19.4
+          "worst": 11.14,
+          "typical": 19.42
         }
       ]
     },
@@ -185,12 +185,12 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1112,
+        "lcp": 1096,
         "element": "hero__slide hero__slide--first is-active",
         "runs": [
-          1112,
-          1112,
-          1124
+          1092,
+          1096,
+          1096
         ]
       }
     },
@@ -231,12 +231,12 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1088,
+        "lcp": 1068,
         "element": "service-hero__bg",
         "runs": [
-          1088,
-          1088,
-          1096
+          1068,
+          1068,
+          1080
         ]
       }
     },
@@ -277,19 +277,19 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 996,
+        "lcp": 972,
         "element": "P",
         "runs": [
+          960,
           972,
-          996,
-          1004
+          976
         ]
       }
     }
   },
   "after": {
     "home-1440": {
-      "height": 13595,
+      "height": 13213,
       "scrollWidth": 1440,
       "viewport": 1440,
       "overflowingElements": [],
@@ -319,33 +319,33 @@
       "heroTextContrast": [
         {
           "el": "hero__eyebrow",
-          "worst": 4,
-          "typical": 7.86
+          "worst": 2.67,
+          "typical": 5.38
         },
         {
           "el": "hero__heading",
-          "worst": 4.74,
-          "typical": 11.48
+          "worst": 4.98,
+          "typical": 13.94
         },
         {
           "el": "hero__sub",
-          "worst": 6.29,
-          "typical": 15.49
+          "worst": 6.4,
+          "typical": 16.38
         },
         {
           "el": "LI",
-          "worst": 15.82,
-          "typical": 17.65
+          "worst": 12.54,
+          "typical": 16.77
         },
         {
           "el": "LI",
-          "worst": 11.71,
-          "typical": 15.97
+          "worst": 9.03,
+          "typical": 14.57
         },
         {
           "el": "LI",
-          "worst": 11.59,
-          "typical": 16.47
+          "worst": 6.66,
+          "typical": 13.87
         }
       ]
     },
@@ -374,13 +374,13 @@
       "heroTextContrast": [
         {
           "el": "H1",
-          "worst": 5.65,
-          "typical": 12.18
+          "worst": 4.75,
+          "typical": 13.31
         },
         {
           "el": "service-hero__sub",
-          "worst": 6.77,
-          "typical": 8.48
+          "worst": 4.16,
+          "typical": 8.29
         }
       ]
     },
@@ -405,23 +405,23 @@
       "heroTextContrast": [
         {
           "el": "eyebrow",
-          "worst": 10.32,
-          "typical": 14.44
+          "worst": 8.61,
+          "typical": 13.4
         },
         {
           "el": "H1",
-          "worst": 5.04,
-          "typical": 13.09
+          "worst": 4.6,
+          "typical": 13.87
         },
         {
           "el": "P",
-          "worst": 5.52,
-          "typical": 11.13
+          "worst": 4.46,
+          "typical": 12.39
         }
       ]
     },
     "home-390": {
-      "height": 13282,
+      "height": 13189,
       "scrollWidth": 390,
       "viewport": 390,
       "overflowingElements": [],
@@ -437,42 +437,42 @@
       "heroTextContrast": [
         {
           "el": "hero__eyebrow",
-          "worst": 2.5,
-          "typical": 10.25
+          "worst": 2.26,
+          "typical": 10.87
         },
         {
           "el": "hero__heading",
-          "worst": 8.2,
-          "typical": 11.99
-        },
-        {
-          "el": "hero__sub",
-          "worst": 8.92,
-          "typical": 13.59
-        },
-        {
-          "el": "LI",
-          "worst": 12.46,
-          "typical": 16.97
-        },
-        {
-          "el": "LI",
-          "worst": 12.13,
+          "worst": 9.13,
           "typical": 13.36
         },
         {
+          "el": "hero__sub",
+          "worst": 10.38,
+          "typical": 14.55
+        },
+        {
           "el": "LI",
-          "worst": 12.71,
-          "typical": 13.65
+          "worst": 8.12,
+          "typical": 15.37
+        },
+        {
+          "el": "LI",
+          "worst": 7.47,
+          "typical": 9.09
+        },
+        {
+          "el": "LI",
+          "worst": 7.04,
+          "typical": 8.44
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1180,
+        "lcp": 1148,
         "element": "hero__heading",
         "runs": [
-          1176,
-          1180,
-          1188
+          1144,
+          1148,
+          1160
         ]
       }
     },
@@ -493,22 +493,22 @@
       "heroTextContrast": [
         {
           "el": "H1",
-          "worst": 3.43,
-          "typical": 12.1
+          "worst": 4.11,
+          "typical": 14.51
         },
         {
           "el": "service-hero__sub",
-          "worst": 5.93,
-          "typical": 9.5
+          "worst": 10.48,
+          "typical": 13.31
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1152,
+        "lcp": 1140,
         "element": "H1",
         "runs": [
-          1152,
-          1152,
-          1160
+          1140,
+          1140,
+          1144
         ]
       }
     },
@@ -525,27 +525,27 @@
       "heroTextContrast": [
         {
           "el": "eyebrow",
-          "worst": 10.63,
-          "typical": 11.14
+          "worst": 10.19,
+          "typical": 10.9
         },
         {
           "el": "H1",
-          "worst": 6.7,
-          "typical": 10.16
+          "worst": 9.3,
+          "typical": 12.46
         },
         {
           "el": "P",
-          "worst": 4.72,
-          "typical": 10.02
+          "worst": 8.66,
+          "typical": 13.9
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1132,
+        "lcp": 1112,
         "element": "page-hero__bg page-hero__bg--about",
         "runs": [
-          1128,
-          1132,
-          1136
+          1108,
+          1112,
+          1124
         ]
       }
     }
