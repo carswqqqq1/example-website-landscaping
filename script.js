@@ -1770,6 +1770,8 @@
     var guidePath = normalizedPath.replace(/\.html$/i, '');
     var guide = PAGE_CONVERSION_GUIDES[normalizedPath] || PAGE_CONVERSION_GUIDES[guidePath];
     if (!guide || document.querySelector('[data-page-conversion-guide]')) return;
+    // 5.10: the local shell already has its one decision block and action.
+    if (document.querySelector('[data-local-shell]')) return;
 
     var targetSection = document.querySelector('.page-section--alt') || document.querySelector('.faq.page-section') || document.querySelector('main .page-section:last-of-type');
     if (!targetSection || !targetSection.parentNode) return;
