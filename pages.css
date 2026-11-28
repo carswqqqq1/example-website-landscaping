@@ -1040,7 +1040,8 @@
 }
 .checklist-preview__sections {
   margin: .9rem 0 0;
-  padding-left: 1.4rem;
+  padding-left: 1.6rem;
+  list-style: decimal;
   display: grid;
   gap: .35rem;
   color: var(--ink-light);
