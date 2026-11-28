@@ -5460,6 +5460,7 @@ body.has-nav-overlay-open .cookie-banner {
   body.has-cookie-banner-visible .footer {
     padding-bottom: calc(92px + var(--cookie-banner-space) + env(safe-area-inset-bottom));
   }
+  /* Compact single row: 12px text and 40px buttons keep the banner at 60px or less. */
   .cookie-banner {
     right: 0;
     top: auto;
@@ -5473,9 +5474,12 @@ body.has-nav-overlay-open .cookie-banner {
     gap: .55rem;
   }
   .cookie-banner p {
-    font-size: .72rem;
-    line-height: 1.38;
+    font-size: 12px;
+    line-height: 1.35;
     min-width: 0;
+  }
+  .cookie-banner p a {
+    min-height: 0;
   }
   .cookie-banner__actions {
     display: flex;
@@ -5484,10 +5488,11 @@ body.has-nav-overlay-open .cookie-banner {
   }
   .cookie-banner__accept, .cookie-banner__decline {
     width: auto;
-    min-height: 44px;
+    min-height: 40px;
+    height: 40px;
     text-align: center;
-    padding: .54rem .62rem;
-    font-size: .68rem;
+    padding: 0 .7rem;
+    font-size: 12px;
     white-space: nowrap;
   }
   .consult-drawer__backdrop {

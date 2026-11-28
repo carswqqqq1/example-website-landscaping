@@ -4967,7 +4967,7 @@
   banner.setAttribute('role', 'region');
   banner.setAttribute('aria-label', 'Cookie consent');
   banner.innerHTML =
-    '<p>We use cookies to improve performance and measure project review activity. ' +
+    '<p>We use cookies to measure site use. ' +
     '<a href="/cookie-policy">Cookie policy</a></p>' +
     '<div class="cookie-banner__actions">' +
     '<button class="cookie-banner__decline" type="button">Decline</button>' +
