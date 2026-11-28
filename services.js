@@ -42,15 +42,15 @@
 
   function serviceCtaLabel(service) {
     var labels = {
-      'landscape-design': 'Plan My Landscape Project',
-      'hardscaping': 'Plan My Hardscape Project',
-      'outdoor-kitchens': 'Plan My Outdoor Kitchen',
-      'fire-features': 'Plan My Fire Feature',
-      'artificial-turf': 'Plan My Turf Project',
-      'irrigation': 'Plan My Irrigation Fix',
-      'desert-landscaping': 'Plan My Desert Yard',
-      'outdoor-lighting': 'Plan My Lighting Layout',
-      'pergola-shade': 'Plan My Shade Structure'
+      'landscape-design': 'Plan my landscape project',
+      'hardscaping': 'Plan my hardscape project',
+      'outdoor-kitchens': 'Plan my outdoor kitchen',
+      'fire-features': 'Plan my fire feature',
+      'artificial-turf': 'Plan my turf project',
+      'irrigation': 'Plan my irrigation fix',
+      'desert-landscaping': 'Plan my desert yard',
+      'outdoor-lighting': 'Plan my lighting layout',
+      'pergola-shade': 'Plan my shade structure'
     };
 
     return labels[service && service.slug] || offerLabel;
@@ -138,7 +138,7 @@
     var story = service.featuredProject;
     var isHub = !!(options && options.isHub);
     var eyebrow = isHub ? service.title : 'Project Story';
-    var detailLinkLabel = isHub ? 'View ' + service.title + ' Service' : 'See Example Projects';
+    var detailLinkLabel = isHub ? 'See the ' + service.title.toLowerCase() + ' page' : 'See example projects';
     var detailLinkHref = isHub ? normalizeDisplayPath(service.path) : servicePortfolioHref(service);
 
     return '' +
@@ -341,8 +341,8 @@
     section.innerHTML = '' +
       '<div class="container">' +
       '  <header class="service-block__header reveal reveal--left">' +
-      '    <p class="eyebrow">Project Stories</p>' +
-      '    <h2 class="section-title">How These Services Come Together</h2>' +
+      '    <p class="eyebrow">Example projects</p>' +
+      '    <h2 class="section-title">How these services come together</h2>' +
       '    <p>Short scope snapshots help homeowners compare service fit before they request a quote.</p>' +
       '  </header>' +
       '  <div class="service-story-grid">' +
@@ -396,6 +396,9 @@
 
   function renderServicePage() {
     if (!root || !root.dataset.serviceSlug) return;
+    // 5.06: pages built from scripts/render-service-pages.js already carry the one
+    // service shell in their HTML, so nothing is injected on top of it.
+    if (document.querySelector('[data-service-shell]')) return;
 
     var service = (window.getServiceBySlug && window.getServiceBySlug(root.dataset.serviceSlug)) || null;
     if (!service) return;

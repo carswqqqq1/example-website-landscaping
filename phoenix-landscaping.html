@@ -25,90 +25,66 @@
   <link rel="alternate" hreflang="en-us" href="https://demo.tryarroyo.com/phoenix-landscaping" />
     <link rel="preload" as="font" href="/fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2" type="font/woff2" crossorigin />
   <link rel="preload" as="font" href="/fonts/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/fonts.min.css?v=20261128p4c" />
-  <link rel="stylesheet" href="/styles.min.css?v=20261128p4c" />
-  <link rel="stylesheet" href="/pages.min.css?v=20261128p4c" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20261128p5f" />
+  <link rel="stylesheet" href="/styles.min.css?v=20261128p5f" />
+  <link rel="stylesheet" href="/pages.min.css?v=20261128p5f" />
 
   <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
-      "@graph": [
+      "@type": "Service",
+      "@id": "https://demo.tryarroyo.com/phoenix-landscaping#service",
+      "name": "Phoenix Landscaping Design Build",
+      "serviceType": "Outdoor living and landscape construction",
+      "provider": {
+        "@type": "HomeAndConstructionBusiness",
+        "@id": "https://demo.tryarroyo.com/#business",
+        "name": "Mesa Wren Landscape Co.",
+        "url": "https://demo.tryarroyo.com/",
+        "telephone": "+1-480-555-0142"
+      },
+      "areaServed": [
         {
-          "@type": "Service",
-          "@id": "https://demo.tryarroyo.com/phoenix-landscaping#service",
-          "name": "Phoenix Landscaping Design Build",
-          "serviceType": "Outdoor living and landscape construction",
-          "provider": {
-            "@type": "HomeAndConstructionBusiness",
-            "@id": "https://demo.tryarroyo.com/#business",
-            "name": "Mesa Wren Landscape Co.",
-            "url": "https://demo.tryarroyo.com/",
-            "telephone": "+1-480-555-0142"
-          },
-          "areaServed": [
-            {"@type": "City", "name": "Phoenix"},
-            {"@type": "City", "name": "Scottsdale"},
-            {"@type": "City", "name": "Tempe"},
-            {"@type": "City", "name": "Mesa"}
-          ],
-          "url": "https://demo.tryarroyo.com/phoenix-landscaping"
+          "@type": "City",
+          "name": "Phoenix"
         },
         {
-          "@type": "FAQPage",
-          "@id": "https://demo.tryarroyo.com/phoenix-landscaping#faq",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "What landscaping services are most requested in Phoenix?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Most requests center around outdoor living patios, fire features, hardscape upgrades, and drought-tolerant design planning."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Can you design for low water usage in Phoenix heat?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. Mesa Wren combines water-smart planting and irrigation strategy to reduce waste while keeping projects visually strong."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How long does a Phoenix landscape project usually take?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Project duration depends on complexity and scope. During consultation, we provide a realistic schedule and phase plan."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Do you service Arcadia, North Phoenix, and central neighborhoods?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. We work across Phoenix neighborhoods including Arcadia, North Phoenix, and nearby communities."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How do I request a quote quickly?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Use the consultation button on this page and include your city, project type, and timeline. We respond quickly."
-              }
-            }
-          ]
+          "@type": "City",
+          "name": "Scottsdale"
         },
         {
-          "@type": "BreadcrumbList",
-          "@id": "https://demo.tryarroyo.com/phoenix-landscaping#breadcrumb",
-          "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://demo.tryarroyo.com/"},
-            {"@type": "ListItem", "position": 2, "name": "Phoenix Landscaping", "item": "https://demo.tryarroyo.com/phoenix-landscaping"}
-          ]
+          "@type": "City",
+          "name": "Tempe"
+        },
+        {
+          "@type": "City",
+          "name": "Mesa"
+        }
+      ],
+      "url": "https://demo.tryarroyo.com/phoenix-landscaping"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://demo.tryarroyo.com/phoenix-landscaping#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://demo.tryarroyo.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Phoenix Landscaping",
+          "item": "https://demo.tryarroyo.com/phoenix-landscaping"
         }
       ]
     }
+  ]
+}
   </script>
 </head>
 <body class="simple-page">
@@ -170,143 +146,69 @@
     </div>
   </nav>
 
-  <main id="main-content">
-    <section class="page-hero">
+  <main id="main-content" data-local-shell>
+    <section class="page-hero page-hero--short local-hero">
       <div class="page-hero__bg" style="background-image:url('img/projects/slide3-1280.avif')"></div>
       <div class="page-hero__overlay"></div>
       <div class="container page-hero__inner">
-        <p class="eyebrow">Phoenix Service Area</p>
-        <h1>Phoenix Landscape Design and Outdoor Living Construction</h1>
-        <p>Mesa Wren works with Phoenix homeowners across Arcadia, Biltmore, North Phoenix, and the broader Phoenix metro to build outdoor spaces that perform in Arizona conditions. We understand Phoenix lot types, irrigation infrastructure, and the design priorities that make sense for desert-urban living.</p>
+        <p class="eyebrow">Phoenix</p>
+        <h1>Phoenix landscape design and outdoor living</h1>
+        <p>Outdoor kitchens, shade, turf and desert planting for Phoenix homes, built for long summers and real use.</p>
         <div class="page-hero__actions">
-          <a href="/free-consultation?city=Phoenix&source=location_page&autostart=1" class="btn btn--solid">Plan My Phoenix Project</a>
-          <a href="/portfolio" class="btn btn--ghost">View Portfolio</a>
+          <a href="/free-consultation?city=Phoenix&amp;type=project&amp;source=location_page&amp;autostart=1" class="btn btn--solid" data-keep-href>Plan my Phoenix project</a>
         </div>
       </div>
     </section>
 
-    <section class="page-section">
+    <section class="page-section local-decision" aria-labelledby="local-decision-title">
       <div class="container">
-        <header class="page-section__header reveal">
-          <p class="eyebrow">Local Knowledge</p>
-          <h2 class="section-title">What Makes Phoenix Projects Different</h2>
-        </header>
-        <div class="reveal" style="max-width:760px;">
-          <p>Phoenix is one of the most varied landscape markets in Arizona. The flood-irrigated lots of Arcadia Proper sit a few miles from the drought-tolerant xeriscapes of central Phoenix. The historic home neighborhoods near Camelback Mountain have completely different constraints than the newer construction in North Phoenix near Norterra and Happy Valley.</p>
-          <p style="margin-top:1rem;">Arcadia in particular is a market we know well. Original Arcadia homes sit on flood-irrigated lots — often with mature citrus trees and established turf — that require careful transition planning when homeowners want to modernize without losing the character of the neighborhood. We've navigated SRP flood irrigation schedules, Phoenix historic home landscape guidelines, and the dense lot spacing between Camelback Road and Indian School more times than we can count.</p>
-          <p style="margin-top:1rem;">North Phoenix is a different story: newer construction, HOA communities like Norterra and Desert Ridge, larger lots, and homeowners who want resort-style outdoor living from scratch. These projects move faster but require the same attention to drainage, shade planning, and heat-appropriate materials.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="page-section page-section--alt">
-      <div class="container">
-        <header class="page-section__header reveal">
-          <p class="eyebrow">What We Build Here</p>
-          <h2 class="section-title">Most Requested Projects in Phoenix</h2>
-        </header>
-        <ul class="topic-list">
-          <li class="reveal">
-            <h3>Xeriscape and Desert-Contemporary Conversions</h3>
-            <p>Phoenix homeowners are converting turf and legacy landscaping to drought-tolerant, water-smart designs at a steady pace. We handle the full scope — removal, grading, plant selection, drip irrigation, and a finished desert aesthetic that actually looks intentional rather than just rocks and gravel.</p>
-            <a href="/services/desert-landscaping">Explore desert landscaping</a>
-          </li>
-          <li class="reveal">
-            <h3>Arcadia-Style Backyard Remodels</h3>
-            <p>Arcadia homeowners typically want to modernize an older yard without losing the lush, tree-heavy character that makes the neighborhood distinct. We specialize in transitions that preserve mature trees and existing irrigation infrastructure while upgrading hardscape and entertaining zones.</p>
-            <a href="/services/landscape-design">Explore landscape design</a>
-          </li>
-          <li class="reveal">
-            <h3>Outdoor Kitchen and Fire Features</h3>
-            <p>Phoenix weather allows outdoor entertaining 9 months of the year. We design outdoor kitchens and fire features with the utility connections, shade positioning, and material durability that Phoenix conditions require. Gas lines, electrical, and plumbing are all coordinated as part of the design phase.</p>
-            <a href="/services/outdoor-kitchens">Explore outdoor kitchens</a>
-          </li>
-          <li class="reveal">
-            <h3>Irrigation Efficiency Upgrades</h3>
-            <p>Inefficient irrigation is one of the most common issues in Phoenix yards — especially in neighborhoods with older drip systems or legacy flood irrigation that hasn't been properly converted. We redesign and zone irrigation for water efficiency without sacrificing plant health.</p>
-            <a href="/services/irrigation">Explore irrigation</a>
-          </li>
+        <h2 class="section-title" id="local-decision-title">Where Phoenix projects usually start</h2>
+        <ul class="local-cards">
+          <li class="local-card"><h3>Shade first</h3><p>A pergola or covered patio often decides whether the yard gets used from May to October.</p></li>
+          <li class="local-card"><h3>Water and irrigation</h3><p>Drip zones and low-water planting that cut overspray and keep plants healthy.</p></li>
+          <li class="local-card"><h3>One finished zone</h3><p>Many homeowners finish one area well, then add to it, instead of spreading a budget thin.</p></li>
         </ul>
       </div>
     </section>
 
-    <section class="page-section">
+    <section class="page-section page-section--alt local-examples" aria-labelledby="local-examples-title">
       <div class="container">
-        <header class="page-section__header reveal">
-          <p class="eyebrow">Neighborhoods We Serve</p>
-          <h2 class="section-title">Phoenix Areas We Know Well</h2>
-        </header>
-        <ul class="checklist reveal">
-          <li>Arcadia and Arcadia Lite — flood-irrigated lots, mature citrus, historic character</li>
-          <li>Biltmore — premium finishes, entertaining focus, high-end material selections</li>
-          <li>North Phoenix / Norterra / Desert Ridge — newer construction, HOA communities, resort-style builds</li>
-          <li>Central Phoenix — drought-tolerant conversions, smaller lots, urban outdoor living</li>
-          <li>Ahwatukee — family-oriented yards, turf, shade structures, and functional outdoor spaces</li>
+        <h2 class="section-title" id="local-examples-title">Nearby examples</h2>
+        <ul class="local-examples__grid">
+          <li>
+            <figure class="local-example">
+              <picture>
+                <source type="image/avif" srcset="img/projects/shade-structure-640.avif 640w, img/projects/shade-structure-1280.avif 1280w" sizes="(max-width: 768px) 100vw, 33vw" />
+                <img src="img/projects/shade-structure-640.avif" alt="Pergola with string lights over an outdoor kitchen, paver patio and turf in Phoenix" loading="lazy" decoding="async" width="1000" height="668" />
+              </picture>
+              <figcaption>Pergola kitchen · Phoenix</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="local-example">
+              <picture>
+                <source type="image/avif" srcset="img/projects/slide4-640.avif 640w, img/projects/slide4-1280.avif 1280w" sizes="(max-width: 768px) 100vw, 33vw" />
+                <img src="img/projects/slide4-640.avif" alt="Paver steps, turf with stepping pavers and lounge seating beside a pool in North Phoenix" loading="lazy" decoding="async" width="1620" height="860" />
+              </picture>
+              <figcaption>Turf and paver pool deck · North Phoenix</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure class="local-example">
+              <picture>
+                <source type="image/avif" srcset="img/projects/slide3-640.avif 640w, img/projects/slide3-1280.avif 1280w" sizes="(max-width: 768px) 100vw, 33vw" />
+                <img src="img/projects/slide3-640.avif" alt="Fire table on a paver patio beside a lit pool in Mesa" loading="lazy" decoding="async" width="1630" height="860" />
+              </picture>
+              <figcaption>Fire table patio · Mesa</figcaption>
+            </figure>
+          </li>
         </ul>
-      </div>
-    </section>
-
-    <section class="faq page-section page-section--alt">
-      <div class="container">
-        <header class="faq__header reveal">
-          <p class="eyebrow">Phoenix FAQ</p>
-          <h2 class="section-title">Questions Phoenix Homeowners Ask</h2>
-        </header>
-        <div class="faq__list">
-          <article class="faq-item reveal">
-            <button class="faq__question" type="button" aria-expanded="false">
-              <span>What landscaping services are most requested in Phoenix?</span>
-              <span class="faq__icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq__answer">
-              <p>Xeriscape conversions, outdoor kitchen installations, patio hardscape upgrades, and irrigation efficiency redesigns are the most common requests we see across Phoenix. Arcadia-area homeowners frequently come to us for backyard modernization projects that preserve mature trees and flood irrigation infrastructure while upgrading the aesthetic and entertainment function of the space.</p>
-            </div>
-          </article>
-          <article class="faq-item reveal">
-            <button class="faq__question" type="button" aria-expanded="false">
-              <span>Can you work with existing flood irrigation in Arcadia?</span>
-              <span class="faq__icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq__answer">
-              <p>Yes. Arcadia flood irrigation runs on SRP schedules and is part of what gives those lots their distinctive character. We plan around existing irrigation infrastructure rather than removing it where it makes sense. For homeowners who want to transition away from flood irrigation, we design drip and spray systems that maintain soil health for established trees and plants during the conversion period.</p>
-            </div>
-          </article>
-          <article class="faq-item reveal">
-            <button class="faq__question" type="button" aria-expanded="false">
-              <span>How long does a Phoenix backyard project typically take?</span>
-              <span class="faq__icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq__answer">
-              <p>Most full Phoenix backyard builds run 3–7 weeks from agreement to final walkthrough. Hardscape-focused projects (patio, retaining walls, outdoor kitchen) typically move faster than projects with significant planting, which need proper scheduling around season and irrigation establishment. We provide a specific construction timeline during the design phase — not after you've signed.</p>
-            </div>
-          </article>
-          <article class="faq-item reveal">
-            <button class="faq__question" type="button" aria-expanded="false">
-              <span>What plants work best in Phoenix heat?</span>
-              <span class="faq__icon" aria-hidden="true">+</span>
-            </button>
-            <div class="faq__answer">
-              <p>Native and desert-adapted species perform best in Phoenix — Palo Verde, Desert Willow, Ironwood, Saguaro, Brittlebush, Lantana, Ruellia, and Agave varieties are all reliable performers. For homeowners who want a lush green look without high water use, we use shade-tolerant succulents, drip-irrigated shrubs, and strategic positioning to reduce direct sun exposure on water-sensitive plants. We don't spec plants that look great at install and fail in the second summer.</p>
-            </div>
-          </article>
+        <p class="local-guides"><span>Helpful next reads:</span> <a href="/landscaping-cost-scottsdale">Landscaping cost guide</a><span aria-hidden="true"> · </span><a href="/xeriscape-vs-turf-arizona">Turf or xeriscape?</a><span aria-hidden="true"> · </span><a href="/process">How a project works</a></p>
+        <div class="local-examples__action">
+          <a href="/free-consultation?city=Phoenix&amp;type=project&amp;source=location_page&amp;autostart=1" class="btn btn--solid" data-keep-href>Plan my Phoenix project</a>
         </div>
       </div>
     </section>
-
-    <section class="page-section">
-      <div class="container" style="text-align:center;">
-        <header class="page-section__header reveal">
-          <p class="eyebrow">Start Here</p>
-          <h2 class="section-title">Request Your Free Phoenix Quote</h2>
-          <p>We'll come to your site, walk the yard, and give you a real scope with honest planning ranges — not a phone estimate or a generic quote.</p>
-        </header>
-        <div class="page-hero__actions reveal" style="justify-content:center;margin-top:1.5rem;">
-          <a href="/free-consultation?city=Phoenix&source=location_page&autostart=1" class="btn btn--solid">Plan My Phoenix Project</a>
-          <a href="/portfolio" class="btn btn--ghost">View Portfolio</a>
-        </div>
-      </div>
-    </section>
-
   </main>
 
   <footer class="footer">
@@ -382,7 +284,7 @@
     <a href="/free-consultation?city=Phoenix&source=location_page&autostart=1" class="btn btn--outline-dark">Try a sample quote</a>
   </div>
 
-  <script src="/site-config.js?v=20261128p4c" defer></script>
-  <script src="/script.min.js?v=20261128p4c" defer></script>
+  <script src="/site-config.js?v=20261128p5f" defer></script>
+  <script src="/script.min.js?v=20261128p5f" defer></script>
 </body>
 </html>
