@@ -4164,16 +4164,63 @@
     return '';
   }
 
+  function isProgressFieldVisible(field) {
+    if (field.type === 'hidden' || field.disabled) return false;
+    var target = field;
+    if (field.type === 'radio' || field.type === 'checkbox') {
+      target = field.closest('label, fieldset, .form-group, .consent-check') || field;
+    }
+    if (target.hidden || target.closest('[hidden]')) return false;
+    var style = window.getComputedStyle(target);
+    if (style.display === 'none' || style.visibility === 'hidden') return false;
+    return target.getClientRects().length > 0;
+  }
+
+  function isProgressFieldFilled(field) {
+    if (field.tagName === 'SELECT') {
+      var option = field.options[field.selectedIndex];
+      if (!option || String(option.value || '').trim() === '') return false;
+      // A select still on the option the page loaded with is a default, not a choice.
+      return field.dataset.progressTouched === 'true' || !option.defaultSelected;
+    }
+    var value = String(field.value || '').trim();
+    if (!value) return false;
+    // A value that came from the page's markup or a prefill is not the visitor's input.
+    return field.dataset.progressTouched === 'true' || value !== String(field.defaultValue || '').trim();
+  }
+
   function updateFormProgress() {
     if (!form || !progressFill || !progressText || !progressBar) return;
-    var required = Array.from(form.querySelectorAll('[required]'));
-    var filled = required.filter(function (field) {
-      return field.type === 'checkbox'
-        ? field.checked
-        : field.value.trim() !== '';
+    var groups = {};
+    var order = [];
+    Array.from(form.querySelectorAll('[required]')).forEach(function (field) {
+      if (!isProgressFieldVisible(field)) return;
+      var key = field.type === 'radio' ? 'radio:' + field.name : 'field:' + order.length;
+      if (!groups[key]) {
+        groups[key] = [];
+        order.push(key);
+      }
+      groups[key].push(field);
+    });
+    if (form.dataset.progressBound !== 'true') {
+      form.dataset.progressBound = 'true';
+      ['input', 'change'].forEach(function (type) {
+        form.addEventListener(type, function (event) {
+          if (event.isTrusted && event.target && event.target.dataset) event.target.dataset.progressTouched = 'true';
+        }, true);
+      });
+    }
+    var filled = order.filter(function (key) {
+      var fields = groups[key];
+      if (fields[0].type === 'radio') {
+        return fields.some(function (field) { return field.checked && field.dataset.progressTouched === 'true'; })
+          || fields.some(function (field) { return field.checked && !field.defaultChecked; });
+      }
+      if (fields[0].type === 'checkbox') return fields[0].checked;
+      return isProgressFieldFilled(fields[0]);
     }).length;
 
-    var percent = required.length ? Math.round((filled / required.length) * 100) : 0;
+    var percent = order.length ? Math.round((filled / order.length) * 100) : 0;
     progressFill.style.width = percent + '%';
     progressText.textContent = percent + '% complete';
     progressBar.setAttribute('aria-valuenow', String(percent));
