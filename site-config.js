@@ -556,7 +556,7 @@
       licenseVerifyUrl: 'https://roc.az.gov/contractor-search',
       bondVerifyUrl: '',
       licenseNumbers: [],
-      licensePrompt: 'Verify any Arizona contractor\'s license at the official ROC search.',
+      licensePrompt: 'Check any contractor at the Arizona ROC.',
       bondPrompt: 'Bond and insurance documentation is provided during project review so you can review current coverage before project start.',
       insuranceStatement: 'Current insurance and bonding documentation is available during project review for full transparency.',
       responsePromise: 'Most new project requests receive a response within one business day, often sooner.',
