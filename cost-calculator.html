@@ -24,9 +24,9 @@
   <link rel="canonical" href="https://demo.tryarroyo.com/cost-calculator" />
     <link rel="preload" as="font" href="/fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtKky2F7g.woff2" type="font/woff2" crossorigin />
   <link rel="preload" as="font" href="/fonts/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K6z9mXg.woff2" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/fonts.min.css?v=20261128p5f" />
-  <link rel="stylesheet" href="/styles.min.css?v=20261128p5f" />
-  <link rel="stylesheet" href="/pages.min.css?v=20261128p5f" />
+  <link rel="stylesheet" href="/fonts.min.css?v=20261127p3plus" />
+  <link rel="stylesheet" href="/styles.min.css?v=20261127p3plus" />
+  <link rel="stylesheet" href="/pages.min.css?v=20261127p3plus" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -74,7 +74,7 @@
         <a href="tel:4805550142" class="nav__call" data-site-phone-link>
           <span data-site-phone-display>(480) 555-0142</span>
         </a>
-        <a href="/free-consultation?source=calculator_page&autostart=1" class="nav__cta" data-calc-review-link>Try a sample quote</a>
+        <a href="/free-consultation?source=calculator_page&autostart=1" class="nav__cta" data-calc-review-link>Get a Free Quote</a>
       </div>
     </div>
   </header>
@@ -90,7 +90,7 @@
       <a href="/financing" class="nav__overlay-link">Financing</a>
       <a href="/cost-calculator" class="nav__overlay-link" aria-current="page">Cost Calculator</a>
       <a href="/free-consultation?source=calculator_menu&autostart=1" class="nav__overlay-link">Contact</a>
-      <a href="/free-consultation?source=calculator_menu&autostart=1" class="nav__overlay-link nav__overlay-cta" data-calc-review-link>Try a sample quote</a>
+      <a href="/free-consultation?source=calculator_menu&autostart=1" class="nav__overlay-link nav__overlay-cta" data-calc-review-link>Get a Free Quote</a>
     </nav>
     <div class="nav__overlay-contact">
       <a href="tel:4805550142" data-site-phone-link data-site-phone-display>(480) 555-0142</a>
@@ -109,23 +109,29 @@
   </nav>
 
   <main id="main-content">
-    <section class="page-hero page-hero--short calc-hero">
+    <section class="page-hero">
       <div class="page-hero__bg" style="background-image:url('img/projects/slide3-1280.avif')"></div>
       <div class="page-hero__overlay"></div>
       <div class="container page-hero__inner">
-        <p class="eyebrow">Cost calculator</p>
-        <h1>Estimate a starter planning range for your yard</h1>
-        <p>Pick a project type and a few details. The range updates as you go.</p>
+        <p class="eyebrow">Starter Planning Range</p>
+        <h1>Estimate your landscape budget before you book</h1>
+        <p>Use this calculator to estimate a starter planning range. Full-yard, estate, utility, and phased scopes may differ once the team reviews site conditions.</p>
+        <div class="page-hero__actions">
+          <a href="#calculator-inputs" class="btn btn--solid">Use the Calculator</a>
+          <a href="/resources" class="btn btn--ghost">Browse resources</a>
+        </div>
       </div>
     </section>
 
-    <section class="page-section calc" id="calculator-inputs" aria-label="Cost calculator">
-      <div class="container calc__layout">
-        <form class="calc__inputs" onsubmit="return false" aria-labelledby="calc-inputs-title">
-          <h2 class="calc__heading" id="calc-inputs-title">Your project</h2>
-          <a href="#calc-result" class="calc__jump">Jump to my estimate</a>
-          <div class="form-field">
-            <label for="calc-service">Project type</label>
+    <section class="page-section" id="calculator-inputs">
+      <div class="container">
+        <div class="page-grid">
+          <article class="page-card reveal reveal--scale">
+            <div class="page-card__body">
+              <p class="eyebrow">Project Inputs</p>
+              <h2 class="section-title">Tell us a little about the scope</h2>
+              <div class="form-field">
+                <label for="calc-service">Project type</label>
                 <select id="calc-service">
                   <option value="hardscaping" selected>Hardscaping</option>
                   <option value="landscape-design">Landscape design plan (design only)</option>
@@ -137,70 +143,70 @@
                   <option value="irrigation">Irrigation</option>
                   <option value="desert-landscaping">Desert / Drought-Tolerant Design</option>
                 </select>
-          </div>
-          <div class="form-field">
-            <label for="calc-size">Approximate yard size</label>
-            <input type="range" id="calc-size" min="500" max="5000" step="100" value="1800" aria-describedby="calc-size-display" />
-            <p class="form-note">Current size: <strong id="calc-size-display">1,800 sq ft</strong></p>
-          </div>
-          <div class="calc__row">
-            <div class="form-field">
-              <label for="calc-finish">Finish level</label>
-              <select id="calc-finish">
-                <option value="simple">Simple refresh</option>
-                <option value="standard" selected>Standard upgrade</option>
-                <option value="premium">Premium custom build</option>
-              </select>
+              </div>
+              <div class="form-field">
+                <label for="calc-size">Approximate yard size</label>
+                <input type="range" id="calc-size" min="500" max="5000" step="100" value="1800" />
+                <p class="form-note">Current size: <strong id="calc-size-display">1,800 sq ft</strong></p>
+              </div>
+              <div class="form-field">
+                <label for="calc-finish">Finish level</label>
+                <select id="calc-finish">
+                  <option value="simple">Simple refresh</option>
+                  <option value="standard" selected>Standard upgrade</option>
+                  <option value="premium">Premium custom build</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="calc-features">Major features</label>
+                <select id="calc-features">
+                  <option value="1">One major feature</option>
+                  <option value="2" selected>Two major features</option>
+                  <option value="3">Three major features</option>
+                  <option value="4">Four or more features</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="calc-timeline">Timeline</label>
+                <select id="calc-timeline">
+                  <option value="flexible">Flexible</option>
+                  <option value="this-season" selected>This season</option>
+                  <option value="asap">ASAP</option>
+                </select>
+              </div>
+              <button type="button" class="btn btn--solid" id="calc-update">Update estimate</button>
             </div>
-            <div class="form-field">
-              <label for="calc-features">Major features</label>
-              <select id="calc-features">
-                <option value="1">One major feature</option>
-                <option value="2" selected>Two major features</option>
-                <option value="3">Three major features</option>
-                <option value="4">Four or more features</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-field">
-            <label for="calc-timeline">Timeline</label>
-            <select id="calc-timeline">
-              <option value="flexible">Flexible</option>
-              <option value="this-season" selected>This season</option>
-              <option value="asap">ASAP</option>
-            </select>
-          </div>
-        </form>
+          </article>
 
-        <div class="calc__result" id="calc-result" tabindex="-1">
-          <div class="calc__card" aria-labelledby="calc-result-label">
-            <p class="calc__label" id="calc-result-label">Starter planning range</p>
-            <p class="calc__range" id="calc-range">$0 to $0</p>
-            <p class="calc__qualifier" id="calc-qualifier">A planning range, not a quote. Site review, access and materials change it.</p>
-            <p class="calc__summary" id="calc-summary">Choose a project type and the calculator will estimate a starter planning range.</p>
-            <p class="sr-only" id="calc-announcement" role="status" aria-live="polite"></p>
-            <a href="/free-consultation?source=calculator_page&amp;autostart=1" class="btn btn--solid calc__ask" id="calc-review-link" data-calc-review-link>Ask about this estimate</a>
-            <p class="calc__ask-note">Opens a sample quote with this range and your inputs as notes you can edit. It is not entered as your budget.</p>
-          </div>
-          <div class="calc__budget">
-            <label for="calc-my-budget">My budget <span class="field-optional">Optional</span></label>
-            <select id="calc-my-budget">
-              <option value="">I'd rather not say</option>
-              <option value="$10,000 - $25,000">$10,000 - $25,000</option>
-              <option value="$25,000 - $60,000">$25,000 - $60,000</option>
-              <option value="$60,000 - $150,000">$60,000 - $150,000</option>
-              <option value="$150,000+">$150,000+</option>
-              <option value="Not sure yet">Not sure yet</option>
-            </select>
-            <p class="calc__budget-note">Only sent if you pick one. It stays separate from the estimate.</p>
-          </div>
+          <article class="page-card reveal reveal--scale">
+            <div class="page-card__body">
+              <p class="eyebrow">Starter Range</p>
+              <h2 class="section-title" id="calc-range">$0 - $0</h2>
+              <p id="calc-summary">Choose a project type and the calculator will estimate a starter planning range.</p>
+              <p class="sr-only" id="calc-announcement" role="status" aria-live="polite"></p>
+              <div class="financing-note financing-note--panel" id="calc-note">Starter planning range only. Projects below our normal build minimum may be referred or phased, and full-yard scopes may differ after site review.</div>
+              <ul class="checklist" id="calc-drivers">
+                <li>Project scope and finish level</li>
+                <li>Approximate yard size</li>
+                <li>Utility, drainage, and access needs</li>
+                <li>Number of major features</li>
+              </ul>
+              <div class="page-hero__actions">
+                <a href="/free-consultation?source=calculator_page&autostart=1" class="btn btn--solid" id="calc-review-link" data-calc-review-link>Start Budget Review</a>
+                <a href="/financing" class="btn btn--outline-dark">View financing</a>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
     <section class="page-section page-section--alt" id="planning-ranges">
       <div class="container">
-        <h2 class="section-title">Where different projects usually land</h2>
+        <header class="page-section__header reveal">
+          <p class="eyebrow">Typical Planning Ranges</p>
+          <h2 class="section-title">A rough sense of where different projects usually land</h2>
+        </header>
         <div class="comparison-table-wrap">
           <table class="comparison-table">
             <thead>
@@ -211,10 +217,30 @@
             </thead>
             <tbody data-calc-range-table>
               <tr><td>Hardscaping</td><td>$10,000 - $40,000</td></tr>
+              <tr><td>Landscape design plan (design only)</td><td>$5,000 - $15,000</td></tr>
+              <tr><td>Outdoor Kitchens</td><td>$20,000 - $60,000</td></tr>
+              <tr><td>Fire Features</td><td>$5,000 - $20,000</td></tr>
+              <tr><td>Outdoor Lighting</td><td>$3,000 - $18,000</td></tr>
+              <tr><td>Pergola / Shade Structure</td><td>$8,000 - $45,000</td></tr>
+              <tr><td>Artificial Turf</td><td>$5,000 - $15,000</td></tr>
+              <tr><td>Irrigation</td><td>$2,000 - $10,000</td></tr>
+              <tr><td>Desert / Drought-Tolerant Design</td><td>$8,000 - $35,000</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="calc__guide">More detail is in the <a href="/landscaping-cost-scottsdale">landscaping cost guide</a>.</p>
+      </div>
+    </section>
+
+    <section class="page-section">
+      <div class="container">
+        <div class="thank-you-card reveal">
+          <h2>Need a more exact number?</h2>
+          <p>Use the calculator as a planning tool, then let the project review refine scope, materials, and phasing into a project range for your yard.</p>
+          <div class="page-hero__actions">
+            <a href="/free-consultation?source=calculator_page&autostart=1" class="btn btn--solid" data-calc-review-link>Refine My Estimate</a>
+            <a href="/landscaping-cost-scottsdale" class="btn btn--outline-dark">View the cost guide</a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -292,7 +318,7 @@
       <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
       Call Now
     </a>
-    <a href="/free-consultation?source=calculator_page&autostart=1" class="btn btn--outline-dark" data-calc-review-link>Try a sample quote</a>
+    <a href="/free-consultation?source=calculator_page&autostart=1" class="btn btn--outline-dark" data-calc-review-link>Get a Free Quote</a>
   </div>
 
   <script>
@@ -317,8 +343,7 @@
       var finishField = document.getElementById('calc-finish');
       var featureField = document.getElementById('calc-features');
       var timelineField = document.getElementById('calc-timeline');
-      var budgetField = document.getElementById('calc-my-budget');
-      var qualifierField = document.getElementById('calc-qualifier');
+      var updateButton = document.getElementById('calc-update');
       var rangeField = document.getElementById('calc-range');
       var summaryField = document.getElementById('calc-summary');
       var announcementField = document.getElementById('calc-announcement');
@@ -343,31 +368,23 @@
         return currency.format(low) + ' - ' + currency.format(high);
       }
 
-      function formatRangeWords(low, high) {
-        return currency.format(low) + ' to ' + currency.format(high);
-      }
-
       function mapGoalForReview(low, high, features) {
         if (high <= 25000) return 'Focused first phase';
         if (high >= 150000 || features >= 4) return 'Private estate project review';
         return 'Whole-yard design-build';
       }
 
-      function updateReviewLink(service, low, high, timeline, features, inputs) {
+      function updateReviewLink(service, low, high, timeline, features) {
         if (!reviewLinks.length) return;
         var params = new URLSearchParams({
           source: 'calculator_page',
           autostart: '1',
-          type: 'project',
           service: service.reviewService || service.label,
-          /* The estimate and inputs travel as editable context, never as the visitor's own budget. */
-          estimate_context: formatRange(low, high) + ' for ' + service.label + (inputs ? ' (' + inputs + ')' : ''),
+          /* The estimate travels as context, never as the visitor's own budget. */
+          estimate_context: formatRange(low, high) + ' for ' + service.label,
           project_goal: mapGoalForReview(low, high, features),
           estimated_timeline: timeline === 'asap' ? 'ASAP' : timeline === 'this-season' ? '1-3 months' : '3-6 months'
         });
-        /* 5.12: "My budget" is sent only when the visitor picks one. */
-        var myBudget = budgetField ? budgetField.value : '';
-        if (myBudget) params.set('budget_range', myBudget);
         reviewLinks.forEach(function (reviewLink) {
           reviewLink.href = '/free-consultation?' + params.toString();
         });
@@ -413,7 +430,7 @@
         var high = roundToNearest500(clamp(service.high * multiplier, low + 1000, 500000));
 
         sizeDisplay.textContent = size.toLocaleString('en-US') + ' sq ft';
-        rangeField.textContent = formatRangeWords(low, high);
+        rangeField.textContent = formatRange(low, high);
 
         var areaDrivenServices = ['landscape-design', 'hardscaping', 'artificial-turf', 'irrigation', 'desert-landscaping'];
         var usesAreaAsPrimaryDriver = areaDrivenServices.indexOf(serviceKey) >= 0;
@@ -425,7 +442,7 @@
 
         summaryField.textContent = summaryParts.join(', ');
 
-        if (driversField) driversField.innerHTML = [
+        driversField.innerHTML = [
           'Project type: ' + service.label,
           (usesAreaAsPrimaryDriver ? 'Approximate project area: ' : 'Site scale (not a unit-price calculation): ') + size.toLocaleString('en-US') + ' square feet',
           'Finish level: ' + (finish === 'premium' ? 'Premium custom build' : finish === 'simple' ? 'Simple refresh' : 'Standard upgrade'),
@@ -435,11 +452,8 @@
           return '<li>' + item + '</li>';
         }).join('');
 
-        var finishWords = finish === 'premium' ? 'premium finish' : finish === 'simple' ? 'simple refresh' : 'standard finish';
-        var inputWords = 'about ' + size.toLocaleString('en-US') + ' sq ft, ' + finishWords + ', ' + features + (features >= 4 ? '+' : '') + ' major feature' + (features === 1 ? '' : 's');
-        if (qualifierField) qualifierField.textContent = 'A planning range for ' + service.label.toLowerCase() + ', not a quote. Site review, access and materials change it.';
-        updateReviewLink(service, low, high, timeline, features, inputWords);
-        if (announcementField) announcementField.textContent = 'Updated planning range: ' + formatRangeWords(low, high) + ' for ' + service.label + '.';
+        updateReviewLink(service, low, high, timeline, features);
+        if (announcementField) announcementField.textContent = 'Updated planning range: ' + formatRange(low, high) + ' for ' + service.label + '.';
       }
 
       /* One source for the ranges: the table is rebuilt from SERVICE_RANGES so it
@@ -458,12 +472,12 @@
       finishField.addEventListener('change', renderEstimate);
       featureField.addEventListener('change', renderEstimate);
       timelineField.addEventListener('change', renderEstimate);
-      if (budgetField) budgetField.addEventListener('change', renderEstimate);
+      updateButton.addEventListener('click', renderEstimate);
 
       renderEstimate();
     })();
   </script>
-  <script src="/site-config.js?v=20261128p5f" defer></script>
-  <script src="/script.min.js?v=20261128p5f" defer></script>
+  <script src="/site-config.js?v=20261127p3plus" defer></script>
+  <script src="/script.min.js?v=20261127p3plus" defer></script>
 </body>
 </html>

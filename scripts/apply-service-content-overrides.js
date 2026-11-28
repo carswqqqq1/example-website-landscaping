@@ -126,11 +126,5 @@ try {
   throw error;
 }
 
-// The service-detail pages carry pre-rendered copy (5.06), so rebuild them from the new data.
-execFileSync('node', [path.join(root, 'scripts', 'render-service-pages.js')], {
-  cwd: root,
-  stdio: 'inherit'
-});
-
 console.log(`Applied service content overrides from ${absoluteInputPath}`);
-console.log('Run npm run build:assets before deploying so services-data.min.js is regenerated (it also re-renders the service pages).');
+console.log('Run npm run build:assets before deploying so services-data.min.js is regenerated.');
