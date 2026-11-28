@@ -424,7 +424,7 @@
 .pf-lightbox {
   position: fixed;
   inset: 0;
-  z-index: 350;
+  z-index: 450;
   display: none;
 }
 .pf-lightbox.is-open {
@@ -530,6 +530,56 @@
 .pf-lightbox__close:focus-visible {
   outline: 3px solid rgba(255,255,255,.45);
   outline-offset: 2px;
+}
+
+/* Real open button laid over each project figure (2.12) */
+.pf-item__open {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: inherit;
+}
+.pf-item__open:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: -3px;
+}
+/* The preview sits above the cookie notice and the sticky bar, which hide while it is open */
+body.has-pf-lightbox-open .cookie-banner,
+body.has-pf-lightbox-open .sticky-bar,
+body.has-pf-lightbox-open .scroll-top {
+  visibility: hidden;
+}
+.pf-lightbox__dialog {
+  max-height: 100dvh;
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  .pf-lightbox__dialog {
+    inset: .5rem;
+  }
+  .pf-lightbox__figure {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(220px, 1fr);
+    max-height: calc(100dvh - 1rem);
+  }
+  .pf-lightbox__figure img {
+    height: 100%;
+    max-height: calc(100dvh - 1rem);
+  }
+  .pf-lightbox__cap {
+    border-top: none;
+    border-left: 1px solid var(--paper-alt);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 /* CTA STRIP */

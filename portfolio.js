@@ -202,6 +202,8 @@
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('has-pf-lightbox-open');
+    setLightboxBackgroundInert(true);
     if (lightboxClose) lightboxClose.focus();
   }
 
@@ -210,6 +212,8 @@
     lightbox.classList.remove('is-open');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    document.body.classList.remove('has-pf-lightbox-open');
+    setLightboxBackgroundInert(false);
     currentLightboxIndex = -1;
     if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
       lastFocusedElement.focus();
@@ -247,38 +251,58 @@
     });
   });
 
-  items.forEach(function (item) {
-    item.setAttribute('tabindex', '0');
-    item.setAttribute('role', 'button');
-    item.setAttribute('aria-label', 'Open project preview: ' + extractProjectLabel(item));
-
-    item.addEventListener('click', function () {
-      openLightboxByItem(item);
+  /* Each figure keeps its figure semantics; a real button inside it opens
+     the preview, so keyboard and screen reader users get native behavior. */
+  function addOpenButton(container, label, onOpen) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'pf-item__open';
+    button.setAttribute('aria-label', label);
+    button.addEventListener('click', function (event) {
+      event.stopPropagation();
+      onOpen();
     });
+    container.appendChild(button);
+    container.addEventListener('click', function (event) {
+      if (event.target === button || event.defaultPrevented) return;
+      if (event.target.closest && event.target.closest('a')) return;
+      onOpen();
+    });
+    return button;
+  }
 
-    item.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        openLightboxByItem(item);
-      }
+  items.forEach(function (item) {
+    item.removeAttribute('tabindex');
+    item.removeAttribute('role');
+    addOpenButton(item, 'Open project preview: ' + extractProjectLabel(item), function () {
+      openLightboxByItem(item);
     });
   });
 
   if (storyMedia) {
-    storyMedia.setAttribute('tabindex', '0');
-    storyMedia.setAttribute('role', 'button');
-    storyMedia.setAttribute('aria-label', 'Open featured project preview');
-    storyMedia.addEventListener('click', function () {
+    if (window.getComputedStyle(storyMedia).position === 'static') storyMedia.style.position = 'relative';
+    addOpenButton(storyMedia, 'Open featured project preview', function () {
       var storyItem = getStoryLightboxItem();
       if (storyItem) {
         applyFilter(storyItem.dataset.cat || 'all');
         openLightboxByItem(storyItem);
       }
     });
-    storyMedia.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        storyMedia.click();
+  }
+
+  function setLightboxBackgroundInert(isInert) {
+    Array.prototype.slice.call(document.body.children).forEach(function (node) {
+      if (node === lightbox || node.tagName === 'SCRIPT') return;
+      if (isInert) {
+        if (node.hasAttribute('data-lightbox-inert')) return;
+        if (node.inert || node.getAttribute('aria-hidden') === 'true') return;
+        node.setAttribute('data-lightbox-inert', '');
+        node.setAttribute('aria-hidden', 'true');
+        if ('inert' in node) node.inert = true;
+      } else if (node.hasAttribute('data-lightbox-inert')) {
+        node.removeAttribute('data-lightbox-inert');
+        node.removeAttribute('aria-hidden');
+        if ('inert' in node) node.inert = false;
       }
     });
   }
