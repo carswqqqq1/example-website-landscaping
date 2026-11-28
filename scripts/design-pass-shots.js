@@ -5,7 +5,8 @@
  * Serves two local copies of the site (clean URLs, like the hosts do) and uses
  * Playwright's Chromium to capture each page at 1440 and 390 wide, above the
  * fold and full page, plus a few numbers worth checking by eye: page height,
- * horizontal overflow, tap targets under 44px, and a throttled mobile LCP.
+ * horizontal overflow, tap targets under 44px, a throttled mobile LCP (median
+ * of three runs, text gzipped like the hosts serve it) and text contrast.
  *
  * Usage:
  *   node scripts/design-pass-shots.js --before <dir> --after <dir> --out <dir>
@@ -16,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
+const zlib = require('zlib');
 
 const args = process.argv.slice(2);
 function arg(name) {
@@ -69,8 +71,15 @@ function serve(root) {
       const full = path.join(root, candidate);
       if (!full.startsWith(root)) break;
       if (fs.existsSync(full) && fs.statSync(full).isFile()) {
-        res.writeHead(200, { 'Content-Type': TYPES[path.extname(full).toLowerCase()] || 'application/octet-stream' });
-        fs.createReadStream(full).pipe(res);
+        const type = TYPES[path.extname(full).toLowerCase()] || 'application/octet-stream';
+        // Netlify and Cloudflare compress text, so the local server does too.
+        if (/text|javascript|json|xml|svg/.test(type) && /gzip/.test(req.headers['accept-encoding'] || '')) {
+          res.writeHead(200, { 'Content-Type': type, 'Content-Encoding': 'gzip' });
+          fs.createReadStream(full).pipe(zlib.createGzip()).pipe(res);
+        } else {
+          res.writeHead(200, { 'Content-Type': type });
+          fs.createReadStream(full).pipe(res);
+        }
         return;
       }
     }
@@ -88,6 +97,8 @@ async function settle(page) {
   if (await decline.isVisible().catch(() => false)) {
     await decline.click().catch(() => {});
   }
+  // Instant scrolling, so scrollTo lands before each capture (the site uses smooth scrolling).
+  await page.addStyleTag({ content: 'html, body { scroll-behavior: auto !important; }' });
   // Walk the page so lazy images load and reveal animations finish.
   const height = await page.evaluate(() => document.documentElement.scrollHeight);
   for (let y = 0; y < height; y += 400) {
@@ -97,11 +108,16 @@ async function settle(page) {
   await page.waitForTimeout(900);
   await page.evaluate(() => window.scrollTo(0, 0));
   // Show the first hero slide, held, so every run captures the same photo.
-  const firstDot = page.locator('.hero__dot[data-slide="0"]');
-  if (await firstDot.count()) {
-    await firstDot.click().catch(() => {});
-    const pause = page.locator('.hero__pause[aria-pressed="false"]');
-    if (await pause.count()) await pause.click().catch(() => {});
+  // Clicked from the page so it also works where the dots are hidden (phones).
+  const hasHero = await page.evaluate(() => {
+    const dot = document.querySelector('.hero__dot[data-slide="0"]');
+    if (!dot) return false;
+    dot.click();
+    const pause = document.querySelector('.hero__pause[aria-pressed="false"]');
+    if (pause) pause.click();
+    return true;
+  });
+  if (hasHero) {
     await page.mouse.move(1, 1);
     await page.waitForTimeout(2400);
   }
@@ -109,6 +125,7 @@ async function settle(page) {
   await page.evaluate(() => Promise.all(Array.from(document.images).map((img) =>
     img.complete ? null : new Promise((r) => { img.onload = img.onerror = r; setTimeout(r, 4000); })
   )));
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(700);
 }
 
@@ -277,7 +294,10 @@ async function mobileLcp(browser, base, pagePath) {
       await context.close();
     }
     for (const p of PAGES) {
-      report[source.label][`${p.name}-390`].throttledLcpMs = await mobileLcp(browser, base, p.path);
+      const runs = [];
+      for (let i = 0; i < 3; i++) runs.push(await mobileLcp(browser, base, p.path));
+      runs.sort((a, b) => a.lcp - b.lcp);
+      report[source.label][`${p.name}-390`].throttledLcpMs = Object.assign({}, runs[1], { runs: runs.map((r) => r.lcp) });
     }
     server.close();
   }

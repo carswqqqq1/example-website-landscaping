@@ -1188,6 +1188,20 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 }
 .service-gallery__label { font-size: 1rem; left: 1rem; bottom: .9rem; text-shadow: 0 1px 8px rgba(0,0,0,.55); }
 
+.service-proof-blurbs {
+  margin-top: clamp(1rem, 2vw, 1.5rem);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(.75rem, 1.5vw, 1.25rem);
+}
+.service-proof-blurbs__item {
+  padding: 1.25rem 1.25rem 1.25rem 1.4rem;
+  border-left: 3px solid var(--tan);
+  background: var(--paper);
+  border-radius: 0 12px 12px 0;
+}
+.service-proof-blurbs__item p { margin: 0; font-size: .9875rem; line-height: 1.65; color: #4a4640; }
+
 .service-quote-guide__panel--dark .eyebrow,
 .service-cta .eyebrow { color: rgba(255,255,255,.9); }
 
@@ -1199,6 +1213,7 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   .service-hero h1 { font-size: clamp(2.2rem, 9.6vw, 2.7rem); }
   .service-hero__sub { font-size: 1.0625rem; }
   .service-band { height: 72vw; min-height: 280px; }
+  .service-proof-blurbs { grid-template-columns: 1fr; }
   .service-gallery { grid-template-columns: 1fr; }
   .service-gallery__item:first-child { grid-column: auto; aspect-ratio: 3 / 2; }
 }
