@@ -2377,8 +2377,24 @@
     var passedHero = window.scrollY > Math.max(220, window.innerHeight * 0.35);
     var menuOpen = overlay && overlay.classList.contains('is-open');
     var drawerOpen = document.body.classList.contains('has-consult-drawer-open');
-    var shouldShow = isMobile && passedHero && !menuOpen && !drawerOpen && !isContactInView;
+    var cookieBannerUp = document.body.classList.contains('has-cookie-banner-visible');
+    var shouldShow = isMobile && passedHero && !menuOpen && !drawerOpen && !isContactInView && !cookieBannerUp;
     stickyBar.classList.toggle('is-visible', shouldShow);
+    setHiddenControlInert(stickyBar, !shouldShow, menuOpen || drawerOpen);
+  }
+
+  /* A fixed control that is visually hidden must not take keyboard focus. */
+  function setHiddenControlInert(element, isHidden, managedByOverlay) {
+    if (!element || managedByOverlay) return;
+    if (isHidden) {
+      element.setAttribute('aria-hidden', 'true');
+      if ('inert' in element) element.inert = true;
+      else element.setAttribute('tabindex', '-1');
+    } else {
+      element.removeAttribute('aria-hidden');
+      if ('inert' in element) element.inert = false;
+      else element.removeAttribute('tabindex');
+    }
   }
 
   function getPageSecondaryAction() {
@@ -2641,7 +2657,9 @@
     var menuOpen = overlay && overlay.classList.contains('is-open');
     var drawerOpen = document.body.classList.contains('has-consult-drawer-open');
     var shouldShow = window.scrollY > Math.max(420, window.innerHeight * 0.7);
-    scrollTopButton.classList.toggle('is-visible', shouldShow && !menuOpen && !drawerOpen);
+    var scrollTopVisible = shouldShow && !menuOpen && !drawerOpen;
+    scrollTopButton.classList.toggle('is-visible', scrollTopVisible);
+    setHiddenControlInert(scrollTopButton, !scrollTopVisible, menuOpen || drawerOpen);
   }
 
   function setBackgroundInertForMenu(isInert) {
@@ -5197,6 +5215,7 @@
       window.initSiteAnalytics();
     }
     document.body.classList.remove('has-cookie-banner-visible');
+    window.dispatchEvent(new Event('scroll'));
     banner.classList.remove('is-visible');
     document.documentElement.style.setProperty('--cookie-banner-space', '0px');
     window.removeEventListener('resize', syncCookieBannerSpace);

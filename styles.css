@@ -6573,3 +6573,12 @@ summary:focus-visible,
 
 /* 2.01 / 2.03: footer link to the current page renders as plain text */
 .footer a.is-current { text-decoration: none; cursor: default; opacity: .75; }
+
+/* 2.06: hidden fixed controls are also visibility:hidden (delayed so the fade still plays) */
+.sticky-bar,
+.scroll-top { visibility: hidden; }
+.sticky-bar { transition: opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; }
+.scroll-top { transition: opacity .3s, transform .3s, background .2s, box-shadow .2s, visibility 0s linear .3s; }
+.sticky-bar.is-visible,
+.scroll-top.is-visible { visibility: visible; transition-delay: 0s; }
+body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
