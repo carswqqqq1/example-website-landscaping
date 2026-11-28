@@ -6531,3 +6531,73 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
     background-image: image-set(url('img/projects/slide1-640.avif') type('image/avif'), url('img/projects/slide1.webp') type('image/webp'));
   }
 }
+
+/* ============================================================
+   PHASE 4 HOMEPAGE DESIGN PASS (with the 5.01 to 5.04 amendments)
+   ============================================================ */
+
+/* ----- 4.01 / 5.01 Quiet hero: eyebrow, short headline, one sentence, one filled action, one text link ----- */
+.hero__heading { max-width: 15ch; }
+.hero__actions { align-items: center; gap: .5rem 1.4rem; }
+.hero__text-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #fff;
+  font-weight: 600;
+  font-size: .95rem;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .25em;
+  text-shadow: 0 2px 12px rgba(0,0,0,.6);
+}
+.hero__text-link:hover { text-decoration-thickness: 2px; }
+.hero__text-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+/* 5.01: the demo line sits on a cream panel, not on the dark photo. */
+.hero .sample-preview:not([hidden]) {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--paper-alt);
+  box-shadow: 0 6px 20px rgba(0,0,0,.18);
+}
+.hero .sample-preview a { color: var(--green); }
+@media (max-width: 640px) {
+  .hero .sample-preview:not([hidden]) { font-size: .75rem; padding: .25rem .55rem; margin-bottom: .6rem; }
+  .hero__eyebrow { margin-bottom: .7rem; }
+  .hero__sub { margin-bottom: 1.25rem; }
+}
+
+/* ----- 4.01 Slim proof strip directly under the hero ----- */
+.owner-proof-strip--slim { background: var(--paper-alt); border: 0; }
+.owner-proof-strip--slim .owner-proof-strip__inner {
+  list-style: none;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem 2.5rem;
+  padding-block: 1.6rem;
+}
+.owner-proof-strip--slim .owner-proof-strip__item {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: .92rem;
+  line-height: 1.55;
+  color: var(--ink-light);
+}
+.owner-proof-strip--slim .owner-proof-strip__item strong {
+  display: block;
+  margin-bottom: .15rem;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.owner-proof-strip--slim a { color: var(--green); text-decoration: underline; text-underline-offset: .15em; }
+@media (max-width: 768px) {
+  .owner-proof-strip--slim .owner-proof-strip__inner { grid-template-columns: 1fr; gap: .85rem; padding-block: 1.25rem; }
+}
+/* 5.01: dots and the play control stay visible at every width so the photos can be browsed. */
+@media (min-width: 901px) and (max-width: 1320px) {
+  .hero__indicators { display: flex; }
+}

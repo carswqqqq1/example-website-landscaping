@@ -3844,6 +3844,8 @@
     : null;
   var heroPausedForMotion = Boolean(heroMotionPreference && heroMotionPreference.matches);
   var heroPausedByUser = false;
+  /* 5.01: slide 1 stays on screen until the visitor uses a dot or the play control. */
+  var heroAwaitingVisitor = true;
   var heroHeldByHover = false;
   var heroHeldByFocus = false;
   var heroPauseButton = null;
@@ -3955,7 +3957,7 @@
   }
 
   function carouselCanRun() {
-    return slides.length > 1 && !heroPausedForMotion && !heroPausedByUser &&
+    return slides.length > 1 && !heroAwaitingVisitor && !heroPausedForMotion && !heroPausedByUser &&
       !heroHeldByHover && !heroHeldByFocus && !document.hidden;
   }
 
@@ -3967,7 +3969,7 @@
 
   function syncPauseButton() {
     if (!heroPauseButton) return;
-    var paused = heroPausedByUser || heroPausedForMotion;
+    var paused = heroAwaitingVisitor || heroPausedByUser || heroPausedForMotion;
     heroPauseButton.setAttribute('aria-pressed', paused ? 'true' : 'false');
     heroPauseButton.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
     heroPauseButton.classList.toggle('is-paused', paused);
@@ -3975,6 +3977,8 @@
 
   dots.forEach(function (dot) {
     dot.addEventListener('click', function () {
+      heroAwaitingVisitor = false;
+      syncPauseButton();
       goToSlide(parseInt(this.dataset.slide, 10));
       /* Choosing a slide holds it while the dot keeps focus or hover. */
       startCarousel();
@@ -4001,7 +4005,13 @@
       heroPauseButton.className = 'hero__pause';
       heroPauseButton.innerHTML = '<span class="hero__pause-icon" aria-hidden="true"></span>';
       heroPauseButton.addEventListener('click', function () {
-        if (heroPausedForMotion) {
+        if (heroAwaitingVisitor) {
+          heroAwaitingVisitor = false;
+          heroPausedByUser = false;
+          heroPausedForMotion = false;
+          heroHeldByFocus = false;
+          heroHeldByHover = false;
+        } else if (heroPausedForMotion) {
           heroPausedForMotion = false;
           heroPausedByUser = false;
         } else {
@@ -4015,10 +4025,6 @@
     }
 
     preloadHeroSlide(0);
-    if (!heroPausedForMotion) {
-      var initialHeroPreloadDelay = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 3500 : 2000;
-      scheduleHeroPreload(1, initialHeroPreloadDelay);
-    }
     startCarousel();
   }
 
