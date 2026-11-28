@@ -28,6 +28,12 @@ vm.runInContext(read('services.js'), context);
 
 const indent = (html, pad) => html.replace(/<article /g, '\n' + pad + '<article ').trim();
 let page = read('services.html');
+if (page.includes('data-hub-static')) {
+  /* 5.05: the hub is now a hand-authored, grouped directory that lists every
+     service in the HTML, so there is nothing to render. */
+  console.log('services.html hub is hand-authored (5.05); nothing to render');
+  process.exit(0);
+}
 const replaceSlot = (id, markup) => {
   const marked = new RegExp('(<div[^>]*id="' + id + '"[^>]*>)[\\s\\S]*?</div><!-- /' + id + ' -->');
   const empty = new RegExp('(<div[^>]*id="' + id + '"[^>]*>)</div>');

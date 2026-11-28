@@ -848,11 +848,14 @@
 
   // Static pages ship the demo label; swap every quote button to the label this build uses.
   function applyQuoteLabels() {
-    var quoteLabelPattern = /^(?:Get a Free Quote|Try a sample quote)$/i;
+    var quoteLabelPattern = /^(?:Get a Free Quote|Try a sample quote)( for .+)?$/i;
     document.querySelectorAll('a, button').forEach(function (el) {
       if (el.children.length) return;
       var text = String(el.textContent || '').trim();
-      if (quoteLabelPattern.test(text) && text !== OFFER_LABEL) el.textContent = OFFER_LABEL;
+      var match = text.match(quoteLabelPattern);
+      if (!match) return;
+      var label = OFFER_LABEL + (match[1] || '');
+      if (text !== label) el.textContent = label;
     });
   }
 
