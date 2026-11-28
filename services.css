@@ -54,19 +54,19 @@ body[data-service-slug="hardscaping"] .service-hero__bg {
 }
 body[data-service-slug="outdoor-kitchens"] .service-hero__bg {
   background-image: image-set(
-    url('../img/projects/shade-structure-640.avif') type('image/avif'),
+    url('../img/projects/shade-structure-1280.avif') type('image/avif'),
     url('../img/projects/shade-structure.jpg') type('image/jpeg')
   );
 }
 body[data-service-slug="fire-features"] .service-hero__bg {
   background-image: image-set(
-    url('../img/projects/firepit-640.avif') type('image/avif'),
+    url('../img/projects/firepit-1280.avif') type('image/avif'),
     url('../img/projects/firepit.jpg') type('image/jpeg')
   );
 }
 body[data-service-slug="desert-landscaping"] .service-hero__bg {
   background-image: image-set(
-    url('../img/projects/zen-garden-640.avif') type('image/avif'),
+    url('../img/projects/zen-garden-1280.avif') type('image/avif'),
     url('../img/projects/zen-garden.jpg') type('image/jpeg')
   );
 }
@@ -90,16 +90,74 @@ body[data-service-slug="pergola-shade"] .service-hero__bg {
 }
 body[data-service-slug="irrigation"] .service-hero__bg {
   background-image: image-set(
-    url('../img/projects/zen-garden-640.avif') type('image/avif'),
+    url('../img/projects/zen-garden-1280.avif') type('image/avif'),
     url('../img/projects/zen-garden.jpg') type('image/jpeg')
   );
+}
+
+/* Phones get the 640px hero, matching the preload in each service page. */
+@media (max-width: 768px) {
+  body[data-service-slug="landscape-design"] .service-hero__bg {
+    background-image: image-set(
+      url('../img/projects/slide6-640.avif') type('image/avif'),
+      url('../img/projects/slide6.webp') type('image/webp')
+    );
+  }
+  body[data-service-slug="hardscaping"] .service-hero__bg {
+    background-image: image-set(
+      url('../img/projects/fireplace-640.avif') type('image/avif'),
+      url('../img/projects/fireplace.jpg') type('image/jpeg')
+    );
+  }
+  body[data-service-slug="outdoor-kitchens"] .service-hero__bg {
+    background-image: image-set(
+      url('../img/projects/shade-structure-640.avif') type('image/avif'),
+      url('../img/projects/shade-structure.jpg') type('image/jpeg')
+    );
+  }
+  body[data-service-slug="fire-features"] .service-hero__bg {
+    background-image: image-set(
+      url('../img/projects/firepit-640.avif') type('image/avif'),
+      url('../img/projects/firepit.jpg') type('image/jpeg')
+    );
+  }
+  body[data-service-slug="desert-landscaping"] .service-hero__bg {
+    background-image: image-set(
+      url('../img/projects/zen-garden-640.avif') type('image/avif'),
+      url('../img/projects/zen-garden.jpg') type('image/jpeg')
+    );
+  }
+  body[data-service-slug="artificial-turf"] .service-hero__bg {
+    background-image: image-set(
+      url('../img/projects/slide4-640.avif') type('image/avif'),
+      url('../img/projects/slide4.webp') type('image/webp')
+    );
+  }
+  body[data-service-slug="outdoor-lighting"] .service-hero__bg {
+    background-image: image-set(
+      url('../img/projects/slide8-640.avif') type('image/avif'),
+      url('../img/projects/slide8.webp') type('image/webp')
+    );
+  }
+  body[data-service-slug="pergola-shade"] .service-hero__bg {
+    background-image: image-set(
+      url('../img/projects/fireplace-640.avif') type('image/avif'),
+      url('../img/projects/fireplace.jpg') type('image/jpeg')
+    );
+  }
+  body[data-service-slug="irrigation"] .service-hero__bg {
+    background-image: image-set(
+      url('../img/projects/zen-garden-640.avif') type('image/avif'),
+      url('../img/projects/zen-garden.jpg') type('image/jpeg')
+    );
+  }
 }
 
 .services-hub-hero__overlay,
 .service-hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.62) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.70) 100%);
 }
 
 .services-hub-hero__content,
@@ -122,17 +180,18 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 
 .services-hub-hero .eyebrow,
 .service-hero .eyebrow {
-  color: rgba(255, 255, 255, 0.72);
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
 .services-hub-hero__sub,
 .service-hero__sub {
   margin-top: 0.95rem;
   max-width: 720px;
-  color: rgba(255, 255, 255, 0.95);
+  color: #fff;
   font-size: 1rem;
   line-height: 1.72;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
 .services-hub-hero__proof,
@@ -836,7 +895,7 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 .service-related__list li a {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 44px;
   border: 1px solid #dfd4c4;
   border-radius: 999px;
   padding: 0.54rem 0.95rem;
@@ -897,7 +956,7 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 .service-related__resource-list li a {
   display: inline-flex;
   align-items: center;
-  min-height: 38px;
+  min-height: 44px;
   border-radius: 10px;
   background: #f7f2ea;
   border: 1px solid #e3d7c7;

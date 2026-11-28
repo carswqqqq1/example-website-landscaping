@@ -2196,6 +2196,11 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .portfolio__item--wide {
   grid-column: span 2;
 }
+/* Desktop only: the last tile spans two columns so the third row has no empty cell. */
+@media (min-width: 1025px) {
+  .portfolio__grid { grid-auto-rows: 280px; }
+  .portfolio__item--wide-lg { grid-column: span 2; }
+}
 .portfolio__caption {
   position: absolute;
   bottom: 0;
@@ -2650,13 +2655,27 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
    ============================================================ */
 .areas {
   background: var(--white);
-  padding-block: clamp(4rem, 7vw, 6rem);
+  padding-block: clamp(2rem, 4vw, 3rem);
 }
 .areas__header {
   text-align: center;
   margin-bottom: clamp(1.4rem, 2.8vw, 2.2rem);
 }
 .areas__header .section-title { margin-top: .5rem; }
+.areas__line {
+  max-width: 760px;
+  margin-inline: auto;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink-light);
+}
+.areas__line a {
+  color: var(--green);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .areas__sub {
   margin: .82rem auto 0;
   max-width: 760px;
@@ -3737,9 +3756,12 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .turnstile-field {
   width: 100%;
-  min-height: 65px;
-  margin: .1rem 0;
+  min-height: 0;
+  margin: 0;
   overflow: hidden;
+}
+.turnstile-field:has(iframe) {
+  margin: .1rem 0;
 }
 .turnstile-status {
   min-height: 1.2rem;
@@ -3747,6 +3769,10 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   color: var(--ink-faint);
   font-size: .78rem;
   line-height: 1.5;
+}
+.turnstile-status:empty {
+  min-height: 0;
+  margin: 0;
 }
 .turnstile-status.is-error {
   color: #a31c1c;
@@ -3870,7 +3896,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .footer__top {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  grid-template-columns: 1.4fr repeat(4, minmax(0, 1fr));
   gap: 1.8rem;
   padding-bottom: 3.1rem;
   border-bottom: 1px solid rgba(255,255,255,.08);
@@ -3984,7 +4010,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   text-align: center;
   font-size: .9rem;
 }
-.footer__col h4 {
+.footer__col .footer__heading {
   font-family: var(--font-body);
   font-size: .69rem;
   font-weight: 700;
@@ -4540,7 +4566,10 @@ body.has-cookie-banner-visible .sticky-bar {
     -webkit-backdrop-filter: blur(3px);
   }
   .nav.is-scrolled {
-    background: rgba(255,255,255,.96);
+    background: #fff;
+    border-bottom: 1px solid #e4dccf;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   .nav__inner {
     height: 66px;
@@ -4968,8 +4997,7 @@ body.has-cookie-banner-visible .sticky-bar {
   .footer__col:last-child {
     order: 1;
   }
-  .footer__col:nth-of-type(2),
-  .footer__col:nth-of-type(3) {
+  .footer__col:not(:last-child) {
     order: 3;
   }
   .footer__brand > p {
@@ -4993,7 +5021,7 @@ body.has-cookie-banner-visible .sticky-bar {
   .footer__meta-item--contact {
     gap: .22rem;
   }
-  .footer__col h4 {
+  .footer__col .footer__heading {
     margin-bottom: .7rem;
   }
   .footer__col ul {
@@ -5095,8 +5123,7 @@ body.has-cookie-banner-visible .sticky-bar {
   .footer__col:last-child {
     order: 0;
   }
-  .footer__col:nth-of-type(2),
-  .footer__col:nth-of-type(3) {
+  .footer__col:not(:last-child) {
     order: 2;
   }
   .consult-drawer__panel {
@@ -5433,6 +5460,7 @@ body.has-nav-overlay-open .cookie-banner {
   body.has-cookie-banner-visible .footer {
     padding-bottom: calc(92px + var(--cookie-banner-space) + env(safe-area-inset-bottom));
   }
+  /* Compact single row: 12px text and 40px buttons keep the banner at 60px or less. */
   .cookie-banner {
     right: 0;
     top: auto;
@@ -5446,9 +5474,12 @@ body.has-nav-overlay-open .cookie-banner {
     gap: .55rem;
   }
   .cookie-banner p {
-    font-size: .72rem;
-    line-height: 1.38;
+    font-size: 12px;
+    line-height: 1.35;
     min-width: 0;
+  }
+  .cookie-banner p a {
+    min-height: 0;
   }
   .cookie-banner__actions {
     display: flex;
@@ -5457,10 +5488,11 @@ body.has-nav-overlay-open .cookie-banner {
   }
   .cookie-banner__accept, .cookie-banner__decline {
     width: auto;
-    min-height: 44px;
+    min-height: 40px;
+    height: 40px;
     text-align: center;
-    padding: .54rem .62rem;
-    font-size: .68rem;
+    padding: 0 .7rem;
+    font-size: 12px;
     white-space: nowrap;
   }
   .consult-drawer__backdrop {
@@ -5709,6 +5741,16 @@ body.has-nav-overlay-open .cookie-banner {
   font-weight: 500;
 }
 
+/* The breadcrumb sits at the top of the page, under the fixed header. On
+   phones the header is shorter and see-through, so the trail showed behind
+   the logo; hide it there (the JSON-LD breadcrumb still describes the page). */
+@media (max-width: 768px) {
+  .breadcrumbs,
+  .service-breadcrumb {
+    display: none;
+  }
+}
+
 /* ============================================================
    Loading skeletons
    ============================================================ */
@@ -5914,7 +5956,7 @@ body.has-nav-overlay-open .cookie-banner {
 .ticket-panel__title,
 .response-promise__eyebrow,
 .contact__quote strong,
-.footer__col h4,
+.footer__col .footer__heading,
 .footer__bottom .footer__sample-label,
 .sticky-bar__phone-label,
 .consult-drawer__eyebrow,
@@ -5948,7 +5990,7 @@ body.has-nav-overlay-open .cookie-banner {
 }
 .text-link:hover { text-decoration-thickness: 2px; }
 
-.footer__col h4 {
+.footer__col .footer__heading {
   font-size: .9375rem;
   font-weight: 600;
 }
@@ -6413,3 +6455,21 @@ summary:focus-visible,
   color: var(--ink-light);
 }
 .estimate-route__scope strong { color: var(--ink); font-weight: 700; }
+
+/* v2 Fix 9: standalone text links are at least 44px tall to tap. */
+.service-related__links a,
+.text-link,
+.topic-list li a,
+.service-related__list li a,
+.service-related__resource-list li a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.service-related__links,
+.service-related__list,
+.service-related__resource-list {
+  column-gap: .5rem;
+  row-gap: .5rem;
+}
+

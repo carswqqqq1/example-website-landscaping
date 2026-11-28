@@ -406,7 +406,12 @@
     if (breadcrumbCurrent) breadcrumbCurrent.textContent = service.title;
     if (subtext) subtext.textContent = service.heroSubtext;
     var heroImage = service.heroImage || (Array.isArray(service.gallery) && service.gallery.length ? service.gallery[0].src : '');
-    if (heroBackground && heroImage) {
+    // services.css already sets each page's hero (AVIF, 640px on phones) and the
+    // page preloads that file. Only fall back to the data image when it does not.
+    var cssHero = heroBackground && window.getComputedStyle
+      ? window.getComputedStyle(heroBackground).backgroundImage
+      : '';
+    if (heroBackground && heroImage && (!cssHero || cssHero === 'none')) {
       heroBackground.style.backgroundImage = 'url(\"../' + heroImage + '\")';
     }
 

@@ -638,7 +638,7 @@
         outcome: 'Turned an underused patio corner into a stronger evening gathering space with cleaner traffic flow.'
       },
       resources: [
-        { title: 'Arcadia outdoor living page', path: '/arcadia-landscaping' },
+        { title: 'Paradise Valley outdoor living page', path: '/paradise-valley-landscaping' },
         { title: 'Compare service fit on the resources hub', path: '/resources' },
         { title: 'Portfolio fire feature inspiration', path: '/portfolio?service=fire-features' }
       ],
@@ -765,7 +765,7 @@
       },
       resources: [
         { title: 'Xeriscape vs. turf guide', path: '/xeriscape-vs-turf-arizona' },
-        { title: 'Arcadia service area page', path: '/arcadia-landscaping' },
+        { title: 'Scottsdale service area page', path: '/scottsdale-landscaping' },
         { title: 'Phoenix service area page', path: '/phoenix-landscaping' }
       ],
       faqs: [

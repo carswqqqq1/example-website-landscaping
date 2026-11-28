@@ -9,7 +9,7 @@
     root.SITE_CONFIG = config;
   }
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
-  var siteBaseUrl = 'https://example-website-landscaping.pages.dev';
+  var siteBaseUrl = 'https://demo.tryarroyo.com';
   var manifestPath = '/manifest.json';
   // Email logo: the ONE place to change it. Absolute https URL that does not depend on the demo host.
   // Runtime override: EMAIL_LOGO_URL env var (Cloudflare Pages and Netlify).
@@ -28,7 +28,6 @@
     shortName: 'Mesa Wren',
     // Fictional demo brand. Phone uses the reserved 555-01xx range. No street address on purpose.
     email: 'hello@mesawren.example',
-    ownerEmail: 'carson.elevatemarketing@gmail.com',
     phone: {
       raw: '4805550142',
       display: '(480) 555-0142'
@@ -556,7 +555,7 @@
       licenseVerifyUrl: 'https://roc.az.gov/contractor-search',
       bondVerifyUrl: '',
       licenseNumbers: [],
-      licensePrompt: 'Verify any Arizona contractor\'s license at the official ROC search.',
+      licensePrompt: 'Check any contractor at the Arizona ROC.',
       bondPrompt: 'Bond and insurance documentation is provided during project review so you can review current coverage before project start.',
       insuranceStatement: 'Current insurance and bonding documentation is available during project review for full transparency.',
       responsePromise: 'Most new project requests receive a response within one business day, often sooner.',

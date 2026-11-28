@@ -58,7 +58,7 @@
 .page-hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,.44), rgba(0,0,0,.62));
+  background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.70));
 }
 
 .page-hero__inner {
@@ -68,7 +68,8 @@
 }
 
 .page-hero .eyebrow {
-  color: rgba(255,255,255,.72);
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0,0,0,.6);
 }
 
 .page-hero h1 {
@@ -83,9 +84,10 @@
 .page-hero p {
   margin-top: .85rem;
   max-width: 760px;
-  color: rgba(255,255,255,.93);
+  color: #fff;
   font-size: .98rem;
   line-height: 1.72;
+  text-shadow: 0 1px 8px rgba(0,0,0,.6);
 }
 
 .page-hero__actions {
@@ -288,6 +290,7 @@
   padding: .82rem .9rem;
 }
 
+.topic-list li h2,
 .topic-list li h3 {
   font-family: var(--font-head);
   font-size: 1.35rem;
@@ -399,6 +402,14 @@
   font-size: 2rem;
   line-height: 1.15;
   color: var(--ink);
+}
+
+.about-ask-list {
+  max-width: 680px;
+  margin: .8rem 0 0;
+  padding-left: 1.2rem;
+  line-height: 1.75;
+  color: var(--ink-light);
 }
 
 .thank-you-meta {

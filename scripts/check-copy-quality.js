@@ -71,7 +71,7 @@ const bannedRuntimePhrases = [
 if (!fs.existsSync(sitemapPath)) {
   failures.push('sitemap.xml is missing');
 } else {
-  const routes = [...read('sitemap.xml').matchAll(/<loc>https:\/\/example-website-landscaping\.pages\.dev([^<]*)<\/loc>/g)]
+  const routes = [...read('sitemap.xml').matchAll(/<loc>https:\/\/demo\.tryarroyo\.com([^<]*)<\/loc>/g)]
     .map((match) => match[1] || '/');
   const globalCounts = new Map(phraseRules.map((rule) => [rule.phrase, 0]));
 

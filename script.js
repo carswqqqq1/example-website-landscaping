@@ -397,6 +397,8 @@
     return turnstileApiPromise;
   }
 
+  var turnstileHostnameWarned = false;
+
   function setupTurnstileForm(form, action) {
     if (!form) return Promise.resolve(null);
     var existingState = turnstileWidgets.get(form);
@@ -432,12 +434,18 @@
           action: state.action,
           size: window.matchMedia && window.matchMedia('(max-width: 360px)').matches ? 'compact' : 'flexible',
           theme: 'auto',
+          // Take space only when Cloudflare needs the visitor to interact.
+          appearance: 'interaction-only',
           'response-field': false,
           callback: function (token) {
             state.token = String(token || '');
             setTurnstileStatus(form, '', false);
           },
-          'error-callback': function () {
+          'error-callback': function (errorCode) {
+            if (String(errorCode || '') === '110200' && !turnstileHostnameWarned) {
+              turnstileHostnameWarned = true;
+              console.warn('Turnstile hostname not allowed', location.hostname);
+            }
             state.token = '';
             setTurnstileStatus(form, 'The security check could not be completed. Please try again.', true);
           },
@@ -707,9 +715,6 @@
         '<span class="sticky-bar__phone-label">Call Now</span>';
     });
 
-    document.querySelectorAll('[data-site-email-link]').forEach(function (el) {
-      el.setAttribute('href', 'mailto:' + SITE_EMAIL);
-    });
     setText('[data-site-email-display]', SITE_EMAIL);
 
     setText('[data-site-address-line1]', SITE_ADDRESS_LINE1);
@@ -732,112 +737,6 @@
     if (cityField && !cityField.value) {
       cityField.setAttribute('placeholder', SITE_CITY);
     }
-  }
-
-  function ensureFooterServiceLinks() {
-    var desertHref = '/services/desert-landscaping';
-    var lightingHref = '/services/outdoor-lighting';
-    document.querySelectorAll('.footer__col').forEach(function (column) {
-      var heading = column.querySelector('h4');
-      var list = column.querySelector('ul');
-      if (!heading || !list) return;
-      if (String(heading.textContent || '').trim().toLowerCase() !== 'services') return;
-
-      if (!list.querySelector('a[href*="desert-landscaping"]')) {
-        var desertItem = document.createElement('li');
-        var desertLink = document.createElement('a');
-        desertLink.href = desertHref;
-        desertLink.textContent = 'Desert Landscaping';
-        desertItem.appendChild(desertLink);
-
-        var referenceItem = list.querySelector('a[href*="artificial-turf"]');
-        if (referenceItem && referenceItem.parentElement) {
-          referenceItem.parentElement.insertAdjacentElement('beforebegin', desertItem);
-        } else {
-          list.appendChild(desertItem);
-        }
-      }
-
-      if (!list.querySelector('a[href*="outdoor-lighting"]')) {
-        var lightingItem = document.createElement('li');
-        var lightingLink = document.createElement('a');
-        lightingLink.href = lightingHref;
-        lightingLink.textContent = 'Outdoor Lighting';
-        lightingItem.appendChild(lightingLink);
-        list.appendChild(lightingItem);
-      }
-    });
-  }
-
-  function ensureFooterStudioLinks() {
-    document.querySelectorAll('.footer__col').forEach(function (column) {
-      var heading = column.querySelector('h4');
-      var list = column.querySelector('ul');
-      if (!heading || !list) return;
-      if (String(heading.textContent || '').trim().toLowerCase() !== 'studio') return;
-
-      var desiredLinks = [
-        { href: '/about', label: 'About' },
-        { href: '/process', label: 'Process' },
-        { href: '/reviews', label: 'Reviews' },
-        { href: '/financing', label: 'Financing' },
-        { href: '/free-consultation', label: 'Project Review' }
-      ];
-
-      desiredLinks.forEach(function (entry) {
-        var existing = Array.prototype.slice.call(list.querySelectorAll('a')).find(function (link) {
-          return String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() === entry.label.toLowerCase();
-        });
-
-        if (existing) {
-          existing.setAttribute('href', entry.href);
-          return;
-        }
-
-        var item = document.createElement('li');
-        var link = document.createElement('a');
-        link.href = entry.href;
-        link.textContent = entry.label;
-        item.appendChild(link);
-        list.appendChild(item);
-      });
-    });
-  }
-
-  function ensureFooterResourceLinks() {
-    document.querySelectorAll('.footer__col').forEach(function (column) {
-      var heading = column.querySelector('h4');
-      var list = column.querySelector('ul');
-      if (!heading || !list) return;
-
-      var headingText = String(heading.textContent || '').trim().toLowerCase();
-      if (headingText !== 'resources' && headingText !== 'related pages') return;
-
-      var desiredLinks = [
-        { href: '/financing', label: 'Financing' },
-        { href: '/warranty', label: 'Warranty' },
-        { href: '/faq', label: 'FAQ' },
-        { href: '/cost-calculator', label: 'Cost Calculator' }
-      ];
-
-      desiredLinks.forEach(function (entry) {
-        var existing = Array.prototype.slice.call(list.querySelectorAll('a')).find(function (link) {
-          return String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() === entry.label.toLowerCase();
-        });
-
-        if (existing) {
-          existing.setAttribute('href', entry.href);
-          return;
-        }
-
-        var item = document.createElement('li');
-        var link = document.createElement('a');
-        link.href = entry.href;
-        link.textContent = entry.label;
-        item.appendChild(link);
-        list.appendChild(item);
-      });
-    });
   }
 
   function ensurePrimaryNavigationLinks() {
@@ -935,11 +834,6 @@
 
   function renderFooterMeta() {
     var footerConfig = SITE_CONFIG.footer || {};
-    var businessHours = SITE_CONFIG.businessHours || {};
-    var address = SITE_CONFIG.address || {};
-    var hoursText = [businessHours.weekday, businessHours.saturday, businessHours.sunday]
-      .filter(Boolean)
-      .join(' · ');
     var reviewLabel = String(footerConfig.reviewLabel || 'Read Google reviews').trim();
     var reviewUrl = String(footerConfig.reviewUrl || REVIEW_SOURCE_URL || '').trim();
     var blurb = String(
@@ -948,14 +842,6 @@
     ).trim();
     var note = String(footerConfig.note || 'Arizona licensed, bonded, and insured team').trim();
     var reviewSummary = getReviewPresentationCopy(REVIEW_STATE).summary;
-    var phoneDisplay = String(SITE_PHONE_DISPLAY || '').trim();
-    var phoneRaw = String(SITE_PHONE_RAW || '').trim();
-    var addressParts = [
-      String(address.line1 || SITE_ADDRESS_LINE1 || '').trim(),
-      [address.city || SITE_CITY, address.state || SITE_STATE, address.zip || SITE_ZIP].filter(Boolean).join(' ')
-    ].filter(Boolean);
-    var addressText = addressParts.join(', ');
-    var addressUrl = addressText ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addressText) : '';
 
     document.querySelectorAll('.footer').forEach(function (footer) {
       var brand = footer.querySelector('.footer__brand');
@@ -976,45 +862,13 @@
         }
 
         var meta = brand.querySelector('.footer__meta');
-        if (!meta && (hoursText || reviewUrl || phoneRaw || addressText)) {
+        var onReviewPage = reviewUrl.charAt(0) === '/' &&
+          window.location.pathname.replace(/\/+$/, '').replace(/\.html$/, '') === reviewUrl.replace(/\/+$/, '');
+        if (!meta && reviewUrl && !onReviewPage) {
           meta = document.createElement('div');
           meta.className = 'footer__meta';
 
-          if (hoursText) {
-            var hours = document.createElement('p');
-            hours.className = 'footer__meta-item';
-            hours.textContent = hoursText;
-            meta.appendChild(hours);
-          }
-
-          if (phoneRaw) {
-            var phoneLine = document.createElement('p');
-            phoneLine.className = 'footer__meta-item footer__meta-item--contact';
-            var phoneLink = document.createElement('a');
-            phoneLink.href = 'tel:' + phoneRaw;
-            phoneLink.textContent = phoneDisplay || SITE_PHONE_DISPLAY || phoneRaw;
-            phoneLink.setAttribute('aria-label', 'Call ' + (phoneDisplay || SITE_PHONE_DISPLAY || phoneRaw));
-            phoneLine.appendChild(document.createTextNode('Call '));
-            phoneLine.appendChild(phoneLink);
-            meta.appendChild(phoneLine);
-          }
-
-          if (addressText) {
-            var addressLine = document.createElement('p');
-            addressLine.className = 'footer__meta-item footer__meta-item--contact';
-            if (addressUrl) {
-              var addressLink = document.createElement('a');
-              addressLink.href = addressUrl;
-              addressLink.target = '_blank';
-              addressLink.rel = 'noopener noreferrer';
-              addressLink.textContent = addressText;
-              addressLine.appendChild(addressLink);
-            } else {
-              addressLine.textContent = addressText;
-            }
-            meta.appendChild(addressLine);
-          }
-
+          // Hours, phone and city live once, in the footer's Contact column.
           if (reviewUrl) {
             var reviewLink = document.createElement('a');
             reviewLink.className = 'footer__meta-link';
@@ -1027,8 +881,10 @@
 
             var reviewLine = document.createElement('p');
             reviewLine.className = 'footer__meta-item';
-            reviewLine.textContent = reviewSummary;
-            reviewLine.appendChild(document.createTextNode(' · '));
+            if (reviewSummary) {
+              reviewLine.textContent = reviewSummary;
+              reviewLine.appendChild(document.createTextNode(' · '));
+            }
             reviewLine.appendChild(reviewLink);
             meta.appendChild(reviewLine);
           }
@@ -1942,9 +1798,24 @@
   }
 
   function renderRecentProjects() {
-    var list = Array.isArray(window.RECENT_PROJECTS) ? window.RECENT_PROJECTS.slice(0, 5) : [];
     var grid = document.getElementById('recent-projects-grid');
-    if (!grid || !list.length) return;
+    if (!grid || !Array.isArray(window.RECENT_PROJECTS)) return;
+    // Skip any project whose photo already shows elsewhere on the page, so no photo repeats.
+    var photoBase = function (value) {
+      var file = String(value || '').split('?')[0].split('/').pop();
+      return file.replace(/\.(avif|webp|jpe?g|png)$/i, '').replace(/-(320|640|960|1280|1600)$/, '');
+    };
+    var usedPhotos = {};
+    document.querySelectorAll('main img, .hero__slide').forEach(function (node) {
+      if (grid.contains(node)) return;
+      [node.getAttribute('src'), node.getAttribute('data-hero-image-avif'), node.getAttribute('data-hero-image-webp')].forEach(function (value) {
+        if (value) usedPhotos[photoBase(value)] = true;
+      });
+    });
+    var list = window.RECENT_PROJECTS.filter(function (project) {
+      return !usedPhotos[photoBase(project.image)];
+    }).slice(0, 3);
+    if (!list.length) return;
 
     grid.innerHTML = list.map(function (project, index) {
       var title = String(project.title || 'Recent Project').trim();
@@ -2262,9 +2133,6 @@
 
   applyTrackedPhone();
   applySiteBranding();
-  ensureFooterServiceLinks();
-  ensureFooterStudioLinks();
-  ensureFooterResourceLinks();
   ensurePrimaryNavigationLinks();
   renderFooterSocialLinks();
   renderFooterMeta();
@@ -4310,16 +4178,63 @@
     return '';
   }
 
+  function isProgressFieldVisible(field) {
+    if (field.type === 'hidden' || field.disabled) return false;
+    var target = field;
+    if (field.type === 'radio' || field.type === 'checkbox') {
+      target = field.closest('label, fieldset, .form-group, .consent-check') || field;
+    }
+    if (target.hidden || target.closest('[hidden]')) return false;
+    var style = window.getComputedStyle(target);
+    if (style.display === 'none' || style.visibility === 'hidden') return false;
+    return target.getClientRects().length > 0;
+  }
+
+  function isProgressFieldFilled(field) {
+    if (field.tagName === 'SELECT') {
+      var option = field.options[field.selectedIndex];
+      if (!option || String(option.value || '').trim() === '') return false;
+      // A select still on the option the page loaded with is a default, not a choice.
+      return field.dataset.progressTouched === 'true' || !option.defaultSelected;
+    }
+    var value = String(field.value || '').trim();
+    if (!value) return false;
+    // A value that came from the page's markup or a prefill is not the visitor's input.
+    return field.dataset.progressTouched === 'true' || value !== String(field.defaultValue || '').trim();
+  }
+
   function updateFormProgress() {
     if (!form || !progressFill || !progressText || !progressBar) return;
-    var required = Array.from(form.querySelectorAll('[required]'));
-    var filled = required.filter(function (field) {
-      return field.type === 'checkbox'
-        ? field.checked
-        : field.value.trim() !== '';
+    var groups = {};
+    var order = [];
+    Array.from(form.querySelectorAll('[required]')).forEach(function (field) {
+      if (!isProgressFieldVisible(field)) return;
+      var key = field.type === 'radio' ? 'radio:' + field.name : 'field:' + order.length;
+      if (!groups[key]) {
+        groups[key] = [];
+        order.push(key);
+      }
+      groups[key].push(field);
+    });
+    if (form.dataset.progressBound !== 'true') {
+      form.dataset.progressBound = 'true';
+      ['input', 'change'].forEach(function (type) {
+        form.addEventListener(type, function (event) {
+          if (event.isTrusted && event.target && event.target.dataset) event.target.dataset.progressTouched = 'true';
+        }, true);
+      });
+    }
+    var filled = order.filter(function (key) {
+      var fields = groups[key];
+      if (fields[0].type === 'radio') {
+        return fields.some(function (field) { return field.checked && field.dataset.progressTouched === 'true'; })
+          || fields.some(function (field) { return field.checked && !field.defaultChecked; });
+      }
+      if (fields[0].type === 'checkbox') return fields[0].checked;
+      return isProgressFieldFilled(fields[0]);
     }).length;
 
-    var percent = required.length ? Math.round((filled / required.length) * 100) : 0;
+    var percent = order.length ? Math.round((filled / order.length) * 100) : 0;
     progressFill.style.width = percent + '%';
     progressText.textContent = percent + '% complete';
     progressBar.setAttribute('aria-valuenow', String(percent));
@@ -5049,7 +4964,7 @@
   banner.setAttribute('role', 'region');
   banner.setAttribute('aria-label', 'Cookie consent');
   banner.innerHTML =
-    '<p>We use cookies to improve performance and measure project review activity. ' +
+    '<p>We use cookies to measure site use. ' +
     '<a href="/cookie-policy">Cookie policy</a></p>' +
     '<div class="cookie-banner__actions">' +
     '<button class="cookie-banner__decline" type="button">Decline</button>' +

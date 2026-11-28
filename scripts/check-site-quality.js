@@ -50,7 +50,7 @@ function extractSitemapRoutes() {
   }
 
   const sitemap = fs.readFileSync(sitemapPath, 'utf8');
-  return [...sitemap.matchAll(/<loc>https:\/\/example-website-landscaping\.pages\.dev([^<]*)<\/loc>/g)]
+  return [...sitemap.matchAll(/<loc>https:\/\/demo\.tryarroyo\.com([^<]*)<\/loc>/g)]
     .map((match) => match[1] || '/');
 }
 

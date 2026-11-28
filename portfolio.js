@@ -145,7 +145,8 @@
     var image = item.querySelector('img');
     if (!image) return;
 
-    lightboxImg.src = image.currentSrc || image.src;
+    // The grid shows a small file; the preview loads the full-size one.
+    lightboxImg.src = image.getAttribute('src') || image.currentSrc || image.src;
     lightboxImg.alt = image.alt || 'Project image preview';
     lightboxType.textContent = item.dataset.type || 'Landscape Project';
     lightboxLocation.textContent = item.dataset.location || 'Scottsdale / Phoenix Area';
