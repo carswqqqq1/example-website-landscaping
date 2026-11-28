@@ -1102,13 +1102,13 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 [data-service-shell] .service-block { padding-block: clamp(2.25rem, 5vw, 3.5rem); }
 [data-service-shell] .service-checklist { margin-top: 1rem; }
 [data-service-shell] .service-checklist li { padding-block: .7rem; }
-.service-types { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
-.service-type { display: flex; flex-direction: column; gap: .2rem; height: 100%; padding: 1rem 1.1rem; border: 1px solid #e8dfd3; border-radius: 12px; background: var(--paper); color: var(--ink); text-decoration: none; }
-.service-type__name { font-weight: 600; font-size: 1.05rem; }
-.service-type__line { color: var(--ink-light); font-size: .9rem; line-height: 1.5; }
-.service-type__go { margin-top: auto; padding-top: .45rem; color: var(--green); font-weight: 600; font-size: .9rem; text-decoration: underline; text-underline-offset: .2em; }
-.service-type:hover, .service-type:focus-visible { border-color: var(--green); }
-.service-type:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.service-kinds { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+.service-kind { display: flex; flex-direction: column; gap: .2rem; height: 100%; padding: 1rem 1.1rem; border: 1px solid #e8dfd3; border-radius: 12px; background: var(--paper); color: var(--ink); text-decoration: none; }
+.service-kind__name { font-weight: 600; font-size: 1.05rem; }
+.service-kind__line { color: var(--ink-light); font-size: .9rem; line-height: 1.5; }
+.service-kind__go { margin-top: auto; padding-top: .45rem; color: var(--green); font-weight: 600; font-size: .9rem; text-decoration: underline; text-underline-offset: .2em; }
+.service-kind:hover, .service-kind:focus-visible { border-color: var(--green); }
+.service-kind:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
 .service-scope { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(240px, 1fr); gap: 1.5rem 2.5rem; align-items: start; }
 .service-scope__list { margin: 1rem 0 0; padding-left: 1.1rem; display: grid; gap: .6rem; color: var(--ink-light); line-height: 1.6; }
 .service-scope__range { padding: 1.2rem 1.3rem; border-radius: 12px; background: #fff; border: 1px solid #e8dfd3; }
@@ -1130,7 +1130,7 @@ body[data-service-slug="fire-features"] .service-hero__bg { background-position:
 body[data-service-slug="outdoor-lighting"] .service-hero__bg { background-position: 38% 45%; }
 @media (max-width: 860px) {
   .service-scope { grid-template-columns: 1fr; }
-  .service-types { grid-template-columns: 1fr; }
+  .service-kinds { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
   [data-service-shell] .service-hero { min-height: 0; padding-top: 88px; }

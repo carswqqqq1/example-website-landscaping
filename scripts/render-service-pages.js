@@ -134,8 +134,8 @@ function renderMain(service, drivers) {
 
   const types = shell.types
     ? `
-        <ul class="service-types" aria-label="Fire feature types">
-${shell.types.map((type) => `          <li><a class="service-type" href="${esc(quoteHref({ service: slug, source: 'service_type', selected_project_label: type.label, autostart: '1' }))}"><span class="service-type__name">${esc(type.label)}</span><span class="service-type__line">${esc(type.line)}</span><span class="service-type__go">Try a sample quote for a ${esc(type.label.toLowerCase())}</span></a></li>`).join('\n')}
+        <ul class="service-kinds" aria-label="Fire feature types">
+${shell.types.map((type) => `          <li><a class="service-kind" href="${esc(quoteHref({ service: slug, source: 'service_type', selected_project_label: type.label, autostart: '1' }))}"><span class="service-kind__name">${esc(type.label)}</span><span class="service-kind__line">${esc(type.line)}</span><span class="service-kind__go">Try a sample quote for a ${esc(type.label.toLowerCase())}</span></a></li>`).join('\n')}
         </ul>`
     : '';
 
