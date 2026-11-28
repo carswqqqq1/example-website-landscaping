@@ -2812,6 +2812,9 @@
 
     var configuredServices = Array.isArray(SITE_CONFIG.contactFormServices) ? SITE_CONFIG.contactFormServices : [];
     var serviceAliases = {
+      'landscape-design': 'Landscape Design & Build',
+      'landscape-design-build': 'Landscape Design & Build',
+      'landscape-design-and-build': 'Landscape Design & Build',
       'outdoor-kitchens': 'Fire Feature / Outdoor Kitchen',
       'outdoor-kitchen': 'Fire Feature / Outdoor Kitchen',
       'fire-features': 'Fire Feature / Outdoor Kitchen',
@@ -3435,7 +3438,8 @@
     state.formStartedAt.value = String(Date.now());
     state.jsCheck.value = '1';
 
-    if (resolvedService) {
+    var configuredServiceList = Array.isArray(SITE_CONFIG.contactFormServices) ? SITE_CONFIG.contactFormServices : [];
+    if (resolvedService && (!configuredServiceList.length || configuredServiceList.indexOf(resolvedService) >= 0)) {
       contextLines.push('Project type: ' + resolvedService);
     }
     if (nextPrefill.city) {
@@ -4694,6 +4698,9 @@
         'outdoor-kitchen': 'Fire Feature / Outdoor Kitchen',
         'fire-features': 'Fire Feature / Outdoor Kitchen',
         'fire-feature': 'Fire Feature / Outdoor Kitchen',
+        'landscape-design': 'Landscape Design & Build',
+        'landscape-design-build': 'Landscape Design & Build',
+        'landscape-design-and-build': 'Landscape Design & Build',
         'pergola-shade': 'Pergola / Shade Structure',
         'pergola-shade-structure': 'Pergola / Shade Structure',
         'desert-landscaping': 'Desert / Drought-Tolerant Design',
