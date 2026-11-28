@@ -745,3 +745,120 @@
   .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
   .contact-phase__row .btn { width: 100%; }
 }
+
+/* 5.10: one local shell for city and specialty pages */
+.local-hero__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 .25rem;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.local-decision__intro {
+  margin-top: .7rem;
+  max-width: 680px;
+  color: var(--ink-light);
+  line-height: 1.7;
+}
+.local-cards {
+  list-style: none;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.local-card {
+  padding: 1.1rem 1.15rem;
+  border: 1px solid #e8dfd3;
+  border-radius: 12px;
+  background: #fff;
+}
+.local-card h3,
+.local-phase h3 {
+  font-family: var(--font-head);
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.local-card p {
+  margin-top: .45rem;
+  color: var(--ink-light);
+  font-size: .92rem;
+  line-height: 1.65;
+}
+.local-phases {
+  list-style: none;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: .9rem;
+  max-width: 860px;
+}
+.local-phase {
+  padding: 1.1rem 1.2rem;
+  border: 1px solid #e4d9c8;
+  border-radius: 12px;
+  background: #fff;
+  min-width: 0;
+}
+.local-phase dl {
+  margin: .7rem 0 0;
+  display: grid;
+  gap: .55rem;
+}
+.local-phase dl > div {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: .75rem;
+}
+.local-phase dt {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: .9rem;
+}
+.local-phase dd {
+  margin: 0;
+  color: var(--ink-light);
+  font-size: .92rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+.local-examples__grid {
+  list-style: none;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.local-example { margin: 0; }
+.local-example img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.local-example figcaption {
+  margin-top: .5rem;
+  font-size: .9rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+.local-guides {
+  margin-top: 1.3rem;
+  color: var(--ink-light);
+  font-size: .92rem;
+  line-height: 1.8;
+}
+.local-guides span:first-child { margin-right: .35rem; }
+.local-guides a { color: var(--green); font-weight: 600; }
+.local-examples__action { margin-top: 1.4rem; }
+@media (max-width: 768px) {
+  .local-cards { grid-template-columns: 1fr; }
+  .local-phase dl > div { grid-template-columns: 1fr; gap: .15rem; }
+  .local-examples__action .btn { width: 100%; justify-content: center; }
+}
