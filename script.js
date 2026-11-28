@@ -715,9 +715,6 @@
         '<span class="sticky-bar__phone-label">Call Now</span>';
     });
 
-    document.querySelectorAll('[data-site-email-link]').forEach(function (el) {
-      el.setAttribute('href', 'mailto:' + SITE_EMAIL);
-    });
     setText('[data-site-email-display]', SITE_EMAIL);
 
     setText('[data-site-address-line1]', SITE_ADDRESS_LINE1);
