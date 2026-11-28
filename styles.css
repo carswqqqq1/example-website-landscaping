@@ -6714,3 +6714,14 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
   .final-cta__ready ul { grid-template-columns: 1fr; }
   .final-cta__actions .btn { flex: 1 1 100%; justify-content: center; }
 }
+
+/* ----- 4.09 Homepage visual system: off-white sections, two dark moments (hero, final CTA),
+   fewer borders and shadows, sentence-case labels ----- */
+.home-page main .btn { text-transform: none; letter-spacing: .01em; box-shadow: none; }
+.home-page main .btn:hover { box-shadow: none; }
+.home-page .hero__eyebrow { text-transform: none; letter-spacing: .02em; font-size: .9rem; font-weight: 500; }
+.home-page .nav__cta { text-transform: none; letter-spacing: .01em; }
+.home-page main section:not(.hero):not(.final-cta) { border-top: 0; border-bottom: 0; }
+.home-page .choice, .home-page .spread, .home-page .process--timeline { background: var(--paper); }
+.home-page .owner-proof-strip--slim, .home-page .outcomes, .home-page .confidence { background: var(--paper-alt); }
+.home-page main img { box-shadow: none; }
