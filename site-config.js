@@ -9,7 +9,7 @@
     root.SITE_CONFIG = config;
   }
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
-  var siteBaseUrl = 'https://example-website-landscaping.pages.dev';
+  var siteBaseUrl = 'https://demo.tryarroyo.com';
   var manifestPath = '/manifest.json';
   // Email logo: the ONE place to change it. Absolute https URL that does not depend on the demo host.
   // Runtime override: EMAIL_LOGO_URL env var (Cloudflare Pages and Netlify).
