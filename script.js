@@ -90,6 +90,16 @@
     return record;
   }
 
+  function hasThankYouReceipt() {
+    if (!isDemoMode()) return Boolean(URL_PARAMS.get('ticket_id'));
+    try {
+      var stored = JSON.parse(window.sessionStorage.getItem(SAMPLE_RECEIPT_KEY) || 'null');
+      return Boolean(stored && stored.ticket);
+    } catch (error) {
+      return false;
+    }
+  }
+
   function fillSampleDetails(form) {
     if (!form) return;
     if (form.querySelector('input[name="service_type"]')) setFormServiceType(form, 'project');
@@ -2244,7 +2254,7 @@
       });
     });
 
-    if (window.location.pathname.indexOf('thank-you') !== -1) {
+    if (window.location.pathname.indexOf('thank-you') !== -1 && hasThankYouReceipt()) {
       window.trackLeadEvent('thank_you_view', {
         page_location: window.location.href,
         source: String(URL_PARAMS.get('source') || DETECTED_LEAD_SOURCE || 'website')

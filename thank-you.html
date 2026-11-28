@@ -73,27 +73,33 @@
   <main id="main-content">
     <section class="page-hero page-hero--plain">
       <div class="container page-hero__inner">
-        <p class="eyebrow">Submission Confirmed</p>
-        <h1>We Received Your Request.</h1>
-        <p>Maintenance and one-time quotes get a call within 24 hours. Project requests get a follow-up within one business day.</p>
+        <p class="eyebrow" id="ty-eyebrow">Thank You Page</p>
+        <h1 id="ty-title">Nothing submitted yet</h1>
+        <p id="ty-lead">Start a sample estimate to see the confirmation a homeowner gets after sending a request.</p>
       </div>
     </section>
-
     <section class="page-section">
       <div class="container">
         <div class="thank-you-card reveal reveal--scale">
-          <h2>Your request is in review</h2>
-          <div class="thank-you-meta">
-            <p><strong>Requested Service:</strong> <span id="ty-service">Not specified</span></p>
-            <p><strong>City:</strong> <span id="ty-city">Not specified</span></p>
-            <p><strong>What happens next:</strong> A team member reviews your request and calls you back, usually the same day.</p>
-            <p>If your confirmation email does not appear in your inbox, check your Junk/Spam folder.</p>
+          <div id="ty-receipt" hidden>
+            <h2>Request details</h2>
+            <div class="thank-you-meta">
+              <p><strong>Reference:</strong> <span id="ty-ticket"></span></p>
+              <p><strong>Requested Service:</strong> <span id="ty-service">Not specified</span></p>
+              <p><strong>City:</strong> <span id="ty-city">Not specified</span></p>
+              <p id="ty-sample-note" hidden>This is a sample receipt. Nothing was sent.</p>
+              <p id="ty-promise">On your site, this is where your response promise appears.</p>
+            </div>
           </div>
-          <div class="page-hero__actions">
-            <a href="tel:4805550142" class="btn btn--outline-dark">Call Now</a>
+          <div class="page-hero__actions" id="ty-empty-actions">
+            <a href="/free-consultation?source=thank_you_empty&amp;autostart=1" class="btn btn--solid">Start a sample estimate</a>
+            <a href="/portfolio" class="btn btn--outline-dark">View Full Portfolio</a>
+          </div>
+          <div class="page-hero__actions" id="ty-receipt-actions" hidden>
             <a href="/portfolio" class="btn btn--solid">View Full Portfolio</a>
             <a href="/services" class="btn btn--outline-dark">Explore All Services</a>
           </div>
+          <p class="thank-you-preview-link" id="ty-preview-link" hidden><a href="https://arroyomarketing.com/#preview" target="_blank" rel="noopener">See how a real owner would receive it</a></p>
         </div>
       </div>
     </section>
@@ -167,15 +173,43 @@
   </footer>
 
   <script>
-    (function () {
+    document.addEventListener('DOMContentLoaded', function () {
+      var config = window.SITE_CONFIG || {};
+      var demo = config.demoMode === true;
       var params = new URLSearchParams(window.location.search);
-      var service = params.get('service') || 'Not specified';
-      var city = params.get('city') || 'Not specified';
-      var serviceEl = document.getElementById('ty-service');
-      var cityEl = document.getElementById('ty-city');
-      if (serviceEl) serviceEl.textContent = service;
-      if (cityEl) cityEl.textContent = city;
-    })();
+      var receipt = null;
+      if (demo) {
+        try {
+          receipt = JSON.parse(window.sessionStorage.getItem('mw_sample_receipt') || 'null');
+        } catch (error) {
+          receipt = null;
+        }
+        if (receipt && !receipt.ticket) receipt = null;
+      } else if (params.get('ticket_id')) {
+        receipt = { ticket: params.get('ticket_id'), service: params.get('service'), city: params.get('city') };
+      }
+      if (!receipt) return;
+      function show(id, visible) {
+        var el = document.getElementById(id);
+        if (el) el.hidden = !visible;
+      }
+      function text(id, value) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = value;
+      }
+      text('ty-eyebrow', demo ? 'Sample Receipt' : 'Submission Confirmed');
+      text('ty-title', demo ? 'Sample request complete' : 'We received your request');
+      text('ty-lead', demo ? 'This is the confirmation a homeowner sees after sending a request.' : 'A local team member will follow up within one business day.');
+      text('ty-ticket', receipt.ticket);
+      text('ty-service', receipt.service || 'Not specified');
+      text('ty-city', receipt.city || 'Not specified');
+      show('ty-receipt', true);
+      show('ty-sample-note', demo);
+      show('ty-promise', demo);
+      show('ty-preview-link', demo);
+      show('ty-empty-actions', false);
+      show('ty-receipt-actions', true);
+    });
   </script>
   <script src="/site-config.js?v=20261128fixlist3" defer></script>
   <script src="/script.min.js?v=20261128fixlist3" defer></script>
