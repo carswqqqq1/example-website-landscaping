@@ -887,7 +887,7 @@
     document.querySelectorAll('.sticky-bar .btn[data-site-phone-link]').forEach(function (el) {
       el.innerHTML =
         '<span class="sticky-bar__phone-number" data-site-phone-display>' + SITE_PHONE_DISPLAY + '</span>' +
-        '<span class="sticky-bar__phone-label">Call Now</span>';
+        '<span class="sticky-bar__phone-label">Call</span>';
     });
 
     setText('[data-site-email-display]', SITE_EMAIL);

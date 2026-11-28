@@ -6531,3 +6531,11 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
     background-image: image-set(url('img/projects/slide1-640.avif') type('image/avif'), url('img/projects/slide1.webp') type('image/webp'));
   }
 }
+
+/* ----- 4.11 Mobile bar: Call outlined, sample quote filled (classes stay for the script) ----- */
+.sticky-bar .btn[data-site-phone-link] { background: transparent; color: var(--green-dark); border: 2px solid var(--green-dark); box-shadow: none; }
+.sticky-bar .btn[data-site-phone-link]:hover { background: var(--paper); color: var(--green-dark); transform: none; }
+.sticky-bar .btn--outline-dark { background: var(--green-dark); color: var(--white); border: 2px solid var(--green-dark); }
+.sticky-bar .btn--outline-dark:hover { background: var(--green); border-color: var(--green); color: var(--white); }
+.sticky-bar .btn { text-transform: none; letter-spacing: .01em; font-size: .85rem; }
+.sticky-bar__phone-label { text-transform: none; letter-spacing: .02em; font-size: .72rem; }
