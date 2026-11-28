@@ -397,6 +397,8 @@
     return turnstileApiPromise;
   }
 
+  var turnstileHostnameWarned = false;
+
   function setupTurnstileForm(form, action) {
     if (!form) return Promise.resolve(null);
     var existingState = turnstileWidgets.get(form);
@@ -437,7 +439,11 @@
             state.token = String(token || '');
             setTurnstileStatus(form, '', false);
           },
-          'error-callback': function () {
+          'error-callback': function (errorCode) {
+            if (String(errorCode || '') === '110200' && !turnstileHostnameWarned) {
+              turnstileHostnameWarned = true;
+              console.warn('Turnstile hostname not allowed', location.hostname);
+            }
             state.token = '';
             setTurnstileStatus(form, 'The security check could not be completed. Please try again.', true);
           },
