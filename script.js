@@ -815,12 +815,12 @@
   function applySiteBranding() {
     applyBrandTokens();
 
-    if (BRAND.sampleLabel && /^(?:[a-z0-9-]+--)?thinkgreen-az\.netlify\.app$/.test(window.location.hostname)) {
-      setText('[data-sample-preview-label]', BRAND.sampleLabel);
-      document.querySelectorAll('[data-sample-preview]').forEach(function (notice) {
-        notice.hidden = false;
-      });
-    }
+    var showSamplePreview = Boolean(isDemoMode() && BRAND.sampleLabel);
+    if (showSamplePreview) setText('[data-sample-preview-label]', BRAND.sampleLabel);
+    // Client builds (demoMode false) never show the Arroyo demo label or preview link.
+    document.querySelectorAll('[data-sample-preview], [data-sample-label]').forEach(function (notice) {
+      notice.hidden = !showSamplePreview;
+    });
 
     if (BRAND.logoPath) {
       var resolvedLogoPath = toRootAssetPath(BRAND.logoPath);
