@@ -1906,7 +1906,7 @@
     if (!list.length) return;
 
     grid.innerHTML = list.map(function (project, index) {
-      var title = String(project.title || 'Recent Project').trim();
+      var title = String(project.title || 'Example Project').trim();
       var location = String(project.location || SITE_CITY + ', ' + SITE_STATE).trim();
       var styleSlug = String(project.styleSlug || 'all').trim();
       var serviceSlug = String(project.serviceSlug || '').trim();

@@ -127,7 +127,7 @@
 
     var story = service.featuredProject;
     var isHub = !!(options && options.isHub);
-    var eyebrow = isHub ? service.title : 'Recent Project Story';
+    var eyebrow = isHub ? service.title : 'Project Story';
     var detailLinkLabel = isHub ? 'View ' + service.title + ' Service' : 'See More ' + service.title + ' Projects';
 
     return '' +
@@ -331,7 +331,7 @@
       '<div class="container">' +
       '  <header class="service-block__header reveal reveal--left">' +
       '    <p class="eyebrow">Project Stories</p>' +
-      '    <h2 class="section-title">How These Services Show Up in Real Arizona Projects</h2>' +
+      '    <h2 class="section-title">How These Services Come Together</h2>' +
       '    <p>Short scope snapshots help homeowners compare service fit before they request a quote.</p>' +
       '  </header>' +
       '  <div class="service-story-grid">' +
@@ -519,7 +519,7 @@
           '  <header class="service-block__header reveal reveal--left">' +
           '    <p class="eyebrow">Project Story</p>' +
           '    <h2 class="section-title">One Recent ' + service.title + ' Example</h2>' +
-          '    <p>A quick snapshot of how this service usually gets scoped, timed, and used in real Arizona backyards.</p>' +
+          '    <p>A quick snapshot of how this service usually gets scoped, timed, and used in Arizona backyards.</p>' +
           '  </header>' +
           '  <div class="service-story-grid service-story-grid--single">' +
                buildServiceStoryMarkup(service) +
