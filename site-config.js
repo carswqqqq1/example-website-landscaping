@@ -24,6 +24,10 @@
     siteBaseUrl: siteBaseUrl,
     manifestPath: manifestPath,
     emailLogoUrl: emailLogoUrl,
+    // Same-origin lead endpoint used by client builds.
+    leadEndpoint: '/api/lead',
+    // Public demo: forms run in a labeled sample mode and send nothing. Set false for a real client site.
+    demoMode: true,
     businessName: 'Mesa Wren Landscape Co.',
     shortName: 'Mesa Wren',
     // Fictional demo brand. Phone uses the reserved 555-01xx range. No street address on purpose.
@@ -552,11 +556,7 @@
       feedEndpoint: '/google-reviews.json'
     },
     trustAssets: {
-      licenseVerifyUrl: 'https://roc.az.gov/contractor-search',
-      bondVerifyUrl: '',
       licenseNumbers: [],
-      licensePrompt: 'Check any contractor at the Arizona ROC.',
-      bondPrompt: 'Bond and insurance documentation is provided during project review so you can review current coverage before project start.',
       insuranceStatement: 'Current insurance and bonding documentation is available during project review for full transparency.',
       responsePromise: 'Most new project requests receive a response within one business day, often sooner.',
       workmanshipWarranty: 'Workmanship warranty details are reviewed during handoff so scope, coverage, and maintenance expectations stay clear.',

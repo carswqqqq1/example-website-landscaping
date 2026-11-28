@@ -43,9 +43,6 @@ const llms = `# ${config.businessName}
 ${bulletList(config.aiReadability.localSearchIntents)}
 
 ## Trust Facts
-- Licensed: ${config.trustSignals.licensed ? 'Yes' : 'No'}
-- Bonded: ${config.trustSignals.bonded ? 'Yes' : 'No'}
-- Insured: ${config.trustSignals.insured ? 'Yes' : 'No'}
 - Review summary shown on site: ${config.reviewSummary.rating} stars across ${config.reviewSummary.count} reviews on ${config.reviewSummary.source} (${config.reviewSummary.snapshotDate})
 - Response promise shown on site: ${config.trustSignals.responsePromise}
 
@@ -90,7 +87,7 @@ ${bulletList(config.aiReadability.localSearchIntents)}
 - Contact details shown on site: ${config.phone.display}, ${config.email}, ${config.address.line1}, ${config.address.city}, ${config.address.state} ${config.address.zip}
 
 ## Project And Portfolio Summary
-- Portfolio highlights real Arizona landscape and outdoor living projects
+- Portfolio shows example landscape and outdoor living projects
 - Featured project types include hardscaping, outdoor kitchens, fire features, shade structures, lighting, desert landscaping, and curb-appeal upgrades
 - Portfolio is intended to help homeowners compare style direction, material choices, and likely project fit before consultation
 

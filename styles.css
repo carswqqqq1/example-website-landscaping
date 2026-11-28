@@ -6131,6 +6131,8 @@ body.has-nav-overlay-open .cookie-banner {
 .estimate-route { border-bottom: 0; }
 .estimate-route__inner { align-items: start; }
 .estimate-route__intro { position: sticky; top: 110px; }
+/* 1.10: single-column layout (<=1024px) must not pin the intro over the cards. */
+@media (max-width: 1024px) { .estimate-route__intro { position: static; } }
 .estimate-route__grid { gap: .5rem; }
 .estimate-route__card,
 .estimate-route__card:hover {
@@ -6473,3 +6475,98 @@ summary:focus-visible,
   row-gap: .5rem;
 }
 
+
+/* ----- 1.01 Demo sample mode ----- */
+.is-demo-mode .turnstile-field,
+.is-demo-mode .turnstile-status,
+.is-demo-mode .form-consent--optin {
+  display: none !important;
+}
+.sample-form-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem 1rem;
+  margin: .25rem 0 .75rem;
+}
+.sample-form-note {
+  margin: 0;
+  font-size: .8125rem;
+  line-height: 1.4;
+  color: var(--ink-light);
+}
+.sample-form-fill {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.sample-form-fill:hover { color: var(--green-mid); }
+.sample-form-fill:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+/* ----- 1.02 Sample phone and email notice ----- */
+.sample-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  z-index: 10050;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: .75rem 1rem;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--white);
+  font-size: .875rem;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 8px);
+  transition: opacity .2s var(--ease), transform .2s var(--ease), visibility 0s linear .2s;
+  pointer-events: none;
+}
+.sample-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition: opacity .2s var(--ease), transform .2s var(--ease), visibility 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sample-toast, .sample-toast.is-visible { transition: none; transform: translate(-50%, 0); }
+}
+
+/* ----- 1.03 Thank-you receipt ----- */
+.thank-you-preview-link { margin: 1rem 0 0; font-size: .9375rem; }
+.thank-you-preview-link a { display: inline-flex; align-items: center; min-height: 44px; color: var(--green); font-weight: 600; text-underline-offset: 3px; }
+
+/* ----- 1.04 Arroyo preview link ----- */
+.footer__bottom .footer__sample-label a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.footer__bottom .footer__sample-label[hidden],
+.sample-preview[hidden] { display: none !important; }
+@media (max-width: 640px) {
+  .hero__panel .sample-preview:not([hidden]) {
+    margin-bottom: .6rem;
+    padding: .25rem .55rem;
+    font-size: .75rem;
+  }
+}
+
+/* 1.03 follow-up: thank-you action rows obey the hidden attribute (display:flex was overriding it) */
+.page-hero__actions[hidden],
+.thank-you-preview-link[hidden] { display: none !important; }
