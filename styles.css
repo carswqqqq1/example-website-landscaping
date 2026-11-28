@@ -6694,3 +6694,23 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
 .confidence__areas { margin-top: 1.75rem; font-size: .92rem; color: var(--ink-light); }
 .confidence__areas a { min-height: 0; font-weight: 500; }
 @media (max-width: 900px) { .confidence__grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+/* ----- 4.07 Final CTA: one decision, no long form ----- */
+.final-cta { background: var(--green-dark); color: var(--white); padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+.final-cta__inner { max-width: 880px; }
+.final-cta__title { font-family: var(--font-head); font-size: clamp(2rem, 4.2vw, 3rem); font-weight: 600; line-height: 1.1; color: var(--white); max-width: 18ch; }
+.final-cta__actions { display: flex; flex-wrap: wrap; gap: .85rem; margin-top: 1.75rem; }
+.final-cta__primary { background: var(--paper); color: var(--green-dark); border: 2px solid var(--paper); }
+.final-cta__primary:hover, .final-cta__primary:focus-visible { background: var(--white); border-color: var(--white); color: var(--green-dark); }
+.final-cta__call { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,.75); }
+.final-cta__call:hover, .final-cta__call:focus-visible { border-color: var(--white); background: rgba(255,255,255,.08); color: var(--white); }
+.final-cta .btn:focus-visible { outline: 3px solid var(--tan-light); outline-offset: 3px; }
+.final-cta__ready { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.18); }
+.final-cta__ready-title { font-weight: 600; font-size: .95rem; margin-bottom: .75rem; color: var(--white); }
+.final-cta__ready ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem 1.75rem; }
+.final-cta__ready li { font-size: .92rem; line-height: 1.55; color: rgba(255,255,255,.85); }
+.final-cta__ready strong { display: block; color: var(--white); font-weight: 600; }
+@media (max-width: 760px) {
+  .final-cta__ready ul { grid-template-columns: 1fr; }
+  .final-cta__actions .btn { flex: 1 1 100%; justify-content: center; }
+}

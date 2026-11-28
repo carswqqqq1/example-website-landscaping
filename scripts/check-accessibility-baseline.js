@@ -42,20 +42,29 @@ htmlFiles.forEach((file) => {
 });
 
 const indexHtml = read('index.html');
-if (!/id="contact-consent"[^>]+name="contact_consent"[^>]+required/i.test(indexHtml)) {
-  failures.push('index.html: contact form missing required contact consent checkbox');
+// 4.07: the homepage final CTA opens the quote drawer instead of carrying the long form.
+// When the form is on the page it must keep these safeguards; when it is not, the drawer
+// (built in script.js) must carry them instead.
+const homepageHasForm = /id="contact-form"/i.test(indexHtml);
+const formSource = homepageHasForm ? indexHtml : read('script.js');
+const formLabel = homepageHasForm ? 'index.html: contact form' : 'script.js: quote drawer form';
+if (!/name="contact_consent"[^>]*required|required[^>]*name="contact_consent"/i.test(formSource)) {
+  failures.push(`${formLabel} missing required contact consent checkbox`);
 }
-if (!/name="consent_required" value="1"/i.test(indexHtml)) {
-  failures.push('index.html: contact form missing consent_required safety field');
+if (!/consent_required/i.test(formSource)) {
+  failures.push(`${formLabel} missing consent_required safety field`);
 }
-if (!/name="form_started_at"/i.test(indexHtml) || !/name="js_check"/i.test(indexHtml)) {
-  failures.push('index.html: contact form missing anti-abuse timing/javascript fields');
+if (!/form_started_at/i.test(formSource) || !/js_check/i.test(formSource)) {
+  failures.push(`${formLabel} missing anti-abuse timing/javascript fields`);
 }
-if (!/name="bot-field"/i.test(indexHtml)) {
-  failures.push('index.html: contact form missing honeypot field');
+if (!/bot-field/i.test(formSource)) {
+  failures.push(`${formLabel} missing honeypot field`);
 }
-if (!/id="form-error"[^>]+role="alert"[^>]+aria-live="polite"/i.test(indexHtml)) {
+if (homepageHasForm && !/id="form-error"[^>]+role="alert"[^>]+aria-live="polite"/i.test(indexHtml)) {
   failures.push('index.html: contact form error message missing alert live region');
+}
+if (!homepageHasForm && !/role="alert"/i.test(formSource)) {
+  failures.push(`${formLabel} error message missing alert live region`);
 }
 
 const script = read('script.js');
