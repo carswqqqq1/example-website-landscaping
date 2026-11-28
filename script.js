@@ -51,8 +51,15 @@
     snapshotDate: REVIEW_SNAPSHOT_DATE,
     live: false
   };
-  var OFFER_LABEL = String(PRIMARY_OFFER.label || 'Get a Free Quote').trim();
-  var OFFER_SHORT_LABEL = String(PRIMARY_OFFER.shortLabel || 'Project Review').trim();
+  // 4.10 + 5.03: one quote label everywhere. The public demo (demoMode true) says
+  // "Try a sample quote"; client builds (demoMode false) use primaryOffer.label.
+  var OFFER_LIVE_LABEL = String(PRIMARY_OFFER.label || 'Get a Free Quote').trim();
+  var OFFER_LABEL = SITE_CONFIG.demoMode === true
+    ? String(PRIMARY_OFFER.demoLabel || 'Try a sample quote').trim()
+    : OFFER_LIVE_LABEL;
+  var OFFER_SHORT_LABEL = SITE_CONFIG.demoMode === true
+    ? OFFER_LABEL
+    : String(PRIMARY_OFFER.shortLabel || 'Project Review').trim();
   var OFFER_FORM_TITLE = String(PRIMARY_OFFER.formTitle || 'Get a Free Quote').trim();
   var OFFER_SUBMIT_LABEL = String(PRIMARY_OFFER.submitLabel || 'Get My Free Quote').trim();
   var OFFER_PROMISE = String(PRIMARY_OFFER.promise || 'No pressure, no obligation, and a local team member follows up within one business day.').trim();
@@ -855,8 +862,19 @@
     return '/' + value.replace(/^\.?\//, '');
   }
 
+  // Static pages ship the demo label; swap every quote button to the label this build uses.
+  function applyQuoteLabels() {
+    var quoteLabelPattern = /^(?:Get a Free Quote|Try a sample quote)$/i;
+    document.querySelectorAll('a, button').forEach(function (el) {
+      if (el.children.length) return;
+      var text = String(el.textContent || '').trim();
+      if (quoteLabelPattern.test(text) && text !== OFFER_LABEL) el.textContent = OFFER_LABEL;
+    });
+  }
+
   function applySiteBranding() {
     applyBrandTokens();
+    applyQuoteLabels();
 
     var showSamplePreview = Boolean(isDemoMode() && BRAND.sampleLabel);
     if (showSamplePreview) setText('[data-sample-preview-label]', BRAND.sampleLabel);
@@ -887,7 +905,7 @@
     document.querySelectorAll('.sticky-bar .btn[data-site-phone-link]').forEach(function (el) {
       el.innerHTML =
         '<span class="sticky-bar__phone-number" data-site-phone-display>' + SITE_PHONE_DISPLAY + '</span>' +
-        '<span class="sticky-bar__phone-label">Call Now</span>';
+        '<span class="sticky-bar__phone-label">Call</span>';
     });
 
     setText('[data-site-email-display]', SITE_EMAIL);
@@ -3847,6 +3865,8 @@
     : null;
   var heroPausedForMotion = Boolean(heroMotionPreference && heroMotionPreference.matches);
   var heroPausedByUser = false;
+  /* 5.01: slide 1 stays on screen until the visitor uses a dot or the play control. */
+  var heroAwaitingVisitor = true;
   var heroHeldByHover = false;
   var heroHeldByFocus = false;
   var heroPauseButton = null;
@@ -3958,7 +3978,7 @@
   }
 
   function carouselCanRun() {
-    return slides.length > 1 && !heroPausedForMotion && !heroPausedByUser &&
+    return slides.length > 1 && !heroAwaitingVisitor && !heroPausedForMotion && !heroPausedByUser &&
       !heroHeldByHover && !heroHeldByFocus && !document.hidden;
   }
 
@@ -3970,7 +3990,7 @@
 
   function syncPauseButton() {
     if (!heroPauseButton) return;
-    var paused = heroPausedByUser || heroPausedForMotion;
+    var paused = heroAwaitingVisitor || heroPausedByUser || heroPausedForMotion;
     heroPauseButton.setAttribute('aria-pressed', paused ? 'true' : 'false');
     heroPauseButton.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
     heroPauseButton.classList.toggle('is-paused', paused);
@@ -3978,6 +3998,8 @@
 
   dots.forEach(function (dot) {
     dot.addEventListener('click', function () {
+      heroAwaitingVisitor = false;
+      syncPauseButton();
       goToSlide(parseInt(this.dataset.slide, 10));
       /* Choosing a slide holds it while the dot keeps focus or hover. */
       startCarousel();
@@ -4004,7 +4026,13 @@
       heroPauseButton.className = 'hero__pause';
       heroPauseButton.innerHTML = '<span class="hero__pause-icon" aria-hidden="true"></span>';
       heroPauseButton.addEventListener('click', function () {
-        if (heroPausedForMotion) {
+        if (heroAwaitingVisitor) {
+          heroAwaitingVisitor = false;
+          heroPausedByUser = false;
+          heroPausedForMotion = false;
+          heroHeldByFocus = false;
+          heroHeldByHover = false;
+        } else if (heroPausedForMotion) {
           heroPausedForMotion = false;
           heroPausedByUser = false;
         } else {
@@ -4018,10 +4046,6 @@
     }
 
     preloadHeroSlide(0);
-    if (!heroPausedForMotion) {
-      var initialHeroPreloadDelay = window.matchMedia && window.matchMedia('(max-width: 640px)').matches ? 3500 : 2000;
-      scheduleHeroPreload(1, initialHeroPreloadDelay);
-    }
     startCarousel();
   }
 
