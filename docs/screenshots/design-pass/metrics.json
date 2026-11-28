@@ -40,13 +40,13 @@
       "heroTextContrast": [
         {
           "el": "hero__heading",
-          "worst": 5.78,
-          "typical": 16.12
+          "worst": 5.77,
+          "typical": 16.17
         },
         {
           "el": "hero__sub",
-          "worst": 11.14,
-          "typical": 19.42
+          "worst": 11.15,
+          "typical": 19.4
         }
       ]
     },
@@ -185,12 +185,12 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1096,
+        "lcp": 1124,
         "element": "hero__slide hero__slide--first is-active",
         "runs": [
-          1092,
-          1096,
-          1096
+          1108,
+          1124,
+          1124
         ]
       }
     },
@@ -231,12 +231,12 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1068,
+        "lcp": 1088,
         "element": "service-hero__bg",
         "runs": [
-          1068,
-          1068,
-          1080
+          1084,
+          1088,
+          1120
         ]
       }
     },
@@ -280,7 +280,7 @@
         "lcp": 972,
         "element": "P",
         "runs": [
-          960,
+          968,
           972,
           976
         ]
@@ -289,11 +289,11 @@
   },
   "after": {
     "home-1440": {
-      "height": 13213,
+      "height": 13219,
       "scrollWidth": 1440,
       "viewport": 1440,
       "overflowingElements": [],
-      "smallTapTargets": 12,
+      "smallTapTargets": 9,
       "smallTapTargetSamples": [
         "Home (63x38)",
         "Services (79x38)",
@@ -302,9 +302,6 @@
         "Reviews (77x38)",
         "Financing (86x38)",
         "Contact (79x38)",
-        "Request a Similar Project (172x38)",
-        "Request a Similar Project (172x38)",
-        "Request a Similar Project (172x38)",
         "(480) 555-0142 (113x24)",
         "Privacy Policy (80x17)"
       ],
@@ -319,38 +316,38 @@
       "heroTextContrast": [
         {
           "el": "hero__eyebrow",
-          "worst": 2.67,
-          "typical": 5.38
+          "worst": 4.13,
+          "typical": 9.56
         },
         {
           "el": "hero__heading",
-          "worst": 4.98,
-          "typical": 13.94
+          "worst": 9.4,
+          "typical": 15.62
         },
         {
           "el": "hero__sub",
-          "worst": 6.4,
-          "typical": 16.38
+          "worst": 11.14,
+          "typical": 17.39
         },
         {
           "el": "LI",
-          "worst": 12.54,
-          "typical": 16.77
+          "worst": 12.9,
+          "typical": 17.25
         },
         {
           "el": "LI",
-          "worst": 9.03,
-          "typical": 14.57
+          "worst": 12.9,
+          "typical": 16.66
         },
         {
           "el": "LI",
-          "worst": 6.66,
-          "typical": 13.87
+          "worst": 8.22,
+          "typical": 14.79
         }
       ]
     },
     "pergola-1440": {
-      "height": 8645,
+      "height": 8178,
       "scrollWidth": 1440,
       "viewport": 1440,
       "overflowingElements": [],
@@ -374,13 +371,13 @@
       "heroTextContrast": [
         {
           "el": "H1",
-          "worst": 4.75,
-          "typical": 13.31
+          "worst": 8.77,
+          "typical": 15.9
         },
         {
           "el": "service-hero__sub",
-          "worst": 4.16,
-          "typical": 8.29
+          "worst": 4.37,
+          "typical": 12.85
         }
       ]
     },
@@ -405,18 +402,18 @@
       "heroTextContrast": [
         {
           "el": "eyebrow",
-          "worst": 8.61,
-          "typical": 13.4
+          "worst": 10.31,
+          "typical": 15.07
         },
         {
           "el": "H1",
-          "worst": 4.6,
-          "typical": 13.87
+          "worst": 9.89,
+          "typical": 16.57
         },
         {
           "el": "P",
-          "worst": 4.46,
-          "typical": 12.39
+          "worst": 7.42,
+          "typical": 14.67
         }
       ]
     },
@@ -437,42 +434,42 @@
       "heroTextContrast": [
         {
           "el": "hero__eyebrow",
-          "worst": 2.26,
-          "typical": 10.87
+          "worst": 2.05,
+          "typical": 13.1
         },
         {
           "el": "hero__heading",
-          "worst": 9.13,
-          "typical": 13.36
+          "worst": 9.5,
+          "typical": 15.38
         },
         {
           "el": "hero__sub",
-          "worst": 10.38,
-          "typical": 14.55
+          "worst": 12.42,
+          "typical": 15.87
         },
         {
           "el": "LI",
-          "worst": 8.12,
-          "typical": 15.37
+          "worst": 8.39,
+          "typical": 16.15
         },
         {
           "el": "LI",
-          "worst": 7.47,
-          "typical": 9.09
+          "worst": 7.22,
+          "typical": 11.21
         },
         {
           "el": "LI",
           "worst": 7.04,
-          "typical": 8.44
+          "typical": 9.54
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1148,
+        "lcp": 1180,
         "element": "hero__heading",
         "runs": [
-          1144,
-          1148,
-          1160
+          1172,
+          1180,
+          1180
         ]
       }
     },
@@ -493,22 +490,22 @@
       "heroTextContrast": [
         {
           "el": "H1",
-          "worst": 4.11,
-          "typical": 14.51
+          "worst": 7.53,
+          "typical": 16.26
         },
         {
           "el": "service-hero__sub",
-          "worst": 10.48,
-          "typical": 13.31
+          "worst": 11.08,
+          "typical": 14.8
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1140,
+        "lcp": 1144,
         "element": "H1",
         "runs": [
           1140,
-          1140,
-          1144
+          1144,
+          1148
         ]
       }
     },
@@ -525,27 +522,27 @@
       "heroTextContrast": [
         {
           "el": "eyebrow",
-          "worst": 10.19,
-          "typical": 10.9
+          "worst": 10.93,
+          "typical": 13.23
         },
         {
           "el": "H1",
-          "worst": 9.3,
-          "typical": 12.46
+          "worst": 12.74,
+          "typical": 15.23
         },
         {
           "el": "P",
-          "worst": 8.66,
-          "typical": 13.9
+          "worst": 10.72,
+          "typical": 15.2
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1112,
+        "lcp": 1128,
         "element": "page-hero__bg page-hero__bg--about",
         "runs": [
-          1108,
-          1112,
-          1124
+          1120,
+          1128,
+          1128
         ]
       }
     }
