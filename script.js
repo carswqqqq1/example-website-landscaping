@@ -1393,8 +1393,26 @@
       ].filter(Boolean);
       location.textContent = metaParts.join(' · ');
 
-      meta.appendChild(author);
-      meta.appendChild(location);
+      var initials = String(authorName).split(/\s+/).filter(Boolean).slice(0, 2).map(function (part) {
+        return part.charAt(0).toUpperCase();
+      }).join('').replace(/[^A-Z]/g, '') || 'H';
+      var avatar = document.createElement('span');
+      avatar.className = 'review-card__avatar';
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = initials;
+      var who = document.createElement('span');
+      who.className = 'review-card__who';
+      who.appendChild(author);
+      who.appendChild(location);
+      meta.appendChild(avatar);
+      meta.appendChild(who);
+      if (isDemoMode() && !sourceUrl) {
+        article.className += ' review-card--sample';
+        var sampleTag = document.createElement('span');
+        sampleTag.className = 'review-card__sample';
+        sampleTag.textContent = 'Sample review';
+        article.appendChild(sampleTag);
+      }
 
       if (sourceUrl && /^https?:/i.test(sourceUrl)) {
         var sourceLink = document.createElement('a');
@@ -3965,7 +3983,7 @@
   function startCarousel() {
     stopCarousel();
     if (!carouselCanRun()) return;
-    heroTimer = setInterval(nextSlide, 5500);
+    heroTimer = setInterval(nextSlide, 6500);
   }
 
   function syncPauseButton() {
