@@ -6770,7 +6770,8 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
 .consult-drawer__form { margin-top: 1rem; }
 .consult-drawer__form .service-type { margin-bottom: 1rem; }
 .consult-drawer__form .consult-drawer__context { margin: -.35rem 0 1rem; padding: .6rem .8rem; }
-.consult-drawer__form .consult-drawer__context strong { font-size: .72rem; }
+.consult-drawer .consult-drawer__form .consult-drawer__context { background: #f6f3ee; border-color: rgba(20, 20, 20, .1); }
+.consult-drawer .consult-drawer__form .consult-drawer__context strong { color: var(--ink); font-size: .85rem; font-weight: 600; letter-spacing: 0; text-transform: none; }
 .service-type.is-collapsed .service-type__options { display: none; }
 .service-type__chosen {
   display: flex;
