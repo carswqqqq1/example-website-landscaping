@@ -14,7 +14,8 @@
       width: 1600,
       height: 954,
       styleSlug: 'outdoor',
-      serviceSlug: 'desert-landscaping'
+      serviceSlug: 'desert-landscaping',
+      serviceSlugs: ['desert-landscaping', 'artificial-turf']
     },
     {
       title: 'Paver Patio & Turf',
@@ -28,7 +29,8 @@
       width: 1620,
       height: 860,
       styleSlug: 'hardscape',
-      serviceSlug: 'hardscaping'
+      serviceSlug: 'hardscaping',
+      serviceSlugs: ['hardscaping', 'artificial-turf']
     },
     {
       title: 'Fire Feature Patio',
@@ -42,7 +44,8 @@
       width: 1600,
       height: 900,
       styleSlug: 'fire',
-      serviceSlug: 'fire-features'
+      serviceSlug: 'fire-features',
+      serviceSlugs: ['fire-features', 'hardscaping']
     },
     {
       title: 'Pergola & Outdoor Kitchen',
@@ -56,7 +59,8 @@
       width: 1000,
       height: 668,
       styleSlug: 'outdoor',
-      serviceSlug: 'pergola-shade'
+      serviceSlug: 'pergola-shade',
+      serviceSlugs: ['pergola-shade', 'outdoor-kitchens', 'outdoor-lighting', 'artificial-turf']
     },
     {
       title: 'Front Yard Desert Refresh',
@@ -70,7 +74,8 @@
       width: 1630,
       height: 860,
       styleSlug: 'frontyard',
-      serviceSlug: 'desert-landscaping'
+      serviceSlug: 'desert-landscaping',
+      serviceSlugs: ['desert-landscaping', 'landscape-design']
     }
   ];
 })();

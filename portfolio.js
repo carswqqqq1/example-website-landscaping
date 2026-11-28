@@ -75,6 +75,25 @@
     return 'landscape-design';
   }
 
+  function itemServiceSlugs(item) {
+    return String(item && item.dataset.services ? item.dataset.services : '')
+      .split(/\s+/)
+      .map(normalizeSlug)
+      .filter(Boolean);
+  }
+
+  function itemPrimaryService(item) {
+    var slugs = itemServiceSlugs(item);
+    if (slugs.length) return slugs[0];
+    return mapCategoryToServiceSlug(item && item.dataset.cat, item && item.dataset.type);
+  }
+
+  function itemMatchesFilter(item, cat) {
+    if (cat === 'all') return true;
+    if (cat.indexOf('service:') === 0) return itemServiceSlugs(item).indexOf(cat.slice(8)) >= 0;
+    return item.dataset.cat === cat;
+  }
+
   function mapServiceToFilter(serviceSlug) {
     var slug = normalizeSlug(serviceSlug);
     if (!slug) return 'all';
@@ -94,21 +113,28 @@
     var projectLabel = extractProjectLabel(item);
     var params = new URLSearchParams({
       source: 'portfolio',
-      service: mapCategoryToServiceSlug(category, itemType),
+      service: itemPrimaryService(item),
       selected_style: normalizeSlug(category),
       selected_image: extractImageId(item),
       selected_project_label: projectLabel,
-      prefill_message: 'Interested in a ' + (itemType || 'landscape') + ' project similar to ' + projectLabel + '.'
+      prefill_message: 'Interested in a project similar to ' + projectLabel + '.'
     });
     params.set('autostart', '1');
     return '/free-consultation?' + params.toString();
   }
 
+  /* The filter-bar CTA is generic: it never claims a project the visitor did
+     not pick. It only carries the service when the page is filtered by one. */
+  function buildGenericRequestHref() {
+    var params = new URLSearchParams({ source: 'portfolio' });
+    if (currentFilter.indexOf('service:') === 0) params.set('service', currentFilter.slice(8));
+    params.set('autostart', '1');
+    return '/free-consultation?' + params.toString();
+  }
+
   function updateRequestLinks(item) {
-    var targetItem = item || visibleItems()[0] || items[0];
-    var href = buildRequestHref(targetItem);
-    if (requestStyleButton) requestStyleButton.setAttribute('href', href);
-    if (lightboxRequest) lightboxRequest.setAttribute('href', href);
+    if (requestStyleButton) requestStyleButton.setAttribute('href', buildGenericRequestHref());
+    if (lightboxRequest && item) lightboxRequest.setAttribute('href', buildRequestHref(item));
   }
 
   function updateFilterCounts() {
@@ -131,13 +157,13 @@
     });
 
     items.forEach(function (item) {
-      var match = cat === 'all' || item.dataset.cat === cat;
+      var match = itemMatchesFilter(item, cat);
       item.classList.toggle('is-hidden', !match);
       item.setAttribute('aria-hidden', match ? 'false' : 'true');
       item.classList.toggle('is-visible', match);
     });
 
-    updateRequestLinks(visibleItems()[0]);
+    updateRequestLinks(null);
   }
 
   function updateLightboxFrame(item) {
@@ -290,9 +316,12 @@
     if (event.key === 'ArrowRight') moveLightbox(1);
   });
 
-  var initialServiceFilter = mapServiceToFilter(pageParams.get('service'));
-  if (initialServiceFilter && initialServiceFilter !== 'all') {
-    currentFilter = initialServiceFilter;
+  var requestedService = normalizeSlug(pageParams.get('service'));
+  if (requestedService && items.some(function (item) { return itemServiceSlugs(item).indexOf(requestedService) >= 0; })) {
+    currentFilter = 'service:' + requestedService;
+  } else if (requestedService) {
+    var initialServiceFilter = mapServiceToFilter(requestedService);
+    if (initialServiceFilter && initialServiceFilter !== 'all') currentFilter = initialServiceFilter;
   }
 
   updateFilterCounts();
