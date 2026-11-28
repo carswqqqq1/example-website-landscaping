@@ -51,8 +51,15 @@
     snapshotDate: REVIEW_SNAPSHOT_DATE,
     live: false
   };
-  var OFFER_LABEL = String(PRIMARY_OFFER.label || 'Get a Free Quote').trim();
-  var OFFER_SHORT_LABEL = String(PRIMARY_OFFER.shortLabel || 'Project Review').trim();
+  // 4.10 + 5.03: one quote label everywhere. The public demo (demoMode true) says
+  // "Try a sample quote"; client builds (demoMode false) use primaryOffer.label.
+  var OFFER_LIVE_LABEL = String(PRIMARY_OFFER.label || 'Get a Free Quote').trim();
+  var OFFER_LABEL = SITE_CONFIG.demoMode === true
+    ? String(PRIMARY_OFFER.demoLabel || 'Try a sample quote').trim()
+    : OFFER_LIVE_LABEL;
+  var OFFER_SHORT_LABEL = SITE_CONFIG.demoMode === true
+    ? OFFER_LABEL
+    : String(PRIMARY_OFFER.shortLabel || 'Project Review').trim();
   var OFFER_FORM_TITLE = String(PRIMARY_OFFER.formTitle || 'Get a Free Quote').trim();
   var OFFER_SUBMIT_LABEL = String(PRIMARY_OFFER.submitLabel || 'Get My Free Quote').trim();
   var OFFER_PROMISE = String(PRIMARY_OFFER.promise || 'No pressure, no obligation, and a local team member follows up within one business day.').trim();
@@ -839,8 +846,19 @@
     return '/' + value.replace(/^\.?\//, '');
   }
 
+  // Static pages ship the demo label; swap every quote button to the label this build uses.
+  function applyQuoteLabels() {
+    var quoteLabelPattern = /^(?:Get a Free Quote|Try a sample quote)$/i;
+    document.querySelectorAll('a, button').forEach(function (el) {
+      if (el.children.length) return;
+      var text = String(el.textContent || '').trim();
+      if (quoteLabelPattern.test(text) && text !== OFFER_LABEL) el.textContent = OFFER_LABEL;
+    });
+  }
+
   function applySiteBranding() {
     applyBrandTokens();
+    applyQuoteLabels();
 
     var showSamplePreview = Boolean(isDemoMode() && BRAND.sampleLabel);
     if (showSamplePreview) setText('[data-sample-preview-label]', BRAND.sampleLabel);
