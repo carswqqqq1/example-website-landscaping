@@ -41,12 +41,12 @@
         {
           "el": "hero__heading",
           "worst": 5.77,
-          "typical": 16.16
+          "typical": 16.15
         },
         {
           "el": "hero__sub",
-          "worst": 11.21,
-          "typical": 19.44
+          "worst": 11.13,
+          "typical": 19.4
         }
       ]
     },
@@ -175,18 +175,23 @@
       "heroTextContrast": [
         {
           "el": "hero__heading",
-          "worst": 7.51,
-          "typical": 8.04
+          "worst": 7.48,
+          "typical": 8
         },
         {
           "el": "hero__sub",
-          "worst": 7.38,
-          "typical": 16.72
+          "worst": 9.19,
+          "typical": 19.15
         }
       ],
       "throttledLcpMs": {
-        "lcp": 2532,
-        "element": "hero__slide hero__slide--first is-active"
+        "lcp": 1112,
+        "element": "hero__slide hero__slide--first is-active",
+        "runs": [
+          1112,
+          1112,
+          1124
+        ]
       }
     },
     "pergola-390": {
@@ -213,10 +218,26 @@
         "Service Area (1.07)",
         "FAQ (1.00)"
       ],
-      "heroTextContrast": [],
+      "heroTextContrast": [
+        {
+          "el": "H1",
+          "worst": 7.88,
+          "typical": 13.6
+        },
+        {
+          "el": "service-hero__sub",
+          "worst": 7.68,
+          "typical": 11.63
+        }
+      ],
       "throttledLcpMs": {
-        "lcp": 2536,
-        "element": "service-hero__bg"
+        "lcp": 1088,
+        "element": "service-hero__bg",
+        "runs": [
+          1088,
+          1088,
+          1096
+        ]
       }
     },
     "about-390": {
@@ -235,30 +256,40 @@
       ],
       "heroTextContrast": [
         {
+          "el": "eyebrow",
+          "worst": 5.31,
+          "typical": 7.69
+        },
+        {
           "el": "H1",
-          "worst": 1,
-          "typical": 5.56
+          "worst": 5.5,
+          "typical": 6.71
         },
         {
           "el": "P",
-          "worst": 6.73,
-          "typical": 11.34
+          "worst": 8.16,
+          "typical": 15.89
         },
         {
           "el": "P",
           "worst": 8.26,
-          "typical": 12.99
+          "typical": 11.36
         }
       ],
       "throttledLcpMs": {
-        "lcp": 2140,
-        "element": "P"
+        "lcp": 996,
+        "element": "P",
+        "runs": [
+          972,
+          996,
+          1004
+        ]
       }
     }
   },
   "after": {
     "home-1440": {
-      "height": 14403,
+      "height": 13595,
       "scrollWidth": 1440,
       "viewport": 1440,
       "overflowingElements": [],
@@ -288,38 +319,38 @@
       "heroTextContrast": [
         {
           "el": "hero__eyebrow",
-          "worst": 3.57,
-          "typical": 6.69
+          "worst": 4,
+          "typical": 7.86
         },
         {
           "el": "hero__heading",
-          "worst": 3.84,
-          "typical": 9.91
+          "worst": 4.74,
+          "typical": 11.48
         },
         {
           "el": "hero__sub",
-          "worst": 5.91,
-          "typical": 14.95
+          "worst": 6.29,
+          "typical": 15.49
         },
         {
           "el": "LI",
-          "worst": 15.13,
-          "typical": 17.38
+          "worst": 15.82,
+          "typical": 17.65
         },
         {
           "el": "LI",
-          "worst": 10.24,
-          "typical": 15.98
+          "worst": 11.71,
+          "typical": 15.97
         },
         {
           "el": "LI",
-          "worst": 14.13,
-          "typical": 17.27
+          "worst": 11.59,
+          "typical": 16.47
         }
       ]
     },
     "pergola-1440": {
-      "height": 8579,
+      "height": 8645,
       "scrollWidth": 1440,
       "viewport": 1440,
       "overflowingElements": [],
@@ -390,7 +421,7 @@
       ]
     },
     "home-390": {
-      "height": 13394,
+      "height": 13282,
       "scrollWidth": 390,
       "viewport": 390,
       "overflowingElements": [],
@@ -406,42 +437,47 @@
       "heroTextContrast": [
         {
           "el": "hero__eyebrow",
-          "worst": 6.94,
-          "typical": 7.95
+          "worst": 2.5,
+          "typical": 10.25
         },
         {
           "el": "hero__heading",
-          "worst": 5.89,
-          "typical": 12.66
+          "worst": 8.2,
+          "typical": 11.99
         },
         {
           "el": "hero__sub",
-          "worst": 4.5,
-          "typical": 10.38
+          "worst": 8.92,
+          "typical": 13.59
         },
         {
           "el": "LI",
-          "worst": 9.38,
-          "typical": 16.78
+          "worst": 12.46,
+          "typical": 16.97
         },
         {
           "el": "LI",
-          "worst": 10.83,
-          "typical": 17.54
+          "worst": 12.13,
+          "typical": 13.36
         },
         {
           "el": "LI",
-          "worst": 14.6,
-          "typical": 18.35
+          "worst": 12.71,
+          "typical": 13.65
         }
       ],
       "throttledLcpMs": {
-        "lcp": 2600,
-        "element": "hero__heading"
+        "lcp": 1180,
+        "element": "hero__heading",
+        "runs": [
+          1176,
+          1180,
+          1188
+        ]
       }
     },
     "pergola-390": {
-      "height": 11065,
+      "height": 11229,
       "scrollWidth": 390,
       "viewport": 390,
       "overflowingElements": [],
@@ -454,10 +490,26 @@
         "Fireplace Lounge (1.26)",
         "Pool Cabana (1.26)"
       ],
-      "heroTextContrast": [],
+      "heroTextContrast": [
+        {
+          "el": "H1",
+          "worst": 3.43,
+          "typical": 12.1
+        },
+        {
+          "el": "service-hero__sub",
+          "worst": 5.93,
+          "typical": 9.5
+        }
+      ],
       "throttledLcpMs": {
-        "lcp": 2708,
-        "element": "service-hero__bg"
+        "lcp": 1152,
+        "element": "H1",
+        "runs": [
+          1152,
+          1152,
+          1160
+        ]
       }
     },
     "about-390": {
@@ -470,10 +522,31 @@
       "lowContrastLabels": [
         "About Mesa Wren (1.00)"
       ],
-      "heroTextContrast": [],
+      "heroTextContrast": [
+        {
+          "el": "eyebrow",
+          "worst": 10.63,
+          "typical": 11.14
+        },
+        {
+          "el": "H1",
+          "worst": 6.7,
+          "typical": 10.16
+        },
+        {
+          "el": "P",
+          "worst": 4.72,
+          "typical": 10.02
+        }
+      ],
       "throttledLcpMs": {
-        "lcp": 2560,
-        "element": "page-hero__bg page-hero__bg--about"
+        "lcp": 1132,
+        "element": "page-hero__bg page-hero__bg--about",
+        "runs": [
+          1128,
+          1132,
+          1136
+        ]
       }
     }
   }
