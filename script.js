@@ -69,6 +69,26 @@
 
   var SAMPLE_RECEIPT_KEY = 'mw_sample_receipt';
 
+  // One US phone formatter for every form: strips non-digits, drops a leading
+  // country code 1 on an 11-digit number, then formats 10 digits. Anything that
+  // is not yet 10 digits is left as typed digits so typing is never mangled.
+  function normalizeUsPhone(value) {
+    var digits = String(value || '').replace(/\D/g, '');
+    if (digits.length === 11 && digits.charAt(0) === '1') digits = digits.slice(1);
+    if (digits.length === 10 && digits.charAt(0) !== '1' && digits.charAt(0) !== '0') {
+      return '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6);
+    }
+    return digits;
+  }
+
+  function isValidUsPhone(value) {
+    return /^\(\d{3}\) \d{3}-\d{4}$/.test(normalizeUsPhone(value));
+  }
+
+  function isPhoneField(field) {
+    return !!field && (field.type === 'tel' || /phone/i.test(String(field.name || '')));
+  }
+
   if (isDemoMode()) document.documentElement.classList.add('is-demo-mode');
 
   function runSampleSubmit(form, kind, details) {
@@ -184,7 +204,7 @@
     }
   }
 
-  function setFieldValidationState(field, isValid) {
+  function setFieldValidationState(field, isValid, message) {
     if (!field) return;
     var fieldId = String(field.id || '').trim();
     var errorId = fieldId ? fieldId + '-error' : '';
@@ -208,7 +228,7 @@
     field.style.borderColor = isValid ? '' : '#a82a22';
     if (fieldWrap) fieldWrap.classList.toggle('has-error', !isValid);
     if (error) {
-      error.textContent = isValid ? '' : 'This field is required.';
+      error.textContent = isValid ? '' : (message || 'This field is required.');
       error.hidden = isValid;
       if (!isValid && fieldId) {
         var describedBy = String(field.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
@@ -222,12 +242,19 @@
     var firstInvalid = null;
     (fields || []).forEach(function (field) {
       if (!field || field.disabled) return;
-      var isValid = field.type === 'checkbox'
+      var isFilled = field.type === 'checkbox'
         ? field.checked
         : field.type === 'radio'
           ? Boolean(field.form && field.form.querySelector('input[type="radio"][name="' + field.name + '"]:checked'))
           : String(field.value || '').trim() !== '';
-      setFieldValidationState(field, isValid);
+      var isValid = isFilled;
+      var message = '';
+      if (isFilled && isPhoneField(field)) {
+        isValid = isValidUsPhone(field.value);
+        if (isValid) field.value = normalizeUsPhone(field.value);
+        else message = 'Enter a 10-digit US phone number, like (480) 555-0123.';
+      }
+      setFieldValidationState(field, isValid, message);
       if (!isValid && !firstInvalid) firstInvalid = field;
     });
 
@@ -3231,7 +3258,8 @@
       consultDrawerState.startTimeline.value = next;
     }
 
-    function clearDrawerError() {
+    function clearDrawerError(force) {
+      if (!force && consultDrawerState.form.querySelector('[aria-invalid="true"]')) return;
       consultDrawerState.error.textContent = '';
       consultDrawerState.error.classList.remove('is-visible');
     }
@@ -3243,16 +3271,16 @@
       syncDrawerTimeline(this.value);
     });
     consultDrawerState.phone.addEventListener('input', function () {
-      var digits = this.value.replace(/\D/g, '');
-      if (digits.length >= 10) {
-        this.value = '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6, 10);
-      } else {
-        this.value = digits;
-      }
+      this.value = normalizeUsPhone(this.value);
     });
     consultDrawerState.form.querySelectorAll('input, select, textarea').forEach(function (field) {
       field.addEventListener('input', function () {
-        this.style.borderColor = '';
+        if (this.getAttribute('aria-invalid') === 'true') {
+          var fixed = isPhoneField(this) ? isValidUsPhone(this.value) : String(this.value || '').trim() !== '';
+          if (fixed) setFieldValidationState(this, true);
+        } else {
+          this.style.borderColor = '';
+        }
         clearDrawerError();
       });
       field.addEventListener('change', function () {
@@ -3270,7 +3298,7 @@
 
     consultDrawerState.form.addEventListener('submit', async function (event) {
       event.preventDefault();
-      clearDrawerError();
+      clearDrawerError(true);
 
       var requiredFields = Array.prototype.slice.call(consultDrawerState.form.querySelectorAll('[required]'));
       if (!validateRequiredFields(requiredFields, consultDrawerState.error, 'Please complete the required fields before submitting your request.')) {
@@ -4908,9 +4936,7 @@
 
     if (phoneInput) {
       phoneInput.addEventListener('input', function () {
-        var v = this.value.replace(/\D/g, '');
-        if (v.length >= 10) v = '(' + v.slice(0, 3) + ') ' + v.slice(3, 6) + '-' + v.slice(6, 10);
-        this.value = v;
+        this.value = normalizeUsPhone(this.value);
       });
     }
 
