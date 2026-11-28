@@ -6508,3 +6508,16 @@ summary:focus-visible,
 .sticky-bar.is-visible,
 .scroll-top.is-visible { visibility: visible; transition-delay: 0s; }
 body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
+
+/* ----- 2.18 Legal links in the shared footer ----- */
+.footer__bottom .footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 .35rem;
+}
+.footer__bottom .footer__legal a {
+  color: rgba(255,255,255,.86);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
