@@ -6751,3 +6751,15 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
   .confidence__grid { gap: 1.1rem; }
   .final-cta__ready ul { gap: .7rem; }
 }
+@media (max-width: 559px) {
+  .choice, .spread, .outcomes, .process--timeline, .confidence, .final-cta { padding-block: 2.25rem; }
+  .choice__header, .outcomes__header, .spread__header { margin-bottom: 1.1rem; }
+  .estimate-paths { margin-top: 1.75rem; padding-top: 1.25rem; }
+  .process--timeline .process__header, .confidence .section-title { margin-bottom: 1.1rem; }
+  .timeline { gap: 1rem; }
+  .spread__facts { gap: .35rem; margin-top: .6rem; }
+  .spread__facts div { display: flex; gap: .5rem; align-items: baseline; }
+  .spread__facts span { flex: 0 0 6.5rem; }
+  .final-cta__ready { margin-top: 1.5rem; padding-top: 1rem; }
+  .outcomes__footer, .process__more { margin-top: 1.1rem; }
+}
