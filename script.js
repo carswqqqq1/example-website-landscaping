@@ -3034,6 +3034,7 @@
       consultation_tier: '',
       lead_tier: '',
       budget_range: '',
+      estimate_context: '',
       project_goal: '',
       priority_zone: ''
     };
@@ -3051,6 +3052,7 @@
         prefill.prefill_message = parsedUrl.searchParams.get('prefill_message') || prefill.prefill_message;
         prefill.estimated_timeline = parsedUrl.searchParams.get('estimated_timeline') || parsedUrl.searchParams.get('timeline') || prefill.estimated_timeline;
         prefill.budget_range = parsedUrl.searchParams.get('budget_range') || prefill.budget_range;
+        prefill.estimate_context = parsedUrl.searchParams.get('estimate_context') || prefill.estimate_context;
         prefill.project_goal = parsedUrl.searchParams.get('project_goal') || prefill.project_goal;
         prefill.priority_zone = parsedUrl.searchParams.get('priority_zone') || prefill.priority_zone;
       }
@@ -3627,6 +3629,9 @@
     if (nextPrefill.budget_range) {
       contextLines.push('Planning range: ' + nextPrefill.budget_range);
     }
+    if (nextPrefill.estimate_context) {
+      contextLines.push('Calculator estimate: ' + nextPrefill.estimate_context);
+    }
     if (nextPrefill.project_goal) {
       contextLines.push('Project goal: ' + nextPrefill.project_goal);
     }
@@ -3799,6 +3804,7 @@
           prefill_message: URL_PARAMS.get('prefill_message') || '',
           estimated_timeline: URL_PARAMS.get('estimated_timeline') || URL_PARAMS.get('timeline') || '',
           budget_range: URL_PARAMS.get('budget_range') || '',
+          estimate_context: URL_PARAMS.get('estimate_context') || '',
           project_goal: URL_PARAMS.get('project_goal') || '',
           priority_zone: URL_PARAMS.get('priority_zone') || ''
         });

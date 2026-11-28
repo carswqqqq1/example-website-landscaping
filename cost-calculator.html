@@ -215,7 +215,7 @@
                 <th>Typical planning range</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody data-calc-range-table>
               <tr><td>Hardscaping</td><td>$10,000 - $40,000</td></tr>
               <tr><td>Landscape design plan (design only)</td><td>$5,000 - $15,000</td></tr>
               <tr><td>Outdoor Kitchens</td><td>$20,000 - $60,000</td></tr>
@@ -368,14 +368,6 @@
         return currency.format(low) + ' - ' + currency.format(high);
       }
 
-      function mapRangeForReview(low, high) {
-        var midpoint = (Number(low || 0) + Number(high || 0)) / 2;
-        if (midpoint <= 25000) return '$10,000 - $25,000';
-        if (midpoint <= 60000) return '$25,000 - $60,000';
-        if (midpoint <= 150000) return '$60,000 - $150,000';
-        return '$150,000+';
-      }
-
       function mapGoalForReview(low, high, features) {
         if (high <= 25000) return 'Focused first phase';
         if (high >= 150000 || features >= 4) return 'Private estate project review';
@@ -388,7 +380,8 @@
           source: 'calculator_page',
           autostart: '1',
           service: service.reviewService || service.label,
-          budget_range: mapRangeForReview(low, high),
+          /* The estimate travels as context, never as the visitor's own budget. */
+          estimate_context: formatRange(low, high) + ' for ' + service.label,
           project_goal: mapGoalForReview(low, high, features),
           estimated_timeline: timeline === 'asap' ? 'ASAP' : timeline === 'this-season' ? '1-3 months' : '3-6 months'
         });
@@ -461,6 +454,17 @@
 
         updateReviewLink(service, low, high, timeline, features);
         if (announcementField) announcementField.textContent = 'Updated planning range: ' + formatRange(low, high) + ' for ' + service.label + '.';
+      }
+
+      /* One source for the ranges: the table is rebuilt from SERVICE_RANGES so it
+         can never drift from what the calculator uses. */
+      var rangeTable = document.querySelector('[data-calc-range-table]');
+      if (rangeTable) {
+        rangeTable.innerHTML = Array.prototype.slice.call(serviceField.options).map(function (option) {
+          var entry = SERVICE_RANGES[option.value];
+          if (!entry) return '';
+          return '<tr><td>' + entry.label + '</td><td>' + formatRange(entry.low, entry.high) + '</td></tr>';
+        }).join('');
       }
 
       sizeField.addEventListener('input', renderEstimate);
