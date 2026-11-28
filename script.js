@@ -3073,7 +3073,8 @@
       budget_range: '',
       estimate_context: '',
       project_goal: '',
-      priority_zone: ''
+      priority_zone: '',
+      service_type: ''
     };
     var parsedUrl = null;
 
@@ -3092,6 +3093,8 @@
         prefill.estimate_context = parsedUrl.searchParams.get('estimate_context') || prefill.estimate_context;
         prefill.project_goal = parsedUrl.searchParams.get('project_goal') || prefill.project_goal;
         prefill.priority_zone = parsedUrl.searchParams.get('priority_zone') || prefill.priority_zone;
+        // 5.04 / 5.06: a link's own type (maintenance, one_time, project) picks the quote branch.
+        prefill.service_type = parsedUrl.searchParams.get('type') || parsedUrl.searchParams.get('service_type') || prefill.service_type;
       }
 
       if (trigger.hasAttribute('data-service-choice')) {
