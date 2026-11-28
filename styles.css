@@ -7137,6 +7137,9 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
   .reviews .review-card__text { font-size: 1.2rem; }
   .areas__chips a { padding: 0 .95rem; font-size: .875rem; }
   .service-item__body { min-width: 0; }
+  /* The featured project and service areas stay on phones (they were hidden before). */
+  .featured-project.featured-project--ba,
+  .areas.areas--wide { display: block; }
   .service-item h3, .service-item p { overflow-wrap: anywhere; }
 }
 @media (prefers-reduced-motion: reduce) {
