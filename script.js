@@ -1390,20 +1390,30 @@
     };
   }
 
-  // 5.11: one short excerpt above the review list, taken from the first written review.
+  // 5.11: one short excerpt above the review list. A short review is shown
+  // whole and left out of the list below, so the same words never sit twice
+  // in a row. Returns the review it used, or null.
   function renderReviewExcerpt(list) {
     var box = document.querySelector('[data-review-excerpt]');
-    if (!box) return;
-    var first = (list || []).filter(function (review) {
+    if (!box) return null;
+    var written = (list || []).filter(function (review) {
       return !review.ratingOnly && String(review.text || review.originalText || '').trim();
+    });
+    if (!written.length) { box.hidden = true; return null; }
+    var short = written.filter(function (review) {
+      return String(review.text || review.originalText).trim().length <= 220;
     })[0];
-    if (!first) { box.hidden = true; return; }
-    var full = String(first.text || first.originalText).trim();
-    var sentence = (full.match(/^[\s\S]*?[.!?](?=\s|$)/) || [full])[0];
-    if (sentence.length > 200) sentence = sentence.slice(0, 197).replace(/\s+\S*$/, '') + '...';
-    box.querySelector('[data-review-excerpt-text]').textContent = sentence;
-    box.querySelector('[data-review-excerpt-meta]').textContent = [first.author || 'Homeowner', first.location || ''].filter(Boolean).join(', ');
+    var pick = short || written[0];
+    var full = String(pick.text || pick.originalText).trim();
+    var excerpt = full;
+    if (!short) {
+      excerpt = (full.match(/^[\s\S]*?[.!?](?=\s|$)/) || [full])[0];
+      if (excerpt.length > 200) excerpt = excerpt.slice(0, 197).replace(/\s+\S*$/, '') + '...';
+    }
+    box.querySelector('[data-review-excerpt-text]').textContent = excerpt;
+    box.querySelector('[data-review-excerpt-meta]').textContent = [pick.author || 'Homeowner', pick.location || ''].filter(Boolean).join(', ');
     box.hidden = false;
+    return short ? pick : null;
   }
 
   function renderReviewCards(reviews) {
@@ -1508,7 +1518,12 @@
       return article;
     }
 
-    if (isReviewsPage) renderReviewExcerpt(displayList);
+    if (isReviewsPage) {
+      var excerpted = renderReviewExcerpt(displayList);
+      if (excerpted && displayList.length > 1) {
+        displayList = displayList.filter(function (review) { return review !== excerpted; });
+      }
+    }
 
     if (!isReviewsPage) {
       displayList.forEach(function (review, index) {
