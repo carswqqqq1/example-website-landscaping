@@ -400,67 +400,30 @@
       </div>
     </section>
 
-    <!-- ============================================================
-         PORTFOLIO — Editorial photo grid
-    ============================================================ -->
-    <section class="portfolio" id="portfolio">
+    <section class="spread" id="portfolio" aria-labelledby="spread-title">
       <div class="container">
-        <header class="portfolio__header reveal reveal--left">
-          <p class="eyebrow">Our Portfolio</p>
-          <h2 class="section-title">Finished Work</h2>
-          <p class="portfolio__sub">A quick look at the kind of finish, materials, and layout improvement homeowners actually hire us for.</p>
+        <header class="spread__header reveal">
+          <h2 class="section-title" id="spread-title">Recent finished work</h2>
+          <a href="/portfolio" class="spread__browse">Browse projects</a>
         </header>
-        <figure class="finished-photo reveal reveal--mask-up">
-          <img src="img/projects/slide6-1280.avif" srcset="img/projects/slide6-640.avif 640w, img/projects/slide6-1280.avif 1280w" sizes="(max-width: 768px) 100vw, 1120px" alt="Pool with a rock waterfall, turf and desert planting below Camelback Mountain" class="finished-photo__image" loading="lazy" decoding="async" width="1280" height="676" />
-          <figcaption class="finished-photo__caption">Pool with a rock waterfall, turf, and desert planting below Camelback.</figcaption>
-        </figure>
-      </div>
-      <div class="portfolio__grid">
-        <figure class="portfolio__item portfolio__item--tall reveal reveal--drift reveal--d1">
-          <img src="img/projects/water-feature-1280.avif" srcset="img/projects/water-feature-640.avif 640w, img/projects/water-feature-1280.avif 1280w" sizes="(max-width: 600px) 100vw, 33vw" alt="Stone bowl fountain on a paver entry walk with desert and flowering plants" loading="lazy" decoding="async" width="1280" height="1920" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Entry Bowl Fountain</span>
-            <span>Scottsdale, AZ</span>
-          </figcaption>
-        </figure>
-        <figure class="portfolio__item reveal reveal--pin reveal--d2">
-          <img src="img/projects/slide7-1280.avif" srcset="img/projects/slide7-640.avif 640w, img/projects/slide7-1280.avif 1280w" sizes="(max-width: 600px) 100vw, 33vw" alt="Backyard with a gravel island, palms and a turf border in Chandler" loading="lazy" decoding="async" width="1630" height="860" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Desert Backyard</span>
-            <span>Chandler, AZ</span>
-          </figcaption>
-        </figure>
-        <figure class="portfolio__item reveal reveal--mask-up reveal--d3">
-          <img src="img/projects/slide8-1280.avif" srcset="img/projects/slide8-640.avif 640w, img/projects/slide8-1280.avif 1000w" sizes="(max-width: 600px) 100vw, 33vw" alt="Flagstone pool deck with a linear fire feature and lighting in Scottsdale" loading="lazy" decoding="async" width="1000" height="563" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Pool &amp; Fire</span>
-            <span>Scottsdale, AZ</span>
-          </figcaption>
-        </figure>
-        <figure class="portfolio__item portfolio__item--wide reveal reveal--zoom reveal--d1">
-          <img src="img/projects/after-29-1280.avif" srcset="img/projects/after-29-640.avif 640w, img/projects/after-29-1280.avif 880w" sizes="(max-width: 768px) 100vw, 66vw" alt="Three glazed pot fountains in a river rock bed beside a front window" loading="lazy" decoding="async" width="880" height="670" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Pot Fountain Trio</span>
-            <span>Gilbert, AZ</span>
-          </figcaption>
-        </figure>
-        <figure class="portfolio__item reveal reveal--pin reveal--d2">
-          <img src="img/projects/after-30-640.avif" srcset="img/projects/after-30-640.avif 640w" sizes="(max-width: 600px) 100vw, 33vw" alt="Linear fire table on a travertine patio beside a lit pool at dusk" loading="lazy" decoding="async" width="640" height="488" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Dusk Fire Table</span>
-            <span>Carefree, AZ</span>
-          </figcaption>
-        </figure>
-        <figure class="portfolio__item portfolio__item--wide-lg reveal reveal--mask-up reveal--d3">
-          <img src="img/projects/slide10-1280.avif" srcset="img/projects/slide10-640.avif 640w, img/projects/slide10-1280.avif 1280w" sizes="(max-width: 768px) 100vw, 66vw" alt="Drought-tolerant landscaping upgrade in Scottsdale" loading="lazy" decoding="async" width="1630" height="860" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Backyard Transformation</span>
-            <span>Scottsdale, AZ</span>
-          </figcaption>
-        </figure>
-      </div>
-      <div class="portfolio__footer container reveal reveal--fade">
-        <a href="/portfolio" class="btn btn--dark">View Full Portfolio</a>
+        <div class="spread__grid">
+          <figure class="spread__lead reveal">
+            <img src="img/projects/fireplace-1280.avif" srcset="img/projects/fireplace-640.avif 640w, img/projects/fireplace-1280.avif 1280w" sizes="(max-width: 900px) 100vw, 62vw" alt="Covered patio with a fireplace, lounge seating and travertine pavers in Paradise Valley" loading="lazy" decoding="async" width="1280" height="852" />
+            <figcaption class="spread__facts">
+              <div><span>Location</span><strong>Paradise Valley</strong></div>
+              <div><span>Scope</span><strong>Covered patio, travertine pavers, fireplace, lounge seating</strong></div>
+              <div><span>What changed</span><strong>One evening gathering space instead of separate upgrades</strong></div>
+            </figcaption>
+          </figure>
+          <figure class="spread__side reveal">
+            <img src="img/projects/slide7-1280.avif" srcset="img/projects/slide7-640.avif 640w, img/projects/slide7-1280.avif 1280w" sizes="(max-width: 900px) 100vw, 34vw" alt="Backyard with a gravel planting island, palms, turf and a pool in Chandler" loading="lazy" decoding="async" width="1630" height="860" />
+            <figcaption>Gravel planting island, palms and turf border, Chandler</figcaption>
+          </figure>
+          <figure class="spread__side reveal">
+            <img src="img/projects/water-feature-1280.avif" srcset="img/projects/water-feature-640.avif 640w, img/projects/water-feature-1280.avif 1280w" sizes="(max-width: 900px) 100vw, 34vw" alt="Bowl fountain filled with river rock at a front entry in Scottsdale" loading="lazy" decoding="async" width="1280" height="1920" />
+            <figcaption>Entry bowl fountain and desert planting, Scottsdale</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
@@ -569,55 +532,7 @@
       </div>
     </section>
 
-    <section class="featured-project" id="featured-project">
-      <div class="container">
-        <header class="featured-project__header reveal">
-          <p class="eyebrow">Featured Project</p>
-          <h2 class="section-title">A Featured Project That Shows the Standard</h2>
-          <p class="featured-project__sub">A Scottsdale yard redesigned for lower maintenance, better circulation, and a more usable entertaining layout.</p>
-        </header>
-        <div class="featured-project__grid">
-          <article class="featured-project__media reveal reveal--focus">
-            <figure class="finished-photo finished-photo--flat">
-              <img src="img/projects/fireplace-1280.avif" srcset="img/projects/fireplace-640.avif 640w, img/projects/fireplace-1280.avif 1280w" sizes="(max-width: 1024px) 100vw, 50vw" alt="Covered patio with a fireplace, paver floor, and lounge seating" class="finished-photo__image" loading="lazy" decoding="async" width="1280" height="852" />
-              <figcaption class="finished-photo__caption">Covered patio with a fireplace, pavers, and lounge seating.</figcaption>
-            </figure>
-          </article>
-          <article class="featured-project__card reveal reveal--unfold">
-            <div class="featured-project__meta">
-              <div>
-                <span class="featured-project__label">Location</span>
-                <strong>Scottsdale, AZ</strong>
-              </div>
-              <div>
-                <span class="featured-project__label">Scope</span>
-                <strong>Covered patio, pavers, fireplace, lounge area</strong>
-              </div>
-              <div>
-                <span class="featured-project__label">Timeline</span>
-                <strong>2–4 weeks</strong>
-              </div>
-              <div>
-                <span class="featured-project__label">Estimated Investment</span>
-                <strong>$25k–$40k</strong>
-              </div>
-            </div>
-            <p class="featured-project__outcome">The redesign turned an underused yard into a structured patio layout with better circulation, lower maintenance, and a gathering zone the homeowners can use most of the year.</p>
-            <a
-              href="#contact"
-              class="btn btn--solid"
-              data-form-prefill-trigger
-              data-prefill-service="Landscape Design &amp; Build"
-              data-prefill-style="featured-project"
-              data-prefill-project-label="Featured Project"
-              data-prefill-image="fireplace.jpg"
-              data-prefill-source="featured_project"
-              data-prefill-message="Interested in a project similar to the Featured Project."
-            >Request a Similar Project</a>
-          </article>
-        </div>
-      </div>
-    </section>
+
 
     <section class="reviews" id="reviews">
       <div class="container">
