@@ -6741,7 +6741,6 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
   .choice__card img { grid-row: span 3; margin-bottom: 0; aspect-ratio: 1 / 1; }
   .choice__title { font-size: 1.3rem; }
   .choice__text { font-size: .9rem; margin-top: .2rem; }
-  .estimate-paths__note { display: none; }
   .spread__grid { grid-template-columns: 1fr 1fr; gap: 1rem .75rem; }
   .spread__lead { grid-column: 1 / -1; }
   .spread__side figcaption { font-size: .8rem; }
