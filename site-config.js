@@ -28,7 +28,6 @@
     shortName: 'Mesa Wren',
     // Fictional demo brand. Phone uses the reserved 555-01xx range. No street address on purpose.
     email: 'hello@mesawren.example',
-    ownerEmail: 'carson.elevatemarketing@gmail.com',
     phone: {
       raw: '4805550142',
       display: '(480) 555-0142'
