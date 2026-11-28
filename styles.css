@@ -5709,6 +5709,16 @@ body.has-nav-overlay-open .cookie-banner {
   font-weight: 500;
 }
 
+/* The breadcrumb sits at the top of the page, under the fixed header. On
+   phones the header is shorter and see-through, so the trail showed behind
+   the logo; hide it there (the JSON-LD breadcrumb still describes the page). */
+@media (max-width: 768px) {
+  .breadcrumbs,
+  .service-breadcrumb {
+    display: none;
+  }
+}
+
 /* ============================================================
    Loading skeletons
    ============================================================ */
