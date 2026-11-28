@@ -1173,11 +1173,12 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 
 .service-gallery {
   margin-top: 1.5rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: clamp(.75rem, 1.5vw, 1.25rem);
 }
-.service-gallery__item { border: 0; border-radius: 14px; aspect-ratio: 3 / 2; }
-.service-gallery__item:first-child { grid-column: span 2; aspect-ratio: 21 / 9; }
+.service-gallery__item { grid-column: span 2; border: 0; border-radius: 14px; aspect-ratio: 4 / 3; }
+.service-gallery__item:first-child { grid-column: span 6; aspect-ratio: 21 / 9; }
+.service-gallery__item:first-child:nth-last-child(6) ~ .service-gallery__item:nth-child(n+5) { grid-column: span 3; aspect-ratio: 16 / 9; }
 .service-gallery__chip {
   border: 0;
   background: rgba(250,247,243,.95);
@@ -1215,7 +1216,9 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   .service-band { height: 72vw; min-height: 280px; }
   .service-proof-blurbs { grid-template-columns: 1fr; }
   .service-gallery { grid-template-columns: 1fr; }
-  .service-gallery__item:first-child { grid-column: auto; aspect-ratio: 3 / 2; }
+  .service-gallery__item,
+  .service-gallery__item:first-child,
+  .service-gallery__item:first-child:nth-last-child(6) ~ .service-gallery__item:nth-child(n+5) { grid-column: auto; aspect-ratio: 3 / 2; }
 }
 @media (max-width: 560px) {
   .service-steps { grid-template-columns: 1fr; }
@@ -1227,18 +1230,18 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 .service-hero__content::before {
   content: "";
   position: absolute;
-  left: -6%;
-  right: 22%;
-  top: -10%;
-  bottom: 0;
+  left: -18%;
+  right: 8%;
+  top: -18%;
+  bottom: -8%;
   z-index: -1;
-  background: radial-gradient(ellipse 64% 66% at 34% 58%, rgba(18,12,8,.7) 0%, rgba(18,12,8,.56) 50%, rgba(18,12,8,.2) 78%, rgba(18,12,8,0) 100%);
+  background: radial-gradient(closest-side, rgba(18,12,8,.72) 0%, rgba(18,12,8,.64) 55%, rgba(18,12,8,.32) 80%, rgba(18,12,8,0) 100%);
   pointer-events: none;
 }
 @media (max-width: 768px) {
   .service-hero__content::before {
-    left: -10%;
-    right: -10%;
-    background: radial-gradient(ellipse 76% 64% at 50% 60%, rgba(18,12,8,.68) 0%, rgba(18,12,8,.56) 55%, rgba(18,12,8,.2) 84%, rgba(18,12,8,0) 100%);
+    left: -16%;
+    right: -16%;
+    background: radial-gradient(closest-side, rgba(18,12,8,.72) 0%, rgba(18,12,8,.64) 55%, rgba(18,12,8,.32) 80%, rgba(18,12,8,0) 100%);
   }
 }
