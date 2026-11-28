@@ -6615,9 +6615,9 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
 .hero--golden .hero__panel::before {
   content: "";
   position: absolute;
-  inset: -14% -22% -12% -26%;
+  inset: -22% -22% -14% -26%;
   z-index: -1;
-  background: radial-gradient(ellipse 60% 56% at 42% 50%, rgba(18,12,8,.66) 0%, rgba(18,12,8,.5) 42%, rgba(18,12,8,.18) 72%, rgba(18,12,8,0) 100%);
+  background: radial-gradient(ellipse 62% 64% at 42% 50%, rgba(18,12,8,.68) 0%, rgba(18,12,8,.56) 48%, rgba(18,12,8,.22) 76%, rgba(18,12,8,0) 100%);
   pointer-events: none;
 }
 .hero--golden .hero__eyebrow {
@@ -6627,7 +6627,7 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
   font-weight: 600;
   letter-spacing: .06em;
   color: #fff;
-  text-shadow: 0 1px 10px rgba(0,0,0,.55);
+  text-shadow: 0 0 2px rgba(0,0,0,.5), 0 1px 12px rgba(0,0,0,.7);
 }
 .hero--golden .hero__heading {
   font-size: clamp(2.6rem, 5.2vw, 4.6rem);
@@ -6953,6 +6953,7 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
   gap: 1rem 2rem;
 }
 .featured-project__foot .btn.btn { min-height: 48px; height: auto; padding-block: .75rem; }
+.recent-project__cta.recent-project__cta { display: inline-flex; align-items: center; min-height: 44px; }
 .featured-project__foot .featured-project__outcome { margin: 0; max-width: 62ch; font-size: 1rem; line-height: 1.7; color: var(--dp-ink-soft); }
 
 /* ----- Reviews: premium cards, clearly marked as samples ----- */
@@ -7096,8 +7097,8 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
     padding-bottom: calc(96px + 1.5rem);
   }
   .hero--golden .hero__panel::before {
-    inset: -8% -12% -6% -12%;
-    background: radial-gradient(ellipse 72% 54% at 50% 48%, rgba(18,12,8,.6) 0%, rgba(18,12,8,.46) 50%, rgba(18,12,8,.14) 82%, rgba(18,12,8,0) 100%);
+    inset: -14% -12% -6% -12%;
+    background: radial-gradient(ellipse 76% 62% at 50% 50%, rgba(18,12,8,.62) 0%, rgba(18,12,8,.5) 55%, rgba(18,12,8,.18) 84%, rgba(18,12,8,0) 100%);
   }
   .hero--golden .hero__eyebrow { font-size: .8125rem; margin-bottom: .75rem; letter-spacing: .03em; }
   .hero--golden .hero__heading { font-size: clamp(2.35rem, 10.4vw, 2.9rem); max-width: none; margin-bottom: .9rem; }

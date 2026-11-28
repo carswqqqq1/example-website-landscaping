@@ -1232,13 +1232,13 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   top: -10%;
   bottom: 0;
   z-index: -1;
-  background: radial-gradient(ellipse 62% 62% at 34% 58%, rgba(18,12,8,.64) 0%, rgba(18,12,8,.48) 45%, rgba(18,12,8,.16) 74%, rgba(18,12,8,0) 100%);
+  background: radial-gradient(ellipse 64% 66% at 34% 58%, rgba(18,12,8,.7) 0%, rgba(18,12,8,.56) 50%, rgba(18,12,8,.2) 78%, rgba(18,12,8,0) 100%);
   pointer-events: none;
 }
 @media (max-width: 768px) {
   .service-hero__content::before {
     left: -10%;
     right: -10%;
-    background: radial-gradient(ellipse 74% 60% at 50% 60%, rgba(18,12,8,.64) 0%, rgba(18,12,8,.5) 50%, rgba(18,12,8,.16) 82%, rgba(18,12,8,0) 100%);
+    background: radial-gradient(ellipse 76% 64% at 50% 60%, rgba(18,12,8,.68) 0%, rgba(18,12,8,.56) 55%, rgba(18,12,8,.2) 84%, rgba(18,12,8,0) 100%);
   }
 }
