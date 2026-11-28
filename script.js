@@ -434,6 +434,8 @@
           action: state.action,
           size: window.matchMedia && window.matchMedia('(max-width: 360px)').matches ? 'compact' : 'flexible',
           theme: 'auto',
+          // Take space only when Cloudflare needs the visitor to interact.
+          appearance: 'interaction-only',
           'response-field': false,
           callback: function (token) {
             state.token = String(token || '');
