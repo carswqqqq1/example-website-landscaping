@@ -518,7 +518,7 @@
           '<div class="container">' +
           '  <header class="service-block__header reveal reveal--left">' +
           '    <p class="eyebrow">Project Story</p>' +
-          '    <h2 class="section-title">One Recent ' + service.title + ' Example</h2>' +
+          '    <h2 class="section-title">One Example ' + service.title + ' Project</h2>' +
           '    <p>A quick snapshot of how this service usually gets scoped, timed, and used in Arizona backyards.</p>' +
           '  </header>' +
           '  <div class="service-story-grid service-story-grid--single">' +
