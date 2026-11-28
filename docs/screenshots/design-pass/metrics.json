@@ -16,9 +16,38 @@
         "Contact (79x38)",
         "Get a free preview for your business (236x28)",
         "Request a Similar Project (212x38)",
-        "Request a Similar Project (214x40)",
-        "Request a Similar Project (210x38)",
+        "Request a Similar Project (212x38)",
+        "Request a Similar Project (212x38)",
         "(480) 555-0142 (113x24)"
+      ],
+      "lowContrastLabels": [
+        "Start With the Right Path (1.07)",
+        "Yard Care (1.00)",
+        "One-Time (1.00)",
+        "New Project (1.00)",
+        "Our Portfolio (1.00)",
+        "What We Do (1.07)",
+        "How It Works (1.07)",
+        "Featured Project (1.00)",
+        "Location (1.07)",
+        "Scope (1.07)",
+        "Timeline (1.07)",
+        "Estimated Investment (1.07)",
+        "Homeowner Feedback (1.07)",
+        "Project Snapshots (1.00)",
+        "Typical Project Investment (1.07)"
+      ],
+      "heroTextContrast": [
+        {
+          "el": "hero__heading",
+          "worst": 5.77,
+          "typical": 16.16
+        },
+        {
+          "el": "hero__sub",
+          "worst": 11.21,
+          "typical": 19.44
+        }
       ]
     },
     "pergola-1440": {
@@ -26,7 +55,7 @@
       "scrollWidth": 1440,
       "viewport": 1440,
       "overflowingElements": [],
-      "smallTapTargets": 8,
+      "smallTapTargets": 7,
       "smallTapTargetSamples": [
         "Home (63x38)",
         "Services (79x38)",
@@ -34,8 +63,36 @@
         "Process (76x38)",
         "Reviews (77x38)",
         "Financing (86x38)",
-        "Contact (79x38)",
-        "See example projects → (181x42)"
+        "Contact (79x38)"
+      ],
+      "lowContrastLabels": [
+        "Outdoor Living (1.00)",
+        "What You Get (1.00)",
+        "Planning Range (1.00)",
+        "Good Fit If (1.00)",
+        "Plan For (1.00)",
+        "Before You Request a Quote (1.00)",
+        "Process (1.07)",
+        "Project Examples (1.00)",
+        "Pergola Kitchen & Lounge (1.26)",
+        "Covered Fireplace Patio (1.26)",
+        "Fireplace Lounge (1.26)",
+        "Pool Cabana (1.26)",
+        "Project Story (1.07)",
+        "Service Area (1.07)",
+        "FAQ (1.00)"
+      ],
+      "heroTextContrast": [
+        {
+          "el": "H1",
+          "worst": 7.54,
+          "typical": 13.78
+        },
+        {
+          "el": "service-hero__sub",
+          "worst": 7.63,
+          "typical": 10.72
+        }
       ]
     },
     "about-1440": {
@@ -52,21 +109,42 @@
         "Reviews (77x38)",
         "Financing (86x38)",
         "Contact (79x38)"
+      ],
+      "lowContrastLabels": [
+        "About Mesa Wren (1.00)",
+        "Our Story (1.00)",
+        "How We Work (1.07)",
+        "Mesa Wren (1.00)",
+        "Ready To Start? (1.00)"
+      ],
+      "heroTextContrast": [
+        {
+          "el": "eyebrow",
+          "worst": 5.87,
+          "typical": 11.56
+        },
+        {
+          "el": "H1",
+          "worst": 7.87,
+          "typical": 15.78
+        },
+        {
+          "el": "P",
+          "worst": 8.14,
+          "typical": 13.92
+        },
+        {
+          "el": "P",
+          "worst": 8.39,
+          "typical": 12.89
+        }
       ]
     },
     "home-390": {
       "height": 12680,
       "scrollWidth": 390,
       "viewport": 390,
-      "overflowingElements": [
-        "service-item",
-        "service-item__body",
-        "H3",
-        "P",
-        "faq-item",
-        "faq__question",
-        "faq__answer"
-      ],
+      "overflowingElements": [],
       "smallTapTargets": 7,
       "smallTapTargetSamples": [
         "Get a free preview for your business (220x28)",
@@ -77,8 +155,37 @@
         "Show project photo 5 (40x44)",
         "Privacy Policy (80x17)"
       ],
+      "lowContrastLabels": [
+        "Start With the Right Path (1.07)",
+        "Yard Care (1.00)",
+        "One-Time (1.00)",
+        "New Project (1.00)",
+        "Our Portfolio (1.00)",
+        "What We Do (1.07)",
+        "How It Works (1.07)",
+        "Homeowner Feedback (1.07)",
+        "Typical Project Investment (1.07)",
+        "Turf Install (1.00)",
+        "Patio / Hardscape (1.00)",
+        "Outdoor Kitchen (1.00)",
+        "Full Yard Transformation (1.00)",
+        "Estate Backyard Build (1.00)",
+        "Questions Answered (1.07)"
+      ],
+      "heroTextContrast": [
+        {
+          "el": "hero__heading",
+          "worst": 7.51,
+          "typical": 8.04
+        },
+        {
+          "el": "hero__sub",
+          "worst": 7.38,
+          "typical": 16.72
+        }
+      ],
       "throttledLcpMs": {
-        "lcp": 2460,
+        "lcp": 2532,
         "element": "hero__slide hero__slide--first is-active"
       }
     },
@@ -86,16 +193,29 @@
       "height": 10152,
       "scrollWidth": 390,
       "viewport": 390,
-      "overflowingElements": [
-        "service-steps",
-        "service-step"
+      "overflowingElements": [],
+      "smallTapTargets": 0,
+      "smallTapTargetSamples": [],
+      "lowContrastLabels": [
+        "Outdoor Living (1.00)",
+        "What You Get (1.00)",
+        "Planning Range (1.00)",
+        "Good Fit If (1.00)",
+        "Plan For (1.00)",
+        "Before You Request a Quote (1.00)",
+        "Process (1.07)",
+        "Project Examples (1.00)",
+        "Pergola Kitchen & Lounge (1.26)",
+        "Covered Fireplace Patio (1.26)",
+        "Fireplace Lounge (1.26)",
+        "Pool Cabana (1.26)",
+        "Project Story (1.07)",
+        "Service Area (1.07)",
+        "FAQ (1.00)"
       ],
-      "smallTapTargets": 1,
-      "smallTapTargetSamples": [
-        "See example projects → (179x41)"
-      ],
+      "heroTextContrast": [],
       "throttledLcpMs": {
-        "lcp": 2480,
+        "lcp": 2536,
         "element": "service-hero__bg"
       }
     },
@@ -106,19 +226,43 @@
       "overflowingElements": [],
       "smallTapTargets": 0,
       "smallTapTargetSamples": [],
+      "lowContrastLabels": [
+        "About Mesa Wren (1.00)",
+        "Our Story (1.00)",
+        "How We Work (1.07)",
+        "Mesa Wren (1.00)",
+        "Ready To Start? (1.00)"
+      ],
+      "heroTextContrast": [
+        {
+          "el": "H1",
+          "worst": 1,
+          "typical": 5.56
+        },
+        {
+          "el": "P",
+          "worst": 6.73,
+          "typical": 11.34
+        },
+        {
+          "el": "P",
+          "worst": 8.26,
+          "typical": 12.99
+        }
+      ],
       "throttledLcpMs": {
-        "lcp": 2104,
+        "lcp": 2140,
         "element": "P"
       }
     }
   },
   "after": {
     "home-1440": {
-      "height": 12754,
+      "height": 14403,
       "scrollWidth": 1440,
       "viewport": 1440,
       "overflowingElements": [],
-      "smallTapTargets": 13,
+      "smallTapTargets": 12,
       "smallTapTargetSamples": [
         "Home (63x38)",
         "Services (79x38)",
@@ -127,32 +271,55 @@
         "Reviews (77x38)",
         "Financing (86x38)",
         "Contact (79x38)",
-        "Get a free preview for your business (236x28)",
-        "Request a Similar Project (212x38)",
-        "Request a Similar Project (214x40)",
-        "Request a Similar Project (210x38)",
-        "(480) 555-0142 (113x24)"
+        "Request a Similar Project (172x38)",
+        "Request a Similar Project (172x38)",
+        "Request a Similar Project (172x38)",
+        "(480) 555-0142 (113x24)",
+        "Privacy Policy (80x17)"
+      ],
+      "lowContrastLabels": [
+        "Entry Bowl Fountain (1.54)",
+        "Desert Backyard (1.54)",
+        "Covered Fireplace Patio (1.54)",
+        "Pot Fountain Trio (1.54)",
+        "Poolside Fire Pit (1.54)",
+        "Pool & Fire (1.54)"
+      ],
+      "heroTextContrast": [
+        {
+          "el": "hero__eyebrow",
+          "worst": 3.57,
+          "typical": 6.69
+        },
+        {
+          "el": "hero__heading",
+          "worst": 3.84,
+          "typical": 9.91
+        },
+        {
+          "el": "hero__sub",
+          "worst": 5.91,
+          "typical": 14.95
+        },
+        {
+          "el": "LI",
+          "worst": 15.13,
+          "typical": 17.38
+        },
+        {
+          "el": "LI",
+          "worst": 10.24,
+          "typical": 15.98
+        },
+        {
+          "el": "LI",
+          "worst": 14.13,
+          "typical": 17.27
+        }
       ]
     },
     "pergola-1440": {
-      "height": 6421,
-      "scrollWidth": 1440,
-      "viewport": 1440,
-      "overflowingElements": [],
-      "smallTapTargets": 8,
-      "smallTapTargetSamples": [
-        "Home (63x38)",
-        "Services (79x38)",
-        "Portfolio (79x38)",
-        "Process (76x38)",
-        "Reviews (77x38)",
-        "Financing (86x38)",
-        "Contact (79x38)",
-        "See example projects → (181x42)"
-      ]
-    },
-    "about-1440": {
-      "height": 4033,
+      "height": 8579,
       "scrollWidth": 1440,
       "viewport": 1440,
       "overflowingElements": [],
@@ -165,63 +332,148 @@
         "Reviews (77x38)",
         "Financing (86x38)",
         "Contact (79x38)"
+      ],
+      "lowContrastLabels": [
+        "Outdoor Living (1.00)",
+        "Pergola Kitchen & Lounge (1.26)",
+        "Covered Fireplace Patio (1.26)",
+        "Fireplace Lounge (1.26)",
+        "Pool Cabana (1.26)"
+      ],
+      "heroTextContrast": [
+        {
+          "el": "H1",
+          "worst": 5.65,
+          "typical": 12.18
+        },
+        {
+          "el": "service-hero__sub",
+          "worst": 6.77,
+          "typical": 8.48
+        }
+      ]
+    },
+    "about-1440": {
+      "height": 5477,
+      "scrollWidth": 1440,
+      "viewport": 1440,
+      "overflowingElements": [],
+      "smallTapTargets": 7,
+      "smallTapTargetSamples": [
+        "Home (63x38)",
+        "Services (79x38)",
+        "Portfolio (79x38)",
+        "Process (76x38)",
+        "Reviews (77x38)",
+        "Financing (86x38)",
+        "Contact (79x38)"
+      ],
+      "lowContrastLabels": [
+        "About Mesa Wren (1.00)"
+      ],
+      "heroTextContrast": [
+        {
+          "el": "eyebrow",
+          "worst": 10.32,
+          "typical": 14.44
+        },
+        {
+          "el": "H1",
+          "worst": 5.04,
+          "typical": 13.09
+        },
+        {
+          "el": "P",
+          "worst": 5.52,
+          "typical": 11.13
+        }
       ]
     },
     "home-390": {
-      "height": 12680,
+      "height": 13394,
       "scrollWidth": 390,
       "viewport": 390,
-      "overflowingElements": [
-        "service-item",
-        "service-item__body",
-        "H3",
-        "P",
-        "faq-item",
-        "faq__question",
-        "faq__answer"
-      ],
-      "smallTapTargets": 7,
+      "overflowingElements": [],
+      "smallTapTargets": 1,
       "smallTapTargetSamples": [
-        "Get a free preview for your business (220x28)",
-        "Show project photo 1 (40x44)",
-        "Show project photo 2 (40x44)",
-        "Show project photo 3 (40x44)",
-        "Show project photo 4 (40x44)",
-        "Show project photo 5 (40x44)",
         "Privacy Policy (80x17)"
       ],
+      "lowContrastLabels": [
+        "Entry Bowl Fountain (1.54)",
+        "Desert Backyard (1.54)",
+        "Covered Fireplace Patio (1.54)"
+      ],
+      "heroTextContrast": [
+        {
+          "el": "hero__eyebrow",
+          "worst": 6.94,
+          "typical": 7.95
+        },
+        {
+          "el": "hero__heading",
+          "worst": 5.89,
+          "typical": 12.66
+        },
+        {
+          "el": "hero__sub",
+          "worst": 4.5,
+          "typical": 10.38
+        },
+        {
+          "el": "LI",
+          "worst": 9.38,
+          "typical": 16.78
+        },
+        {
+          "el": "LI",
+          "worst": 10.83,
+          "typical": 17.54
+        },
+        {
+          "el": "LI",
+          "worst": 14.6,
+          "typical": 18.35
+        }
+      ],
       "throttledLcpMs": {
-        "lcp": 2452,
-        "element": "hero__slide hero__slide--first is-active"
+        "lcp": 2600,
+        "element": "hero__heading"
       }
     },
     "pergola-390": {
-      "height": 10152,
-      "scrollWidth": 390,
-      "viewport": 390,
-      "overflowingElements": [
-        "service-steps",
-        "service-step"
-      ],
-      "smallTapTargets": 1,
-      "smallTapTargetSamples": [
-        "See example projects → (179x41)"
-      ],
-      "throttledLcpMs": {
-        "lcp": 2480,
-        "element": "service-hero__bg"
-      }
-    },
-    "about-390": {
-      "height": 6416,
+      "height": 11065,
       "scrollWidth": 390,
       "viewport": 390,
       "overflowingElements": [],
       "smallTapTargets": 0,
       "smallTapTargetSamples": [],
+      "lowContrastLabels": [
+        "Outdoor Living (1.00)",
+        "Pergola Kitchen & Lounge (1.26)",
+        "Covered Fireplace Patio (1.26)",
+        "Fireplace Lounge (1.26)",
+        "Pool Cabana (1.26)"
+      ],
+      "heroTextContrast": [],
       "throttledLcpMs": {
-        "lcp": 2124,
-        "element": "P"
+        "lcp": 2708,
+        "element": "service-hero__bg"
+      }
+    },
+    "about-390": {
+      "height": 7752,
+      "scrollWidth": 390,
+      "viewport": 390,
+      "overflowingElements": [],
+      "smallTapTargets": 0,
+      "smallTapTargetSamples": [],
+      "lowContrastLabels": [
+        "About Mesa Wren (1.00)"
+      ],
+      "heroTextContrast": [],
+      "throttledLcpMs": {
+        "lcp": 2560,
+        "element": "page-hero__bg page-hero__bg--about"
       }
     }
   }
