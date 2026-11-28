@@ -7091,7 +7091,7 @@ body.has-cookie-banner-visible .sticky-bar { visibility: hidden; }
   }
   .hero--golden .hero__overlay {
     background:
-      linear-gradient(180deg, rgba(20,14,9,.42) 0%, rgba(20,14,9,.12) 22%, rgba(20,14,9,.18) 45%, rgba(20,14,9,.5) 100%);
+      linear-gradient(180deg, rgba(20,14,9,.42) 0%, rgba(20,14,9,.16) 18%, rgba(20,14,9,.34) 30%, rgba(20,14,9,.24) 50%, rgba(20,14,9,.5) 100%);
   }
   .hero--golden .hero__content {
     padding-top: 112px;
