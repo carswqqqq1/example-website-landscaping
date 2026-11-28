@@ -64,7 +64,7 @@ Mesa Wren Landscape Co. is a Scottsdale-based residential landscaping and outdoo
 - Contact details shown on site: (480) 555-0142, hello@mesawren.example, , Scottsdale, AZ 
 
 ## Project And Portfolio Summary
-- Portfolio highlights real Arizona landscape and outdoor living projects
+- Portfolio shows example landscape and outdoor living projects
 - Featured project types include hardscaping, outdoor kitchens, fire features, shade structures, lighting, desert landscaping, and curb-appeal upgrades
 - Portfolio is intended to help homeowners compare style direction, material choices, and likely project fit before consultation
 

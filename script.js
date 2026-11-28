@@ -1498,58 +1498,15 @@
   }
 
   function applyTrustAssets() {
-    var licenseUrl = String(TRUST_ASSETS.licenseVerifyUrl || '').trim();
-    var bondUrl = String(TRUST_ASSETS.bondVerifyUrl || '').trim();
     var insuranceCopy = String(TRUST_ASSETS.insuranceStatement || '').trim();
     var licenseNumbers = Array.isArray(TRUST_ASSETS.licenseNumbers)
       ? TRUST_ASSETS.licenseNumbers.map(function (value) { return String(value || '').trim(); }).filter(Boolean)
       : [];
 
-    if (licenseUrl) {
-      document.querySelectorAll('[data-license-verify-link]').forEach(function (link) {
-        link.setAttribute('href', licenseUrl);
-        link.removeAttribute('aria-disabled');
-        link.classList.remove('is-disabled');
-        link.hidden = false;
-      });
-    } else {
-      document.querySelectorAll('[data-license-verify-link]').forEach(function (link) {
-        link.removeAttribute('href');
-        link.removeAttribute('aria-disabled');
-        link.classList.add('is-disabled');
-        link.hidden = true;
-      });
-    }
-
-    var licensePrompt = String(TRUST_ASSETS.licensePrompt || '').trim();
-    if (licensePrompt) {
-      setText('[data-license-verify-text]', licensePrompt);
-    }
     document.querySelectorAll('[data-license-numbers]').forEach(function (el) {
       el.textContent = licenseNumbers.length ? 'Arizona ROC license numbers: ' + licenseNumbers.join(' · ') : '';
       el.hidden = !licenseNumbers.length;
     });
-
-    if (bondUrl) {
-      document.querySelectorAll('[data-bond-verify-link]').forEach(function (link) {
-        link.setAttribute('href', bondUrl);
-        link.removeAttribute('aria-disabled');
-        link.classList.remove('is-disabled');
-        link.hidden = false;
-      });
-    } else {
-      document.querySelectorAll('[data-bond-verify-link]').forEach(function (link) {
-        link.removeAttribute('href');
-        link.removeAttribute('aria-disabled');
-        link.classList.add('is-disabled');
-        link.hidden = true;
-      });
-    }
-
-    var bondPrompt = String(TRUST_ASSETS.bondPrompt || '').trim();
-    if (bondPrompt) {
-      setText('[data-bond-verify-text]', bondPrompt);
-    }
 
     if (insuranceCopy) {
       setText('[data-insurance-statement]', insuranceCopy);
