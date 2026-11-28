@@ -1799,7 +1799,7 @@
   }
 
   function renderRecentProjects() {
-    var list = Array.isArray(window.RECENT_PROJECTS) ? window.RECENT_PROJECTS.slice(0, 5) : [];
+    var list = Array.isArray(window.RECENT_PROJECTS) ? window.RECENT_PROJECTS.slice(0, 3) : [];
     var grid = document.getElementById('recent-projects-grid');
     if (!grid || !list.length) return;
 

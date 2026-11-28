@@ -2196,6 +2196,11 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .portfolio__item--wide {
   grid-column: span 2;
 }
+/* Desktop only: the last tile spans two columns so the third row has no empty cell. */
+@media (min-width: 1025px) {
+  .portfolio__grid { grid-auto-rows: 280px; }
+  .portfolio__item--wide-lg { grid-column: span 2; }
+}
 .portfolio__caption {
   position: absolute;
   bottom: 0;
