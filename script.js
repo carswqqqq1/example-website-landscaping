@@ -1390,6 +1390,22 @@
     };
   }
 
+  // 5.11: one short excerpt above the review list, taken from the first written review.
+  function renderReviewExcerpt(list) {
+    var box = document.querySelector('[data-review-excerpt]');
+    if (!box) return;
+    var first = (list || []).filter(function (review) {
+      return !review.ratingOnly && String(review.text || review.originalText || '').trim();
+    })[0];
+    if (!first) { box.hidden = true; return; }
+    var full = String(first.text || first.originalText).trim();
+    var sentence = (full.match(/^[\s\S]*?[.!?](?=\s|$)/) || [full])[0];
+    if (sentence.length > 200) sentence = sentence.slice(0, 197).replace(/\s+\S*$/, '') + '...';
+    box.querySelector('[data-review-excerpt-text]').textContent = sentence;
+    box.querySelector('[data-review-excerpt-meta]').textContent = [first.author || 'Homeowner', first.location || ''].filter(Boolean).join(', ');
+    box.hidden = false;
+  }
+
   function renderReviewCards(reviews) {
     var grid = document.getElementById('reviews-grid');
     var reviewList = Array.isArray(reviews) ? reviews.filter(function (review) {
@@ -1467,7 +1483,7 @@
       article.appendChild(stars);
       article.appendChild(text);
 
-      if (isReviewsPage && !review.ratingOnly && reviewText.length > 420) {
+      if (isReviewsPage && !review.ratingOnly && reviewText.length > 260) {
         text.classList.add('is-collapsed');
 
         var textToggle = document.createElement('button');
@@ -1491,6 +1507,8 @@
       article.appendChild(meta);
       return article;
     }
+
+    if (isReviewsPage) renderReviewExcerpt(displayList);
 
     if (!isReviewsPage) {
       displayList.forEach(function (review, index) {
