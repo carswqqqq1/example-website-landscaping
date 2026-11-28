@@ -290,6 +290,7 @@
   padding: .82rem .9rem;
 }
 
+.topic-list li h2,
 .topic-list li h3 {
   font-family: var(--font-head);
   font-size: 1.35rem;

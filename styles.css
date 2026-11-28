@@ -4003,7 +4003,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   text-align: center;
   font-size: .9rem;
 }
-.footer__col h4 {
+.footer__col .footer__heading {
   font-family: var(--font-body);
   font-size: .69rem;
   font-weight: 700;
@@ -5011,7 +5011,7 @@ body.has-cookie-banner-visible .sticky-bar {
   .footer__meta-item--contact {
     gap: .22rem;
   }
-  .footer__col h4 {
+  .footer__col .footer__heading {
     margin-bottom: .7rem;
   }
   .footer__col ul {
@@ -5941,7 +5941,7 @@ body.has-nav-overlay-open .cookie-banner {
 .ticket-panel__title,
 .response-promise__eyebrow,
 .contact__quote strong,
-.footer__col h4,
+.footer__col .footer__heading,
 .footer__bottom .footer__sample-label,
 .sticky-bar__phone-label,
 .consult-drawer__eyebrow,
@@ -5975,7 +5975,7 @@ body.has-nav-overlay-open .cookie-banner {
 }
 .text-link:hover { text-decoration-thickness: 2px; }
 
-.footer__col h4 {
+.footer__col .footer__heading {
   font-size: .9375rem;
   font-weight: 600;
 }
