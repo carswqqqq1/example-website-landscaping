@@ -6508,3 +6508,35 @@ summary:focus-visible,
 }
 .sample-form-fill:hover { color: var(--green-mid); }
 .sample-form-fill:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+/* ----- 1.02 Sample phone and email notice ----- */
+.sample-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  z-index: 10050;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: .75rem 1rem;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--white);
+  font-size: .875rem;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 8px);
+  transition: opacity .2s var(--ease), transform .2s var(--ease), visibility 0s linear .2s;
+  pointer-events: none;
+}
+.sample-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition: opacity .2s var(--ease), transform .2s var(--ease), visibility 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sample-toast, .sample-toast.is-visible { transition: none; transform: translate(-50%, 0); }
+}

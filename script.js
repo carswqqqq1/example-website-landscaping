@@ -124,6 +124,38 @@
     });
   }
 
+  var sampleToastTimer = null;
+
+  function showSampleToast(message) {
+    var toast = document.getElementById('sample-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'sample-toast';
+      toast.className = 'sample-toast';
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('is-visible');
+    if (sampleToastTimer) window.clearTimeout(sampleToastTimer);
+    sampleToastTimer = window.setTimeout(function () {
+      toast.classList.remove('is-visible');
+    }, 4000);
+  }
+
+  // Demo: the sample phone and email are not real, so a tap explains that instead of opening a dialer or mail app.
+  if (isDemoMode()) {
+    document.addEventListener('click', function (event) {
+      var link = event.target && event.target.closest ? event.target.closest('a[href^="tel:"], a[href^="mailto:"]') : null;
+      if (!link) return;
+      event.preventDefault();
+      showSampleToast(/^mailto:/i.test(link.getAttribute('href') || '')
+        ? 'Sample address. On your site this goes to your inbox.'
+        : 'Sample number. On your site this rings your business line.');
+    }, true);
+  }
+
   function addSampleFormTools(form, options) {
     if (!isDemoMode() || !form || form.querySelector('[data-sample-form-note]')) return;
     var settings = options || {};
