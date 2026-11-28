@@ -40,13 +40,13 @@
       "heroTextContrast": [
         {
           "el": "hero__heading",
-          "worst": 5.77,
-          "typical": 16.17
+          "worst": 5.76,
+          "typical": 16.18
         },
         {
           "el": "hero__sub",
-          "worst": 11.15,
-          "typical": 19.4
+          "worst": 11.21,
+          "typical": 19.44
         }
       ]
     },
@@ -185,12 +185,12 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1124,
+        "lcp": 1128,
         "element": "hero__slide hero__slide--first is-active",
         "runs": [
-          1108,
-          1124,
-          1124
+          1120,
+          1128,
+          1164
         ]
       }
     },
@@ -231,12 +231,12 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1088,
+        "lcp": 1100,
         "element": "service-hero__bg",
         "runs": [
-          1084,
           1088,
-          1120
+          1100,
+          1104
         ]
       }
     },
@@ -277,23 +277,23 @@
         }
       ],
       "throttledLcpMs": {
-        "lcp": 972,
+        "lcp": 980,
         "element": "P",
         "runs": [
-          968,
           972,
-          976
+          980,
+          992
         ]
       }
     }
   },
   "after": {
     "home-1440": {
-      "height": 13219,
+      "height": 13091,
       "scrollWidth": 1440,
       "viewport": 1440,
       "overflowingElements": [],
-      "smallTapTargets": 9,
+      "smallTapTargets": 8,
       "smallTapTargetSamples": [
         "Home (63x38)",
         "Services (79x38)",
@@ -302,7 +302,6 @@
         "Reviews (77x38)",
         "Financing (86x38)",
         "Contact (79x38)",
-        "(480) 555-0142 (113x24)",
         "Privacy Policy (80x17)"
       ],
       "lowContrastLabels": [
@@ -316,33 +315,33 @@
       "heroTextContrast": [
         {
           "el": "hero__eyebrow",
-          "worst": 4.13,
-          "typical": 9.56
+          "worst": 5.21,
+          "typical": 11.32
         },
         {
           "el": "hero__heading",
-          "worst": 9.4,
-          "typical": 15.62
+          "worst": 10.15,
+          "typical": 15.61
         },
         {
           "el": "hero__sub",
-          "worst": 11.14,
-          "typical": 17.39
+          "worst": 10.78,
+          "typical": 17.33
         },
         {
           "el": "LI",
-          "worst": 12.9,
-          "typical": 17.25
+          "worst": 12.63,
+          "typical": 17.14
         },
         {
           "el": "LI",
-          "worst": 12.9,
-          "typical": 16.66
+          "worst": 12.43,
+          "typical": 16.43
         },
         {
           "el": "LI",
-          "worst": 8.22,
-          "typical": 14.79
+          "worst": 7.8,
+          "typical": 14.48
         }
       ]
     },
@@ -371,13 +370,13 @@
       "heroTextContrast": [
         {
           "el": "H1",
-          "worst": 8.77,
-          "typical": 15.9
+          "worst": 8.6,
+          "typical": 15.85
         },
         {
           "el": "service-hero__sub",
-          "worst": 4.37,
-          "typical": 12.85
+          "worst": 4.88,
+          "typical": 13.48
         }
       ]
     },
@@ -402,18 +401,18 @@
       "heroTextContrast": [
         {
           "el": "eyebrow",
-          "worst": 10.31,
-          "typical": 15.07
+          "worst": 9.6,
+          "typical": 14.63
         },
         {
           "el": "H1",
-          "worst": 9.89,
-          "typical": 16.57
+          "worst": 9.69,
+          "typical": 16.39
         },
         {
           "el": "P",
-          "worst": 7.42,
-          "typical": 14.67
+          "worst": 8.41,
+          "typical": 15.08
         }
       ]
     },
@@ -434,42 +433,42 @@
       "heroTextContrast": [
         {
           "el": "hero__eyebrow",
-          "worst": 2.05,
-          "typical": 13.1
+          "worst": 2.91,
+          "typical": 15.3
         },
         {
           "el": "hero__heading",
-          "worst": 9.5,
-          "typical": 15.38
+          "worst": 10.38,
+          "typical": 15.88
         },
         {
           "el": "hero__sub",
-          "worst": 12.42,
-          "typical": 15.87
+          "worst": 12.52,
+          "typical": 15.89
         },
         {
           "el": "LI",
-          "worst": 8.39,
-          "typical": 16.15
+          "worst": 7.95,
+          "typical": 15.91
         },
         {
           "el": "LI",
-          "worst": 7.22,
-          "typical": 11.21
+          "worst": 7.1,
+          "typical": 10.75
         },
         {
           "el": "LI",
-          "worst": 7.04,
-          "typical": 9.54
+          "worst": 6.96,
+          "typical": 9.24
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1180,
+        "lcp": 1192,
         "element": "hero__heading",
         "runs": [
-          1172,
           1180,
-          1180
+          1192,
+          1192
         ]
       }
     },
@@ -490,13 +489,13 @@
       "heroTextContrast": [
         {
           "el": "H1",
-          "worst": 7.53,
-          "typical": 16.26
+          "worst": 6.57,
+          "typical": 15.98
         },
         {
           "el": "service-hero__sub",
-          "worst": 11.08,
-          "typical": 14.8
+          "worst": 11.37,
+          "typical": 14.84
         }
       ],
       "throttledLcpMs": {
@@ -522,27 +521,27 @@
       "heroTextContrast": [
         {
           "el": "eyebrow",
-          "worst": 10.93,
-          "typical": 13.23
+          "worst": 10.46,
+          "typical": 12.7
         },
         {
           "el": "H1",
-          "worst": 12.74,
-          "typical": 15.23
+          "worst": 11.97,
+          "typical": 14.79
         },
         {
           "el": "P",
-          "worst": 10.72,
-          "typical": 15.2
+          "worst": 10.77,
+          "typical": 15.3
         }
       ],
       "throttledLcpMs": {
-        "lcp": 1128,
+        "lcp": 1136,
         "element": "page-hero__bg page-hero__bg--about",
         "runs": [
-          1120,
           1128,
-          1128
+          1136,
+          1140
         ]
       }
     }
