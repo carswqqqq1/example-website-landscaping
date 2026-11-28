@@ -308,6 +308,14 @@
     { value: 'one_time', title: 'One-time cleanup or repair', hint: 'Cleanup, irrigation fix, tree trim and more', label: 'One-Time Cleanup or Repair' },
     { value: 'project', title: 'New project or redesign', hint: 'Design, hardscape, turf, lighting and more', label: '' }
   ];
+  // 5.08: on the public demo the drawer keeps one title and one last-step label
+  // whichever path is picked; client builds keep the per-path copy below.
+  var DEMO_QUOTE_COPY = {
+    title: 'Try the quote experience',
+    sub: 'Pick what you need. You see a sample receipt at the end, and nothing is sent.',
+    submit: 'Preview my sample request'
+  };
+
   var SERVICE_TYPE_COPY = {
     '': { title: 'Get a Free Quote', submit: 'Get My Free Quote' },
     maintenance: { title: 'Get a Yard Care Quote', submit: 'Request My Maintenance Quote' },
@@ -353,7 +361,27 @@
           '</label>';
       }).join('') +
       '</div>' +
+      '<p class="service-type__chosen" hidden><span>Selected: <strong data-service-type-chosen></strong></span> ' +
+      '<button type="button" class="service-type__change" data-service-type-change>Change service</button></p>' +
       '</fieldset>';
+  }
+
+  // 5.08: a path that is already known shows as the selected default with a
+  // Change service control. Expanding it never rebuilds the form, so a name,
+  // phone or anything else already typed stays put.
+  function setServiceTypeCollapsed(form, collapsed) {
+    var chooser = form && form.querySelector('[data-service-type-chooser]');
+    if (!chooser) return;
+    var chosen = chooser.querySelector('.service-type__chosen');
+    var label = chooser.querySelector('[data-service-type-chosen]');
+    var checked = chooser.querySelector('input[name="service_type"]:checked');
+    var isCollapsed = Boolean(collapsed && checked);
+    if (label && checked) {
+      var title = checked.parentNode.querySelector('.service-type__title');
+      label.textContent = title ? title.textContent : checked.value;
+    }
+    chooser.classList.toggle('is-collapsed', isCollapsed);
+    if (chosen) chosen.hidden = !isCollapsed;
   }
 
   function buildServiceTypeGroupsHtml(prefix) {
@@ -434,6 +462,7 @@
     if (activeType === 'project' && typeof settings.projectCopy === 'function') {
       copy = Object.assign({}, copy, settings.projectCopy() || {});
     }
+    if (isDemoMode() && settings.demoCopy) copy = DEMO_QUOTE_COPY;
     if (settings.titleEl && !settings.keepTitle) settings.titleEl.textContent = copy.title;
     if (settings.submitEl && !settings.submitEl.disabled) settings.submitEl.textContent = copy.submit;
     var chooser = form.querySelector('[data-service-type-chooser]');
@@ -480,6 +509,14 @@
     chooser.addEventListener('change', function (event) {
       if (event.target && event.target.name === 'service_type') form.__serviceTypeApply(event.target.value);
     });
+    var changeButton = chooser.querySelector('[data-service-type-change]');
+    if (changeButton) {
+      changeButton.addEventListener('click', function () {
+        setServiceTypeCollapsed(form, false);
+        var checked = chooser.querySelector('input[name="service_type"]:checked') || chooser.querySelector('input[name="service_type"]');
+        if (checked) checked.focus();
+      });
+    }
     var initial = normalizeServiceTypeValue(settings.initialType) || getServiceTypeFromUrl();
     if (initial) {
       setFormServiceType(form, initial);
@@ -3144,21 +3181,10 @@
       '<aside class="consult-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="consult-drawer-title">' +
       '  <button type="button" class="consult-drawer__close" id="consult-drawer-close" aria-label="Close consultation drawer">&#x2715;</button>' +
       '  <div class="consult-drawer__content">' +
-      '    <span class="consult-drawer__eyebrow">Fastest Way to Start</span>' +
       '    <h2 class="consult-drawer__title" id="consult-drawer-title">' + OFFER_FORM_TITLE + '</h2>' +
       '    <p class="consult-drawer__sub" id="consult-drawer-sub">Share the basics only. We use this to understand your yard before calling. No spam, no obligation.</p>' +
-      '    <ul class="consult-drawer__proof">' +
-      '      <li>Prefer not to fill this out? Call ' + SITE_PHONE_DISPLAY + ' and we will talk it through.</li>' +
-      '      <li>Starter phases and full transformations are both welcome when the scope is prioritized.</li>' +
-      '      <li>We use your phone only to clarify this request. Prefer text? Choose text below.</li>' +
-      '    </ul>' +
-      '    <div class="consult-drawer__trust-row" aria-label="Project review trust signals">' +
-      '      <span>Same-day callback</span>' +
-      '      <span>ROC + warranty review</span>' +
-      '      <span>1-business-day follow-up</span>' +
-      '    </div>' +
       '    <div class="consult-drawer__context" id="consult-drawer-context">' +
-      '      <strong id="consult-drawer-context-label">Request Context</strong>' +
+      '      <strong id="consult-drawer-context-label">Already filled in</strong>' +
       '      <p id="consult-drawer-context-body"></p>' +
       '    </div>' +
       '    <form class="consult-drawer__form" id="consult-drawer-form" novalidate>' +
@@ -3290,7 +3316,6 @@
       '      <p class="turnstile-status" data-turnstile-status role="status" aria-live="polite"></p>' +
       '      <div class="consult-drawer__actions">' +
       '        <button type="submit" class="btn btn--submit" id="consult-submit">' + OFFER_SUBMIT_LABEL + '</button>' +
-      '        <p class="consult-drawer__budget-note" id="consult-budget-note">Weekly yard care, one-time jobs, and full design-build projects are all handled by the same local team.</p>' +
       '        <p class="consult-drawer__note" id="consult-contact-help">Takes about 60 seconds. No obligation. Your phone is used only to follow up about this request, and we do not sell or share it.</p>' +
       '        <p class="consult-drawer__error" id="consult-drawer-error" role="alert" aria-live="polite"></p>' +
       '      </div>' +
@@ -3365,8 +3390,9 @@
       titleEl: consultDrawerState.title,
       submitEl: consultDrawerState.submit,
       projectCopy: function () { return consultDrawerState.projectCopy || null; },
+      demoCopy: true,
       onChange: function (type) {
-        if (!consultDrawerState.sub) return;
+        if (!consultDrawerState.sub || isDemoMode()) return;
         if (type === 'maintenance' || type === 'one_time') {
           consultDrawerState.sub.textContent = 'Share the basics and we call back with a price within one business day. No contract needed to get a quote.';
         } else if (consultDrawerState.projectSub) {
@@ -3374,6 +3400,11 @@
         }
       }
     });
+
+    var drawerChooser = consultDrawerState.form.querySelector('[data-service-type-chooser]');
+    if (drawerChooser && consultDrawerState.context) {
+      drawerChooser.parentNode.insertBefore(consultDrawerState.context, drawerChooser.nextSibling);
+    }
 
     consultDrawerState.focusTrap = createFocusTrap(consultDrawerState.panel, function () {
       closeConsultDrawer();
@@ -3574,6 +3605,7 @@
     var activeBeforeDrawer = document.activeElement;
 
     function getConsultSubmitLabel() {
+      if (isDemoMode()) return DEMO_QUOTE_COPY.submit;
       if (/first_phase$/.test(contextSource) || /first phase/i.test(String(nextPrefill.prefill_message || ''))) {
         return 'Price My First Phase';
       }
@@ -3584,6 +3616,7 @@
     }
 
     function getConsultTitle() {
+      if (isDemoMode()) return DEMO_QUOTE_COPY.title;
       if (/first_phase$/.test(contextSource) || /first phase/i.test(String(nextPrefill.prefill_message || nextPrefill.project_goal || ''))) {
         return 'Price a Practical First Phase';
       }
@@ -3594,6 +3627,7 @@
     }
 
     function getConsultSubcopy() {
+      if (isDemoMode()) return DEMO_QUOTE_COPY.sub;
       if (/first_phase$/.test(contextSource) || /first phase/i.test(String(nextPrefill.prefill_message || nextPrefill.project_goal || ''))) {
         return 'Share the city, priority zone, budget comfort range, and timing so the team can price the highest-impact first phase before a larger rebuild.';
       }
@@ -3650,10 +3684,9 @@
       title: getConsultTitle(),
       submit: contextualSubmit === OFFER_SUBMIT_LABEL ? SERVICE_TYPE_COPY.project.submit : contextualSubmit
     };
-    setFormServiceType(
-      state.form,
-      normalizeServiceTypeValue(nextPrefill.service_type) || getServiceTypeFromUrl() || (nextPrefill.service ? 'project' : '')
-    );
+    var prefillType = normalizeServiceTypeValue(nextPrefill.service_type) || getServiceTypeFromUrl() || (nextPrefill.service ? 'project' : '');
+    setFormServiceType(state.form, prefillType);
+    setServiceTypeCollapsed(state.form, Boolean(prefillType));
 
     state.contactMethod.value = state.contactChoice.value;
     state.contactMethodValue.value = state.contactChoice.value;
