@@ -302,6 +302,18 @@ if (fs.existsSync(siteConfigPath)) {
   }
 }
 
+// 1.08: no personal mailbox addresses in public files (site config, pages, browser scripts, JSON).
+{
+  const personalMailbox = /[A-Z0-9._%+-]+@(gmail|yahoo|outlook)\.com/i;
+  const publicFiles = ['site-config.js']
+    .concat(htmlFiles)
+    .concat(fs.readdirSync(root).filter((file) => /\.(js|json)$/.test(file) && file !== 'site-config.js' && file !== 'package-lock.json'));
+  publicFiles.forEach((file) => {
+    const match = read(file).match(personalMailbox);
+    if (match) failures.push(`${file}: personal email address found (${match[1]}.com). Keep owner inboxes in server env vars only.`);
+  });
+}
+
 // Output
 if (warnings.length) {
   console.warn('Site quality warnings:');
