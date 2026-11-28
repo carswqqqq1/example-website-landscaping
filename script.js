@@ -2425,7 +2425,21 @@
     }
   }
 
+  function isQuoteActionHref(href) {
+    var value = String(href || '');
+    return value.indexOf('free-consultation') >= 0 || value === '#contact' || value.indexOf('#portfolio-consultation') >= 0;
+  }
+
+  // One label for the main quote action everywhere (3.07, 3.10). The href keeps its page context.
   function getPageSecondaryAction() {
+    var action = computePageSecondaryAction();
+    if (action && isQuoteActionHref(action.href) && normalizedPath.indexOf('/free-consultation') !== 0) {
+      return { href: action.href, label: OFFER_LABEL };
+    }
+    return action;
+  }
+
+  function computePageSecondaryAction() {
     var pathname = normalizedPath;
     var bodyServiceSlug = document.body && document.body.dataset ? document.body.dataset.serviceSlug : '';
     var nativeQuoteAction = getNativeQuoteAction();
