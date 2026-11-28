@@ -1099,9 +1099,9 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 }
 .service-hero__overlay {
   background:
-    linear-gradient(90deg, rgba(24,16,10,.68) 0%, rgba(24,16,10,.44) 45%, rgba(24,16,10,.1) 82%),
-    linear-gradient(0deg, rgba(20,14,9,.62) 0%, rgba(20,14,9,0) 52%),
-    linear-gradient(180deg, rgba(20,14,9,.35) 0%, rgba(20,14,9,0) 24%);
+    linear-gradient(90deg, rgba(24,16,10,.42) 0%, rgba(24,16,10,.2) 50%, rgba(24,16,10,0) 80%),
+    linear-gradient(0deg, rgba(20,14,9,.4) 0%, rgba(20,14,9,0) 45%),
+    linear-gradient(180deg, rgba(20,14,9,.34) 0%, rgba(20,14,9,0) 22%);
 }
 .service-hero__content { padding-bottom: clamp(2.75rem, 7vh, 4.5rem); }
 .service-hero h1 {
@@ -1208,7 +1208,7 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 @media (max-width: 768px) {
   .service-hero { min-height: 560px; padding-top: 104px; }
   .service-hero__overlay {
-    background: linear-gradient(180deg, rgba(20,14,9,.45) 0%, rgba(20,14,9,.3) 35%, rgba(20,14,9,.8) 100%);
+    background: linear-gradient(180deg, rgba(20,14,9,.42) 0%, rgba(20,14,9,.14) 30%, rgba(20,14,9,.5) 100%);
   }
   .service-hero h1 { font-size: clamp(2.2rem, 9.6vw, 2.7rem); }
   .service-hero__sub { font-size: 1.0625rem; }
@@ -1220,4 +1220,25 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 @media (max-width: 560px) {
   .service-steps { grid-template-columns: 1fr; }
   .service-step p { overflow-wrap: anywhere; }
+}
+
+/* Local text backing: contrast behind the words, the rest of the photo stays bright. */
+.service-hero__content { position: relative; isolation: isolate; }
+.service-hero__content::before {
+  content: "";
+  position: absolute;
+  left: -6%;
+  right: 22%;
+  top: -10%;
+  bottom: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse 62% 62% at 34% 58%, rgba(18,12,8,.64) 0%, rgba(18,12,8,.48) 45%, rgba(18,12,8,.16) 74%, rgba(18,12,8,0) 100%);
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  .service-hero__content::before {
+    left: -10%;
+    right: -10%;
+    background: radial-gradient(ellipse 74% 60% at 50% 60%, rgba(18,12,8,.64) 0%, rgba(18,12,8,.5) 50%, rgba(18,12,8,.16) 82%, rgba(18,12,8,0) 100%);
+  }
 }
