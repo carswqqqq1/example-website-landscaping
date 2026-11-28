@@ -1033,8 +1033,10 @@
 
             var reviewLine = document.createElement('p');
             reviewLine.className = 'footer__meta-item';
-            reviewLine.textContent = reviewSummary;
-            reviewLine.appendChild(document.createTextNode(' · '));
+            if (reviewSummary) {
+              reviewLine.textContent = reviewSummary;
+              reviewLine.appendChild(document.createTextNode(' · '));
+            }
             reviewLine.appendChild(reviewLink);
             meta.appendChild(reviewLine);
           }
