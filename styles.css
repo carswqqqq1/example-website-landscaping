@@ -3884,7 +3884,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .footer__top {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  grid-template-columns: 1.4fr repeat(4, minmax(0, 1fr));
   gap: 1.8rem;
   padding-bottom: 3.1rem;
   border-bottom: 1px solid rgba(255,255,255,.08);
@@ -4982,8 +4982,7 @@ body.has-cookie-banner-visible .sticky-bar {
   .footer__col:last-child {
     order: 1;
   }
-  .footer__col:nth-of-type(2),
-  .footer__col:nth-of-type(3) {
+  .footer__col:not(:last-child) {
     order: 3;
   }
   .footer__brand > p {
@@ -5109,8 +5108,7 @@ body.has-cookie-banner-visible .sticky-bar {
   .footer__col:last-child {
     order: 0;
   }
-  .footer__col:nth-of-type(2),
-  .footer__col:nth-of-type(3) {
+  .footer__col:not(:last-child) {
     order: 2;
   }
   .consult-drawer__panel {
