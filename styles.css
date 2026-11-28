@@ -6437,3 +6437,21 @@ summary:focus-visible,
   color: var(--ink-light);
 }
 .estimate-route__scope strong { color: var(--ink); font-weight: 700; }
+
+/* v2 Fix 9: standalone text links are at least 44px tall to tap. */
+.service-related__links a,
+.text-link,
+.topic-list li a,
+.service-related__list li a,
+.service-related__resource-list li a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.service-related__links,
+.service-related__list,
+.service-related__resource-list {
+  column-gap: .5rem;
+  row-gap: .5rem;
+}
+

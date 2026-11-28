@@ -837,7 +837,7 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 .service-related__list li a {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 44px;
   border: 1px solid #dfd4c4;
   border-radius: 999px;
   padding: 0.54rem 0.95rem;
@@ -898,7 +898,7 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 .service-related__resource-list li a {
   display: inline-flex;
   align-items: center;
-  min-height: 38px;
+  min-height: 44px;
   border-radius: 10px;
   background: #f7f2ea;
   border: 1px solid #e3d7c7;
